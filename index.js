@@ -35,7 +35,8 @@ Link.prototype = {
     update : function( transform ){
         var link = this;
         return function(){
-            link.requestChange( transform( link.value ) )
+            var nextValue = transform( link.value );
+            nextValue === void 0 || link.requestChange( nextValue );
         }
     },
 
@@ -141,5 +142,10 @@ function without( arr, el ){
 }
 
 function clone( objOrArray ){
-    return objOrArray instanceof Array ? objOrArray.slice() : Object.assign( {}, objOrArray );
+    var proto = objOrArray && Object.getPrototypeOf( objOrArray );
+
+    if( proto === Array.prototype ) return objOrArray.slice();
+    if( proto === Object.prototype ) return Object.assign( {}, objOrArray );
+
+    return objOrArray;
 }
