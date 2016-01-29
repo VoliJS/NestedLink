@@ -13,26 +13,25 @@ var list = phonebookLink.map( itemLink => (
         <input valueLink={ itemLink.at( 'name' ) } />            
     </div>
 ));
-```
-    
+```    
 
 # Installation
 
 `npm install valuelink`
 
-MIT License.
+CommonJS module, MIT License.
 
 # API
 
 ## Create link
 
-- Create link to react component's state attribute
+- Create link to react component's state attribute:
 
     ```javascript
     var nameLink = Link.state( this, 'name' );
     ```
 
-- Create custom link
+- Create custom link:
 
     ```javascript
     var customLink = new Link( this.value, x => this.value = x );
@@ -40,7 +39,8 @@ MIT License.
 
 ## Update link
  
-- update linked value
+- Update linked value:
+
     ```javascript
     <button onClick={ link.update( x => x + 1 ) } />
     ```
@@ -55,7 +55,8 @@ MIT License.
 
 ## Links validation
 
-- Simple asserts
+- Simple asserts:
+
     ```javascript
     var numLink = List.state( this, 'num' )
                     .check( x => x >= 0 && x <=5 );
