@@ -1,0 +1,28 @@
+{
+  "name": "valuelink",
+  "version": "1.0.0",
+  "description": "React valueLink implementation with links to objects, validation, and purely functional updates.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Volicon/valuelink.git"
+  },
+  "keywords": [
+    "react",
+    "valuelink",
+    "databinding",
+    "binding",
+    "data",
+    "link",
+    "state"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Volicon/valuelink/issues"
+  },
+  "homepage": "https://github.com/Volicon/valuelink#readme"
+}

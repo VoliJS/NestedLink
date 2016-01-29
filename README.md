@@ -1,15 +1,16 @@
 # Features
 
-- Comprehensive solution for two-way data binding and validation. 
-- Create links to state's attributes.
-- Create links to deeply nested object and array elements with purely functional state updates.
+- Simple solution for two-way data binding and validation.
+- All major data binding scenarios are supported, including radio groups.  
+- Links to state's attributes.
+- Links to deeply nested object and array elements with purely functional state updates.
 - Ad-hoc boolean links for values equality and presence in array. 
 
 ```javascript
 var phonebookLink = Link.state( this, 'phonebook' );
 
-var list = phonebookLink.map( itemLink => (
-    <div>
+var list = phonebookLink.map( ( itemLink, idx ) => (
+    <div key={ idx }>
         <input valueLink={ itemLink.at( 'name' ) } />            
     </div>
 ));

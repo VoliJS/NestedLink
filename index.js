@@ -1,5 +1,6 @@
 /**
- * Advanced React-compatible value links
+ * Advanced React value links with validation and link-to-objects capabilities
+ * (c) 2016 Vlad Balin & Volicon, MIT License
  */
 
 function Link( value, set, error ){
