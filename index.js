@@ -93,10 +93,7 @@ Link.prototype = {
 
     // dummies for compatibility with nestedtypes object model...
     constructor : Link,
-    initialize : function( value, set, error ){},
-    get _changeToken(){
-        return this.value;
-    }
+    initialize : function( value, set, error ){}
 };
 
 function mapObject( link, object, fun ){
