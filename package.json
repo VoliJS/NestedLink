@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React valueLink implementation with links to objects, validation, and purely functional updates.",
   "main": "index.js",
   "scripts": {
@@ -14,10 +14,12 @@
     "react",
     "valuelink",
     "databinding",
+    "forms",
     "binding",
     "data",
     "link",
-    "state"
+    "state",
+    "react-component"
   ],
   "author": "Vlad Balin",
   "license": "MIT",

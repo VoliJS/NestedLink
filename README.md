@@ -1,6 +1,7 @@
+Simple solution for React two-way data binding and forms validation.
+
 # Features
 
-- Simple solution for two-way data binding and validation.
 - All major data binding scenarios are supported, including radio groups.  
 - Links to state's attributes.
 - Links to deeply nested object and array elements with purely functional state updates.
@@ -16,11 +17,15 @@ var list = phonebookLink.map( ( itemLink, idx ) => (
 ));
 ```    
 
+This technology is the part of [NestedReact](https://github.com/Volicon/NestedReact) architecture, helping you to build
+large React applications with [full power of OO models](https://github.com/Volicon/NestedTypes/).
+TodoMVC example is [here](https://github.com/gaperton/todomvc-nestedreact).
+
 # Installation
 
 `npm install valuelink`
 
-CommonJS module, MIT License.
+CommonJS module, MIT License. No side dependencies.
 
 # API
 
