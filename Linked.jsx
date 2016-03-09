@@ -15,7 +15,7 @@ exports.Input = ( { invalid = 'invalid', className = '', valueLink, checkedLink,
             return <input {...props}
                 className={ className }
                 checked={ link.value === props.value }
-                onChange={ e => e.target.checked && link.set( props.value ) }/>;
+                onChange={ e => { if( e.target.checked ) link.set( props.value ); } }/>;
 
         default:
             return <input {...props}

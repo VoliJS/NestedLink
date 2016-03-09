@@ -30,15 +30,17 @@ Link.prototype = {
     set   : doNothing,
 
     // Immediately update the link
-    update : function( transform ){
-        var nextValue = transform( link.value );
+    update : function( transform, e ){
+        var nextValue = transform( link.value, e );
         nextValue === void 0 || link.set( nextValue );
     },
 
     // Create action function which will updates the link
+    // link.action( x => !x )
+    // link.action( ( x, e ) => e.target.value )
     action : function( transform ){
         var link = this;
-        return function(){ link.update( transform ) };
+        return function( e ){ link.update( transform, e ) };
     },
 
     // React backward compatibility shim
