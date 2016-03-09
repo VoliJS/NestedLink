@@ -26,5 +26,11 @@
   "bugs": {
     "url": "https://github.com/Volicon/valuelink/issues"
   },
-  "homepage": "https://github.com/Volicon/valuelink#readme"
+  "homepage": "https://github.com/Volicon/valuelink#readme",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "webpack": "^1.12.14"
+  }
 }

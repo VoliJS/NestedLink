@@ -3,19 +3,18 @@
  * (c) 2016 Vlad Balin & Volicon, MIT License
  */
 
-function Link( value, set, error ){
-    this.value           = value;
-    this.requestChange   = set || doNothing;
-    this.validationError = error;
+function Link( value, set ){
+    this.value = value;
+    this.set   = set || doNothing;
 }
 
 // create link to component's state attribute
 Link.state = function( component, attr ){
     return new Link( component.state[ attr ], function( x ){
-        var nextState = {};
+        var nextState     = {};
         nextState[ attr ] = x;
         component.setState( nextState );
-    });
+    } );
 };
 
 module.exports = Link;
@@ -25,30 +24,46 @@ function doNothing( x ){ }
 var defaultError = 'Invalid value';
 
 Link.prototype = {
-    value           : null,
-    validationError : null,
-    requestChange   : doNothing,
+    // Core link API
+    // ---------------------------------------------
+    value : void 0,
+    set   : doNothing,
 
-    set             : function( x ){ this.requestChange( x ); },
-    toggle          : function(){ this.requestChange( !this.value ); },
-
-    // create function which updates the link
+    // Immediately update the link
     update : function( transform ){
-        var link = this;
-        return function(){
-            var nextValue = transform( link.value );
-            nextValue === void 0 || link.requestChange( nextValue );
-        }
+        var nextValue = transform( link.value );
+        nextValue === void 0 || link.set( nextValue );
     },
 
+    // Create action function which will updates the link
+    action : function( transform ){
+        var link = this;
+        return function(){ link.update( transform ) };
+    },
+
+    // React backward compatibility shim
+    requestChange : function( x ){ this.set( x ); },
+
+    // DEPRECATED: Backward compatibility shim
+    toggle : function(){ this.set( !this.value ); },
+
+    // Validation API
+    // --------------------------------------------------
+    error : void 0,
+
+    // DEPRECATED: backward compatibility shim
+    get validationError(){ return this.error },
+
     check : function( whenValid, error ){
-        if( !this.validationError && !whenValid( this.value ) ){
-            this.validationError = error || defaultError;
+        if( !this.error && !whenValid( this.value ) ){
+            this.error = error || defaultError;
         }
 
         return this;
     },
 
+    // Link transformations
+    // --------------------------------------------------
     // create boolean link to enclosed array element
     contains : function( element ){
         var link = this;
@@ -57,7 +72,7 @@ Link.prototype = {
             var next = Boolean( x );
             if( this.value !== next ){
                 var arr = link.value;
-                link.requestChange( x ? arr.concat( element ) : without( arr, element ) );
+                link.set( x ? arr.concat( element ) : without( arr, element ) );
             }
         } );
     },
@@ -67,7 +82,7 @@ Link.prototype = {
         var link = this;
 
         return new Link( this.value === asTrue, function( x ){
-            link.requestChange( x ? asTrue : null );
+            link.set( x ? asTrue : null );
         } );
     },
 
@@ -80,7 +95,7 @@ Link.prototype = {
                 var objOrArr    = link.value;
                 objOrArr        = clone( objOrArr );
                 objOrArr[ key ] = x;
-                link.requestChange( objOrArr );
+                link.set( objOrArr );
             }
         } );
     },
@@ -93,8 +108,11 @@ Link.prototype = {
 
     // dummies for compatibility with nestedtypes object model...
     constructor : Link,
-    initialize : function( value, set, error ){}
+    initialize  : function( value, set, error ){}
 };
+
+// Tools
+// ============================================
 
 function mapObject( link, object, fun ){
     var res = [];
@@ -143,7 +161,11 @@ function clone( objOrArray ){
     var proto = objOrArray && Object.getPrototypeOf( objOrArray );
 
     if( proto === Array.prototype ) return objOrArray.slice();
-    if( proto === Object.prototype ) return Object.assign( {}, objOrArray );
+    if( proto === Object.prototype ){
+        var x = {};
+        for( var i in objOrArray ) x[ i ] = objOrArray[ i ];
+        return x;
+    }
 
     return objOrArray;
 }
