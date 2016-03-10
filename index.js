@@ -31,8 +31,8 @@ Link.prototype = {
 
     // Immediately update the link
     update : function( transform, e ){
-        var nextValue = transform( link.value, e );
-        nextValue === void 0 || link.set( nextValue );
+        var nextValue = transform( this.value, e );
+        nextValue === void 0 || this.set( nextValue );
     },
 
     // Create action function which will updates the link
@@ -112,6 +112,38 @@ Link.prototype = {
     constructor : Link,
     initialize  : function( value, set, error ){}
 };
+
+
+function ArrayLink( link, key ){
+    this.value = link.value[ key ];
+    this.parent = link;
+    this.key = key;
+}
+
+ArrayLink.prototype = Object.create( Link.prototype, {
+    constructor : ArrayLink,
+    set : function( x ){
+        if( this.value !== x ){
+            var objOrArr    = this.parent.value;
+            objOrArr        = clone( objOrArr );
+            objOrArr[ this.key ] = x;
+            this.parent.set( objOrArr );
+        }
+    },
+
+    remove : function(){
+        var proto = objOrArray && Object.getPrototypeOf( objOrArray );
+
+        if( proto === Array.prototype ){
+            return objOrArray.splice();
+        }
+        else if( proto === Object.prototype ){
+            var x = {};
+            for( var i in objOrArray ) x[ i ] = objOrArray[ i ];
+            return x;
+        }
+    }
+});
 
 // Tools
 // ============================================

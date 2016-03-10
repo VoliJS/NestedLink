@@ -1,25 +1,28 @@
-Simple solution for React two-way data binding and forms validation.
+Advanced React links for purely functional two-way data binding.
 
-# Features
-
-- All major data binding scenarios are supported, including radio groups.  
-- Links to state's attributes.
-- Links to deeply nested object and array elements with purely functional state updates.
-- Ad-hoc boolean links for values equality and presence in array. 
+- Implements standard React 0.14 links API
+- API extensions:
+    - Declarative binding to event handlers.
+    - Simple form validation.
+    - Link to plain object and array members with pure updates.
+    - Derivative boolean links for checkbox and radio groups.
+- Reference implementation for 'linked' tags:
+    - Standard tags: `<Input />` (with validation), `<Select />`, `<TextArea />`
+    - Custom tags: `<Radio />`, `<Checkbox />`
 
 ```javascript
-var phonebookLink = Link.state( this, 'phonebook' );
+var linkToArray = Link.state( this, 'phonebook' );
 
-var list = phonebookLink.map( ( itemLink, idx ) => (
-    <div key={ idx }>
-        <input valueLink={ itemLink.at( 'name' ) } />            
+var list = linkToArray.map( ( itemLink, i ) => (
+    <div key={ i }>
+        <Input valueLink={ itemLink.at( 'name' ) } />            
     </div>
 ));
 ```    
 
-This technology is the part of [NestedReact](https://github.com/Volicon/NestedReact) architecture, helping you to build
-large React applications with [full power of OO models](https://github.com/Volicon/NestedTypes/).
-TodoMVC example is [here](https://github.com/gaperton/todomvc-nestedreact).
+> This technology is one of the key components of [NestedReact](https://github.com/Volicon/NestedReact) architecture, 
+> helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
+> classical OO models.
 
 # Installation
 
@@ -27,9 +30,23 @@ TodoMVC example is [here](https://github.com/gaperton/todomvc-nestedreact).
 
 CommonJS module, MIT License. No side dependencies.
 
+```javascript
+// Links
+import Link from 'valuelink'
+
+// React components with linked tags
+import { Input } from 'valuelink/tags.jsx'
+```
+
 # API
 
 ## Create link
+
+- Create custom link: `new Link( value, requestChange )`
+
+    ```javascript
+    var customLink = new Link( this.value, x => this.value = x );
+    ```
 
 - Create link to react component's state attribute:
 
@@ -37,29 +54,41 @@ CommonJS module, MIT License. No side dependencies.
     var nameLink = Link.state( this, 'name' );
     ```
 
-- Create custom link:
-
-    ```javascript
-    var customLink = new Link( this.value, x => this.value = x );
-    ```
-
 ## Update link
  
-- Update linked value:
+- Set link value: `link.set( x )` or `link.requestChange( x )` 
 
     ```javascript
-    <button onClick={ link.update( x => x + 1 ) } />
+    <button onClick={ () => boolLink.set( !boolLink.value ) } />
     ```
-    or
+
+- Update link value: `link.update( prevValue => newValue )` 
+
     ```javascript
-    <button onClick={ () => link.set( link.value + 1 ) } />
+    <button onClick={ () => boolLink.update( x => !x ) } />
     ```
-    or
+
+- Create action to handle UI event: `link.action( ( prevValue, Event ) => newValue )`
+
     ```javascript
-    <button onClick={ () => link.requestChange( link.value + 1 ) } />
+    <button onClick={ boolLink.action( x => !x ) } />
+    ...
+    const setValue = ( x, e ) => e.target.value;
+    ...
+    <input  value={ link.value }
+            onChange={ link.action( setValue ) } />
     ```
 
 ## Links validation
+
+Links has `link.check( condition, error = 'Invalid value' )` method which can be used to
+check the sequence of conditions. Checks can be chained. 
+
+`condition` is predicate function `linkValue => isValid` taking link value as an argument.
+Whenever `condition` returns falsy value, `link.error` will take the value of corresponding `error`. 
+`link.error` field may be analyzed by custom `<Input />` control to indicate an error. 
+
+This mechanics can be used to add ad-hoc validation in `render`. 
 
 - Simple asserts:
 
@@ -67,7 +96,7 @@ CommonJS module, MIT License. No side dependencies.
     var numLink = List.state( this, 'num' )
                     .check( x => x >= 0 && x <=5 );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
     
 - Validation asserts with custom error objects
@@ -75,7 +104,7 @@ CommonJS module, MIT License. No side dependencies.
     var numLink = List.state( this, 'num' )
                     .check( x => x >= 0 && x <=5, 'Number must be between 0 and 5' );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
 
 - Chained validation asserts
@@ -84,10 +113,17 @@ CommonJS module, MIT License. No side dependencies.
                     .check( x => x >= 0, 'Negative numbers are not allowed' )
                     .check( x => x <= 5, 'Number should be not greater than 5' );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
 
-## Links to object and arrays        
+## Links to object and arrays      
+
+If linked value is plain object or array, it's possible to generate
+  links to their members. Whenever this derivative links will be
+  updated, it will lead to proper purely functional update of the
+  whole structure. I.e. if you have array in component state,
+    and link to its element will be updated, it will lead to proper
+    update of stateful component.
 
 - Take link to array or object member 
     ```javascript
