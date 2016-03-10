@@ -1,25 +1,37 @@
-Simple solution for React two-way data binding and forms validation.
+Advanced React links for purely functional two-way data binding.
 
-# Features
+React 15.x will remove valueLink support. This package is complete
+dependency-free implementation of valueLinks with powerful API extensions.
 
-- All major data binding scenarios are supported, including radio groups.  
-- Links to state's attributes.
-- Links to deeply nested object and array elements with purely functional state updates.
-- Ad-hoc boolean links for values equality and presence in array. 
+- Implements standard React 0.14 links API
+- API extensions:
+    - Purely functional updates of enclosed objects and arrays.
+    - Declarative binding to event handlers.
+    - Simple form validation.
+    - Offhand boolean link creation for checkbox and radio groups.
+- Reference implementation for 'linked' tags (you'll need it with React 15.x):
+    - Standard tags: `<Input />` (with validation), `<Select />`, `<TextArea />`
+    - Custom tags: `<Radio />`, `<Checkbox />`
 
 ```javascript
-var phonebookLink = Link.state( this, 'phonebook' );
+var linkToArray = Link.state( this, 'phonebook' );
 
-var list = phonebookLink.map( ( itemLink, idx ) => (
-    <div key={ idx }>
-        <input valueLink={ itemLink.at( 'name' ) } />            
+var list = linkToArray.map( ( itemLink, i ) => (
+    <div key={ i }>
+        <Input valueLink={ itemLink.at( 'name' ) } />            
     </div>
 ));
 ```    
 
-This technology is the part of [NestedReact](https://github.com/Volicon/NestedReact) architecture, helping you to build
-large React applications with [full power of OO models](https://github.com/Volicon/NestedTypes/).
-TodoMVC example is [here](https://github.com/gaperton/todomvc-nestedreact).
+> This technology is one of the key components of [NestedReact](https://github.com/Volicon/NestedReact) architecture, 
+> helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
+> classical OO models.
+
+# Breaking API changes in version 1.1
+
+ - `link.update` is now performs **immediate purely functional link update**, shallow copying enclosed plain objects and arrays. 
+ - `link.action` behaves as `link.update` in 1.x. **Rename**.
+ - `link.toggle` is removed. Use `link.update( x => !x )` instead.
 
 # Installation
 
@@ -27,9 +39,23 @@ TodoMVC example is [here](https://github.com/gaperton/todomvc-nestedreact).
 
 CommonJS module, MIT License. No side dependencies.
 
+```javascript
+// Links
+import Link from 'valuelink'
+
+// React components with linked tags
+import { Input } from 'valuelink/tags.jsx'
+```
+
 # API
 
 ## Create link
+
+- Create custom link: `new Link( value, requestChange )`
+
+    ```javascript
+    var customLink = new Link( this.value, x => this.value = x );
+    ```
 
 - Create link to react component's state attribute:
 
@@ -37,29 +63,48 @@ CommonJS module, MIT License. No side dependencies.
     var nameLink = Link.state( this, 'name' );
     ```
 
-- Create custom link:
-
-    ```javascript
-    var customLink = new Link( this.value, x => this.value = x );
-    ```
-
 ## Update link
  
-- Update linked value:
+- Set link value: `link.set( x )` or `link.requestChange( x )` 
 
     ```javascript
-    <button onClick={ link.update( x => x + 1 ) } />
+    <button onClick={ () => boolLink.set( !boolLink.value ) } />
     ```
-    or
+
+- Purely functional link value: `link.update( prevValue => newValue )`.
+        Plain objects and arrays are shallow copied by `update` and `action` functions,
+        thus it's safe just to update the value in place.   
+
     ```javascript
-    <button onClick={ () => link.set( link.value + 1 ) } />
+    <button onClick={ () => boolLink.update( x => !x ) } />
+        <button onClick={ () => objLink.update( obj => {
+                                    obj.a = 1;
+                                    return obj;
+                                }) } />
+
     ```
-    or
+
+- Create action to handle UI event: `link.action( ( prevValue, Event ) => newValue )`
+
     ```javascript
-    <button onClick={ () => link.requestChange( link.value + 1 ) } />
+    <button onClick={ boolLink.action( x => !x ) } />
+    ...
+    const setValue = ( x, e ) => e.target.value;
+    ...
+    <input  value={ link.value }
+            onChange={ link.action( setValue ) } />
     ```
 
 ## Links validation
+
+Links has `link.check( condition, error = 'Invalid value' )` method which can be used to
+check the sequence of conditions. Checks can be chained. 
+
+`condition` is predicate function `linkValue => isValid` taking link value as an argument.
+Whenever `condition` returns falsy value, `link.error` will take the value of corresponding `error`. 
+`link.error` field may be analyzed by custom `<Input />` control to indicate an error. 
+
+This mechanics can be used to add ad-hoc validation in `render`. 
 
 - Simple asserts:
 
@@ -67,7 +112,7 @@ CommonJS module, MIT License. No side dependencies.
     var numLink = List.state( this, 'num' )
                     .check( x => x >= 0 && x <=5 );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
     
 - Validation asserts with custom error objects
@@ -75,7 +120,7 @@ CommonJS module, MIT License. No side dependencies.
     var numLink = List.state( this, 'num' )
                     .check( x => x >= 0 && x <=5, 'Number must be between 0 and 5' );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
 
 - Chained validation asserts
@@ -84,12 +129,19 @@ CommonJS module, MIT License. No side dependencies.
                     .check( x => x >= 0, 'Negative numbers are not allowed' )
                     .check( x => x <= 5, 'Number should be not greater than 5' );
                     
-    console.log( numLink.validationError );                    
+    console.log( numLink.error );                    
     ```
 
-## Links to object and arrays        
+## Links to object and arrays      
 
-- Take link to array or object member 
+If linked value is plain object or array, it's possible to generate
+  links to their members. Whenever this derivative links will be
+  updated, it will lead to proper purely functional update of the
+  whole structure. I.e. if you have array in component state,
+    and link to its element will be updated, it will lead to proper
+    update of stateful component.
+
+- Take link to array or object member: `link.at( key )`
     ```javascript
         const firstElementLink = arrayLink.at( 0 );
     ``` 
@@ -98,266 +150,32 @@ CommonJS module, MIT License. No side dependencies.
         const nameLink = objectLink.at( 'name' );
     ``` 
 
-- Map and filter through array or object
+- Map and filter through array or object: `link.map( iterator )` 
     ```javascript
     var list = stringArrayLink.map( ( itemLink, index ) => {
         if( itemLink.value ){        
             return (
                 <div key={ index }>
-                    <input valueLink={ itemLink } />            
+                    <Input valueLink={ itemLink } />            
                 </div>
             );
         }
     });
     ```
     
-## Boolean links
+## Offhand boolean links
 
-- Link to the presence of value in array
+- Link to the presence of value in array: `arrayLink.contains( value )`
     ```javascript
     const optionXLink = arrayLink.contains( 'optionX' );
     ```
 
-- Link to value equality
+- Link to value equality: `link.equals( value )`
     ```javascript
     const optionXLink = stringLink.equals( 'optionX' );
     ```
 
-- toggle boolean link
-    ```javascript
-    <button onClick={ () => link.toggle() } />
-    ```
-    or
-    ```javascript
-    <button onClick={ link.update( x => !x ) } />
-    ```
-    or
-    ```javascript
-    <button onClick={ () => link.set( !link.value ) } />
-    ```
-
 # Data binding examples
 
-Here are the set of examples for typical data binding use cases. Each section contains custom databound component, state definitions, and usage examples. 
-
-It's generally advised to keep stateful components at the top level.
-
-## Checkboxes
-
-Standard `<input/>` will work. Custom Checkbox component might be implemented like this:
-
-```javascript
-const Checkbox = ({ className = 'checkbox', checkedLink }) => (
-    <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
-         onClick = { checkedLink.update( x => !x ) }
-    />
-);
-```
-
-Examples will assume working with custom Checkbox.
-
-### Binding to boolean attributes
-
-```javascript
-const CheckboxGroup = ({ modelLink }) => (
-    <div>
-        <div>
-            <Checkbox checkedLink={ modelLink.at( 'option1' ) } />
-            Option 1
-        </div>
-        <div>
-            <Checkbox checkedLink={ modelLink.at( 'option2' ) } />
-            Option 2
-        </div>
-    </div>
-);
-```
-
-Usage:
-
-```javascript
-    getInitialState(){
-        return {
-            model : {
-                option1 : true,
-                option2 : false
-            }
-        }
-    }
-    
-    render(){
-        return <CheckboxGroup modelLink={ Link.state( this, 'model' ) } />    
-    }
-```    
-
-### Binding to array of selected options
-
-```javascript
-const CheckboxGroup = ({ modelLink }) => {
-    const link = modelLink.at( 'options' );
-    
-    return (
-        <div>
-            <div>
-                <Checkbox checkedLink={ link.contains( 'option1' ) } />
-                Option 1
-            </div>
-            <div>
-                <Checkbox checkedLink={ link.contains( 'option2' ) } />
-                Option 2
-            </div>
-        </div>
-    );
-};
-```
-
-Usage:
-
-```javascript
-    getInitialState(){
-        return {
-            model : {
-                options : [ 'option1' ]
-            }
-        }
-    }
-    
-    render(){
-        return <CheckboxGroup modelLink={ Link.state( this, 'model' ) } />    
-    }
-```    
-
-## Radio Groups
-
-For the radio groups you will need custom Radio component. It's very similar to custom Checkbox one,
-with one difference in click handler:
-
-```javascript
-const Radio = ({ className = 'radio', checkedLink }) => (
-    <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
-         onClick = { checkedLink.update( () => true ) }
-    />
-);
-```
-
-In this example, we bind radio to string values. It's not required for them to be strings.
-
-```javascript
-const RadioGroup = ({ modelLink }) => {
-    const link = modelLink.at( 'option' );
-    
-    return (
-        <div>
-            <div>
-                <Radio checkedLink={ link.equals( 'option1' ) } />
-                Option 1
-            </div>
-            <div>
-                <Radio checkedLink={ link.equals( 'option2' ) } />
-                Option 2
-            </div>
-        </div>
-    );
-};
-```
-
-Usage:
-
-```javascript
-    getInitialState(){
-        return {
-            model : {
-                options : 'option1'
-            }
-        }
-    }
-    
-    render(){
-        return <RadioGroup modelLink={ Link.state( this, 'model' ) } />    
-    }
-```    
-
-## Input fields
-
-Standard `<input>` will work. You may implement custom input controls to handle complex scenarios
-with validation and appearance.
-
-```javascript
-const Input = ({ valueLink, ...props }) => (
-    <div className={ `my-nice-input ${ valueLink.validationError ? 'is-invalid' : '' }` }
-        <input {...props} value={ valueLink.value } onChange={ e => valueLink.set( e.target.value ) }/>
-    </div>
-);
-```
-
-### Binding to object's attributes
-
-```javascript    
-const InputGroup = ({ modelLink }) => (
-        <div>
-            <label>
-                Number: 
-                <Input type='number' valueLink={ modelLink.at( 'number' ).check( x => x > 0 ) } />
-            </label>
-            <label>
-                String: 
-                <Input valueLink={ modelLink.at( 'string' ) } />
-            </label>
-        </div>
-    );
-};
-```
-
-Usage:
-
-```javascript
-    getInitialState(){
-        return {
-            model : {
-                number : 0,
-                string : ''
-            }
-        }
-    }
-    
-    render(){
-        return <InputGroup modelLink={ Link.state( this, 'model' ) } />    
-    }
-```    
-
-### Binding to an array of strings
-
-The same technique may be used to bind to an array or hash of strings. First, take a link to this
-attribute. Next, use `link.map` method to iterate through elements links created for you.
-
-`link.map` will internally execute `link.at( key )` method to create a link to the plain object or array element.
-These methods may be used manually to create binding for the structures of any particular depth and complexity.
-
-```javascript
-const InputGroup = ({ model /* instanceof MyModel */ }) => (
-        <div>
-            { model.getLink( 'strings' ).map( strLink => (
-                <div>
-                    <input valueLink={ strLink } />
-                </div>
-            )) }
-        </div>
-    );
-};
-```
-
-Usage: 
-
-```javascript
-    getInitialState(){
-        return {
-            model : {
-                strings : [ 'first', 'second' ]
-            }
-        }
-    }
-    
-    render(){
-        return <InputGroup modelLink={ Link.state( this, 'model' ) } />    
-    }
-```
+Here are the set of working [examples](/index.html) for typical data binding use cases.
+Sources are [here](/example/main.jsx).

@@ -1,11 +1,8 @@
 {
   "name": "valuelink",
-  "version": "1.0.1",
-  "description": "React valueLink implementation with links to objects, validation, and purely functional updates.",
+  "version": "1.1.0",
+  "description": "React valueLink implementation with links to objects, validation, and purely functional state updates.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Volicon/valuelink.git"
@@ -26,5 +23,27 @@
   "bugs": {
     "url": "https://github.com/Volicon/valuelink/issues"
   },
-  "homepage": "https://github.com/Volicon/valuelink#readme"
+  "homepage": "https://github.com/Volicon/valuelink#readme",
+  "devDependencies": {
+    "babel": "<6.0.0",
+    "babel-core": "<6.0.0",
+    "babel-loader": "<6.0.0",
+    "babel-runtime": "<6.0.0",
+    "classnames": "^2.2.0",
+    "css-loader": "^0.23.0",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.6"
+  },
+  "files": [
+    "index.js",
+    "tags.jsx",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/webpack",
+    "watch": "node_modules/.bin/webpack --progress --colors --watch"
+  }
 }
