@@ -20384,14 +20384,6 @@
 	    // link to enclosed object or array member
 	    at: function at(key) {
 	        return new NestedLink(this, key);
-	        /*Link( this.value[ key ], function( x ){
-	         if( this.value !== x ){
-	         var objOrArr    = link.value;
-	         objOrArr        = clone( objOrArr );
-	         objOrArr[ key ] = x;
-	         link.set( objOrArr );
-	         }
-	         } );*/
 	    },
 	
 	    // iterates through enclosed object or array, generating set of links
