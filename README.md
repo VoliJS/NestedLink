@@ -43,8 +43,8 @@ CommonJS module, MIT License. No side dependencies.
 // Links
 import Link from 'valuelink'
 
-// React components with linked tags
-import { Input } from 'valuelink/tags.jsx'
+// You'll need this components with React 15.x instead of standard ones.
+import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
 ```
 
 # API
