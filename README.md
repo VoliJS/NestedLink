@@ -1,12 +1,15 @@
 Advanced React links for purely functional two-way data binding.
 
+React 15.x will remove valueLink support. This package is complete
+dependency-free implementation of valueLinks with powerful API extensions.
+
 - Implements standard React 0.14 links API
 - API extensions:
+    - Purely functional updates of enclosed objects and arrays.
     - Declarative binding to event handlers.
     - Simple form validation.
-    - Link to plain object and array members with pure updates.
-    - Derivative boolean links for checkbox and radio groups.
-- Reference implementation for 'linked' tags:
+    - Offhand boolean link creation for checkbox and radio groups.
+- Reference implementation for 'linked' tags (you'll need it with React 15.x):
     - Standard tags: `<Input />` (with validation), `<Select />`, `<TextArea />`
     - Custom tags: `<Radio />`, `<Checkbox />`
 
@@ -23,6 +26,12 @@ var list = linkToArray.map( ( itemLink, i ) => (
 > This technology is one of the key components of [NestedReact](https://github.com/Volicon/NestedReact) architecture, 
 > helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
 > classical OO models.
+
+# Breaking API changes in version 1.1
+
+ - `link.update` is now performs **immediate purely functional link update**, shallow copying enclosed plain objects and arrays. 
+ - `link.action` behaves as `link.update` in 1.x. **Rename**.
+ - `link.toggle` is removed. Use `link.update( x => !x )` instead.
 
 # Installation
 
@@ -62,10 +71,17 @@ import { Input } from 'valuelink/tags.jsx'
     <button onClick={ () => boolLink.set( !boolLink.value ) } />
     ```
 
-- Update link value: `link.update( prevValue => newValue )` 
+- Purely functional link value: `link.update( prevValue => newValue )`.
+        Plain objects and arrays are shallow copied by `update` and `action` functions,
+        thus it's safe just to update the value in place.   
 
     ```javascript
     <button onClick={ () => boolLink.update( x => !x ) } />
+        <button onClick={ () => objLink.update( obj => {
+                                    obj.a = 1;
+                                    return obj;
+                                }) } />
+
     ```
 
 - Create action to handle UI event: `link.action( ( prevValue, Event ) => newValue )`

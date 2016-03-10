@@ -20321,7 +20321,7 @@
 	
 	    // Immediately update the link
 	    update: function update(transform, e) {
-	        var nextValue = transform(this.value, e);
+	        var nextValue = transform(clone(this.value), e);
 	        nextValue === void 0 || this.set(nextValue);
 	    },
 	
@@ -20383,16 +20383,15 @@
 	
 	    // link to enclosed object or array member
 	    at: function at(key) {
-	        var link = this;
-	
-	        return new Link(this.value[key], function (x) {
-	            if (this.value !== x) {
-	                var objOrArr = link.value;
-	                objOrArr = clone(objOrArr);
-	                objOrArr[key] = x;
-	                link.set(objOrArr);
-	            }
-	        });
+	        return new NestedLink(this, key);
+	        /*Link( this.value[ key ], function( x ){
+	         if( this.value !== x ){
+	         var objOrArr    = link.value;
+	         objOrArr        = clone( objOrArr );
+	         objOrArr[ key ] = x;
+	         link.set( objOrArr );
+	         }
+	         } );*/
 	    },
 	
 	    // iterates through enclosed object or array, generating set of links
@@ -20415,39 +20414,27 @@
 	    }
 	});
 	
-	function ArrayLink(link, key) {
+	function NestedLink(link, key) {
 	    this.value = link.value[key];
 	    this.parent = link;
 	    this.key = key;
 	}
 	
-	ArrayLink.prototype = _Object$create(Link.prototype, {
-	    constructor: ArrayLink,
-	    set: function set(x) {
-	        if (this.value !== x) {
-	            var objOrArr = this.parent.value;
-	            objOrArr = clone(objOrArr);
-	            objOrArr[this.key] = x;
-	            this.parent.set(objOrArr);
-	        }
-	    },
+	NestedLink.prototype = _Object$create(Link.prototype);
+	NestedLink.prototype.constructor = NestedLink;
+	NestedLink.prototype.set = function (x) {
+	    if (this.value !== x) {
+	        var key = this.key;
 	
-	    remove: function remove() {
-	        var proto = objOrArray && Object.getPrototypeOf(objOrArray);
-	
-	        if (proto === Array.prototype) {
-	            return objOrArray.splice();
-	        } else if (proto === Object.prototype) {
-	            var x = {};
-	            for (var i in objOrArray) x[i] = objOrArray[i];
-	            return x;
-	        }
+	        this.parent.update(function (parent) {
+	            parent[key] = x;
+	            return parent;
+	        });
 	    }
-	});
+	};
 	
 	// Tools
 	// ============================================
-	
 	function mapObject(link, object, fun) {
 	    var res = [];
 	
