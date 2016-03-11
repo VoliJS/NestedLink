@@ -1,5 +1,3 @@
-Advanced React links for purely functional two-way data binding.
-
 React 15.x will remove valueLink support. This package is complete
 dependency-free implementation of valueLinks with powerful API extensions.
 
