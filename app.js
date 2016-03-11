@@ -44,6 +44,12 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * ValueLink Data binding examples
+	 *
+	 * MIT License, (c) 2016 Vlad Balin, Volicon.
+	 */
+	
 	'use strict';
 	
 	var _interopRequireDefault = __webpack_require__(1)['default'];
@@ -68,17 +74,27 @@
 	    displayName: 'App',
 	
 	    getInitialState: function getInitialState() {
+	        // All this stuff we can link to
 	        return {
+	            // Simple binding to inputs
 	            str: 67,
 	            bool: true,
+	
+	            // Binding to checkboxes
 	            objFlags: {
 	                a: true,
 	                b: false
 	            },
+	
+	            // Binding to checkboxes
 	            arrFlags: ['a', 'b'],
+	
+	            // binding to inputs
 	            deep: {
 	                text: ['not a number', 25]
 	            },
+	
+	            // that will be bound to radio and select list
 	            radioFlag: 'a'
 	        };
 	    },
@@ -140,6 +156,8 @@
 	
 	var DeepLinkedInputs = function DeepLinkedInputs(_ref2) {
 	    var objLink = _ref2.objLink;
+	
+	    var arrayLink = objLink.at('text');
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -148,9 +166,16 @@
 	            null,
 	            'Deeply linked and validated state elements'
 	        ),
-	        objLink.at('text').map(function (itemLink, i) {
+	        arrayLink.map(function (itemLink, i) {
 	            return _react2['default'].createElement(_tagsJsx.Input, { key: i, valueLink: itemLink.check(isNumber) });
-	        })
+	        }),
+	        _react2['default'].createElement(
+	            'button',
+	            { onClick: arrayLink.action(function (arr) {
+	                    return arr.push(''), arr;
+	                }) },
+	            'Add'
+	        )
 	    );
 	};
 	

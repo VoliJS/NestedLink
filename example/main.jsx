@@ -1,3 +1,9 @@
+/**
+ * ValueLink Data binding examples
+ *
+ * MIT License, (c) 2016 Vlad Balin, Volicon.
+ */
+
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -6,17 +12,27 @@ import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
 const App = React.createClass( {
     getInitialState(){
+        // All this stuff we can link to
         return {
+            // Simple binding to inputs
             str       : 67,
             bool      : true,
+
+            // Binding to checkboxes
             objFlags  : {
                 a : true,
                 b : false
             },
+
+            // Binding to checkboxes
             arrFlags  : [ 'a', 'b' ],
+
+            // binding to inputs
             deep      : {
                 text : [ 'not a number', 25 ]
             },
+
+            // that will be bound to radio and select list
             radioFlag : 'a'
         }
     },
@@ -67,14 +83,19 @@ const SimpleBinding = ({ strLink, boolLink }) => {
     );
 }
 
-const DeepLinkedInputs = ({ objLink }) => (
-    <fieldset>
-        <legend>Deeply linked and validated state elements</legend>
-        { objLink.at( 'text' ).map( ( itemLink, i ) =>(
-            <Input key={ i } valueLink={ itemLink.check( isNumber ) } />
-        ))}
-    </fieldset>
-);
+const DeepLinkedInputs = ({ objLink }) => {
+    const arrayLink = objLink.at( 'text' );
+    return (
+        <fieldset>
+            <legend>Deeply linked and validated state elements</legend>
+            { arrayLink.map( ( itemLink, i ) =>(
+                <Input key={ i } valueLink={ itemLink.check( isNumber ) } />
+            ))}
+
+            <button onClick={ arrayLink.action( arr => ( arr.push( '' ), arr ) )}>Add</button>
+        </fieldset>
+    );
+}
 
 const CheckboxObjGroup = ({ flagsLink }) => (
     <fieldset>
