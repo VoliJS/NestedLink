@@ -167,7 +167,19 @@
 	            'Deeply linked and validated state elements'
 	        ),
 	        arrayLink.map(function (itemLink, i) {
-	            return _react2['default'].createElement(_tagsJsx.Input, { key: i, valueLink: itemLink.check(isNumber) });
+	            return _react2['default'].createElement(
+	                'label',
+	                { key: i },
+	                i + ':',
+	                _react2['default'].createElement(_tagsJsx.Input, { valueLink: itemLink.check(isNumber) }),
+	                _react2['default'].createElement(
+	                    'button',
+	                    { onClick: arrayLink.action(function (arr) {
+	                            return arr.splice(i, 1), arr;
+	                        }) },
+	                    'x'
+	                )
+	            );
 	        }),
 	        _react2['default'].createElement(
 	            'button',

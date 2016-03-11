@@ -89,7 +89,11 @@ const DeepLinkedInputs = ({ objLink }) => {
         <fieldset>
             <legend>Deeply linked and validated state elements</legend>
             { arrayLink.map( ( itemLink, i ) =>(
-                <Input key={ i } valueLink={ itemLink.check( isNumber ) } />
+                <label key={ i }>
+                    { i + ':' }
+                    <Input valueLink={ itemLink.check( isNumber ) } />
+                    <button onClick={ arrayLink.action( arr => ( arr.splice( i, 1 ), arr ) )} >x</button>
+                </label>
             ))}
 
             <button onClick={ arrayLink.action( arr => ( arr.push( '' ), arr ) )}>Add</button>
