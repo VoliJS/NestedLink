@@ -81,7 +81,7 @@ const SimpleBinding = ({ strLink, boolLink }) => {
             </label>
         </fieldset>
     );
-}
+};
 
 const DeepLinkedInputs = ({ objLink }) => {
     const arrayLink = objLink.at( 'text' );
@@ -95,7 +95,7 @@ const DeepLinkedInputs = ({ objLink }) => {
             <button onClick={ arrayLink.action( arr => ( arr.push( '' ), arr ) )}>Add</button>
         </fieldset>
     );
-}
+};
 
 const CheckboxObjGroup = ({ flagsLink }) => (
     <fieldset>
