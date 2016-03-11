@@ -69,7 +69,7 @@ const SimpleBinding = ({ strLink, boolLink }) => {
 
 const DeepLinkedInputs = ({ objLink }) => (
     <fieldset>
-        <legend>Deeply linked inputs</legend>
+        <legend>Deeply linked and validated state elements</legend>
         { objLink.at( 'text' ).map( ( itemLink, i ) =>(
             <Input key={ i } valueLink={ itemLink.check( isNumber ) } />
         ))}
@@ -78,7 +78,7 @@ const DeepLinkedInputs = ({ objLink }) => (
 
 const CheckboxObjGroup = ({ flagsLink }) => (
     <fieldset>
-        <legend>Custom Checkbox group bound to object</legend>
+        <legend>Standard checkbox group bound to object</legend>
         <label>
             A:
             <Input type="checkbox" checkedLink={ flagsLink.at( 'a' ) }/>
