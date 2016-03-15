@@ -28,7 +28,7 @@ var list = linkToArray.map( ( itemLink, i ) => (
 # Breaking API changes in version 1.1
 
  - `link.update` is now performs **immediate purely functional link update**, shallow copying enclosed plain objects and arrays. 
- - `link.action` behaves as `link.update` in 1.x. **Rename**.
+ - `link.action` behaves as `link.update` in 1.0. **Rename**.
  - `link.toggle` is removed. Use `link.update( x => !x )` instead.
 
 # Installation
