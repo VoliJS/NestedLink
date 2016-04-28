@@ -34,6 +34,7 @@
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "style-loader": "^0.13.0",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.6"
   },
   "files": [
