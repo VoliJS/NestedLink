@@ -29,7 +29,7 @@ var Link = (function () {
         return new StateLink(component, key);
     };
     ;
-    Link.custom = function (value, set) {
+    Link.value = function (value, set) {
         return new CustomLink(value, set);
     };
     // DEPRECATED: Old valueLink method for backward compatibility

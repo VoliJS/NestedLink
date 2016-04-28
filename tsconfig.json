@@ -1,13 +1,15 @@
 {
     "compileOnSave": true,
     
-    "files": [ "index.ts" ],
+    "files": [
+        "./index.ts"
+    ],
     
     "compilerOptions": {
-        "outDir": ".",
         "declaration": true,
         "target": "es5",
         "module":"commonjs",
-        "sourceMap": true
+        "sourceMap": true,
+        "watch": true
     }
 }

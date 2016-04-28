@@ -19,7 +19,7 @@ export default class Link {
     set(x: any): void;
     requestChange(x: any): void;
     static state(component: StatefulComponent, key: string): StateLink;
-    static custom(value: any, set: (x) => void): CustomLink;
+    static value(value: any, set: (x) => void): CustomLink;
     toggle(): void;
     contains(element: any): ContainsLink;
     update(transform: Transform, e?: Object): void;

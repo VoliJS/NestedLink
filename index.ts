@@ -34,10 +34,10 @@ export default class Link {
     
     // Create link to componen't state
     static state( component : StatefulComponent, key : string ){
-        return new StateLink( component, key );
+        return new StateLink( component, key ); 
     };
     
-    static custom( value : any, set : ( x ) => void ){
+    static value( value : any, set : ( x ) => void ){
         return new CustomLink( value, set );
     }
     
