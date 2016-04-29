@@ -1,13 +1,18 @@
-React 15.x will remove valueLink support. This package is complete
-dependency-free implementation of valueLinks with powerful API extensions.
+# Advanced purely functional Value Links for React, implemented with TypeScript
 
-- Implements standard React 0.14 links API
-- API extensions:
+This package is dependency-free implementation of value links with powerful API extensions.
+
+- Features:
+    - Support for pure render optimization.
     - Purely functional updates of enclosed objects and arrays.
-    - Declarative binding to event handlers.
-    - Simple form validation.
-    - Offhand boolean link creation for checkbox and radio groups.
-- Reference implementation for 'linked' tags (you'll need it with React 15.x):
+    - Declarative binding to UI event handlers.
+    - Form validation.
+    - Offhand boolean link creation for checkboxes and radio groups.
+    - Backward compatible with standard React 0.14 links API
+    - TypeScript source and type definitions.
+
+React 15.x will remove built-in value link support from standard controls,
+so reference implementation of 'linked' tags is included. 
     - Standard tags: `<Input />` (with validation), `<Select />`, `<TextArea />`
     - Custom tags: `<Radio />`, `<Checkbox />`
 
@@ -25,11 +30,13 @@ var list = linkToArray.map( ( itemLink, i ) => (
 > helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
 > classical OO models.
 
-# Breaking API changes in version 1.1
+# Changes in 1.2
 
- - `link.update` is now performs **immediate purely functional link update**, shallow copying enclosed plain objects and arrays. 
- - `link.action` behaves as `link.update` in 1.0. **Rename**.
- - `link.toggle` is removed. Use `link.update( x => !x )` instead.
+- Rewritten with TypeScript. Type definitions are available in `valuelink.d.ts`
+- `Link.state` now cache unchanged links in the component, so pure render optimization now works with value links.
+ - `link.action` behaves as `link.update` in 1.x. **Rename**.
+    - Use `Link.value( value, requestChange )` to create custom links, or...
+    - ...extend `Link` class to create your custom bindings. For an example, see an implementation of `StateLink`.   
 
 # Installation
 
@@ -45,14 +52,14 @@ import Link from 'valuelink'
 import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
 ```
 
-# API
+# API 
 
 ## Create link
 
-- Create custom link: `new Link( value, requestChange )`
+- Create custom link: `Link.value( value, requestChange )`
 
     ```javascript
-    var customLink = new Link( this.value, x => this.value = x );
+    var customLink = Link.value( this.value, x => this.value = x );
     ```
 
 - Create link to react component's state attribute:
@@ -60,7 +67,15 @@ import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
     ```javascript
     var nameLink = Link.state( this, 'name' );
     ```
+    
+*For TypeScript users*. `Link` actually is parametric type `Link< T >`, where T is the type of the enclosed value.
+And both `Link.value< T >` and `Link.state< T >` are parametric functions. For `Link.state` type is always inferred
+as `Object`, so you can refine it manually:
 
+    ```javascript
+    const nameLink = Link.state< string >( this, 'name' );
+    ```
+    
 ## Update link
  
 - Set link value: `link.set( x )` or `link.requestChange( x )` 

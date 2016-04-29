@@ -1,0 +1,15 @@
+{
+    "compileOnSave": true,
+    
+    "files": [
+        "./valuelink.ts"
+    ],
+    
+    "compilerOptions": {
+        "declaration": true,
+        "target": "es5",
+        "module":"commonjs",
+        "sourceMap": true,
+        "watch": true
+    }
+}
