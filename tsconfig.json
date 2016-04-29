@@ -2,7 +2,7 @@
     "compileOnSave": true,
     
     "files": [
-        "./index.ts"
+        "./valuelink.ts"
     ],
     
     "compilerOptions": {

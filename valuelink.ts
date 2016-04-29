@@ -4,47 +4,56 @@
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
  
-export type Transform = ( value : any, event? : Object ) => any
+export type Transform = ( value : any, event? : {} ) => any
 
-export type EventHandler = ( event : Object ) => void
+export type EventHandler = ( event : {} ) => void
 
-export type Validator = ( value : any ) => boolean
+export type Validator< T > = ( value : T ) => boolean
 
 export type Iterator = ( link : ChainedLink, key : string | number ) => any
 
-export interface StatefulComponent {
-    state : Object,
-    setState : ( attrs : Object ) => void
+export interface StatefulComponent{
+    state : {}
+    setState : ( attrs : {} ) => void
+    
+    // value links cache, to make pure render optimization possible
+    _valueLinks? : { [ attrName : string ] : StateLink< any > }
 } 
 
-export default class Link {
-    constructor( public value : any ){}
+export default Link;
+
+// Main Link class. All links must extend it.
+abstract class Link< T >{
+    // Create link to componen't state
+    static state< T >( component : StatefulComponent, key : string ) : StateLink< T >{
+        const value : T = component.state[ key ],
+            cache = component._valueLinks || ( component._valueLinks = {} ),
+            cached = cache[ key ];
+            
+        return cached && cached.value === value ? cached : cache[ key ] = new StateLink( value, component, key );  
+    };
+    
+    // Create custom link to arbitrary value
+    static value< T >( value : T, set : ( x : T ) => void ) : CustomLink< T >{
+        return new CustomLink( value, set );
+    }
+    
+    // create 
+    constructor( public value : T ){}
     
     // Validation error. Usually is a string with error text, but can hold any type.
     error : any
     get validationError() : any { return this.error }
     
     // Link set functions
-    set( x : any ) : void {}
+    abstract set( x : T ) : void
     
     // DEPRECATED: Old React method for backward compatibility
-    requestChange( x : any ) : void {
+    requestChange( x : T ) : void {
         this.set( x );
     }
-    
-    // Create link to componen't state
-    static state( component : StatefulComponent, key : string ){
-        return new StateLink( component, key ); 
-    };
-    
-    static value( value : any, set : ( x ) => void ){
-        return new CustomLink( value, set );
-    }
-    
-    // DEPRECATED: Old valueLink method for backward compatibility
-    toggle() : void { this.set( !this.value ); }
-    
-    contains( element : any ) : ContainsLink {        
+        
+    contains( element : any ) : ContainsLink {
         return new ContainsLink( this, element );            
     }
     
@@ -77,7 +86,7 @@ export default class Link {
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
-    check( whenValid : Validator, error? : any ) : this {
+    check( whenValid : Validator< T >, error? : any ) : this {
         if( !this.error && !whenValid( this.value ) ){
             this.error = error || defaultError;
         }
@@ -86,27 +95,27 @@ export default class Link {
     }
 }
 
-export class CustomLink extends Link {
-    constructor( value : any, set : ( x ) => void ){
+export class CustomLink< T > extends Link< T > {
+    set( x ){}
+    
+    constructor( value : T, set : ( x : T ) => void ){
         super( value );
         this.set = set;
     }
 }
 
-export class StateLink extends Link {
-    constructor( public component : StatefulComponent, public key : string ){
-        super( component.state[ key ] );
+export class StateLink< T > extends Link< T > {
+    constructor( value : T, public component : StatefulComponent, public key : string ){
+        super( value );
     }
     
-    set( x ){
+    set( x : T ) : void {
         this.component.setState({ [ this.key ] : x } );
     } 
 }  
 
-export class EqualsLink extends Link {
-    value : boolean
-    
-    constructor( public parent : Link, public truthyValue ){
+export class EqualsLink extends Link< boolean > {
+    constructor( public parent : Link< any >, public truthyValue ){
         super( parent.value === truthyValue );
     }
     
@@ -115,10 +124,8 @@ export class EqualsLink extends Link {
     }
 }
 
-export class ContainsLink extends Link {
-    value : boolean
-    
-    constructor( public parent : Link, public element : any ){
+export class ContainsLink extends Link< boolean > {
+    constructor( public parent : Link< any >, public element : any ){
         super( parent.value.indexOf( element ) >= 0 );
     }
     
@@ -140,8 +147,8 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class ChainedLink extends Link {
-    constructor( public parent : Link, public key : string | number ){
+export class ChainedLink extends Link< any > {
+    constructor( public parent : Link< {} >, public key : string | number ){
         super( parent.value[ key ] );
     }
     
@@ -160,7 +167,7 @@ export class ChainedLink extends Link {
  * Select appropriate helpers function for particular value type.
  */
 interface Helper {
-    map( link : Link, iterator : Iterator ) : any[]
+    map( link : Link< any >, iterator : Iterator ) : any[]
     clone( obj : any ) : any
 }
 
@@ -178,14 +185,14 @@ function helpers( value ) : Helper {
 // Do nothing for types other than Array and plain Object.
 const dummyHelpers : Helper = {
     clone( value ){ return value; },
-    map( link, fun ){ return []; }
+    map( link : Link< any >, fun ){ return []; }
 };
 
 
 // `map` and `clone` for plain JS objects
 const objectHelpers : Helper = {
     // Map through the link to object
-    map( link : Link, iterator : Iterator ) : any[] {
+    map( link : Link< {} >, iterator : Iterator ) : any[] {
         const hash = link.value;
         let  mapped = [];
 
@@ -218,7 +225,7 @@ const arrayHelpers : Helper = {
     },
 
     // Map through the link to array
-    map( link : Link, iterator : Iterator ) : any[] {
+    map( link : Link< any[] >, iterator : Iterator ) : any[] {
         var mapped = [],
             array = link.value;
 

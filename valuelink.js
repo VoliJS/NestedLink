@@ -9,31 +9,33 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Link;
+// Main Link class. All links must extend it.
 var Link = (function () {
+    // create 
     function Link(value) {
         this.value = value;
     }
+    // Create link to componen't state
+    Link.state = function (component, key) {
+        var value = component.state[key], cache = component._valueLinks || (component._valueLinks = {}), cached = cache[key];
+        return cached && cached.value === value ? cached : cache[key] = new StateLink(value, component, key);
+    };
+    ;
+    // Create custom link to arbitrary value
+    Link.value = function (value, set) {
+        return new CustomLink(value, set);
+    };
     Object.defineProperty(Link.prototype, "validationError", {
         get: function () { return this.error; },
         enumerable: true,
         configurable: true
     });
-    // Link set functions
-    Link.prototype.set = function (x) { };
     // DEPRECATED: Old React method for backward compatibility
     Link.prototype.requestChange = function (x) {
         this.set(x);
     };
-    // Create link to componen't state
-    Link.state = function (component, key) {
-        return new StateLink(component, key);
-    };
-    ;
-    Link.value = function (value, set) {
-        return new CustomLink(value, set);
-    };
-    // DEPRECATED: Old valueLink method for backward compatibility
-    Link.prototype.toggle = function () { this.set(!this.value); };
     Link.prototype.contains = function (element) {
         return new ContainsLink(this, element);
     };
@@ -69,21 +71,20 @@ var Link = (function () {
     };
     return Link;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Link;
 var CustomLink = (function (_super) {
     __extends(CustomLink, _super);
     function CustomLink(value, set) {
         _super.call(this, value);
         this.set = set;
     }
+    CustomLink.prototype.set = function (x) { };
     return CustomLink;
 }(Link));
 exports.CustomLink = CustomLink;
 var StateLink = (function (_super) {
     __extends(StateLink, _super);
-    function StateLink(component, key) {
-        _super.call(this, component.state[key]);
+    function StateLink(value, component, key) {
+        _super.call(this, value);
         this.component = component;
         this.key = key;
     }
@@ -203,4 +204,4 @@ var arrayHelpers = {
         return mapped;
     }
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=valuelink.js.map
