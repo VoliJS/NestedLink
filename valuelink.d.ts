@@ -14,7 +14,6 @@ export interface StatefulComponent {
         [attrName: string]: StateLink<any>;
     };
 }
-export default Link;
 declare abstract class Link<T> {
     value: T;
     static state<T>(component: StatefulComponent, key: string): StateLink<T>;
@@ -35,6 +34,7 @@ declare abstract class Link<T> {
      */
     check(whenValid: Validator<T>, error?: any): this;
 }
+export default Link;
 export declare class CustomLink<T> extends Link<T> {
     set(x: any): void;
     constructor(value: T, set: (x: T) => void);

@@ -64,11 +64,11 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _indexJs = __webpack_require__(164);
+	var _valueLink = __webpack_require__(164);
 	
-	var _indexJs2 = _interopRequireDefault(_indexJs);
+	var _valueLink2 = _interopRequireDefault(_valueLink);
 	
-	var _tagsJsx = __webpack_require__(170);
+	var _tagsJsx = __webpack_require__(168);
 	
 	var App = _react2['default'].createClass({
 	    displayName: 'App',
@@ -103,14 +103,14 @@
 	        return _react2['default'].createElement(
 	            'div',
 	            null,
-	            _react2['default'].createElement(SimpleBinding, { strLink: _indexJs2['default'].state(this, 'str'), boolLink: _indexJs2['default'].state(this, 'bool') }),
-	            _react2['default'].createElement(DeepLinkedInputs, { objLink: _indexJs2['default'].state(this, 'deep') }),
-	            _react2['default'].createElement(CheckboxObjGroup, { flagsLink: _indexJs2['default'].state(this, 'objFlags') }),
-	            _react2['default'].createElement(CustomCheckboxObjGroup, { flagsLink: _indexJs2['default'].state(this, 'objFlags') }),
-	            _react2['default'].createElement(CheckboxListGroup, { flagsLink: _indexJs2['default'].state(this, 'arrFlags') }),
-	            _react2['default'].createElement(RadioGroup, { flagLink: _indexJs2['default'].state(this, 'radioFlag') }),
-	            _react2['default'].createElement(SelectOption, { flagLink: _indexJs2['default'].state(this, 'radioFlag') }),
-	            _react2['default'].createElement(CustomRadioGroup, { flagLink: _indexJs2['default'].state(this, 'radioFlag') })
+	            _react2['default'].createElement(SimpleBinding, { strLink: _valueLink2['default'].state(this, 'str'), boolLink: _valueLink2['default'].state(this, 'bool') }),
+	            _react2['default'].createElement(DeepLinkedInputs, { objLink: _valueLink2['default'].state(this, 'deep') }),
+	            _react2['default'].createElement(CheckboxObjGroup, { flagsLink: _valueLink2['default'].state(this, 'objFlags') }),
+	            _react2['default'].createElement(CustomCheckboxObjGroup, { flagsLink: _valueLink2['default'].state(this, 'objFlags') }),
+	            _react2['default'].createElement(CheckboxListGroup, { flagsLink: _valueLink2['default'].state(this, 'arrFlags') }),
+	            _react2['default'].createElement(RadioGroup, { flagLink: _valueLink2['default'].state(this, 'radioFlag') }),
+	            _react2['default'].createElement(SelectOption, { flagLink: _valueLink2['default'].state(this, 'radioFlag') }),
+	            _react2['default'].createElement(CustomRadioGroup, { flagLink: _valueLink2['default'].state(this, 'radioFlag') })
 	        );
 	    }
 	});
@@ -20324,235 +20324,169 @@
 	 *
 	 * MIT License, (c) 2016 Vlad Balin, Volicon.
 	 */
+	"use strict";
 	
-	/**
-	 * Link public constructor
-	 * @param {*} value - link value
-	 * @param {function(*)=} requestChange - function to set linked value.
-	 * @constructor
-	 */
-	'use strict';
+	var _Object$create = __webpack_require__(165)["default"];
 	
-	var _Object$defineProperties = __webpack_require__(165)['default'];
-	
-	var _Object$create = __webpack_require__(168)['default'];
-	
-	function Link(value, requestChange) {
-	    this.value = value;
-	    this.set = requestChange || doNothing;
-	}
-	
-	/**
-	 * Create link to component's state attribute
-	 * @param {React.Component} component - It's your `this` in component's `render()`
-	 * @param {string} attr - state attribute's name
-	 * @returns {Link}
-	 */
-	Link.state = function (component, attr) {
-	    return new Link(component.state[attr], function (x) {
-	        var nextState = {};
-	        nextState[attr] = x;
-	        component.setState(nextState);
-	    });
-	};
-	
-	module.exports = Link;
-	
-	function doNothing(x) {}
-	
-	var defaultError = 'Invalid value';
-	
-	Link.prototype = _Object$defineProperties({
-	    constructor: Link,
-	
-	    /**
-	     * Link value. Read-only, cannot be set.
-	     * @const
-	     */
-	    value: void 0,
-	
-	    /**
-	     * Set link value
-	     * @param {*} x - new link value
-	     */
-	    set: function set(x) {},
-	
-	    /**
-	     * Immediately update the link value using given transform function.
-	     * @param {function( * ) : *} transform - update function receives cloned link value as an argument; returning
-	     *     `undefined` prevents update.
-	     */
-	    update: function update(transform, e) {
-	        var prevValue = this.value;
-	        prevValue = helpers(prevValue).clone(prevValue);
-	
-	        var nextValue = transform(prevValue, e);
-	        nextValue === void 0 || this.set(nextValue);
-	    },
-	
-	    /**
-	     * Create UI event handler function which will update the link with a given transform function.
-	     * @param {function(*, Event=):*} transform - update function receives cloned link value and UI event as an
-	     *     argument; returning `undefined` prevents update.
-	     * @returns {function()} - UI event handler
-	     *
-	     * Examples:
-	     *     <button onClick={ link.action( x => !x ) } ... />
-	     *     <input onChange={ link.action( ( x, e ) => e.target.value ) } ... />
-	     */
-	    action: function action(transform) {
-	        var link = this;
-	        return function (e) {
-	            link.update(transform, e);
-	        };
-	    },
-	
-	    /**
-	     * Similar to `set`. React 0.14 backward compatibility shim.
-	     * @param {*} x - new link value
-	     */
-	    requestChange: function requestChange(x) {
-	        this.set(x);
-	    },
-	
-	    /**
-	     * Similar to `link.update( x => !x )`. ValueLink 1.0.x compatibility shim.
-	     * @deprecated
-	     */
-	    toggle: function toggle() {
-	        this.set(!this.value);
-	    },
-	
-	    /**
-	     * Validation error. Usually is a string with error text, but can hold any type.
-	     */
-	    error: void 0,
-	
-	    /**
-	     * Validate link with validness predicate and optional custom error object. Can be chained.
-	     * @param {function( * ) : boolean} whenValid - Takes link value as an argument, returns true whenever value is
-	     *     valid.
-	     * @param {*=} error - optional error object assigned to `link.error`, usually is a string with an error
-	     *     description.
-	     * @returns {Link} - pass through link for easy checks chaining.
-	     */
-	    check: function check(whenValid, error) {
-	        if (!this.error && !whenValid(this.value)) {
-	            this.error = error || defaultError;
-	        }
-	
-	        return this;
-	    },
-	
-	    /**
-	     * Create boolean link which is true whenever array has given element. Link value must be an array.
-	     * @param {*} element - value which should present in array for resulting link to be `true`.
-	     * @returns {Link} - new boolean link.
-	     */
-	    contains: function contains(element) {
-	        var parent = this;
-	
-	        return new Link(this.value.indexOf(element) >= 0, function (x) {
-	            var next = Boolean(x);
-	            if (this.value !== next) {
-	                var arr = parent.value,
-	                    nextValue = x ? arr.concat(element) : arr.filter(function (el) {
-	                    return el !== element;
-	                });
-	
-	                parent.set(nextValue);
-	            }
-	        });
-	    },
-	
-	    /**
-	     * Create boolean link which is true whenever link value is equal to the given value.
-	     * When assigned with `true`, set parent link with `truthyValue`. When assigned with `false`, set it to `null`.
-	     * @param {*} truthyValue - the value to compare parent link value with.
-	     * @returns {Link} - new boolean link.
-	     */
-	    equals: function equals(truthyValue) {
-	        var parent = this;
-	
-	        return new Link(this.value === truthyValue, function (x) {
-	            parent.set(x ? truthyValue : null);
-	        });
-	    },
-	
-	    // link to enclosed object or array member
-	    /**
-	     * Create link to array or plain object (hash) member. Whenever member link will be updated,
-	     * if will set parent link with an updated copy of enclosed array or object,
-	     * causing 'purely functional update'. Can be chained to link deeply nested structures.
-	     * @param {string|number} key - index in array or key in object hash.
-	     * @returns {ChainedLink} - new link to array or object member.
-	     */
-	    at: function at(key) {
-	        return new ChainedLink(this, key);
-	    },
-	
-	    /**
-	     * Iterates through the links to enclosed object or array elements.
-	     * Optionally map them to array of arbitrary values.
-	     *
-	     * @param {function( Link, index ) : * } iterator - function called for each member of object or array, optionally
-	     *     returns mapped value.
-	     * @returns {Array} - array of values returned by iterator. `undefined` elements are filtered out.
-	     */
-	    map: function map(iterator) {
-	        return helpers(this.value).map(this, iterator);
+	var __extends = undefined && undefined.__extends || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() {
+	        this.constructor = d;
 	    }
-	}, {
-	    validationError: { /**
-	                        * Similar to `error`. ValueLink 1.0.x compatibility shim.
-	                        * @deprecated
-	                        */
-	
+	    d.prototype = b === null ? _Object$create(b) : (__.prototype = b.prototype, new __());
+	};
+	// Main Link class. All links must extend it.
+	var Link = (function () {
+	    // create
+	    function Link(value) {
+	        this.value = value;
+	    }
+	    // Create link to componen't state
+	    Link.state = function (component, key) {
+	        var value = component.state[key],
+	            cache = component._valueLinks || (component._valueLinks = {}),
+	            cached = cache[key];
+	        return cached && cached.value === value ? cached : cache[key] = new StateLink(value, component, key);
+	    };
+	    ;
+	    // Create custom link to arbitrary value
+	    Link.value = function (value, set) {
+	        return new CustomLink(value, set);
+	    };
+	    Object.defineProperty(Link.prototype, "validationError", {
 	        get: function get() {
 	            return this.error;
 	        },
-	        configurable: true,
-	        enumerable: true
+	        enumerable: true,
+	        configurable: true
+	    });
+	    // DEPRECATED: Old React method for backward compatibility
+	    Link.prototype.requestChange = function (x) {
+	        this.set(x);
+	    };
+	    Link.prototype.contains = function (element) {
+	        return new ContainsLink(this, element);
+	    };
+	    // Immediately update the link value using given transform function.
+	    Link.prototype.update = function (transform, e) {
+	        var prev = this.value;
+	        prev = helpers(prev).clone(prev);
+	        var next = transform(prev, e);
+	        next === void 0 || this.set(next);
+	    };
+	    // Create UI event handler function which will update the link with a given transform function.
+	    Link.prototype.action = function (transform) {
+	        var _this = this;
+	        return function (e) {
+	            return _this.update(transform, e);
+	        };
+	    };
+	    Link.prototype.equals = function (truthyValue) {
+	        return new EqualsLink(this, truthyValue);
+	    };
+	    Link.prototype.at = function (key) {
+	        return new ChainedLink(this, key);
+	    };
+	    Link.prototype.map = function (iterator) {
+	        return helpers(this.value).map(this, iterator);
+	    };
+	    /**
+	     * Validate link with validness predicate and optional custom error object. Can be chained.
+	     */
+	    Link.prototype.check = function (whenValid, error) {
+	        if (!this.error && !whenValid(this.value)) {
+	            this.error = error || defaultError;
+	        }
+	        return this;
+	    };
+	    return Link;
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports["default"] = Link;
+	var CustomLink = (function (_super) {
+	    __extends(CustomLink, _super);
+	    function CustomLink(value, set) {
+	        _super.call(this, value);
+	        this.set = set;
 	    }
-	});
-	
+	    CustomLink.prototype.set = function (x) {};
+	    return CustomLink;
+	})(Link);
+	exports.CustomLink = CustomLink;
+	var StateLink = (function (_super) {
+	    __extends(StateLink, _super);
+	    function StateLink(value, component, key) {
+	        _super.call(this, value);
+	        this.component = component;
+	        this.key = key;
+	    }
+	    StateLink.prototype.set = function (x) {
+	        this.component.setState((_a = {}, _a[this.key] = x, _a));
+	        var _a;
+	    };
+	    return StateLink;
+	})(Link);
+	exports.StateLink = StateLink;
+	var EqualsLink = (function (_super) {
+	    __extends(EqualsLink, _super);
+	    function EqualsLink(parent, truthyValue) {
+	        _super.call(this, parent.value === truthyValue);
+	        this.parent = parent;
+	        this.truthyValue = truthyValue;
+	    }
+	    EqualsLink.prototype.set = function (x) {
+	        this.parent.set(x ? this.truthyValue : null);
+	    };
+	    return EqualsLink;
+	})(Link);
+	exports.EqualsLink = EqualsLink;
+	var ContainsLink = (function (_super) {
+	    __extends(ContainsLink, _super);
+	    function ContainsLink(parent, element) {
+	        _super.call(this, parent.value.indexOf(element) >= 0);
+	        this.parent = parent;
+	        this.element = element;
+	    }
+	    ContainsLink.prototype.set = function (x) {
+	        var _this = this;
+	        var next = Boolean(x);
+	        if (this.value !== next) {
+	            var arr = this.parent.value,
+	                nextValue = x ? arr.concat(this.element) : arr.filter(function (el) {
+	                return el !== _this.element;
+	            });
+	            this.parent.set(nextValue);
+	        }
+	    };
+	    return ContainsLink;
+	})(Link);
+	exports.ContainsLink = ContainsLink;
+	var defaultError = 'Invalid value';
 	/**
 	 * Link to array or object element enclosed in parent link.
 	 * Performs purely functional update of the parent, shallow copying its value on `set`.
-	 * @param {Link} link - link with enclosed array or object.
-	 * @param {string|number} key - key or array index
-	 * @extends {Link}
-	 * @constructor
 	 */
-	function ChainedLink(link, key) {
-	    this.value = link.value[key];
-	    this.parent = link;
-	    this.key = key;
-	}
-	
-	ChainedLink.prototype = _Object$create(Link.prototype);
-	ChainedLink.prototype.constructor = ChainedLink;
-	
-	/**
-	 * Set new element value to parent array or object, performing purely functional update.
-	 * @param x - new element value
-	 */
-	ChainedLink.prototype.set = function (x) {
-	    if (this.value !== x) {
-	        var key = this.key;
-	
-	        this.parent.update(function (parent) {
-	            parent[key] = x;
-	            return parent;
-	        });
+	var ChainedLink = (function (_super) {
+	    __extends(ChainedLink, _super);
+	    function ChainedLink(parent, key) {
+	        _super.call(this, parent.value[key]);
+	        this.parent = parent;
+	        this.key = key;
 	    }
-	};
-	
-	/**
-	 * Select appropriate helpers function for particular value type.
-	 * @param value - value to be operated with.
-	 * @returns {object} - object with helpers functions.
-	 */
+	    // Set new element value to parent array or object, performing purely functional update.
+	    ChainedLink.prototype.set = function (x) {
+	        var _this = this;
+	        if (this.value !== x) {
+	            this.parent.update(function (value) {
+	                value[_this.key] = x;
+	                return value;
+	            });
+	        }
+	    };
+	    ;
+	    return ChainedLink;
+	})(Link);
+	exports.ChainedLink = ChainedLink;
 	function helpers(value) {
 	    switch (value && Object.getPrototypeOf(value)) {
 	        case Array.prototype:
@@ -20563,12 +20497,7 @@
 	            return dummyHelpers;
 	    }
 	}
-	
-	/**
-	 * Do nothing for types other than Array and plain Object.
-	 *
-	 * @type {{clone: dummyHelpers.clone, map: dummyHelpers.map}}
-	 */
+	// Do nothing for types other than Array and plain Object.
 	var dummyHelpers = {
 	    clone: function clone(value) {
 	        return value;
@@ -20577,78 +20506,45 @@
 	        return [];
 	    }
 	};
-	
-	/**
-	 * `map` and `clone` for plain JS objects
-	 * @type {{map: objectHelpers.map, clone: objectHelpers.clone}}
-	 */
+	// `map` and `clone` for plain JS objects
 	var objectHelpers = {
-	    /**
-	     * Map through the link to object
-	     * @param {Link} link - link with object enclosed.
-	     * @param {function( Link, string ) : * } iterator - to iterate and map through links
-	     * @returns {Array} - resulting array of mapped values.
-	     */
+	    // Map through the link to object
 	    map: function map(link, iterator) {
-	        var mapped = [],
-	            hash = link.value;
-	
+	        var hash = link.value;
+	        var mapped = [];
 	        for (var key in hash) {
 	            var element = iterator(link.at(key), key);
 	            element === void 0 || mapped.push(element);
 	        }
-	
 	        return mapped;
 	    },
-	
-	    /**
-	     * Shallow clone plain JS object
-	     * @param {object} object
-	     * @returns {object}
-	     */
+	    // Shallow clone plain JS object
 	    clone: function clone(object) {
 	        var cloned = {};
-	
 	        for (var key in object) {
 	            cloned[key] = object[key];
 	        }
-	
 	        return cloned;
 	    }
 	};
-	
-	/**
-	 * `map` and `clone` helpers for arrays.
-	 * @type {{clone: arrayHelpers.clone, map: arrayHelpers.map }}
-	 */
+	// `map` and `clone` helpers for arrays.
 	var arrayHelpers = {
-	    /**
-	     * Shallow clone array
-	     * @param array
-	     * @returns {array}
-	     */
+	    // Shallow clone array
 	    clone: function clone(array) {
 	        return array.slice();
 	    },
-	
-	    /**
-	     * Map through the link to array
-	     * @param {Link} link - link with an array enclosed.
-	     * @param {function( Link, string ) : * } iterator - to iterate and map through links
-	     * @returns {Array} - resulting array of mapped values.
-	     */
+	    // Map through the link to array
 	    map: function map(link, iterator) {
 	        var mapped = [],
 	            array = link.value;
-	
 	        for (var i = 0; i < array.length; i++) {
 	            var y = iterator(link.at(i), i);
 	            y === void 0 || mapped.push(y);
 	        }
-	
 	        return mapped;
 	    }
 	};
+	//# sourceMappingURL=valuelink.js.map
 
 /***/ },
 /* 165 */
@@ -20661,8 +20557,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $ = __webpack_require__(167);
-	module.exports = function defineProperties(T, D){
-	  return $.setDescs(T, D);
+	module.exports = function create(P, D){
+	  return $.create(P, D);
 	};
 
 /***/ },
@@ -20687,21 +20583,6 @@
 /* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(169), __esModule: true };
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(167);
-	module.exports = function create(P, D){
-	  return $.create(P, D);
-	};
-
-/***/ },
-/* 170 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * Linked React components for building forms implementing React 0.14 valueLink semantic.
 	 *
@@ -20710,9 +20591,9 @@
 	
 	'use strict';
 	
-	var _objectWithoutProperties = __webpack_require__(171)['default'];
+	var _objectWithoutProperties = __webpack_require__(169)['default'];
 	
-	var _extends = __webpack_require__(172)['default'];
+	var _extends = __webpack_require__(170)['default'];
 	
 	var _interopRequireDefault = __webpack_require__(1)['default'];
 	
@@ -20863,7 +20744,7 @@
 	exports.Checkbox = Checkbox;
 
 /***/ },
-/* 171 */
+/* 169 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -20883,12 +20764,12 @@
 	exports.__esModule = true;
 
 /***/ },
-/* 172 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var _Object$assign = __webpack_require__(173)["default"];
+	var _Object$assign = __webpack_require__(171)["default"];
 	
 	exports["default"] = _Object$assign || function (target) {
 	  for (var i = 1; i < arguments.length; i++) {
@@ -20907,34 +20788,34 @@
 	exports.__esModule = true;
 
 /***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(172), __esModule: true };
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(173);
+	module.exports = __webpack_require__(176).Object.assign;
+
+/***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(174), __esModule: true };
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(174);
+	
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(179)});
 
 /***/ },
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(175);
-	module.exports = __webpack_require__(178).Object.assign;
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.3.1 Object.assign(target, source)
-	var $export = __webpack_require__(176);
-	
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(181)});
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(177)
-	  , core      = __webpack_require__(178)
-	  , ctx       = __webpack_require__(179)
+	var global    = __webpack_require__(175)
+	  , core      = __webpack_require__(176)
+	  , ctx       = __webpack_require__(177)
 	  , PROTOTYPE = 'prototype';
 	
 	var $export = function(type, name, source){
@@ -20980,7 +20861,7 @@
 	module.exports = $export;
 
 /***/ },
-/* 177 */
+/* 175 */
 /***/ function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -20989,18 +20870,18 @@
 	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 178 */
+/* 176 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '1.2.6'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 179 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(180);
+	var aFunction = __webpack_require__(178);
 	module.exports = function(fn, that, length){
 	  aFunction(fn);
 	  if(that === undefined)return fn;
@@ -21021,7 +20902,7 @@
 	};
 
 /***/ },
-/* 180 */
+/* 178 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -21030,16 +20911,16 @@
 	};
 
 /***/ },
-/* 181 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.1 Object.assign(target, source, ...)
 	var $        = __webpack_require__(167)
-	  , toObject = __webpack_require__(182)
-	  , IObject  = __webpack_require__(184);
+	  , toObject = __webpack_require__(180)
+	  , IObject  = __webpack_require__(182);
 	
 	// should work with symbols and should have deterministic property order (V8 bug)
-	module.exports = __webpack_require__(186)(function(){
+	module.exports = __webpack_require__(184)(function(){
 	  var a = Object.assign
 	    , A = {}
 	    , B = {}
@@ -21068,17 +20949,17 @@
 	} : Object.assign;
 
 /***/ },
-/* 182 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(183);
+	var defined = __webpack_require__(181);
 	module.exports = function(it){
 	  return Object(defined(it));
 	};
 
 /***/ },
-/* 183 */
+/* 181 */
 /***/ function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -21088,17 +20969,17 @@
 	};
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(185);
+	var cof = __webpack_require__(183);
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
 /***/ },
-/* 185 */
+/* 183 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -21108,7 +20989,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = function(exec){

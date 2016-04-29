@@ -9,8 +9,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Link;
 // Main Link class. All links must extend it.
 var Link = (function () {
     // create 
@@ -71,6 +69,8 @@ var Link = (function () {
     };
     return Link;
 }());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Link;
 var CustomLink = (function (_super) {
     __extends(CustomLink, _super);
     function CustomLink(value, set) {

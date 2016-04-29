@@ -20,8 +20,6 @@ export interface StatefulComponent{
     _valueLinks? : { [ attrName : string ] : StateLink< any > }
 } 
 
-export default Link;
-
 // Main Link class. All links must extend it.
 abstract class Link< T >{
     // Create link to componen't state
@@ -94,6 +92,8 @@ abstract class Link< T >{
         return this;
     }
 }
+
+export default Link;
 
 export class CustomLink< T > extends Link< T > {
     set( x ){}

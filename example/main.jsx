@@ -7,7 +7,7 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'index.js'
+import Link from 'valueLink'
 import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
 const App = React.createClass( {
