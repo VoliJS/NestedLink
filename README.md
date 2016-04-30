@@ -2,17 +2,18 @@
 
 This package is dependency-free implementation of value links with powerful API extensions.
 
-- Features:
-    - Support for pure render optimization.
-    - Purely functional updates of enclosed objects and arrays.
-    - Declarative binding to UI event handlers.
-    - Form validation.
-    - Offhand boolean link creation for checkboxes and radio groups.
-    - Backward compatible with standard React 0.14 links API
-    - TypeScript source and type definitions.
+Features:
+- Support for pure render optimization.
+- Purely functional updates of enclosed objects and arrays.
+- Declarative binding to UI event handlers.
+- Form validation.
+- Offhand boolean link creation for checkboxes and radio groups.
+- Backward compatible with standard React 0.14 links API
+- TypeScript source and type definitions.
 
 React 15.x will remove built-in value link support from standard controls,
-so reference implementation of 'linked' tags is included. 
+so reference implementation of 'linked' tags is included:
+
     - Standard tags: `<Input />` (with validation), `<Select />`, `<TextArea />`
     - Custom tags: `<Radio />`, `<Checkbox />`
 
@@ -34,7 +35,7 @@ var list = linkToArray.map( ( itemLink, i ) => (
 
 - Rewritten with TypeScript. Type definitions are available in `valuelink.d.ts`
 - `Link.state` now cache unchanged links in the component, so pure render optimization now works with value links.
- - `link.action` behaves as `link.update` in 1.x. **Rename**.
+- `Link` is now an abstract class. So:
     - Use `Link.value( value, requestChange )` to create custom links, or...
     - ...extend `Link` class to create your custom bindings. For an example, see an implementation of `StateLink`.   
 
