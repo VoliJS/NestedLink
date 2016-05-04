@@ -1,7 +1,7 @@
 /**
  * Linked React components for building forms implementing React 0.14 valueLink semantic.
  *
- * MIT License, (c) 2016 Vlad Balin, Volicon.
+ * WTFPL License, (c) 2016 Vlad Balin, Volicon.
  */
 
 import React from 'react'
