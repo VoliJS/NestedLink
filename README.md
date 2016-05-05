@@ -85,7 +85,7 @@ as `Object`, so you can refine it manually:
     <button onClick={ () => boolLink.set( !boolLink.value ) } />
     ```
 
-- Purely functional link value: `link.update( prevValue => newValue )`.
+- Purely functional link update: `link.update( prevValue => newValue )`.
         Plain objects and arrays are shallow copied by `update` and `action` functions,
         thus it's safe just to update the value in place.   
 
@@ -152,8 +152,8 @@ If linked value is plain object or array, it's possible to generate
   links to their members. Whenever this derivative links will be
   updated, it will lead to proper purely functional update of the
   whole structure. I.e. if you have array in component state,
-    and link to its element will be updated, it will lead to proper
-    update of stateful component.
+    and link to its element will be updated, it will lead to shallow copying of the array and 
+    proper update of stateful component.
 
 - Take link to array or object member: `link.at( key )`
     ```javascript
