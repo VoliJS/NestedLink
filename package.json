@@ -33,6 +33,7 @@
     "css-loader": "^0.23.0",
     "react": "*",
     "react-dom": "*",
+    "react-modal": "^1.2.1",
     "style-loader": "^0.13.0",
     "typescript": "^1.8.10",
     "webpack": "^1.12.6"

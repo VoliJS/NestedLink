@@ -7,7 +7,7 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'valueLink'
+import Link from 'valuelink'
 import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
 import { UsersList } from './userslist.jsx'

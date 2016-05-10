@@ -1,5 +1,7 @@
-import React from 'react'
-import Link from '../valuelink'
+import React, { PropTypes } from 'react'
+import Link from 'valuelink'
+import Modal from 'react-modal'
+import { Input } from 'tags.jsx'
 
 export const UsersList = React.createClass( {
     getInitialState(){
@@ -12,18 +14,20 @@ export const UsersList = React.createClass( {
 
     render(){
         const links = Link.all( this, 'users' ),
-              { dialog } = this.state;
+              { dialog, users } = this.state;
 
         return (
             <div>
-                <button onClick={ () => this.dialog( 'addUser' ) }/>
+                <button onClick={ () => this.dialog( 'addUser' ) }>
+                    Add User
+                </button>
 
-                <Modal isOpen={ dialog }>
+                <Modal isOpen={ Boolean( dialog ) }>
                     { dialog ? this[ dialog ]( links.users ) : void 0 }
                 </Modal>
 
-                { links.users.map( ( userLink, i ) => {
-                    return <UserRow key={ i } userLink={ userLink }
+                { users.map( ( user, i ) => {
+                    return <UserRow key={ i } user={ user }
                                     onDelete={ () => links.users.remove( i ) }
                                     onEdit={ () => this.dialog( 'editUser', i ) }
                     />;
@@ -65,7 +69,9 @@ const EditUser = React.createClass( {
         this.setState( this.props.userLink.value );
     },
 
-    onSubmit(){
+    onSubmit( e ){
+        e.preventDefault();
+
         const { userLink, onClose } = this.props;
 
         userLink.set( this.state );
@@ -92,12 +98,12 @@ const EditUser = React.createClass( {
                 </label>
 
                 <label>
-                    Is active: <Input type="text"
+                    Is active: <Input type="checkbox"
                                       valueLink={ linked.isActive } />
                 </label>
 
                 <button type="submit">Save</button>
-                <button onClick={ this.onCancel }>
+                <button type="button" onClick={ this.onCancel }>
                     Cancel
                 </button>
             </form>

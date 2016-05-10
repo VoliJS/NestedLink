@@ -44,9 +44,9 @@ abstract class Link< T >{
                 value = state[ key ],
                 cached = links[ key ];
 
-            cached && cached.value === value && (
-                links[ key ] = new StateLink( value, component, key )
-            );
+            if( !cached || cached.value !== value ) {
+                links[ key ] = new StateLink( value, component, key );
+            }
         }
 
         return links;

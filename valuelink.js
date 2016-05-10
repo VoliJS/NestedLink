@@ -26,7 +26,9 @@ var Link = (function () {
         var state = component.state, links = component.links || (component.links = {});
         for (var i = 1; i < arguments.length; i++) {
             var key = arguments[i], value = state[key], cached = links[key];
-            cached && cached.value === value && (links[key] = new StateLink(value, component, key));
+            if (!cached || cached.value !== value) {
+                links[key] = new StateLink(value, component, key);
+            }
         }
         return links;
     };
