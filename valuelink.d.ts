@@ -3,32 +3,43 @@
  *
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
-export declare type Transform = (value: any, event?: {}) => any;
+export declare type Transform<T> = (value: T, event?: {}) => T;
 export declare type EventHandler = (event: {}) => void;
 export declare type Validator<T> = (value: T) => boolean;
 export declare type Iterator = (link: ChainedLink, key: string | number) => any;
+export declare type StateLinks = {
+    [attrName: string]: StateLink<any>;
+};
+export declare type ChainedLinks = {
+    [attrName: string]: ChainedLink;
+};
 export interface StatefulComponent {
     state: {};
     setState: (attrs: {}) => void;
-    _valueLinks?: {
-        [attrName: string]: StateLink<any>;
-    };
+    links?: StateLinks;
 }
 declare abstract class Link<T> {
     value: T;
     static state<T>(component: StatefulComponent, key: string): StateLink<T>;
+    static all(component: StatefulComponent): StateLinks;
     static value<T>(value: T, set: (x: T) => void): CustomLink<T>;
     constructor(value: T);
     error: any;
     validationError: any;
     abstract set(x: T): void;
     requestChange(x: T): void;
-    contains(element: any): ContainsLink;
-    update(transform: Transform, e?: Object): void;
-    action(transform: Transform): EventHandler;
+    update(transform: Transform<T>, e?: Object): void;
+    action(transform: Transform<T>): EventHandler;
     equals(truthyValue: any): EqualsLink;
-    at(key: string | number): ChainedLink;
+    contains(element: any): ContainsLink;
+    push(): void;
+    unshift(): void;
+    splice(): void;
     map(iterator: Iterator): any[];
+    remove(key: string | number): void;
+    at(key: string | number): ChainedLink;
+    clone(): T;
+    pick(): ChainedLinks;
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
@@ -65,5 +76,6 @@ export declare class ChainedLink extends Link<any> {
     parent: Link<{}>;
     key: string | number;
     constructor(parent: Link<{}>, key: string | number);
+    remove(): void;
     set(x: any): void;
 }

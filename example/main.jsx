@@ -10,6 +10,8 @@ import ReactDOM from 'react-dom'
 import Link from 'valueLink'
 import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
+import { UsersList } from './userslist.jsx'
+
 const App = React.createClass( {
     getInitialState(){
         // All this stuff we can link to
@@ -51,6 +53,7 @@ const App = React.createClass( {
                 <RadioGroup flagLink={ Link.state( this, 'radioFlag' ) } />
                 <SelectOption flagLink={ Link.state( this, 'radioFlag' ) } />
                 <CustomRadioGroup flagLink={ Link.state( this, 'radioFlag' ) } />
+                <UsersList />
             </div>
         );
     }

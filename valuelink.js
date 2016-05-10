@@ -17,15 +17,25 @@ var Link = (function () {
     }
     // Create link to componen't state
     Link.state = function (component, key) {
-        var value = component.state[key], cache = component._valueLinks || (component._valueLinks = {}), cached = cache[key];
+        var value = component.state[key], cache = component.links || (component.links = {}), cached = cache[key];
         return cached && cached.value === value ? cached : cache[key] = new StateLink(value, component, key);
     };
     ;
+    // Ensure that listed links are cached. Return links cache.
+    Link.all = function (component) {
+        var state = component.state, links = component.links || (component.links = {});
+        for (var i = 1; i < arguments.length; i++) {
+            var key = arguments[i], value = state[key], cached = links[key];
+            cached && cached.value === value && (links[key] = new StateLink(value, component, key));
+        }
+        return links;
+    };
     // Create custom link to arbitrary value
     Link.value = function (value, set) {
         return new CustomLink(value, set);
     };
     Object.defineProperty(Link.prototype, "validationError", {
+        // DEPRECATED: Old error holder for backward compatibility with Volicon code base
         get: function () { return this.error; },
         enumerable: true,
         configurable: true
@@ -34,14 +44,9 @@ var Link = (function () {
     Link.prototype.requestChange = function (x) {
         this.set(x);
     };
-    Link.prototype.contains = function (element) {
-        return new ContainsLink(this, element);
-    };
     // Immediately update the link value using given transform function.
     Link.prototype.update = function (transform, e) {
-        var prev = this.value;
-        prev = helpers(prev).clone(prev);
-        var next = transform(prev, e);
+        var next = transform(this.clone(), e);
         next === void 0 || this.set(next);
     };
     // Create UI event handler function which will update the link with a given transform function.
@@ -52,11 +57,47 @@ var Link = (function () {
     Link.prototype.equals = function (truthyValue) {
         return new EqualsLink(this, truthyValue);
     };
+    // Array-only links methods
+    Link.prototype.contains = function (element) {
+        return new ContainsLink(this, element);
+    };
+    Link.prototype.push = function () {
+        var array = arrayHelpers.clone(this.value);
+        Array.prototype.push.apply(array, arguments);
+        this.set(array);
+    };
+    Link.prototype.unshift = function () {
+        var array = arrayHelpers.clone(this.value);
+        Array.prototype.unshift.apply(array, arguments);
+        this.set(array);
+    };
+    Link.prototype.splice = function () {
+        var array = arrayHelpers.clone(this.value);
+        Array.prototype.splice.apply(array, arguments);
+        this.set(array);
+    };
+    // Array and objects universal collection methods
+    Link.prototype.map = function (iterator) {
+        return helpers(this.value).map(this, iterator);
+    };
+    Link.prototype.remove = function (key) {
+        var value = this.value, _ = helpers(value);
+        this.set(_.remove(_.clone(value), key));
+    };
     Link.prototype.at = function (key) {
         return new ChainedLink(this, key);
     };
-    Link.prototype.map = function (iterator) {
-        return helpers(this.value).map(this, iterator);
+    Link.prototype.clone = function () {
+        var value = this.value;
+        return helpers(value).clone(value);
+    };
+    Link.prototype.pick = function () {
+        var links = {};
+        for (var i = 0; i < arguments.length; i++) {
+            var key = arguments[i];
+            links[key] = new ChainedLink(this, key);
+        }
+        return links;
     };
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
@@ -138,6 +179,9 @@ var ChainedLink = (function (_super) {
         this.parent = parent;
         this.key = key;
     }
+    ChainedLink.prototype.remove = function () {
+        this.parent.remove(this.key);
+    };
     // Set new element value to parent array or object, performing purely functional update.
     ChainedLink.prototype.set = function (x) {
         var _this = this;
@@ -165,7 +209,8 @@ function helpers(value) {
 // Do nothing for types other than Array and plain Object.
 var dummyHelpers = {
     clone: function (value) { return value; },
-    map: function (link, fun) { return []; }
+    map: function (link, fun) { return []; },
+    remove: function (value) { return value; }
 };
 // `map` and `clone` for plain JS objects
 var objectHelpers = {
@@ -178,6 +223,10 @@ var objectHelpers = {
             element === void 0 || (mapped.push(element));
         }
         return mapped;
+    },
+    remove: function (object, key) {
+        delete object[key];
+        return object;
     },
     // Shallow clone plain JS object
     clone: function (object) {
@@ -193,6 +242,10 @@ var arrayHelpers = {
     // Shallow clone array
     clone: function (array) {
         return array.slice();
+    },
+    remove: function (array, i) {
+        array.splice(i, 1);
+        return array;
     },
     // Map through the link to array
     map: function (link, iterator) {
