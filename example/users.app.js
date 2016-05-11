@@ -282,7 +282,7 @@
 	                null,
 	                'Is active: ',
 	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox',
-	                    valueLink: linked.isActive })
+	                    checkedLink: linked.isActive })
 	            ),
 	            _react2['default'].createElement(
 	                'button',

@@ -143,7 +143,7 @@ const EditUser = React.createClass( {
 
                 <label>
                     Is active: <Input type="checkbox"
-                                      valueLink={ linked.isActive }/>
+                                      checkedLink={ linked.isActive }/>
                 </label>
 
                 <button type="submit" disabled={ linked.name.error || linked.email.error }>
