@@ -66,7 +66,7 @@ import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
 `tags.jsx` intended to be starting boilerplate for your custom components. Copy this file to your project,
 and start hacking.
 
-# API 
+# How to
 
 ## Create link
 
