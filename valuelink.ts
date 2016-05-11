@@ -215,8 +215,13 @@ export class ChainedLink extends Link< any > {
         super( parent.value[ key ] );
     }
 
-    remove(){
-        this.parent.remove( this.key );
+    remove( key? ){
+        if( key === void 0 ){
+            this.parent.remove( this.key );
+        }
+        else{
+            super.remove( key );
+        }
     }
 
     // Set new element value to parent array or object, performing purely functional update.

@@ -76,6 +76,6 @@ export declare class ChainedLink extends Link<any> {
     parent: Link<{}>;
     key: string | number;
     constructor(parent: Link<{}>, key: string | number);
-    remove(): void;
+    remove(key?: any): void;
     set(x: any): void;
 }

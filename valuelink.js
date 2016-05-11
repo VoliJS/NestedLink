@@ -181,8 +181,13 @@ var ChainedLink = (function (_super) {
         this.parent = parent;
         this.key = key;
     }
-    ChainedLink.prototype.remove = function () {
-        this.parent.remove(this.key);
+    ChainedLink.prototype.remove = function (key) {
+        if (key === void 0) {
+            this.parent.remove(this.key);
+        }
+        else {
+            _super.prototype.remove.call(this, key);
+        }
     };
     // Set new element value to parent array or object, performing purely functional update.
     ChainedLink.prototype.set = function (x) {
