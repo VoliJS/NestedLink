@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "React valueLink implementation with links to objects, validation, and purely functional state updates.",
   "main": "valuelink.js",
   "repository": {
