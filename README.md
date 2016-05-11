@@ -13,6 +13,8 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 
 Working examples are [here](https://volicon.github.io/valuelink/)
 
+![Value Links](/images/valuelinks.jpg)
+
 Features:
 
 - Able to link complex React state with nested objects and arrays.
