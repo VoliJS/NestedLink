@@ -15,8 +15,6 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 
 Working examples are [here](https://volicon.github.io/valuelink/)
 
-![Value Links](/images/valuelinks.jpg)
-
 Features:
 
 - Able to link complex React state with nested objects and arrays.
@@ -29,15 +27,7 @@ Features:
 - TypeScript source and type definitions.
 - Backward compatible with standard React 0.14 links API
 
-```javascript
-var linkToArray = Link.state( this, 'phonebook' );
-
-var list = linkToArray.map( ( itemLink, i ) => (
-    <div key={ i }>
-        <Input valueLink={ itemLink.at( 'name' ) } />            
-    </div>
-));
-```    
+![Value Links](/images/valuelinks.jpg)
 
 > This technology is one of the key components of [NestedReact](https://github.com/Volicon/NestedReact) architecture, 
 > helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
