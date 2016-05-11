@@ -226,7 +226,7 @@ const setValue = ( x, e ) => e.target.value;
 
 `linkToObject.update( clonedObject => modifiedClonedObject )` - update enclosed object or array.
 
-`linkToObject.action( ( clonedObject, event ) => modifiedClonedObject )` - update enclosed object or array.
+`linkToObject.action( ( clonedObject, event ) => modifiedClonedObject )` - creates action to update enclosed object or array.
 
 Plain objects and arrays are shallow copied by `update` and `action` functions,
 thus it's safe just to update the value in place.
