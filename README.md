@@ -198,7 +198,7 @@ const nameLink = Link.state< string >( this, 'name' );
 
 `link.update( prevValue => newValue )` - update link value with transform function.
 
-    ```javascript
+```javascript
 <button onClick={ () => boolLink.update( x => !x ) } />
 ```
 
