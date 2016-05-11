@@ -11,6 +11,8 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 - [Managing state and forms with React. Part 1](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
 - [Managing state and forms with React, Part 2: Validation](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
 
+Working examples are [here](https://volicon.github.io/valuelink/)
+
 Features:
 
 - Able to link complex React state with nested objects and arrays.
@@ -280,9 +282,8 @@ console.log( numLink.error );
 
 # Data binding examples
 
-Here are the set of working [examples](/main.html) for typical data binding use cases.
-Sources are [here](/example/main.jsx).
+Here are the set of [working](https://volicon.github.io/valuelink/databinding.html) [examples](/databinding.html) for typical data binding use cases.
 
-Also, there's an [example](/example/userslist.jsx) of an [application](/userslist.html) managing the users list.
+Also, there's [working](https://volicon.github.io/valuelink) [example](/example/userslist.jsx) of an application managing the users list.
 
 [Custom elements boilerplate](/tags.jsx) which is used by both examples is another good example.
