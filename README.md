@@ -1,4 +1,4 @@
-# Advanced purely functional Value Links for React
+# Advanced Value Links for React
 
 Library for purely functional data binding in React based on `value link` pattern.
 
