@@ -1,4 +1,6 @@
-# Advanced Value Links for React
+![logo](/images/value-link-logo.png) 
+
+# Purely functional data binding for React
 
 Library for purely functional data binding in React based on `value link` pattern.
 
