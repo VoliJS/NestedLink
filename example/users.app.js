@@ -44,314 +44,274 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * ValueLink Data binding examples
-	 *
-	 * MIT License, (c) 2016 Vlad Balin, Volicon.
-	 */
-	
 	'use strict';
 	
 	var _interopRequireDefault = __webpack_require__(1)['default'];
 	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
 	__webpack_require__(2);
-	
-	var _react = __webpack_require__(6);
-	
-	var _react2 = _interopRequireDefault(_react);
 	
 	var _reactDom = __webpack_require__(37);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _react = __webpack_require__(6);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var _valuelink = __webpack_require__(171);
 	
 	var _valuelink2 = _interopRequireDefault(_valuelink);
 	
+	var _reactModal = __webpack_require__(192);
+	
+	var _reactModal2 = _interopRequireDefault(_reactModal);
+	
 	var _tagsJsx = __webpack_require__(175);
 	
-	var _userslistJsx = __webpack_require__(192);
-	
-	var App = _react2['default'].createClass({
-	    displayName: 'App',
+	var UsersList = _react2['default'].createClass({
+	    displayName: 'UsersList',
 	
 	    getInitialState: function getInitialState() {
-	        // All this stuff we can link to
 	        return {
-	            // Simple binding to inputs
-	            str: 67,
-	            bool: true,
-	
-	            // Binding to checkboxes
-	            objFlags: {
-	                a: true,
-	                b: false
-	            },
-	
-	            // Binding to checkboxes
-	            arrFlags: ['a', 'b'],
-	
-	            // binding to inputs
-	            deep: {
-	                text: ['not a number', 25]
-	            },
-	
-	            // that will be bound to radio and select list
-	            radioFlag: 'a'
+	            users: [],
+	            dialog: null,
+	            editing: null
 	        };
 	    },
 	
 	    render: function render() {
+	        var _this = this;
+	
+	        var usersLink = _valuelink2['default'].state(this, 'users');
+	        var _state = this.state;
+	        var dialog = _state.dialog;
+	        var editing = _state.editing;
+	
 	        return _react2['default'].createElement(
 	            'div',
 	            null,
-	            _react2['default'].createElement(SimpleBinding, { strLink: _valuelink2['default'].state(this, 'str'), boolLink: _valuelink2['default'].state(this, 'bool') }),
-	            _react2['default'].createElement(DeepLinkedInputs, { objLink: _valuelink2['default'].state(this, 'deep') }),
-	            _react2['default'].createElement(CheckboxObjGroup, { flagsLink: _valuelink2['default'].state(this, 'objFlags') }),
-	            _react2['default'].createElement(CustomCheckboxObjGroup, { flagsLink: _valuelink2['default'].state(this, 'objFlags') }),
-	            _react2['default'].createElement(CheckboxListGroup, { flagsLink: _valuelink2['default'].state(this, 'arrFlags') }),
-	            _react2['default'].createElement(RadioGroup, { flagLink: _valuelink2['default'].state(this, 'radioFlag') }),
-	            _react2['default'].createElement(SelectOption, { flagLink: _valuelink2['default'].state(this, 'radioFlag') }),
-	            _react2['default'].createElement(CustomRadioGroup, { flagLink: _valuelink2['default'].state(this, 'radioFlag') }),
-	            _react2['default'].createElement(_userslistJsx.UsersList, null)
+	            _react2['default'].createElement(
+	                'button',
+	                { onClick: function () {
+	                        return _this.openDialog('addUser');
+	                    } },
+	                'Add User'
+	            ),
+	            _react2['default'].createElement(Header, null),
+	            usersLink.map(function (userLink, i) {
+	                return _react2['default'].createElement(UserRow, { key: i,
+	                    userLink: userLink,
+	                    onEdit: function () {
+	                        return _this.openDialog('editUser', i);
+	                    }
+	                });
+	            }),
+	            _react2['default'].createElement(
+	                _reactModal2['default'],
+	                { isOpen: dialog === 'addUser' },
+	                _react2['default'].createElement(EditUser, { userLink: _valuelink2['default'].value({}, function (x) {
+	                        return usersLink.push(x);
+	                    }),
+	                    onClose: this.closeDialog })
+	            ),
+	            _react2['default'].createElement(
+	                _reactModal2['default'],
+	                { isOpen: dialog === 'editUser' },
+	                _react2['default'].createElement(EditUser, { userLink: usersLink.at(editing),
+	                    onClose: this.closeDialog })
+	            )
 	        );
+	    },
+	
+	    closeDialog: function closeDialog() {
+	        this.setState({ dialog: null });
+	    },
+	
+	    openDialog: function openDialog(name) {
+	        var editing = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+	
+	        this.setState({ dialog: name, editing: editing });
 	    }
 	});
 	
-	var isNumber = function isNumber(x) {
-	    return !isNaN(Number(x));
-	};
-	
-	var SimpleBinding = function SimpleBinding(_ref) {
-	    var strLink = _ref.strLink;
-	    var boolLink = _ref.boolLink;
-	
-	    strLink.check(isNumber);
-	
+	exports.UsersList = UsersList;
+	var Header = function Header() {
 	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
+	        'div',
+	        { className: 'users-row' },
 	        _react2['default'].createElement(
-	            'legend',
+	            'div',
 	            null,
-	            'Direct state fields binding'
+	            'Name'
 	        ),
 	        _react2['default'].createElement(
-	            'label',
+	            'div',
 	            null,
-	            'String',
-	            _react2['default'].createElement(_tagsJsx.Input, { valueLink: strLink })
+	            'Email'
 	        ),
 	        _react2['default'].createElement(
-	            'label',
+	            'div',
 	            null,
-	            'TextArea',
-	            _react2['default'].createElement(_tagsJsx.TextArea, { valueLink: strLink })
+	            'Is Active'
 	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'Checkbox bound to bool',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: boolLink })
-	        )
+	        _react2['default'].createElement('div', null)
 	    );
 	};
 	
-	var DeepLinkedInputs = function DeepLinkedInputs(_ref2) {
-	    var objLink = _ref2.objLink;
+	var UserRow = function UserRow(_ref) {
+	    var userLink = _ref.userLink;
+	    var onEdit = _ref.onEdit;
 	
-	    var arrayLink = objLink.at('text');
+	    var isActiveLink = userLink.at('isActive'),
+	        user = userLink.value;
+	
 	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
+	        'div',
+	        { className: 'users-row', onDoubleClick: onEdit },
 	        _react2['default'].createElement(
-	            'legend',
+	            'div',
 	            null,
-	            'Deeply linked and validated state elements'
+	            user.name
 	        ),
-	        arrayLink.map(function (itemLink, i) {
-	            return _react2['default'].createElement(
-	                'label',
-	                { key: i },
-	                i + ':',
-	                _react2['default'].createElement(_tagsJsx.Input, { valueLink: itemLink.check(isNumber) }),
-	                _react2['default'].createElement(
-	                    'button',
-	                    { onClick: arrayLink.action(function (arr) {
-	                            return arr.splice(i, 1), arr;
-	                        }) },
-	                    'x'
-	                )
-	            );
-	        }),
 	        _react2['default'].createElement(
-	            'button',
-	            { onClick: arrayLink.action(function (arr) {
-	                    return arr.push(''), arr;
+	            'div',
+	            null,
+	            user.email
+	        ),
+	        _react2['default'].createElement(
+	            'div',
+	            { onClick: isActiveLink.action(function (x) {
+	                    return !x;
 	                }) },
-	            'Add'
-	        )
-	    );
-	};
-	
-	var CheckboxObjGroup = function CheckboxObjGroup(_ref3) {
-	    var flagsLink = _ref3.flagsLink;
-	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
-	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Standard checkbox group bound to object'
+	            user.isActive ? 'Yes' : 'No'
 	        ),
 	        _react2['default'].createElement(
-	            'label',
+	            'div',
 	            null,
-	            'A:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: flagsLink.at('a') })
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'B:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: flagsLink.at('b') })
-	        )
-	    );
-	};
-	
-	var CustomCheckboxObjGroup = function CustomCheckboxObjGroup(_ref4) {
-	    var flagsLink = _ref4.flagsLink;
-	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
-	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Custom checkbox group bound to object'
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'A:',
-	            _react2['default'].createElement(_tagsJsx.Checkbox, { checkedLink: flagsLink.at('a') })
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'B:',
-	            _react2['default'].createElement(_tagsJsx.Checkbox, { checkedLink: flagsLink.at('b') })
-	        )
-	    );
-	};
-	
-	var CheckboxListGroup = function CheckboxListGroup(_ref5) {
-	    var flagsLink = _ref5.flagsLink;
-	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
-	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Checkbox group bound to list'
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'A:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: flagsLink.contains('a') })
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'B:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: flagsLink.contains('b') })
-	        )
-	    );
-	};
-	
-	var RadioGroup = function RadioGroup(_ref6) {
-	    var flagLink = _ref6.flagLink;
-	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
-	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Radio group bound to value'
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'A:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'radio', valueLink: flagLink, value: 'a' })
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'B:',
-	            _react2['default'].createElement(_tagsJsx.Input, { type: 'radio', valueLink: flagLink, value: 'b' })
-	        )
-	    );
-	};
-	
-	var SelectOption = function SelectOption(_ref7) {
-	    var flagLink = _ref7.flagLink;
-	    return _react2['default'].createElement(
-	        'fieldset',
-	        null,
-	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Select option from list'
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'Select:',
 	            _react2['default'].createElement(
-	                _tagsJsx.Select,
-	                { valueLink: flagLink },
-	                _react2['default'].createElement(
-	                    'option',
-	                    { value: 'a' },
-	                    'a'
-	                ),
-	                _react2['default'].createElement(
-	                    'option',
-	                    { value: 'b' },
-	                    'b'
-	                )
+	                'button',
+	                { onClick: onEdit },
+	                'Edit'
+	            ),
+	            _react2['default'].createElement(
+	                'button',
+	                { onClick: function () {
+	                        return userLink.remove();
+	                    } },
+	                'X'
 	            )
 	        )
 	    );
 	};
 	
-	var CustomRadioGroup = function CustomRadioGroup(_ref8) {
-	    var flagLink = _ref8.flagLink;
+	var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+	
+	var EditUser = _react2['default'].createClass({
+	    displayName: 'EditUser',
+	
+	    propTypes: {
+	        userLink: _react.PropTypes.instanceOf(_valuelink2['default']).isRequired,
+	        onClose: _react.PropTypes.func.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {
+	            name: '',
+	            email: '',
+	            isActive: true
+	        };
+	    },
+	
+	    componentWillMount: function componentWillMount() {
+	        this.setState(this.props.userLink.value);
+	    },
+	
+	    onSubmit: function onSubmit(e) {
+	        e.preventDefault();
+	
+	        var _props = this.props;
+	        var userLink = _props.userLink;
+	        var onClose = _props.onClose;
+	
+	        userLink.set(this.state);
+	        onClose();
+	    },
+	
+	    onCancel: function onCancel() {
+	        this.props.onClose();
+	    },
+	
+	    render: function render() {
+	        var linked = _valuelink2['default'].all(this, 'name', 'email', 'isActive');
+	
+	        linked.name.check(function (x) {
+	            return x;
+	        }, 'Name is required').check(function (x) {
+	            return x.indexOf(' ') < 0;
+	        }, 'Spaces are not allowed');
+	
+	        linked.email.check(function (x) {
+	            return x;
+	        }, 'Email is required').check(function (x) {
+	            return x.match(emailPattern);
+	        }, 'Email is invalid');
+	
+	        return _react2['default'].createElement(
+	            'form',
+	            { onSubmit: this.onSubmit },
+	            _react2['default'].createElement(
+	                'label',
+	                null,
+	                'Name: ',
+	                _react2['default'].createElement(ValidatedInput, { type: 'text',
+	                    valueLink: linked.name })
+	            ),
+	            _react2['default'].createElement(
+	                'label',
+	                null,
+	                'Email: ',
+	                _react2['default'].createElement(ValidatedInput, { type: 'text',
+	                    valueLink: linked.email })
+	            ),
+	            _react2['default'].createElement(
+	                'label',
+	                null,
+	                'Is active: ',
+	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox',
+	                    valueLink: linked.isActive })
+	            ),
+	            _react2['default'].createElement(
+	                'button',
+	                { type: 'submit', disabled: linked.name.error || linked.email.error },
+	                'Save'
+	            ),
+	            _react2['default'].createElement(
+	                'button',
+	                { type: 'button', onClick: this.onCancel },
+	                'Cancel'
+	            )
+	        );
+	    }
+	});
+	
+	var ValidatedInput = function ValidatedInput(props) {
 	    return _react2['default'].createElement(
-	        'fieldset',
+	        'div',
 	        null,
+	        _react2['default'].createElement(_tagsJsx.Input, props),
 	        _react2['default'].createElement(
-	            'legend',
-	            null,
-	            'Custom Radio group bound to value'
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'A:',
-	            _react2['default'].createElement(_tagsJsx.Radio, { checkedLink: flagLink.equals('a') })
-	        ),
-	        _react2['default'].createElement(
-	            'label',
-	            null,
-	            'B:',
-	            _react2['default'].createElement(_tagsJsx.Radio, { checkedLink: flagLink.equals('b') })
+	            'div',
+	            { className: 'validation-error' },
+	            props.valueLink.error || ''
 	        )
 	    );
 	};
 	
-	_reactDom2['default'].render(_react2['default'].createElement(App, null), document.getElementById('app-mount-root'));
+	_reactDom2['default'].render(_react2['default'].createElement(UsersList, null), document.getElementById('app-mount-root'));
 
 /***/ },
 /* 1 */
@@ -402,7 +362,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n", ""]);
+	exports.push([module.id, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
 	
 	// exports
 
@@ -21420,246 +21380,22 @@
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	module.exports = __webpack_require__(193);
 	
-	var _interopRequireDefault = __webpack_require__(1)['default'];
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	__webpack_require__(2);
-	
-	var _reactDom = __webpack_require__(37);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _react = __webpack_require__(6);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _valuelink = __webpack_require__(171);
-	
-	var _valuelink2 = _interopRequireDefault(_valuelink);
-	
-	var _reactModal = __webpack_require__(193);
-	
-	var _reactModal2 = _interopRequireDefault(_reactModal);
-	
-	var _tagsJsx = __webpack_require__(175);
-	
-	var UsersList = _react2['default'].createClass({
-	    displayName: 'UsersList',
-	
-	    getInitialState: function getInitialState() {
-	        return {
-	            users: [],
-	            dialog: null,
-	            editing: null
-	        };
-	    },
-	
-	    render: function render() {
-	        var _this = this;
-	
-	        var links = _valuelink2['default'].all(this, 'users');
-	        var _state = this.state;
-	        var dialog = _state.dialog;
-	        var users = _state.users;
-	
-	        return _react2['default'].createElement(
-	            'div',
-	            null,
-	            _react2['default'].createElement(
-	                'button',
-	                { onClick: function () {
-	                        return _this.dialog('addUser');
-	                    } },
-	                'Add User'
-	            ),
-	            _react2['default'].createElement(
-	                _reactModal2['default'],
-	                { isOpen: Boolean(dialog) },
-	                dialog ? this[dialog](links.users) : void 0
-	            ),
-	            users.map(function (user, i) {
-	                return _react2['default'].createElement(UserRow, { key: i, user: user,
-	                    onDelete: function () {
-	                        return links.users.remove(i);
-	                    },
-	                    onEdit: function () {
-	                        return _this.dialog('editUser', i);
-	                    }
-	                });
-	            })
-	        );
-	    },
-	
-	    addUser: function addUser(usersLink) {
-	        var _this2 = this;
-	
-	        return _react2['default'].createElement(EditUser, { userLink: _valuelink2['default'].value({}, function (x) {
-	                return usersLink.push(x);
-	            }),
-	            onClose: function () {
-	                return _this2.dialog(null);
-	            } });
-	    },
-	
-	    editUser: function editUser(usersLink) {
-	        var _this3 = this;
-	
-	        return _react2['default'].createElement(EditUser, { userLink: usersLink.at(this.state.editing),
-	            onClose: function () {
-	                return _this3.dialog(null);
-	            } });
-	    },
-	
-	    dialog: function dialog(name) {
-	        var editing = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	        this.setState({ dialog: name, editing: editing });
-	    }
-	});
-	
-	exports.UsersList = UsersList;
-	var EditUser = _react2['default'].createClass({
-	    displayName: 'EditUser',
-	
-	    propTypes: {
-	        userLink: _react.PropTypes.instanceOf(_valuelink2['default']).isRequired,
-	        onClose: _react.PropTypes.func.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {
-	            name: '',
-	            email: '',
-	            isActive: true
-	        };
-	    },
-	
-	    componentWillMount: function componentWillMount() {
-	        this.setState(this.props.userLink.value);
-	    },
-	
-	    onSubmit: function onSubmit(e) {
-	        e.preventDefault();
-	
-	        var _props = this.props;
-	        var userLink = _props.userLink;
-	        var onClose = _props.onClose;
-	
-	        userLink.set(this.state);
-	        onClose();
-	    },
-	
-	    onCancel: function onCancel() {
-	        this.props.onClose();
-	    },
-	
-	    render: function render() {
-	        var linked = _valuelink2['default'].all(this, 'name', 'email', 'isActive');
-	
-	        return _react2['default'].createElement(
-	            'form',
-	            { onSubmit: this.onSubmit },
-	            _react2['default'].createElement(
-	                'label',
-	                null,
-	                'Name: ',
-	                _react2['default'].createElement(_tagsJsx.Input, { type: 'text',
-	                    valueLink: linked.name })
-	            ),
-	            _react2['default'].createElement(
-	                'label',
-	                null,
-	                'Email: ',
-	                _react2['default'].createElement(_tagsJsx.Input, { type: 'text',
-	                    valueLink: linked.email })
-	            ),
-	            _react2['default'].createElement(
-	                'label',
-	                null,
-	                'Is active: ',
-	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox',
-	                    valueLink: linked.isActive })
-	            ),
-	            _react2['default'].createElement(
-	                'button',
-	                { type: 'submit' },
-	                'Save'
-	            ),
-	            _react2['default'].createElement(
-	                'button',
-	                { type: 'button', onClick: this.onCancel },
-	                'Cancel'
-	            )
-	        );
-	    }
-	});
-	
-	var UserRow = function UserRow(_ref) {
-	    var user = _ref.user;
-	    var onDelete = _ref.onDelete;
-	    var onEdit = _ref.onEdit;
-	    return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	            'div',
-	            null,
-	            user.name
-	        ),
-	        _react2['default'].createElement(
-	            'div',
-	            null,
-	            user.email
-	        ),
-	        _react2['default'].createElement(
-	            'div',
-	            null,
-	            user.isActive ? 'Yes' : 'No'
-	        ),
-	        _react2['default'].createElement(
-	            'div',
-	            null,
-	            _react2['default'].createElement(
-	                'button',
-	                { onClick: onEdit },
-	                'Edit'
-	            ),
-	            _react2['default'].createElement(
-	                'button',
-	                { onClick: onDelete },
-	                'X'
-	            )
-	        )
-	    );
-	};
-	
-	_reactDom2['default'].render(_react2['default'].createElement(UsersList, null), document.getElementById('app-mount-root'));
+
 
 /***/ },
 /* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(194);
-	
-
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(6);
 	var ReactDOM = __webpack_require__(37);
-	var ExecutionEnvironment = __webpack_require__(195);
-	var ModalPortal = React.createFactory(__webpack_require__(196));
-	var ariaAppHider = __webpack_require__(211);
-	var elementClass = __webpack_require__(212);
+	var ExecutionEnvironment = __webpack_require__(194);
+	var ModalPortal = React.createFactory(__webpack_require__(195));
+	var ariaAppHider = __webpack_require__(210);
+	var elementClass = __webpack_require__(211);
 	var renderSubtreeIntoContainer = __webpack_require__(37).unstable_renderSubtreeIntoContainer;
-	var Assign = __webpack_require__(200);
+	var Assign = __webpack_require__(199);
 	
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
 	var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
@@ -21767,7 +21503,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 195 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -21812,14 +21548,14 @@
 
 
 /***/ },
-/* 196 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(6);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(197);
-	var scopeTab = __webpack_require__(199);
-	var Assign = __webpack_require__(200);
+	var focusManager = __webpack_require__(196);
+	var scopeTab = __webpack_require__(198);
+	var Assign = __webpack_require__(199);
 	
 	// so that our CSS is statically analyzable
 	var CLASS_NAMES = {
@@ -22004,10 +21740,10 @@
 
 
 /***/ },
-/* 197 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(198);
+	var findTabbable = __webpack_require__(197);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -22078,7 +21814,7 @@
 
 
 /***/ },
-/* 198 */
+/* 197 */
 /***/ function(module, exports) {
 
 	/*!
@@ -22134,10 +21870,10 @@
 
 
 /***/ },
-/* 199 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(198);
+	var findTabbable = __webpack_require__(197);
 	
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -22159,7 +21895,7 @@
 
 
 /***/ },
-/* 200 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22170,9 +21906,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(201),
-	    createAssigner = __webpack_require__(207),
-	    keys = __webpack_require__(203);
+	var baseAssign = __webpack_require__(200),
+	    createAssigner = __webpack_require__(206),
+	    keys = __webpack_require__(202);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -22245,7 +21981,7 @@
 
 
 /***/ },
-/* 201 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22256,8 +21992,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(202),
-	    keys = __webpack_require__(203);
+	var baseCopy = __webpack_require__(201),
+	    keys = __webpack_require__(202);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -22278,7 +22014,7 @@
 
 
 /***/ },
-/* 202 */
+/* 201 */
 /***/ function(module, exports) {
 
 	/**
@@ -22316,7 +22052,7 @@
 
 
 /***/ },
-/* 203 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22327,9 +22063,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(204),
-	    isArguments = __webpack_require__(205),
-	    isArray = __webpack_require__(206);
+	var getNative = __webpack_require__(203),
+	    isArguments = __webpack_require__(204),
+	    isArray = __webpack_require__(205);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -22558,7 +22294,7 @@
 
 
 /***/ },
-/* 204 */
+/* 203 */
 /***/ function(module, exports) {
 
 	/**
@@ -22701,7 +22437,7 @@
 
 
 /***/ },
-/* 205 */
+/* 204 */
 /***/ function(module, exports) {
 
 	/**
@@ -22950,7 +22686,7 @@
 
 
 /***/ },
-/* 206 */
+/* 205 */
 /***/ function(module, exports) {
 
 	/**
@@ -23136,7 +22872,7 @@
 
 
 /***/ },
-/* 207 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23147,9 +22883,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(208),
-	    isIterateeCall = __webpack_require__(209),
-	    restParam = __webpack_require__(210);
+	var bindCallback = __webpack_require__(207),
+	    isIterateeCall = __webpack_require__(208),
+	    restParam = __webpack_require__(209);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -23194,7 +22930,7 @@
 
 
 /***/ },
-/* 208 */
+/* 207 */
 /***/ function(module, exports) {
 
 	/**
@@ -23265,7 +23001,7 @@
 
 
 /***/ },
-/* 209 */
+/* 208 */
 /***/ function(module, exports) {
 
 	/**
@@ -23403,7 +23139,7 @@
 
 
 /***/ },
-/* 210 */
+/* 209 */
 /***/ function(module, exports) {
 
 	/**
@@ -23476,7 +23212,7 @@
 
 
 /***/ },
-/* 211 */
+/* 210 */
 /***/ function(module, exports) {
 
 	var _element = typeof document !== 'undefined' ? document.body : null;
@@ -23524,7 +23260,7 @@
 
 
 /***/ },
-/* 212 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = function(opts) {
@@ -23590,4 +23326,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=users.app.js.map

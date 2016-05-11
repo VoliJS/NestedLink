@@ -10,8 +10,6 @@ import ReactDOM from 'react-dom'
 import Link from 'valuelink'
 import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
-import { UsersList } from './userslist.jsx'
-
 const App = React.createClass( {
     getInitialState(){
         // All this stuff we can link to

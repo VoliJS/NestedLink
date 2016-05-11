@@ -1,11 +1,11 @@
 import './main.css'
 import ReactDOM from 'react-dom'
 
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 import Link from 'valuelink'
 import Modal from 'react-modal'
-import { Input } from 'tags.jsx'
+import {Input} from 'tags.jsx'
 
 export const UsersList = React.createClass( {
     getInitialState(){
@@ -26,6 +26,8 @@ export const UsersList = React.createClass( {
                     Add User
                 </button>
 
+                <Header/>
+
                 { usersLink.map( ( userLink, i ) => (
                     <UserRow key={ i }
                              userLink={ userLink }
@@ -35,12 +37,12 @@ export const UsersList = React.createClass( {
 
                 <Modal isOpen={ dialog === 'addUser' }>
                     <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
-                              onClose={ this.closeDialog }/>;
+                              onClose={ this.closeDialog }/>
                 </Modal>
 
                 <Modal isOpen={ dialog === 'editUser' }>
                     <EditUser userLink={ usersLink.at( editing ) }
-                              onClose={ this.closeDialog }/>;
+                              onClose={ this.closeDialog }/>
                 </Modal>
             </div>
         );
@@ -55,12 +57,21 @@ export const UsersList = React.createClass( {
     }
 } );
 
-const UserRow = ({ userLink, onEdit }) =>{
+const Header = () =>(
+    <div className="users-row">
+        <div>Name</div>
+        <div>Email</div>
+        <div>Is Active</div>
+        <div/>
+    </div>
+);
+
+const UserRow = ( { userLink, onEdit } ) =>{
     const isActiveLink = userLink.at( 'isActive' ),
-          user = userLink.value;
+          user         = userLink.value;
 
     return (
-        <div onDoubleClick={ onEdit }>
+        <div className="users-row" onDoubleClick={ onEdit }>
             <div>{ user.name }</div>
             <div>{ user.email }</div>
             <div onClick={ isActiveLink.action( x => !x ) }>
@@ -73,6 +84,9 @@ const UserRow = ({ userLink, onEdit }) =>{
     )
 };
 
+
+const emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+
 const EditUser = React.createClass( {
     propTypes : {
         userLink : PropTypes.instanceOf( Link ).isRequired,
@@ -81,8 +95,8 @@ const EditUser = React.createClass( {
 
     getInitialState(){
         return {
-            name : '',
-            email : '',
+            name     : '',
+            email    : '',
             isActive : true
         }
     },
@@ -107,24 +121,34 @@ const EditUser = React.createClass( {
     render(){
         const linked = Link.all( this, 'name', 'email', 'isActive' );
 
+        linked.name
+              .check( x => x, 'Name is required' )
+              .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
+
+        linked.email
+              .check( x => x, 'Email is required' )
+              .check( x => x.match( emailPattern ), 'Email is invalid' );
+
         return (
             <form onSubmit={ this.onSubmit }>
                 <label>
-                    Name: <Input type="text"
-                                 valueLink={ linked.name } />
+                    Name: <ValidatedInput type="text"
+                                          valueLink={ linked.name }/>
                 </label>
 
                 <label>
-                    Email: <Input type="text"
-                                  valueLink={ linked.email } />
+                    Email: <ValidatedInput type="text"
+                                           valueLink={ linked.email }/>
                 </label>
 
                 <label>
                     Is active: <Input type="checkbox"
-                                      valueLink={ linked.isActive } />
+                                      valueLink={ linked.isActive }/>
                 </label>
 
-                <button type="submit"> Save </button>
+                <button type="submit" disabled={ linked.name.error || linked.email.error }>
+                    Save
+                </button>
                 <button type="button" onClick={ this.onCancel }>
                     Cancel
                 </button>
@@ -133,6 +157,13 @@ const EditUser = React.createClass( {
     }
 } );
 
-
+const ValidatedInput = ( props ) => (
+    <div>
+        <Input { ...props } />
+        <div className="validation-error">
+            { props.valueLink.error || '' }
+        </div>
+    </div>
+);
 
 ReactDOM.render( <UsersList />, document.getElementById( 'app-mount-root' ) );
