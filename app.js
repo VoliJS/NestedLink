@@ -21428,6 +21428,12 @@
 	    value: true
 	});
 	
+	__webpack_require__(2);
+	
+	var _reactDom = __webpack_require__(37);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
 	var _react = __webpack_require__(6);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -21631,6 +21637,8 @@
 	        )
 	    );
 	};
+	
+	_reactDom2['default'].render(_react2['default'].createElement(UsersList, null), document.getElementById('app-mount-root'));
 
 /***/ },
 /* 193 */

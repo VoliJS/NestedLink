@@ -1,4 +1,8 @@
+import './main.css'
+import ReactDOM from 'react-dom'
+
 import React, { PropTypes } from 'react'
+
 import Link from 'valuelink'
 import Modal from 'react-modal'
 import { Input } from 'tags.jsx'
@@ -13,43 +17,60 @@ export const UsersList = React.createClass( {
     },
 
     render(){
-        const links = Link.all( this, 'users' ),
-              { dialog, users } = this.state;
+        const usersLink = Link.state( this, 'users' ),
+              { dialog, editing } = this.state;
 
         return (
             <div>
-                <button onClick={ () => this.dialog( 'addUser' ) }>
                     Add User
                 </button>
 
-                <Modal isOpen={ Boolean( dialog ) }>
-                    { dialog ? this[ dialog ]( links.users ) : void 0 }
+                { usersLink.map( ( userLink, i ) => (
+                    <UserRow key={ i }
+                             userLink={ userLink }
+                             onEdit={ () => this.openDialog( 'editUser', i ) }
+                    />
+                ) )}
+
+                <Modal isOpen={ dialog === 'addUser' }>
+                    <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
+                              onClose={ this.closeDialog }/>;
                 </Modal>
 
-                { users.map( ( user, i ) => {
-                    return <UserRow key={ i } user={ user }
-                                    onDelete={ () => links.users.remove( i ) }
-                                    onEdit={ () => this.dialog( 'editUser', i ) }
-                    />;
-                } )}
+                <Modal isOpen={ dialog === 'editUser' }>
+                    <EditUser userLink={ usersLink.at( editing ) }
+                              onClose={ this.closeDialog }/>;
+                </Modal>
             </div>
         );
     },
 
-    addUser( usersLink ){
-        return <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
-                          onClose={ () => this.dialog( null ) }/>;
+    closeDialog(){
+        this.setState( { dialog : null } );
     },
 
-    editUser( usersLink ){
-        return <EditUser userLink={ usersLink.at( this.state.editing ) }
-                          onClose={ () => this.dialog( null ) }/>;
-    },
-
-    dialog( name, editing = null ){
+    openDialog( name, editing = null ){
         this.setState( { dialog : name, editing : editing } );
     }
 } );
+
+const UserRow = ({ userLink, onEdit }) =>{
+    const isActiveLink = userLink.at( 'isActive' ),
+          user = userLink.value;
+
+    return (
+        <div onDoubleClick={ onEdit }>
+            <div>{ user.name }</div>
+            <div>{ user.email }</div>
+            <div onClick={ isActiveLink.action( x => !x ) }>
+                { user.isActive ? 'Yes' : 'No' }</div>
+            <div>
+                <button onClick={ onEdit }>Edit</button>
+                <button onClick={ () => userLink.remove() }>X</button>
+            </div>
+        </div>
+    )
+};
 
 const EditUser = React.createClass( {
     propTypes : {
@@ -102,7 +123,7 @@ const EditUser = React.createClass( {
                                       valueLink={ linked.isActive } />
                 </label>
 
-                <button type="submit">Save</button>
+                <button type="submit"> Save </button>
                 <button type="button" onClick={ this.onCancel }>
                     Cancel
                 </button>
@@ -111,14 +132,6 @@ const EditUser = React.createClass( {
     }
 } );
 
-const UserRow = ({ user, onDelete, onEdit }) => (
-    <div>
-        <div>{ user.name }</div>
-        <div>{ user.email }</div>
-        <div>{ user.isActive ? 'Yes' : 'No' }</div>
-        <div>
-            <button onClick={ onEdit }>Edit</button>
-            <button onClick={ onDelete }>X</button>
-        </div>
-    </div>
-);
+
+
+ReactDOM.render( <UsersList />, document.getElementById( 'app-mount-root' ) );
