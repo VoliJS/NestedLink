@@ -22,6 +22,7 @@ export const UsersList = React.createClass( {
 
         return (
             <div>
+                <button onClick={ () => this.openDialog( 'addUser' ) }>
                     Add User
                 </button>
 
