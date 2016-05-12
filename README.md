@@ -70,9 +70,11 @@ and start hacking.
 
 ## Create link
 
+Links can be created and used inside of the React `component.render()` method.
+
 ### Linking to the state attributes
 
-![static] `Link.state( self : React.Component, stateKey : string ) : Link`
+![static] `Link.state( this, stateKey ) : Link`
 
 You can create link to an attribute of component state directly:
 
@@ -81,25 +83,27 @@ const nameLink = Link.state( this, 'name' ),
       emailLink = Link.state( this, 'email' );
 ```
 
-![static] `Link.all( self : React.Component, ...stateKeys : string[] ) : { [ key : string ] : Link }`
-Or, you can create them in a bulk:
+![var] `this.links : { [ key ] : Link }` 
+
+All links to the state are _cached_ inside the `component.link` object.
+When you create the link to the value which has not been changed since the last `render`,
+link object will be _reused_. Which means that you can use `pure render` optimization.
+
+![static] `Link.all( this, stateKey1, stateKey2, ... ) : { [ key ] : Link }`
+
+`Link.all` ensures that links to the listed state members are cached and up to date,
+and returns `this.links` object.
 
 ```javascript
 const links = Link.all( this, 'name', 'email' ),
       { name, email } = links;
 ```
-All links to the state, no matter how they are created, are _cached_ inside the component.
-You can access the cache in the component's `render()` directly with `this.links`.
-
-When you create the link to the value which has not been changed since the last `render`,
-link object will be _reused_. Which means that you can use `pure render` optimization.
-
-`Link.all` ensures that links to the listed state members are cached and up to date,
-and returns cache object (same as `this.links`). `Link.state` behaves in the same way, but returns the link.
 
 ### Links to object and arrays
 
-`linkToObject.at( key )` - create link to the member of array or object.
+![method] `linkToObject.at( key ) : Link`
+
+Create link to the member of array or object.
 
 If linked value is plain object or array, it's possible to generate
 links to their members. Whenever this derivative links will be
@@ -112,15 +116,20 @@ const deepLink = Link.state( this, 'array' ).at( 0 ).at( 'name' );
 deepLink.set( 'Joe' ); // Will update component state.array
 ```
 
-`linkToObject.pick( key1, key2, ... )` - create object hash with links to the object's members.
+![method] `linkToObject.pick( key1, key2, ... ) : { [ key ] : Link }`
+ 
+Create links to the object's members, and wrap them in an object.
 
 Example:
+
 ```javascript
 const links = userLink.pick( 'name', 'email' ),
       { name, email } = links;
 ```
 
-`linkToObject.map( ( linkToItem, itemKey ) => any | void )` - map and filter through array or object.
+![method] `linkToObject.map( ( linkToItem, itemKey ) => any | void ) : any[]` 
+
+Map and filter through array or object.
 
 ```javascript
 var list = stringArrayLink.map( ( itemLink, index ) => {
@@ -136,7 +145,9 @@ var list = stringArrayLink.map( ( itemLink, index ) => {
 
 ## Offhand boolean links
 
-`linkToArray.contains( element )` - creates the link to the presence of value in array.
+![method] `linkToArray.contains( element ) : Link`
+
+Creates the link to the presence of value in array.
 
 Resulting link value is `true` whenever element is present in array, and `false` otherwise.
 Whenever resulting link is assigned with new value, it will flip `element` in the array.
@@ -147,7 +158,9 @@ Useful for the large checkbox groups.
 const optionXBoolLink = arrayLink.contains( 'optionX' );
 ```
 
-`linkToAny.equals( whenTrue )` - create boolean link to value equality.
+![method] `linkToAny.equals( whenTrue ) : Link`
+
+Create boolean link to value equality.
 
 Resulting link value is `true` whenever parent link value equals to `whenTrue`, and `false` otherwise.
 When resulting link is assigned with `true`, it sets parent link value with `whenTrue`, and with `null` otherwise.
@@ -160,7 +173,9 @@ const optionXLink = stringLink.equals( 'optionX' );
 
 ### Custom links
 
-`Link.value( value, nextValue => void )` - create custom link.
+![static] `Link.value( value, nextValue => void ) : Link`
+
+Create custom link with the given value and update function.
 
 It may be used for different scenarios. Good example is to use 'edit element' component for adding new element.
 
@@ -189,22 +204,31 @@ const nameLink = Link.state< string >( this, 'name' );
 
 ### Simple value updates
 
-`link.set( x )`, `link.requestChange( x )` - set link value.
+![method] `link.set( x ) : void`
+
+![method] `link.requestChange( x ) : void` 
+
+Set link to the given value.
 
 ```javascript
 <button onClick={ () => boolLink.set( !boolLink.value ) } />
 ```
 
-`link.update( prevValue => newValue )` - update link value with transform function.
+[!method] `link.update( prevValue => any ) : void` 
+
+Update link value using the given value transform function.
 
 ```javascript
 <button onClick={ () => boolLink.update( x => !x ) } />
 ```
 
-`link.action( ( prevValue, event ) => nextValue )` - create action to handle UI event.
+![method] `link.action( ( prevValue, event ) => any ) : ( event => void ) ` 
 
-`link.action` takes transform function, and produce a new function which takes single argument.
-When it's called, this argument's value is passed as second transform parameter.
+Create UI event handler which will transform the link.
+
+`link.action` takes transform function, and produce a new function which takes single `event` argument.
+When it's called, `event` and link `value` are passes as transform parameters, and link will be updated 
+with returned value.
 
 This is particularly useful in (but not restricted to) UI event handlers.
 
@@ -221,12 +245,16 @@ const setValue = ( x, e ) => e.target.value;
 
 ### Link to objects and arrays updates
 
-`linkToObject.update( clonedObject => modifiedClonedObject )` - update enclosed object or array.
-
-`linkToObject.action( ( clonedObject, event ) => modifiedClonedObject )` - creates action to update enclosed object or array.
-
-Plain objects and arrays are shallow copied by `update` and `action` functions,
+Plain objects and arrays are shallow copied by `link.update()` and within `link.action()` handlers,
 thus it's safe just to update the value in place.
+
+![method] `linkToObject.update( clonedObject => Object ) : void`
+ 
+Update enclosed object or array.
+
+![method] `linkToObject.action( ( clonedObject, event ) => Object ) : ( event => void )`
+ 
+Creates action to update enclosed object or array.
 
 ```javascript
 <button onClick={ () => objLink.update( obj => {
@@ -235,24 +263,40 @@ thus it's safe just to update the value in place.
                             }) } />
 ```
 
-`linkToObject.remove( key )`, `linkToObject.at( key ).remove()` - remove element with a given key from the enclosed object ar array.
+![method] `linkToObject.remove( key ) : void `
+
+![method] `linkToObject.at( key ).remove() : void`
+
+Remove element with a given key from the enclosed object ar array.
 
 ### Link to arrays updates
 
-`linkToArray.splice()`, `linkToArray.push()`, `linkToArray.unshift()` - proxied native Array methods.
+Link to arrays proxies some important Array methods. 
+
+![method] `linkToArray.splice( ... ) : void`
+
+![method] `linkToArray.push( ... ) : void`
+
+![method] `linkToArray.unshift( ... ) : void`
 
 Works in the same way and accepts the same parameters as corresponding Array method,
 but returns `undefined` and leads to the proper purely functional update of the parent object chain.
 
 ## Links validation
 
-It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
-on validation with value links.
+> It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
+> on validation with value links.
 
-`link.check( value => isValid, error = 'Invalid value' )` - evaluate given condition for the current link value, and assign
-    given error object to the `link.error` when it fails. Can be chained.
+![method] `link.check( value => boolean, error = 'Invalid value' ) : Link`
+ 
+Evaluate given condition for the current link value, and assign
+given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
+ 
+Checks can be chained. In this case, the first check which fails will leave its error in the link.
 
-`link.error` field may be analyzed by custom `<Input />` control to indicate an error (see `tags.jsx` controls and supplied examples).
+![var] `link.error : any | void` 
+
+This link field may be analyzed by custom `<Input />` control to indicate an error (see `tags.jsx` controls and supplied examples).
 
 This mechanics can be used to add ad-hoc validation in `render`. 
 
@@ -287,3 +331,4 @@ Also, there's [working](https://volicon.github.io/valuelink) [example](/example/
 
 [method]: /images/method.png
 [static]: /images/static.png
+[var]: /images/var.png
