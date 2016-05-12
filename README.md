@@ -214,7 +214,7 @@ Set link to the given value.
 <button onClick={ () => boolLink.set( !boolLink.value ) } />
 ```
 
-[!method] `link.update( prevValue => any ) : void` 
+![method] `link.update( prevValue => any ) : void` 
 
 Update link value using the given value transform function.
 
