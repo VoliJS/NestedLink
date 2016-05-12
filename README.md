@@ -72,6 +72,8 @@ and start hacking.
 
 ### Linking to the state attributes
 
+![static] `Link.state( self : React.Component, stateKey : string ) : Link`
+
 You can create link to an attribute of component state directly:
 
 ```javascript
@@ -79,6 +81,7 @@ const nameLink = Link.state( this, 'name' ),
       emailLink = Link.state( this, 'email' );
 ```
 
+![static] `Link.all( self : React.Component, ...stateKeys : string[] ) : { [ key : string ] : Link }`
 Or, you can create them in a bulk:
 
 ```javascript
@@ -281,3 +284,6 @@ Here are the set of [working](https://volicon.github.io/valuelink/databinding.ht
 Also, there's [working](https://volicon.github.io/valuelink) [example](/example/userslist.jsx) of an application managing the users list.
 
 [Custom elements boilerplate](/tags.jsx) which is used by both examples is another good example.
+
+[method]: /images/method.png
+[static]: /images/static.png
