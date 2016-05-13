@@ -48,6 +48,7 @@ Features:
     - `link.pick( key1, key2, ... )` creates an object with links to listed object members, in the same way as `Link.all`.
     - `link.clone()` creates shallow copy of the enclosed object.
 - Added "Users List" application example.
+- `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
 
 # Installation
 
