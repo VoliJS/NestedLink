@@ -12,6 +12,7 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 
 - [Managing state and forms with React. Part 1](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
 - [Managing state and forms with React, Part 2: Validation](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
+- [State and forms in React, part 3: Managing Complex State](https://medium.com/@gaperton/state-and-forms-in-react-part-3-handling-the-complex-state-acf369244d37#.x0fjcxljo)
 
 Working examples are [here](https://volicon.github.io/valuelink/)
 
