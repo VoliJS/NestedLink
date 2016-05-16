@@ -12,8 +12,9 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 
 - [Managing state and forms with React. Part 1](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
 - [Managing state and forms with React, Part 2: Validation](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
+- [State and forms in React, part 3: Managing Complex State](https://medium.com/@gaperton/state-and-forms-in-react-part-3-handling-the-complex-state-acf369244d37#.x0fjcxljo)
 
-Working examples are [here](https://volicon.github.io/valuelink/)
+Working examples are [here](https://volicon.github.io/NestedLink/)
 
 Features:
 
@@ -48,6 +49,7 @@ Features:
     - `link.pick( key1, key2, ... )` creates an object with links to listed object members, in the same way as `Link.all`.
     - `link.clone()` creates shallow copy of the enclosed object.
 - Added "Users List" application example.
+- `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
 
 # Installation
 
@@ -74,7 +76,7 @@ Links can be created and used inside of the React `component.render()` method.
 
 ### Linking to the state attributes
 
-![static] `Link.state( this, stateKey ) : Link`
+##### ![static] Link.state( this, stateKey ) : Link
 
 You can create link to an attribute of component state directly:
 
@@ -83,13 +85,13 @@ const nameLink = Link.state( this, 'name' ),
       emailLink = Link.state( this, 'email' );
 ```
 
-![var] `this.links : { [ key ] : Link }` 
+##### ![var] this.links : { [ key ] : Link } 
 
 All links to the state are _cached_ inside the `component.link` object.
 When you create the link to the value which has not been changed since the last `render`,
 link object will be _reused_. Which means that you can use `pure render` optimization.
 
-![static] `Link.all( this, stateKey1, stateKey2, ... ) : { [ key ] : Link }`
+##### ![static] Link.all( this, stateKey1, stateKey2, ... ) : { [ key ] : Link }
 
 `Link.all` ensures that links to the listed state members are cached and up to date,
 and returns `this.links` object.
@@ -101,7 +103,7 @@ const links = Link.all( this, 'name', 'email' ),
 
 ### Links to object and arrays
 
-![method] `linkToObject.at( key ) : Link`
+##### ![method] linkToObject.at( key ) : Link
 
 Create link to the member of array or object.
 
@@ -116,7 +118,7 @@ const deepLink = Link.state( this, 'array' ).at( 0 ).at( 'name' );
 deepLink.set( 'Joe' ); // Will update component state.array
 ```
 
-![method] `linkToObject.pick( key1, key2, ... ) : { [ key ] : Link }`
+##### ![method] linkToObject.pick( key1, key2, ... ) : { [ key ] : Link }
  
 Create links to the object's members, and wrap them in an object.
 
@@ -127,7 +129,7 @@ const links = userLink.pick( 'name', 'email' ),
       { name, email } = links;
 ```
 
-![method] `linkToObject.map( ( linkToItem, itemKey ) => any | void ) : any[]` 
+##### ![method] linkToObject.map( ( linkToItem, itemKey ) => any | void ) : any[]
 
 Map and filter through array or object.
 
@@ -145,7 +147,7 @@ var list = stringArrayLink.map( ( itemLink, index ) => {
 
 ## Offhand boolean links
 
-![method] `linkToArray.contains( element ) : Link`
+##### ![method] linkToArray.contains( element ) : Link
 
 Creates the link to the presence of value in array.
 
@@ -158,7 +160,7 @@ Useful for the large checkbox groups.
 const optionXBoolLink = arrayLink.contains( 'optionX' );
 ```
 
-![method] `linkToAny.equals( whenTrue ) : Link`
+##### ![method] linkToAny.equals( whenTrue ) : Link
 
 Create boolean link to value equality.
 
@@ -173,7 +175,7 @@ const optionXLink = stringLink.equals( 'optionX' );
 
 ### Custom links
 
-![static] `Link.value( value, nextValue => void ) : Link`
+##### ![static] Link.value( value, nextValue => void ) : Link
 
 Create custom link with the given value and update function.
 
@@ -204,9 +206,9 @@ const nameLink = Link.state< string >( this, 'name' );
 
 ### Simple value updates
 
-![method] `link.set( x ) : void`
+##### ![method] link.set( x ) : void
 
-![method] `link.requestChange( x ) : void` 
+##### ![method] link.requestChange( x ) : void
 
 Set link to the given value.
 
@@ -214,7 +216,7 @@ Set link to the given value.
 <button onClick={ () => boolLink.set( !boolLink.value ) } />
 ```
 
-[!method] `link.update( prevValue => any ) : void` 
+##### ![method] link.update( prevValue => any ) : void
 
 Update link value using the given value transform function.
 
@@ -222,7 +224,7 @@ Update link value using the given value transform function.
 <button onClick={ () => boolLink.update( x => !x ) } />
 ```
 
-![method] `link.action( ( prevValue, event ) => any ) : ( event => void ) ` 
+##### ![method] link.action( ( prevValue, event ) => any ) : ( event => void )
 
 Create UI event handler which will transform the link.
 
@@ -248,11 +250,11 @@ const setValue = ( x, e ) => e.target.value;
 Plain objects and arrays are shallow copied by `link.update()` and within `link.action()` handlers,
 thus it's safe just to update the value in place.
 
-![method] `linkToObject.update( clonedObject => Object ) : void`
+##### ![method] linkToObject.update( clonedObject => Object ) : void
  
 Update enclosed object or array.
 
-![method] `linkToObject.action( ( clonedObject, event ) => Object ) : ( event => void )`
+##### ![method] linkToObject.action( ( clonedObject, event ) => Object ) : ( event => void )
  
 Creates action to update enclosed object or array.
 
@@ -263,9 +265,9 @@ Creates action to update enclosed object or array.
                             }) } />
 ```
 
-![method] `linkToObject.remove( key ) : void `
+##### ![method] linkToObject.remove( key ) : void
 
-![method] `linkToObject.at( key ).remove() : void`
+##### ![method] linkToObject.at( key ).remove() : void
 
 Remove element with a given key from the enclosed object ar array.
 
@@ -273,11 +275,11 @@ Remove element with a given key from the enclosed object ar array.
 
 Link to arrays proxies some important Array methods. 
 
-![method] `linkToArray.splice( ... ) : void`
+##### ![method] linkToArray.splice( ... ) : void
 
-![method] `linkToArray.push( ... ) : void`
+##### ![method] linkToArray.push( ... ) : void
 
-![method] `linkToArray.unshift( ... ) : void`
+##### ![method] linkToArray.unshift( ... ) : void
 
 Works in the same way and accepts the same parameters as corresponding Array method,
 but returns `undefined` and leads to the proper purely functional update of the parent object chain.
@@ -287,14 +289,14 @@ but returns `undefined` and leads to the proper purely functional update of the 
 > It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
 > on validation with value links.
 
-![method] `link.check( value => boolean, error = 'Invalid value' ) : Link`
+##### ![method] link.check( value => boolean, error = 'Invalid value' ) : Link
  
 Evaluate given condition for the current link value, and assign
 given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
  
 Checks can be chained. In this case, the first check which fails will leave its error in the link.
 
-![var] `link.error : any | void` 
+##### ![var] link.error : any | void
 
 This link field may be analyzed by custom `<Input />` control to indicate an error (see `tags.jsx` controls and supplied examples).
 
