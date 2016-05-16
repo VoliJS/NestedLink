@@ -8,12 +8,14 @@ import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Link from 'valuelink'
-import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
+import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
 const App = React.createClass( {
     getInitialState(){
         // All this stuff we can link to
         return {
+            num : 0,
+
             // Simple binding to inputs
             str       : 67,
             bool      : true,
@@ -38,11 +40,12 @@ const App = React.createClass( {
     },
 
     render(){
-        const links = Link.all( this, 'str', 'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
+        const links = Link.all( this, 'str', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
 
         return (
             <div>
                 <SimpleBinding strLink={ links.str } boolLink={ links.bool } />
+                <Numeric numLink={ links.num } />
                 <DeepLinkedInputs objLink={ links.deep } />
 
                 <CheckboxObjGroup flagsLink={ links.objFlags } />
@@ -59,6 +62,27 @@ const App = React.createClass( {
 } );
 
 const isNumber = x => !isNaN( Number( x ) );
+
+const Numeric = ({ numLink }) => (
+    <fieldset>
+        <legend>Number fields with wrong input rejection</legend>
+
+        <label>
+            Number
+            <NumberInput valueLink={ numLink }/>
+        </label>
+
+        <label>
+            Positive
+            <NumberInput valueLink={ numLink } positive={ true } />
+        </label>
+
+        <label>
+            Integer
+            <NumberInput valueLink={ numLink } integer={ true } />
+        </label>
+    </fieldset>
+);
 
 const SimpleBinding = ({ strLink, boolLink }) => {
     strLink.check( isNumber );
