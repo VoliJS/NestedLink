@@ -21117,6 +21117,8 @@
 	        var positive = _props2.positive;
 	        var allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
 	
+	        if (e.ctrlKey) return;
+	
 	        if (charCode && ( // allow control characters
 	        charCode < 48 || charCode > 57) && // char is number
 	        allowed.indexOf(charCode) < 0) {

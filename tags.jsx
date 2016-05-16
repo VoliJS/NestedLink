@@ -109,6 +109,8 @@ export const NumberInput = React.createClass( {
               { integer, positive } = this.props,
               allowed = ( positive ? [] : [ 45 ]).concat( integer ? [] : [ 46 ] );
 
+        if( e.ctrlKey ) return;
+
         if( charCode && // allow control characters
             ( charCode < 48 || charCode > 57 ) && // char is number
             allowed.indexOf( charCode ) < 0 ){ // allowed char codes
