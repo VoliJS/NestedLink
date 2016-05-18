@@ -6,6 +6,11 @@ import TodoList from './todolist.jsx'
 import Filter from './filter.jsx'
 import AddTodo from './addtodo.jsx'
 
+
+function removeDone( todos ){
+    return todos.filter( todo => !todo.done );
+}
+
 const App = React.createClass( {
     // Declare component state
     getInitialState(){
@@ -13,6 +18,12 @@ const App = React.createClass( {
             todos : [],
             filterDone : null
         }
+    },
+
+    getActiveCount(){
+        let count = 0;
+        this.todos.forEach( todo => todo.done || count++ );
+        return count;
     },
 
     componentWillMount(){
@@ -41,9 +52,9 @@ const App = React.createClass( {
                                             filterDone={ filterDone }
                     /> }
 
-                    { hasTodos && <Filter count={ todos.activeCount }
+                    { hasTodos && <Filter count={ this.getActiveCount() }
                                           filterLink={ links.filterDone }
-                                          onClear={ links.todos.action( todos => todos.filter( x => !x.done ) ) }
+                                          onClear={ links.todos.action( removeDone ) }
                     />}
                 </section>
 
