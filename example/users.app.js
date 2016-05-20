@@ -267,22 +267,19 @@
 	                'label',
 	                null,
 	                'Name: ',
-	                _react2['default'].createElement(ValidatedInput, { type: 'text',
-	                    valueLink: linked.name })
+	                _react2['default'].createElement(ValidatedInput, { type: 'text', valueLink: linked.name })
 	            ),
 	            _react2['default'].createElement(
 	                'label',
 	                null,
 	                'Email: ',
-	                _react2['default'].createElement(ValidatedInput, { type: 'text',
-	                    valueLink: linked.email })
+	                _react2['default'].createElement(ValidatedInput, { type: 'text', valueLink: linked.email })
 	            ),
 	            _react2['default'].createElement(
 	                'label',
 	                null,
 	                'Is active: ',
-	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox',
-	                    checkedLink: linked.isActive })
+	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: linked.isActive })
 	            ),
 	            _react2['default'].createElement(
 	                'button',
@@ -362,7 +359,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".invalid {\n    border-color: red;\n}\n\n.checkbox,.radio {\n    margin: 3px;\n    display: inline-block;\n    width: 10px;\n    height : 10px;\n    border: solid;\n    border-width: 1px;\n}\n\n.selected {\n    background-color: black;\n}\n\nlabel {\n    display: block;\n    margin: 5px;\n}\n\ninput {\n    margin: 3px;\n}\n\n\n.users-row>div {\n    display: inline-block;\n    width : 15em;\n}\n\n.validation-error {\n    display: inline-block;\n    color: red;\n}\n\nlabel>div {\n    display: inline-block;\n}", ""]);
+	exports.push([module.id, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
 	
 	// exports
 
@@ -21174,6 +21171,118 @@
 	};
 	
 	exports.Input = Input;
+	var isRequired = function isRequired(x) {
+	    return x != null && x !== '';
+	};
+	
+	exports.isRequired = isRequired;
+	var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+	var isEmail = function isEmail(x) {
+	    return x.match(emailPattern);
+	};
+	
+	exports.isEmail = isEmail;
+	// This number component rejects invalid input and modify link only with valid number values.
+	// Implementing numeric input rejection might be tricky.
+	var NumberInput = _react2['default'].createClass({
+	    displayName: 'NumberInput',
+	
+	    propTypes: {
+	        positive: _react.PropTypes.bool,
+	        integer: _react.PropTypes.bool,
+	        valueLink: _react.PropTypes.object
+	    },
+	
+	    componentWillMount: function componentWillMount() {
+	        // Initialize component state
+	        this.setAndConvert(this.props.valueLink.value);
+	    },
+	
+	    setValue: function setValue(x) {
+	        // We're not using native state in order to avoid race condition.
+	        this.value = String(x);
+	        this.error = isNaN(Number(x));
+	        this.forceUpdate();
+	    },
+	
+	    setAndConvert: function setAndConvert(x) {
+	        var value = Number(x);
+	
+	        if (this.props.positive) {
+	            value = Math.abs(x);
+	        }
+	
+	        if (this.props.integer) {
+	            value = Math.round(value);
+	        }
+	
+	        this.setValue(value);
+	    },
+	
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        var next = nextProps.valueLink;
+	
+	        if (Number(next.value) !== Number(this.value)) {
+	            this.setAndConvert(next.value); // keep state being synced
+	        }
+	    },
+	
+	    render: function render() {
+	        var _props = this.props;
+	        var type = _props.type;
+	        var _props$invalid = _props.invalid;
+	        var invalid = _props$invalid === undefined ? 'invalid' : _props$invalid;
+	        var _props$className = _props.className;
+	        var className = _props$className === undefined ? '' : _props$className;
+	        var valueLink = _props.valueLink;
+	        var props = _objectWithoutProperties(_props, ['type', 'invalid', 'className', 'valueLink']);
+	        var error = valueLink.error || this.error;
+	
+	        return _react2['default'].createElement('input', _extends({ type: 'text',
+	            className: error ? className + ' ' + invalid : className,
+	            value: this.value,
+	            onKeyPress: this.onKeyPress,
+	            onChange: this.onChange
+	        }, props));
+	    },
+	
+	    onKeyPress: function onKeyPress(e) {
+	        var charCode = e.charCode;
+	        var _props2 = this.props;
+	        var integer = _props2.integer;
+	        var positive = _props2.positive;
+	        var allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
+	
+	        if (e.ctrlKey) return;
+	
+	        if (charCode && ( // allow control characters
+	        charCode < 48 || charCode > 57) && // char is number
+	        allowed.indexOf(charCode) < 0) {
+	            // allowed char codes
+	            e.preventDefault();
+	        }
+	    },
+	
+	    onChange: function onChange(e) {
+	        // Update local state...
+	        var value = e.target.value;
+	
+	        this.setValue(value);
+	
+	        var asNumber = Number(value);
+	
+	        if (value && !isNaN(asNumber)) {
+	            this.props.valueLink.update(function (x) {
+	                // Update link if value is changed
+	                if (asNumber !== Number(x)) {
+	                    return asNumber;
+	                }
+	            });
+	        }
+	    }
+	});
+	
+	exports.NumberInput = NumberInput;
 	/**
 	 * Wrapper for standard <textarea/> to be compliant with React 0.14 valueLink semantic.
 	 * Simple supports for link validation - adds 'invalid' class if link has an error.
@@ -21580,7 +21689,7 @@
 	  componentDidMount: function() {
 	    this.node = document.createElement('div');
 	    this.node.className = 'ReactModalPortal';
-	    AppElement.appendChild(this.node);
+	    document.body.appendChild(this.node);
 	    this.renderPortal(this.props);
 	  },
 	
@@ -21590,7 +21699,7 @@
 	
 	  componentWillUnmount: function() {
 	    ReactDOM.unmountComponentAtNode(this.node);
-	    AppElement.removeChild(this.node);
+	    document.body.removeChild(this.node);
 	    elementClass(document.body).remove('ReactModal__Body--open');
 	  },
 	

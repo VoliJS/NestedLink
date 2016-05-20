@@ -132,18 +132,15 @@ const EditUser = React.createClass( {
         return (
             <form onSubmit={ this.onSubmit }>
                 <label>
-                    Name: <ValidatedInput type="text"
-                                          valueLink={ linked.name }/>
+                    Name: <ValidatedInput type="text" valueLink={ linked.name }/>
                 </label>
 
                 <label>
-                    Email: <ValidatedInput type="text"
-                                           valueLink={ linked.email }/>
+                    Email: <ValidatedInput type="text" valueLink={ linked.email }/>
                 </label>
 
                 <label>
-                    Is active: <Input type="checkbox"
-                                      checkedLink={ linked.isActive }/>
+                    Is active: <Input type="checkbox" checkedLink={ linked.isActive }/>
                 </label>
 
                 <button type="submit" disabled={ linked.name.error || linked.email.error }>
