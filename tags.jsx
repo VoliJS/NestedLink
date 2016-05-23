@@ -173,10 +173,12 @@ export const Select = ( { valueLink, children, ...props } ) => (
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
 
-export const Radio = ( { className = 'radio', checkedLink } ) => (
+export const Radio = ( { className = 'radio', checkedLink, children } ) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( () => true ) }
-    />
+    >
+        { children }
+    </div>
 );
 
 /**
@@ -186,8 +188,10 @@ export const Radio = ( { className = 'radio', checkedLink } ) => (
  *     <Checkbox checkedLink={ boolLink } />
  */
 
-export const Checkbox = ( { className = 'checkbox', checkedLink } ) => (
+export const Checkbox = ( { className = 'checkbox', checkedLink, children } ) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( x => !x ) }
-    />
+    >
+        { children }
+    </div>
 );
