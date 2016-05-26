@@ -26,6 +26,11 @@ export const UsersList = React.createClass( {
                     Add User
                 </button>
 
+                <Modal isOpen={ dialog === 'addUser' }>
+                    <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
+                              onClose={ this.closeDialog }/>
+                </Modal>
+
                 <Header/>
 
                 { usersLink.map( ( userLink, i ) => (
@@ -34,11 +39,6 @@ export const UsersList = React.createClass( {
                              onEdit={ () => this.openDialog( 'editUser', i ) }
                     />
                 ) )}
-
-                <Modal isOpen={ dialog === 'addUser' }>
-                    <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
-                              onClose={ this.closeDialog }/>
-                </Modal>
 
                 <Modal isOpen={ dialog === 'editUser' }>
                     <EditUser userLink={ usersLink.at( editing ) }
