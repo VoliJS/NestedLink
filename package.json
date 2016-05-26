@@ -40,6 +40,7 @@
   },
   "files": [
     "valuelink.js",
+    "valuelink.js.map",
     "valuelink.ts",
     "valuelink.d.ts",
     "tags.jsx",
