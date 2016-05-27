@@ -8,7 +8,10 @@ export type Transform< T > = ( value : T, event? : {} ) => T
 
 export type EventHandler = ( event : {} ) => void
 
-export type Validator< T > = ( value : T ) => boolean
+export interface Validator< T >{
+    ( value : T ) : boolean
+    error? : any
+}
 
 export type Iterator = ( link : ChainedLink, key : string | number ) => any
 
@@ -149,7 +152,7 @@ abstract class Link< T >{
      */
     check( whenValid : Validator< T >, error? : any ) : this {
         if( !this.error && !whenValid( this.value ) ){
-            this.error = error || defaultError;
+            this.error = error || whenValid.error || defaultError;
         }
 
         return this;

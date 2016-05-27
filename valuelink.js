@@ -106,7 +106,7 @@ var Link = (function () {
      */
     Link.prototype.check = function (whenValid, error) {
         if (!this.error && !whenValid(this.value)) {
-            this.error = error || defaultError;
+            this.error = error || whenValid.error || defaultError;
         }
         return this;
     };

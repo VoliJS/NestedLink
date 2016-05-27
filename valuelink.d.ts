@@ -5,7 +5,10 @@
  */
 export declare type Transform<T> = (value: T, event?: {}) => T;
 export declare type EventHandler = (event: {}) => void;
-export declare type Validator<T> = (value: T) => boolean;
+export interface Validator<T> {
+    (value: T): boolean;
+    error?: any;
+}
 export declare type Iterator = (link: ChainedLink, key: string | number) => any;
 export declare type StateLinks = {
     [attrName: string]: StateLink<any>;
