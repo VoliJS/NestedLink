@@ -23,3 +23,18 @@ label {
 input {
     margin: 3px;
 }
+
+
+.users-row>div {
+    display: inline-block;
+    width : 15em;
+}
+
+.validation-error {
+    display: inline-block;
+    color: red;
+}
+
+label>div {
+    display: inline-block;
+}

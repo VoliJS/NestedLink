@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.2.0",
+  "version": "1.3.5",
   "description": "React valueLink implementation with links to objects, validation, and purely functional state updates.",
   "main": "valuelink.js",
   "repository": {
@@ -31,14 +31,18 @@
     "babel-runtime": "<6.0.0",
     "classnames": "^2.2.0",
     "css-loader": "^0.23.0",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2",
+    "react": "*",
+    "react-dom": "*",
+    "react-modal": "^1.2.1",
     "style-loader": "^0.13.0",
     "typescript": "^1.8.10",
     "webpack": "^1.12.6"
   },
   "files": [
-    "index.js",
+    "valuelink.js",
+    "valuelink.js.map",
+    "valuelink.ts",
+    "valuelink.d.ts",
     "tags.jsx",
     "LICENSE"
   ],

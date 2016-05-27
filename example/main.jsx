@@ -7,13 +7,15 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'index.js'
-import { Input, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
+import Link from 'valuelink'
+import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
 
 const App = React.createClass( {
     getInitialState(){
         // All this stuff we can link to
         return {
+            num : 0,
+
             // Simple binding to inputs
             str       : 67,
             bool      : true,
@@ -38,25 +40,49 @@ const App = React.createClass( {
     },
 
     render(){
+        const links = Link.all( this, 'str', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
+
         return (
             <div>
-                <SimpleBinding strLink={ Link.state( this, 'str' )} boolLink={ Link.state( this, 'bool' )} />
-                <DeepLinkedInputs objLink={ Link.state( this, 'deep' ) } />
+                <SimpleBinding strLink={ links.str } boolLink={ links.bool } />
+                <Numeric numLink={ links.num } />
+                <DeepLinkedInputs objLink={ links.deep } />
 
-                <CheckboxObjGroup flagsLink={ Link.state( this, 'objFlags' ) } />
-                <CustomCheckboxObjGroup flagsLink={ Link.state( this, 'objFlags' ) } />
+                <CheckboxObjGroup flagsLink={ links.objFlags } />
+                <CustomCheckboxObjGroup flagsLink={ links.objFlags } />
 
-                <CheckboxListGroup flagsLink={ Link.state( this, 'arrFlags' ) } />
+                <CheckboxListGroup flagsLink={ links.arrFlags } />
 
-                <RadioGroup flagLink={ Link.state( this, 'radioFlag' ) } />
-                <SelectOption flagLink={ Link.state( this, 'radioFlag' ) } />
-                <CustomRadioGroup flagLink={ Link.state( this, 'radioFlag' ) } />
+                <RadioGroup flagLink={ links.radioFlag } />
+                <SelectOption flagLink={ links.radioFlag } />
+                <CustomRadioGroup flagLink={ links.radioFlag } />
             </div>
         );
     }
 } );
 
 const isNumber = x => !isNaN( Number( x ) );
+
+const Numeric = ({ numLink }) => (
+    <fieldset>
+        <legend>Number fields with wrong input rejection</legend>
+
+        <label>
+            Number
+            <NumberInput valueLink={ numLink }/>
+        </label>
+
+        <label>
+            Positive
+            <NumberInput valueLink={ numLink } positive={ true } />
+        </label>
+
+        <label>
+            Integer
+            <NumberInput valueLink={ numLink } integer={ true } />
+        </label>
+    </fieldset>
+);
 
 const SimpleBinding = ({ strLink, boolLink }) => {
     strLink.check( isNumber );
@@ -92,28 +118,32 @@ const DeepLinkedInputs = ({ objLink }) => {
                 <label key={ i }>
                     { i + ':' }
                     <Input valueLink={ itemLink.check( isNumber ) } />
-                    <button onClick={ arrayLink.action( arr => ( arr.splice( i, 1 ), arr ) )} >x</button>
+                    <button onClick={ () => itemLink.remove() } >x</button>
                 </label>
             ))}
 
-            <button onClick={ arrayLink.action( arr => ( arr.push( '' ), arr ) )}>Add</button>
+            <button onClick={ () => arrayLink.push( '' ) }>Add</button>
         </fieldset>
     );
 };
 
-const CheckboxObjGroup = ({ flagsLink }) => (
-    <fieldset>
-        <legend>Standard checkbox group bound to object</legend>
-        <label>
-            A:
-            <Input type="checkbox" checkedLink={ flagsLink.at( 'a' ) }/>
-        </label>
-        <label>
-            B:
-            <Input type="checkbox" checkedLink={ flagsLink.at( 'b' ) }/>
-        </label>
-    </fieldset>
-);
+const CheckboxObjGroup = ({ flagsLink }) => {
+    const links = flagsLink.pick( 'a', 'b' );
+
+    return (
+        <fieldset>
+            <legend>Standard checkbox group bound to object</legend>
+            <label>
+                A:
+                <Input type="checkbox" checkedLink={ links.a }/>
+            </label>
+            <label>
+                B:
+                <Input type="checkbox" checkedLink={ links.b }/>
+            </label>
+        </fieldset>
+    );
+}
 
 const CustomCheckboxObjGroup = ({ flagsLink }) => (
     <fieldset>
