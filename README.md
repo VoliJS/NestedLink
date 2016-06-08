@@ -402,7 +402,7 @@ It passes through anything else, including `children`.
 
 ##### `<Select/>`
 
-Wrapper for standard <select/>. Regular <option/> tags must be used. All props are passed through.
+Wrapper for standard `<select/>`. Regular `<option/>` tags must be used. All props are passed through.
 
 ```jsx
 <Select valueLink={ linkToSelectedValue }>
