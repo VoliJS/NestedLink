@@ -50,8 +50,10 @@ Features:
     - `link.clone()` creates shallow copy of the enclosed object.
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
-- `<NumberInput/>` tag with input rejection for numbers.
 - Validator functions for `link.check` may contain default `error` message.
+- tags.jsx:
+    - `<NumberInput/>` tag with input rejection for numbers.
+    - All text input tags adds `required` class if there's validation error and value is empty (issue #5). 
 
 # Installation
 
@@ -343,7 +345,7 @@ Also, there's [working](https://volicon.github.io/valuelink) [example](/example/
 
 ### Text and number form fields 
 
-##### <Input type="text"/>, <TextArea /> 
+##### `<Input type="text"/>`, `<TextArea />` 
 
 `tags.jsx` contains wrappers for standard `<input>` and `<textarea>` tags,
   which can be directly bound to the string state elements.
@@ -355,7 +357,7 @@ These wrappers will add `invalid` class to enclosed HTML element, if an error is
 <TextArea valueLink={ link } />
 ```
 
-##### <NumberInput/>
+##### `<NumberInput/>`
 
 There's also cross-browser implementation of *numeric input* tag. It has following differences compared to `<Input>`:
 
@@ -373,7 +375,7 @@ There's also cross-browser implementation of *numeric input* tag. It has followi
 
 ### Checkboxes
 
-##### <Input type="checkbox">
+##### `<Input type="checkbox" />`
 
 Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
 
@@ -382,7 +384,7 @@ Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLi
 <Input type="text" checkedLink={ arrayLink.contains( 'option' ) } />
 ```
 
-##### <Checkbox>
+##### `<Checkbox/>`
 
 Internally, it's `<div>` element which toggles `selected` class on click.
 Thus, it can be easily styled.
@@ -398,7 +400,7 @@ It passes through anything else, including `children`.
 
 ### Radio Groups and Select list
 
-##### <Select>
+##### `<Select/>`
 
 Wrapper for standard <select/>. Regular <option/> tags must be used. All props are passed through.
 
@@ -409,7 +411,7 @@ Wrapper for standard <select/>. Regular <option/> tags must be used. All props a
 </Select>
 ```
 
-##### <Input type="radio">
+##### `<Input type="radio"/>`
       
 Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
 
@@ -426,7 +428,7 @@ Can be directly bound to the state member using `valueLink` property.
 </label>
 ```
 
-##### <Radio>
+##### `<Radio/>`
 
 Internally, it's `<div>` element which always sets `selected` class on click. Thus,
 it can be easily styled. 
