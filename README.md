@@ -50,8 +50,10 @@ Features:
     - `link.clone()` creates shallow copy of the enclosed object.
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
-- `<NumberInput/>` tag with input rejection for numbers.
 - Validator functions for `link.check` may contain default `error` message.
+- tags.jsx:
+    - `<NumberInput/>` tag with input rejection for numbers.
+    - All text input tags adds `required` class if there's validation error and value is empty (issue #5). 
 
 # Installation
 
