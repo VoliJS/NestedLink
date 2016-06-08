@@ -51,6 +51,7 @@ Features:
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
 - `<NumberInput/>` tag with input rejection for numbers.
+- Validator functions for `link.check` may contain default `error` message.
 
 # Installation
 
@@ -294,6 +295,14 @@ but returns `undefined` and leads to the proper purely functional update of the 
  
 Evaluate given condition for the current link value, and assign
 given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
+
+It's possible to assign default error message to the validator function. `tags.jsx` provides `isRequired` and `isEmail`
+generic validator functions as an examples. Excerpt from `tags.jsx`: 
+
+```jsx
+export const isRequired = x => x != null && x !== '';
+isRequired.error = 'Required';
+```
  
 Checks can be chained. In this case, the first check which fails will leave its error in the link.
 
