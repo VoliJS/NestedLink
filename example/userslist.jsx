@@ -5,7 +5,7 @@ import React, {PropTypes} from 'react'
 
 import Link from 'valuelink'
 import Modal from 'react-modal'
-import {Input, isRequired, isEmail } from 'tags.jsx'
+import {Input, isRequired, isEmail } from 'tags'
 
 export const UsersList = React.createClass( {
     getInitialState(){

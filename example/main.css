@@ -2,6 +2,10 @@
     border-color: red;
 }
 
+.invalid.required {
+    border-color: yellow;
+}
+
 .checkbox,.radio {
     margin: 3px;
     display: inline-block;

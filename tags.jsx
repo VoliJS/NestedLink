@@ -41,17 +41,17 @@ export const Input = ( props ) =>{
 
     switch( type ){
         case 'checkbox':
-            return <input {...props}
+            return <input {...rest}
                 checked={ link.value }
                 onChange={ link.action( setBoolValue ) }/>;
 
         case 'radio' :
-            return <input {...props}
+            return <input {...rest}
                 checked={ link.value === props.value }
                 onChange={ e => { e.target.checked && link.set( props.value ) } }/>;
 
         default:
-            return <input {...props}
+            return <input {...rest}
                 className={ validationClasses( rest, valueLink.value, valueLink.error ) }
                 value={ valueLink.value }
                 onChange={ valueLink.action( setValue ) }/>;
