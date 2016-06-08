@@ -24,7 +24,7 @@ Features:
 - Support for 'pure render' optimization.
 - Reference implementation of 'linked' UI controls (`tags.jsx`).
     - Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
-    - Custom tags: `<Radio />`, `<Checkbox />`
+    - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
 - TypeScript source and type definitions.
 - Backward compatible with standard React 0.14 links API
 
@@ -50,6 +50,8 @@ Features:
     - `link.clone()` creates shallow copy of the enclosed object.
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
+- `<NumberInput/>` tag with input rejection for numbers.
+- Validator functions for `link.check` may contain default `error` message.
 
 # Installation
 
@@ -293,6 +295,14 @@ but returns `undefined` and leads to the proper purely functional update of the 
  
 Evaluate given condition for the current link value, and assign
 given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
+
+It's possible to assign default error message to the validator function. `tags.jsx` provides `isRequired` and `isEmail`
+generic validator functions as an examples. Excerpt from `tags.jsx`: 
+
+```jsx
+export const isRequired = x => x != null && x !== '';
+isRequired.error = 'Required';
+```
  
 Checks can be chained. In this case, the first check which fails will leave its error in the link.
 
@@ -323,13 +333,119 @@ const numLink = List.state( this, 'num' )
 console.log( numLink.error );
 ```
 
-# Data binding examples
+## Data binding examples
 
 Here are the set of [working](https://volicon.github.io/valuelink/databinding.html) [examples](/databinding.html) for typical data binding use cases.
 
 Also, there's [working](https://volicon.github.io/valuelink) [example](/example/userslist.jsx) of an application managing the users list.
 
 [Custom elements boilerplate](/tags.jsx) which is used by both examples is another good example.
+
+### Text and number form fields 
+
+##### <Input type="text"/>, <TextArea /> 
+
+`tags.jsx` contains wrappers for standard `<input>` and `<textarea>` tags,
+  which can be directly bound to the string state elements.
+
+These wrappers will add `invalid` class to enclosed HTML element, if an error is present in the bound link.
+
+```jsx
+<Input type="text" valueLink={ link } />
+<TextArea valueLink={ link } />
+```
+
+##### <NumberInput/>
+
+There's also cross-browser implementation of *numeric input* tag. It has following differences compared to `<Input>`:
+
+- Keyboard input which obviously leads to invalid values (e.g. letters) are rejected.
+- Value is being always converted to valid number.
+- There are `integer` and `positive` boolean props controlling input rejection. They can be combined.
+
+`<NumberInput>` validates its value, and adds `invalid` class to enclosed input element if it's not a number.
+
+```jsx
+<NumberInput valueLink={ link } />
+<NumberInput valueLink={ link } integer={ true }/>
+<NumberInput valueLink={ link } positive={ true }/>
+```
+
+### Checkboxes
+
+##### <Input type="checkbox">
+
+Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
+
+```jsx
+<Input type="text" checkedLink={ booleanLink } />
+<Input type="text" checkedLink={ arrayLink.contains( 'option' ) } />
+```
+
+##### <Checkbox>
+
+Internally, it's `<div>` element which toggles `selected` class on click.
+Thus, it can be easily styled.
+
+By default, it has `checkbox` CSS class, which can be overridden by passing `className` prop.
+
+It passes through anything else, including `children`.
+ 
+```jsx
+<Checkbox checkedLink={ booleanLink } />
+<Checkbox checkedLink={ arrayLink.contains( 'option' ) } />
+```
+
+### Radio Groups and Select list
+
+##### <Select>
+
+Wrapper for standard <select/>. Regular <option/> tags must be used. All props are passed through.
+
+```jsx
+<Select valueLink={ linkToSelectedValue }>
+    <option value="a">A</option>
+    <option value="b">B</option>
+</Select>
+```
+
+##### <Input type="radio">
+      
+Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
+
+Can be directly bound to the state member using `valueLink` property.
+
+```jsx
+<label>
+    A:
+    <Input type="radio" valueLink={ flagLink } value="a" />
+</label>
+<label>
+    B:
+    <Input type="radio" valueLink={ flagLink } value="b" />
+</label>
+```
+
+##### <Radio>
+
+Internally, it's `<div>` element which always sets `selected` class on click. Thus,
+it can be easily styled. 
+
+By default, it has `radio` CSS class, which can be overridden by passing `className` prop.
+It passes through anything else, including `children`.
+
+It *must* be used in conjunction with `link.equals( 'value' )` method.
+
+```jsx
+<label>
+    A:
+    <Radio checkedLink={ flagLink.equals( 'a' ) } />
+</label>
+<label>
+    B:
+    <Radio checkedLink={ flagLink.equals( 'b' ) } />
+</label>
+```
 
 [method]: /images/method.png
 [static]: /images/static.png

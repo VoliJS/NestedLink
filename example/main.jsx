@@ -8,7 +8,7 @@ import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Link from 'valuelink'
-import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'tags.jsx'
+import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'tags'
 
 const App = React.createClass( {
     getInitialState(){
@@ -134,12 +134,10 @@ const CheckboxObjGroup = ({ flagsLink }) => {
         <fieldset>
             <legend>Standard checkbox group bound to object</legend>
             <label>
-                A:
-                <Input type="checkbox" checkedLink={ links.a }/>
+                A: <Input type="checkbox" checkedLink={ links.a }/>
             </label>
             <label>
-                B:
-                <Input type="checkbox" checkedLink={ links.b }/>
+                B: <Input type="checkbox" checkedLink={ links.b }/>
             </label>
         </fieldset>
     );
@@ -149,12 +147,10 @@ const CustomCheckboxObjGroup = ({ flagsLink }) => (
     <fieldset>
         <legend>Custom checkbox group bound to object</legend>
         <label>
-            A:
-            <Checkbox checkedLink={ flagsLink.at( 'a' ) }/>
+            A: <Checkbox checkedLink={ flagsLink.at( 'a' ) }/>
         </label>
         <label>
-            B:
-            <Checkbox checkedLink={ flagsLink.at( 'b' ) }/>
+            B: <Checkbox checkedLink={ flagsLink.at( 'b' ) }/>
         </label>
     </fieldset>
 );
@@ -163,12 +159,10 @@ const CheckboxListGroup = ({ flagsLink }) => (
     <fieldset>
         <legend>Checkbox group bound to list</legend>
         <label>
-            A:
-            <Input type="checkbox" checkedLink={ flagsLink.contains( 'a' ) }/>
+            A: <Input type="checkbox" checkedLink={ flagsLink.contains( 'a' ) }/>
         </label>
         <label>
-            B:
-            <Input type="checkbox" checkedLink={ flagsLink.contains( 'b' ) }/>
+            B: <Input type="checkbox" checkedLink={ flagsLink.contains( 'b' ) }/>
         </label>
     </fieldset>
 );
@@ -177,12 +171,10 @@ const RadioGroup = ({ flagLink }) => (
     <fieldset>
         <legend>Radio group bound to value</legend>
         <label>
-            A:
-            <Input type="radio" valueLink={ flagLink } value="a" />
+            A: <Input type="radio" valueLink={ flagLink } value="a" />
         </label>
         <label>
-            B:
-            <Input type="radio" valueLink={ flagLink } value="b" />
+            B: <Input type="radio" valueLink={ flagLink } value="b" />
         </label>
     </fieldset>
 );
@@ -203,12 +195,10 @@ const CustomRadioGroup = ({ flagLink }) => (
     <fieldset>
         <legend>Custom Radio group bound to value</legend>
         <label>
-            A:
-            <Radio checkedLink={ flagLink.equals( 'a' ) } />
+            A: <Radio checkedLink={ flagLink.equals( 'a' ) } />
         </label>
         <label>
-            B:
-            <Radio checkedLink={ flagLink.equals( 'b' ) } />
+            B: <Radio checkedLink={ flagLink.equals( 'b' ) } />
         </label>
     </fieldset>
 );

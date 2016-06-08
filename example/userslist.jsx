@@ -5,7 +5,7 @@ import React, {PropTypes} from 'react'
 
 import Link from 'valuelink'
 import Modal from 'react-modal'
-import {Input} from 'tags.jsx'
+import {Input, isRequired, isEmail } from 'tags'
 
 export const UsersList = React.createClass( {
     getInitialState(){
@@ -84,9 +84,6 @@ const UserRow = ( { userLink, onEdit } ) =>{
     )
 };
 
-
-const emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-
 const EditUser = React.createClass( {
     propTypes : {
         userLink : PropTypes.instanceOf( Link ).isRequired,
@@ -122,12 +119,12 @@ const EditUser = React.createClass( {
         const linked = Link.all( this, 'name', 'email', 'isActive' );
 
         linked.name
-              .check( x => x, 'Name is required' )
+              .check( isRequired )
               .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
 
         linked.email
-              .check( x => x, 'Email is required' )
-              .check( x => x.match( emailPattern ), 'Email is invalid' );
+              .check( isRequired )
+              .check( isEmail );
 
         return (
             <form onSubmit={ this.onSubmit }>

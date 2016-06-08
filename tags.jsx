@@ -4,6 +4,7 @@
  * WTFPL License, (c) 2016 Vlad Balin, Volicon.
  */
 
+
 import React, { PropTypes } from 'react'
 
 const setValue     = ( x, e ) => e.target.value;
@@ -18,35 +19,51 @@ const setBoolValue = ( x, e ) => Boolean( e.target.checked );
  *      <input type="text"     valueLink={ linkToString } />
  */
 
-export const Input = ( { invalid = 'invalid', className = '', valueLink, checkedLink, ...props } ) =>{
-    const type = props.type,
+
+function validationClasses( props, value, error ){
+    let classNames = props.className ? [ props.className ] : [];
+
+    if( error ){
+        classNames.push( props.invalidClass || 'invalid' );
+
+        if( value === '' ){
+            classNames.push( props.requiredClass || 'required' );
+        }
+    }
+
+    return classNames.join( ' ' );
+}
+
+export const Input = ( props ) =>{
+    const { valueLink, checkedLink, ...rest } = props,
+          type = props.type,
           link = valueLink || checkedLink;
 
     switch( type ){
         case 'checkbox':
-            return <input {...props}
-                className={ className }
+            return <input {...rest}
                 checked={ link.value }
                 onChange={ link.action( setBoolValue ) }/>;
 
         case 'radio' :
-            return <input {...props}
-                className={ className }
+            return <input {...rest}
                 checked={ link.value === props.value }
                 onChange={ e => { e.target.checked && link.set( props.value ) } }/>;
 
         default:
-            return <input {...props}
-                className={ valueLink.error ? invalid + ' ' + className : className }
+            return <input {...rest}
+                className={ validationClasses( rest, valueLink.value, valueLink.error ) }
                 value={ valueLink.value }
                 onChange={ valueLink.action( setValue ) }/>;
     }
 };
 
 export const isRequired = x => x != null && x !== '';
+isRequired.error = 'Required';
 
 const emailPattern   = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 export const isEmail = x => x.match( emailPattern );
+isEmail.error = 'Should be valid email';
 
 // This number component rejects invalid input and modify link only with valid number values.
 // Implementing numeric input rejection might be tricky.
@@ -65,7 +82,7 @@ export const NumberInput = React.createClass( {
     setValue( x ){
         // We're not using native state in order to avoid race condition.
         this.value = String( x );
-        this.error = isNaN( Number( x ) );
+        this.error = this.value === '' || isNaN( Number( x ) );
         this.forceUpdate();
     },
 
@@ -92,15 +109,15 @@ export const NumberInput = React.createClass( {
     },
 
     render(){
-        const { type, invalid = 'invalid', className = '', valueLink, ...props } = this.props,
+        const { valueLink, ...props } = this.props,
               error = valueLink.error || this.error;
 
-        return <input type="text"
-                      className={ error ? className + ' ' + invalid : className }
+        return <input { ...props }
+                      type="text"
+                      className={ validationClasses( props, this.value, error ) }
                       value={ this.value }
                       onKeyPress={ this.onKeyPress }
                       onChange={ this.onChange }
-            { ...props }
         />;
     },
 
@@ -142,9 +159,9 @@ export const NumberInput = React.createClass( {
  *
  *     <TextArea valueLink={ linkToText } />
  */
-export const TextArea = ( { invalid = 'invalid', className = '', valueLink, ...props } ) => (
+export const TextArea = ( { valueLink, ...props } ) => (
     <textarea {...props}
-        className={ valueLink.error ? invalid + ' ' + className : className }
+        className={ validationClasses( props, valueLink.value , valueLink.error ) }
         value={ valueLink.value }
         onChange={ valueLink.action( setValue ) }/>
 );
@@ -173,10 +190,12 @@ export const Select = ( { valueLink, children, ...props } ) => (
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
 
-export const Radio = ( { className = 'radio', checkedLink } ) => (
+export const Radio = ( { className = 'radio', checkedLink, children } ) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( () => true ) }
-    />
+    >
+        { children }
+    </div>
 );
 
 /**
@@ -186,8 +205,10 @@ export const Radio = ( { className = 'radio', checkedLink } ) => (
  *     <Checkbox checkedLink={ boolLink } />
  */
 
-export const Checkbox = ( { className = 'checkbox', checkedLink } ) => (
+export const Checkbox = ( { className = 'checkbox', checkedLink, children } ) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( x => !x ) }
-    />
+    >
+        { children }
+    </div>
 );
