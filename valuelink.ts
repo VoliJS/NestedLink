@@ -8,7 +8,10 @@ export type Transform< T > = ( value : T, event? : {} ) => T
 
 export type EventHandler = ( event : {} ) => void
 
-export type Validator< T > = ( value : T ) => boolean
+export interface Validator< T >{
+    ( value : T ) : boolean
+    error? : any
+}
 
 export type Iterator = ( link : ChainedLink, key : string | number ) => any
 
@@ -149,7 +152,7 @@ abstract class Link< T >{
      */
     check( whenValid : Validator< T >, error? : any ) : this {
         if( !this.error && !whenValid( this.value ) ){
-            this.error = error || defaultError;
+            this.error = error || whenValid.error || defaultError;
         }
 
         return this;
@@ -244,15 +247,18 @@ interface Helper {
     remove( obj : any, key : string | number ) : any
 }
 
+const ArrayProto = Array.prototype,
+      ObjectProto = Object.prototype;
+
 function helpers( value ) : Helper {
-    switch( value && Object.getPrototypeOf( value ) ){
-        case Array.prototype :
-            return arrayHelpers;
-        case Object.prototype :
-            return objectHelpers;
-        default:
-            return dummyHelpers;
+    if( value && typeof value === 'object' ){
+        switch( Object.getPrototypeOf( value ) ){
+            case ArrayProto  : return arrayHelpers;
+            case ObjectProto : return objectHelpers;
+        }
     }
+
+    return dummyHelpers;
 }
 
 // Do nothing for types other than Array and plain Object.

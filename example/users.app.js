@@ -66,11 +66,11 @@
 	
 	var _valuelink2 = _interopRequireDefault(_valuelink);
 	
-	var _reactModal = __webpack_require__(194);
+	var _reactModal = __webpack_require__(192);
 	
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 	
-	var _tagsJsx = __webpack_require__(177);
+	var _tags = __webpack_require__(177);
 	
 	var UsersList = _react2['default'].createClass({
 	    displayName: 'UsersList',
@@ -208,8 +208,6 @@
 	    );
 	};
 	
-	var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-	
 	var EditUser = _react2['default'].createClass({
 	    displayName: 'EditUser',
 	
@@ -248,17 +246,11 @@
 	    render: function render() {
 	        var linked = _valuelink2['default'].all(this, 'name', 'email', 'isActive');
 	
-	        linked.name.check(function (x) {
-	            return x;
-	        }, 'Name is required').check(function (x) {
+	        linked.name.check(_tags.isRequired).check(function (x) {
 	            return x.indexOf(' ') < 0;
 	        }, 'Spaces are not allowed');
 	
-	        linked.email.check(function (x) {
-	            return x;
-	        }, 'Email is required').check(function (x) {
-	            return x.match(emailPattern);
-	        }, 'Email is invalid');
+	        linked.email.check(_tags.isRequired).check(_tags.isEmail);
 	
 	        return _react2['default'].createElement(
 	            'form',
@@ -279,7 +271,7 @@
 	                'label',
 	                null,
 	                'Is active: ',
-	                _react2['default'].createElement(_tagsJsx.Input, { type: 'checkbox', checkedLink: linked.isActive })
+	                _react2['default'].createElement(_tags.Input, { type: 'checkbox', checkedLink: linked.isActive })
 	            ),
 	            _react2['default'].createElement(
 	                'button',
@@ -299,7 +291,7 @@
 	    return _react2['default'].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(_tagsJsx.Input, props),
+	        _react2['default'].createElement(_tags.Input, props),
 	        _react2['default'].createElement(
 	            'div',
 	            { className: 'validation-error' },
@@ -359,7 +351,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
+	exports.push([module.id, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.invalid.required {\r\n    border-color: yellow;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
 	
 	// exports
 
@@ -20890,7 +20882,7 @@
 	     */
 	    Link.prototype.check = function (whenValid, error) {
 	        if (!this.error && !whenValid(this.value)) {
-	            this.error = error || defaultError;
+	            this.error = error || whenValid.error || defaultError;
 	        }
 	        return this;
 	    };
@@ -20989,15 +20981,18 @@
 	    return ChainedLink;
 	})(Link);
 	exports.ChainedLink = ChainedLink;
+	var ArrayProto = Array.prototype,
+	    ObjectProto = Object.prototype;
 	function helpers(value) {
-	    switch (value && Object.getPrototypeOf(value)) {
-	        case Array.prototype:
-	            return arrayHelpers;
-	        case Object.prototype:
-	            return objectHelpers;
-	        default:
-	            return dummyHelpers;
+	    if (value && typeof value === 'object') {
+	        switch (Object.getPrototypeOf(value)) {
+	            case ArrayProto:
+	                return arrayHelpers;
+	            case ObjectProto:
+	                return objectHelpers;
+	        }
 	    }
+	    return dummyHelpers;
 	}
 	// Do nothing for types other than Array and plain Object.
 	var dummyHelpers = {
@@ -21104,15 +21099,31 @@
 	
 	'use strict';
 	
-	var _objectWithoutProperties = __webpack_require__(178)['default'];
-	
-	var _extends = __webpack_require__(179)['default'];
-	
-	var _interopRequireDefault = __webpack_require__(1)['default'];
+	var _Object$assign = __webpack_require__(178)['default'];
 	
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
+	
+	var _extends = _Object$assign || function (target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	        var source = arguments[i];for (var key in source) {
+	            if (Object.prototype.hasOwnProperty.call(source, key)) {
+	                target[key] = source[key];
+	            }
+	        }
+	    }return target;
+	};
+	
+	function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+	
+	function _objectWithoutProperties(obj, keys) {
+	    var target = {};for (var i in obj) {
+	        if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	    }return target;
+	}
 	
 	var _react = __webpack_require__(6);
 	
@@ -21134,37 +21145,43 @@
 	 *      <input type="text"     valueLink={ linkToString } />
 	 */
 	
-	var Input = function Input(_ref) {
-	    var _ref$invalid = _ref.invalid;
-	    var invalid = _ref$invalid === undefined ? 'invalid' : _ref$invalid;
-	    var _ref$className = _ref.className;
-	    var className = _ref$className === undefined ? '' : _ref$className;
-	    var valueLink = _ref.valueLink;
-	    var checkedLink = _ref.checkedLink;
+	function validationClasses(props, value, error) {
+	    var classNames = props.className ? [props.className] : [];
 	
-	    var props = _objectWithoutProperties(_ref, ['invalid', 'className', 'valueLink', 'checkedLink']);
+	    if (error) {
+	        classNames.push(props.invalidClass || 'invalid');
 	
-	    var type = props.type,
-	        link = valueLink || checkedLink;
+	        if (value === '') {
+	            classNames.push(props.requiredClass || 'required');
+	        }
+	    }
+	
+	    return classNames.join(' ');
+	}
+	
+	var Input = function Input(props) {
+	    var valueLink = props.valueLink;
+	    var checkedLink = props.checkedLink;
+	    var rest = _objectWithoutProperties(props, ['valueLink', 'checkedLink']);
+	    var type = props.type;
+	    var link = valueLink || checkedLink;
 	
 	    switch (type) {
 	        case 'checkbox':
-	            return _react2['default'].createElement('input', _extends({}, props, {
-	                className: className,
+	            return _react2['default'].createElement('input', _extends({}, rest, {
 	                checked: link.value,
 	                onChange: link.action(setBoolValue) }));
 	
 	        case 'radio':
-	            return _react2['default'].createElement('input', _extends({}, props, {
-	                className: className,
+	            return _react2['default'].createElement('input', _extends({}, rest, {
 	                checked: link.value === props.value,
-	                onChange: function (e) {
+	                onChange: function onChange(e) {
 	                    e.target.checked && link.set(props.value);
 	                } }));
 	
 	        default:
-	            return _react2['default'].createElement('input', _extends({}, props, {
-	                className: valueLink.error ? invalid + ' ' + className : className,
+	            return _react2['default'].createElement('input', _extends({}, rest, {
+	                className: validationClasses(rest, valueLink.value, valueLink.error),
 	                value: valueLink.value,
 	                onChange: valueLink.action(setValue) }));
 	    }
@@ -21174,14 +21191,16 @@
 	var isRequired = function isRequired(x) {
 	    return x != null && x !== '';
 	};
-	
 	exports.isRequired = isRequired;
+	isRequired.error = 'Required';
+	
 	var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 	var isEmail = function isEmail(x) {
 	    return x.match(emailPattern);
 	};
-	
 	exports.isEmail = isEmail;
+	isEmail.error = 'Should be valid email';
+	
 	// This number component rejects invalid input and modify link only with valid number values.
 	// Implementing numeric input rejection might be tricky.
 	var NumberInput = _react2['default'].createClass({
@@ -21201,7 +21220,7 @@
 	    setValue: function setValue(x) {
 	        // We're not using native state in order to avoid race condition.
 	        this.value = String(x);
-	        this.error = isNaN(Number(x));
+	        this.error = this.value === '' || isNaN(Number(x));
 	        this.forceUpdate();
 	    },
 	
@@ -21229,21 +21248,17 @@
 	
 	    render: function render() {
 	        var _props = this.props;
-	        var type = _props.type;
-	        var _props$invalid = _props.invalid;
-	        var invalid = _props$invalid === undefined ? 'invalid' : _props$invalid;
-	        var _props$className = _props.className;
-	        var className = _props$className === undefined ? '' : _props$className;
 	        var valueLink = _props.valueLink;
-	        var props = _objectWithoutProperties(_props, ['type', 'invalid', 'className', 'valueLink']);
+	        var props = _objectWithoutProperties(_props, ['valueLink']);
 	        var error = valueLink.error || this.error;
 	
-	        return _react2['default'].createElement('input', _extends({ type: 'text',
-	            className: error ? className + ' ' + invalid : className,
+	        return _react2['default'].createElement('input', _extends({}, props, {
+	            type: 'text',
+	            className: validationClasses(props, this.value, error),
 	            value: this.value,
 	            onKeyPress: this.onKeyPress,
 	            onChange: this.onChange
-	        }, props));
+	        }));
 	    },
 	
 	    onKeyPress: function onKeyPress(e) {
@@ -21289,17 +21304,13 @@
 	 *
 	 *     <TextArea valueLink={ linkToText } />
 	 */
-	var TextArea = function TextArea(_ref2) {
-	    var _ref2$invalid = _ref2.invalid;
-	    var invalid = _ref2$invalid === undefined ? 'invalid' : _ref2$invalid;
-	    var _ref2$className = _ref2.className;
-	    var className = _ref2$className === undefined ? '' : _ref2$className;
-	    var valueLink = _ref2.valueLink;
+	var TextArea = function TextArea(_ref) {
+	    var valueLink = _ref.valueLink;
 	
-	    var props = _objectWithoutProperties(_ref2, ['invalid', 'className', 'valueLink']);
+	    var props = _objectWithoutProperties(_ref, ['valueLink']);
 	
 	    return _react2['default'].createElement('textarea', _extends({}, props, {
-	        className: valueLink.error ? invalid + ' ' + className : className,
+	        className: validationClasses(props, valueLink.value, valueLink.error),
 	        value: valueLink.value,
 	        onChange: valueLink.action(setValue) }));
 	};
@@ -21314,19 +21325,15 @@
 	 *         <option value="b">B</option>
 	 *     </Select>
 	 */
-	var Select = function Select(_ref3) {
-	    var valueLink = _ref3.valueLink;
-	    var children = _ref3.children;
+	var Select = function Select(_ref2) {
+	    var valueLink = _ref2.valueLink;
+	    var children = _ref2.children;
 	
-	    var props = _objectWithoutProperties(_ref3, ['valueLink', 'children']);
+	    var props = _objectWithoutProperties(_ref2, ['valueLink', 'children']);
 	
-	    return _react2['default'].createElement(
-	        'select',
-	        _extends({}, props, {
-	            value: valueLink.value,
-	            onChange: valueLink.action(setValue) }),
-	        children
-	    );
+	    return _react2['default'].createElement('select', _extends({}, props, {
+	        value: valueLink.value,
+	        onChange: valueLink.action(setValue) }), children);
 	};
 	
 	exports.Select = Select;
@@ -21337,15 +21344,16 @@
 	 *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
 	 */
 	
-	var Radio = function Radio(_ref4) {
-	    var _ref4$className = _ref4.className;
-	    var className = _ref4$className === undefined ? 'radio' : _ref4$className;
-	    var checkedLink = _ref4.checkedLink;
+	var Radio = function Radio(_ref3) {
+	    var _ref3$className = _ref3.className;
+	    var className = _ref3$className === undefined ? 'radio' : _ref3$className;
+	    var checkedLink = _ref3.checkedLink;
+	    var children = _ref3.children;
 	    return _react2['default'].createElement('div', { className: className + (checkedLink.value ? ' selected' : ''),
 	        onClick: checkedLink.action(function () {
 	            return true;
 	        })
-	    });
+	    }, children);
 	};
 	
 	exports.Radio = Radio;
@@ -21356,91 +21364,48 @@
 	 *     <Checkbox checkedLink={ boolLink } />
 	 */
 	
-	var Checkbox = function Checkbox(_ref5) {
-	    var _ref5$className = _ref5.className;
-	    var className = _ref5$className === undefined ? 'checkbox' : _ref5$className;
-	    var checkedLink = _ref5.checkedLink;
+	var Checkbox = function Checkbox(_ref4) {
+	    var _ref4$className = _ref4.className;
+	    var className = _ref4$className === undefined ? 'checkbox' : _ref4$className;
+	    var checkedLink = _ref4.checkedLink;
+	    var children = _ref4.children;
 	    return _react2['default'].createElement('div', { className: className + (checkedLink.value ? ' selected' : ''),
 	        onClick: checkedLink.action(function (x) {
 	            return !x;
 	        })
-	    });
+	    }, children);
 	};
 	exports.Checkbox = Checkbox;
 
 /***/ },
 /* 178 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	exports["default"] = function (obj, keys) {
-	  var target = {};
-	
-	  for (var i in obj) {
-	    if (keys.indexOf(i) >= 0) continue;
-	    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-	    target[i] = obj[i];
-	  }
-	
-	  return target;
-	};
-	
-	exports.__esModule = true;
+	module.exports = { "default": __webpack_require__(179), __esModule: true };
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	var _Object$assign = __webpack_require__(180)["default"];
-	
-	exports["default"] = _Object$assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];
-	
-	    for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }
-	
-	  return target;
-	};
-	
-	exports.__esModule = true;
+	__webpack_require__(180);
+	module.exports = __webpack_require__(183).Object.assign;
 
 /***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(181), __esModule: true };
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(181);
+	
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(186)});
 
 /***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(182);
-	module.exports = __webpack_require__(185).Object.assign;
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.3.1 Object.assign(target, source)
-	var $export = __webpack_require__(183);
-	
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(188)});
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(184)
-	  , core      = __webpack_require__(185)
-	  , ctx       = __webpack_require__(186)
+	var global    = __webpack_require__(182)
+	  , core      = __webpack_require__(183)
+	  , ctx       = __webpack_require__(184)
 	  , PROTOTYPE = 'prototype';
 	
 	var $export = function(type, name, source){
@@ -21486,7 +21451,7 @@
 	module.exports = $export;
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -21495,18 +21460,18 @@
 	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 185 */
+/* 183 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '1.2.6'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 186 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(187);
+	var aFunction = __webpack_require__(185);
 	module.exports = function(fn, that, length){
 	  aFunction(fn);
 	  if(that === undefined)return fn;
@@ -21527,7 +21492,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -21536,16 +21501,16 @@
 	};
 
 /***/ },
-/* 188 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.1 Object.assign(target, source, ...)
 	var $        = __webpack_require__(176)
-	  , toObject = __webpack_require__(189)
-	  , IObject  = __webpack_require__(191);
+	  , toObject = __webpack_require__(187)
+	  , IObject  = __webpack_require__(189);
 	
 	// should work with symbols and should have deterministic property order (V8 bug)
-	module.exports = __webpack_require__(193)(function(){
+	module.exports = __webpack_require__(191)(function(){
 	  var a = Object.assign
 	    , A = {}
 	    , B = {}
@@ -21574,17 +21539,17 @@
 	} : Object.assign;
 
 /***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(190);
+	var defined = __webpack_require__(188);
 	module.exports = function(it){
 	  return Object(defined(it));
 	};
 
 /***/ },
-/* 190 */
+/* 188 */
 /***/ function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -21594,17 +21559,17 @@
 	};
 
 /***/ },
-/* 191 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(192);
+	var cof = __webpack_require__(190);
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
 /***/ },
-/* 192 */
+/* 190 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -21614,7 +21579,7 @@
 	};
 
 /***/ },
-/* 193 */
+/* 191 */
 /***/ function(module, exports) {
 
 	module.exports = function(exec){
@@ -21626,25 +21591,25 @@
 	};
 
 /***/ },
-/* 194 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(195);
+	module.exports = __webpack_require__(193);
 	
 
 
 /***/ },
-/* 195 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(6);
 	var ReactDOM = __webpack_require__(38);
-	var ExecutionEnvironment = __webpack_require__(196);
-	var ModalPortal = React.createFactory(__webpack_require__(197));
-	var ariaAppHider = __webpack_require__(212);
-	var elementClass = __webpack_require__(213);
+	var ExecutionEnvironment = __webpack_require__(194);
+	var ModalPortal = React.createFactory(__webpack_require__(195));
+	var ariaAppHider = __webpack_require__(210);
+	var elementClass = __webpack_require__(211);
 	var renderSubtreeIntoContainer = __webpack_require__(38).unstable_renderSubtreeIntoContainer;
-	var Assign = __webpack_require__(201);
+	var Assign = __webpack_require__(199);
 	
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
 	var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
@@ -21752,7 +21717,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 196 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -21797,14 +21762,14 @@
 
 
 /***/ },
-/* 197 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(6);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(198);
-	var scopeTab = __webpack_require__(200);
-	var Assign = __webpack_require__(201);
+	var focusManager = __webpack_require__(196);
+	var scopeTab = __webpack_require__(198);
+	var Assign = __webpack_require__(199);
 	
 	// so that our CSS is statically analyzable
 	var CLASS_NAMES = {
@@ -21989,10 +21954,10 @@
 
 
 /***/ },
-/* 198 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(199);
+	var findTabbable = __webpack_require__(197);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -22063,7 +22028,7 @@
 
 
 /***/ },
-/* 199 */
+/* 197 */
 /***/ function(module, exports) {
 
 	/*!
@@ -22119,10 +22084,10 @@
 
 
 /***/ },
-/* 200 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(199);
+	var findTabbable = __webpack_require__(197);
 	
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -22144,7 +22109,7 @@
 
 
 /***/ },
-/* 201 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22155,9 +22120,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(202),
-	    createAssigner = __webpack_require__(208),
-	    keys = __webpack_require__(204);
+	var baseAssign = __webpack_require__(200),
+	    createAssigner = __webpack_require__(206),
+	    keys = __webpack_require__(202);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -22230,7 +22195,7 @@
 
 
 /***/ },
-/* 202 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22241,8 +22206,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(203),
-	    keys = __webpack_require__(204);
+	var baseCopy = __webpack_require__(201),
+	    keys = __webpack_require__(202);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -22263,7 +22228,7 @@
 
 
 /***/ },
-/* 203 */
+/* 201 */
 /***/ function(module, exports) {
 
 	/**
@@ -22301,7 +22266,7 @@
 
 
 /***/ },
-/* 204 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22312,9 +22277,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(205),
-	    isArguments = __webpack_require__(206),
-	    isArray = __webpack_require__(207);
+	var getNative = __webpack_require__(203),
+	    isArguments = __webpack_require__(204),
+	    isArray = __webpack_require__(205);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -22543,7 +22508,7 @@
 
 
 /***/ },
-/* 205 */
+/* 203 */
 /***/ function(module, exports) {
 
 	/**
@@ -22686,7 +22651,7 @@
 
 
 /***/ },
-/* 206 */
+/* 204 */
 /***/ function(module, exports) {
 
 	/**
@@ -22935,7 +22900,7 @@
 
 
 /***/ },
-/* 207 */
+/* 205 */
 /***/ function(module, exports) {
 
 	/**
@@ -23121,7 +23086,7 @@
 
 
 /***/ },
-/* 208 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23132,9 +23097,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(209),
-	    isIterateeCall = __webpack_require__(210),
-	    restParam = __webpack_require__(211);
+	var bindCallback = __webpack_require__(207),
+	    isIterateeCall = __webpack_require__(208),
+	    restParam = __webpack_require__(209);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -23179,7 +23144,7 @@
 
 
 /***/ },
-/* 209 */
+/* 207 */
 /***/ function(module, exports) {
 
 	/**
@@ -23250,7 +23215,7 @@
 
 
 /***/ },
-/* 210 */
+/* 208 */
 /***/ function(module, exports) {
 
 	/**
@@ -23388,7 +23353,7 @@
 
 
 /***/ },
-/* 211 */
+/* 209 */
 /***/ function(module, exports) {
 
 	/**
@@ -23461,7 +23426,7 @@
 
 
 /***/ },
-/* 212 */
+/* 210 */
 /***/ function(module, exports) {
 
 	var _element = typeof document !== 'undefined' ? document.body : null;
@@ -23509,7 +23474,7 @@
 
 
 /***/ },
-/* 213 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = function(opts) {

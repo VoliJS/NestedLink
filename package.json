@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "React valueLink implementation with links to objects, validation, and purely functional state updates.",
   "main": "valuelink.js",
   "repository": {
@@ -48,7 +48,11 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack",
+    "build": "npm run build-links && npm run build-tags && npm run build-examples",
+
+    "build-links" : "node_modules/.bin/tsc",
+    "build-examples" : "node_modules/.bin/webpack",
+    "build-tags" : "node_modules/.bin/babel tags.jsx --out-file tags.js",
     "watch": "node_modules/.bin/webpack --progress --colors --watch"
   }
 }
