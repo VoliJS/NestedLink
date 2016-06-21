@@ -44,6 +44,7 @@
     "valuelink.ts",
     "valuelink.d.ts",
     "tags.jsx",
+    "tags.js",
     "LICENSE"
   ],
   "scripts": {
