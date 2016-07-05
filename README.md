@@ -200,14 +200,32 @@ Read more about links to objects updates in the next section.
 ##### ![method] link.onChange( callback : any => void ) : Link
 
 Create the wrapper for existing link which will invoke callback whenever new
-value is set.
+value is set. Similar to:
+
+```
+Link.value( link.value, x => {
+    callback( x );
+    link.set( x );
+});
+```
 
 ##### ![method] link.pipe( transform : any => any ) : Link
 
 Create the wrapper for existing link which will invoke given transform function
 _before_ new value is set. Returned value will be used as new link value,
-and if it's `undefined` update will be rejected.
- 
+and if it's `undefined` update will be rejected. Similar to:
+
+```
+Link.value( link.value, x => {
+    const y = callback( x );
+    if( y !== undefined ){
+        link.set( y );
+    }
+});
+```  
+
+Usage example:
+
 ```jsx
 <Input valueLink={ strLink.pipe( x => x && x.toUpperCase() ) }/>
 ```
