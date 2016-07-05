@@ -20817,11 +20817,10 @@
 	    });
 	    Link.prototype.onChange = function (handler) {
 	        var _this = this;
-	        var set = this.set;
-	        this.set = function (x) {
+	        return new CloneLink(this, function (x) {
 	            handler(x);
-	            set.call(_this, x);
-	        };
+	            _this.set(x);
+	        });
 	    };
 	    // DEPRECATED: Old React method for backward compatibility
 	    Link.prototype.requestChange = function (x) {
@@ -20831,6 +20830,14 @@
 	    Link.prototype.update = function (transform, e) {
 	        var next = transform(this.clone(), e);
 	        next === void 0 || this.set(next);
+	    };
+	    // Create new link which applies transform function on set.
+	    Link.prototype.pipe = function (handler) {
+	        var _this = this;
+	        return new CloneLink(this, function (x) {
+	            var next = handler(x);
+	            next === void 0 || _this.set(next);
+	        });
 	    };
 	    // Create UI event handler function which will update the link with a given transform function.
 	    Link.prototype.action = function (transform) {
@@ -20908,6 +20915,18 @@
 	    return CustomLink;
 	})(Link);
 	exports.CustomLink = CustomLink;
+	var CloneLink = (function (_super) {
+	    __extends(CloneLink, _super);
+	    function CloneLink(parent, set) {
+	        _super.call(this, parent.value);
+	        this.set = set;
+	        var error = parent.error;
+	        if (error) this.error = error;
+	    }
+	    CloneLink.prototype.set = function (x) {};
+	    return CloneLink;
+	})(Link);
+	exports.CloneLink = CloneLink;
 	var StateLink = (function (_super) {
 	    __extends(StateLink, _super);
 	    function StateLink(value, component, key) {

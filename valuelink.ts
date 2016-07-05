@@ -72,12 +72,11 @@ abstract class Link< T >{
     // Link set functions
     abstract set( x : T ) : void
 
-    onChange( handler : ( x : T ) => void ) : void {
-        const { set } = this;
-        this.set = ( x : T ) => {
+    onChange( handler : ( x : T ) => void ) : CloneLink< T > {
+        return new CloneLink( this, (x : T ) => {
             handler( x );
-            set.call( this, x );
-        }
+            this.set( x );
+        });
     }
 
     // DEPRECATED: Old React method for backward compatibility
@@ -89,6 +88,14 @@ abstract class Link< T >{
     update( transform : Transform< T >, e? : Object ) : void {
         const next = transform( this.clone(), e );
         next === void 0 || this.set( next );
+    }
+
+    // Create new link which applies transform function on set.
+    pipe( handler : Transform< T > ) : CloneLink< T > {
+        return new CloneLink( this, x =>{
+            const next = handler( x );
+            next === void 0 || this.set( next );
+        } );
     }
 
     // Create UI event handler function which will update the link with a given transform function.
@@ -175,6 +182,18 @@ export class CustomLink< T > extends Link< T > {
     constructor( value : T, set : ( x : T ) => void ){
         super( value );
         this.set = set;
+    }
+}
+
+export class CloneLink< T > extends Link< T > {
+    set( x ){}
+
+    constructor( parent : Link< T >, set : ( x : T ) => void ){
+        super( parent.value );
+        this.set = set;
+
+        const { error } = parent;
+        if( error ) this.error = error;
     }
 }
 

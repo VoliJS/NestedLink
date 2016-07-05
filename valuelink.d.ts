@@ -30,9 +30,10 @@ declare abstract class Link<T> {
     error: any;
     validationError: any;
     abstract set(x: T): void;
-    onChange(handler: (x: T) => void): void;
+    onChange(handler: (x: T) => void): CloneLink<T>;
     requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
+    pipe(handler: Transform<T>): CloneLink<T>;
     action(transform: Transform<T>): EventHandler;
     equals(truthyValue: any): EqualsLink;
     contains(element: any): ContainsLink;
@@ -53,6 +54,10 @@ export default Link;
 export declare class CustomLink<T> extends Link<T> {
     set(x: any): void;
     constructor(value: T, set: (x: T) => void);
+}
+export declare class CloneLink<T> extends Link<T> {
+    set(x: any): void;
+    constructor(parent: Link<T>, set: (x: T) => void);
 }
 export declare class StateLink<T> extends Link<T> {
     component: StatefulComponent;

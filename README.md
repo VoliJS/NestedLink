@@ -51,7 +51,7 @@ Features:
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
 - Validator functions for `link.check` may contain default `error` message.
-- `link.onChange( x => ... )` for listening on link changes.
+- `link.onChange( callback )` and `link.pipe( transform )` for listening on link changes.
 - tags.jsx:
     - `<NumberInput/>` tag with input rejection for numbers.
     - All text input tags adds `required` class if there's validation error and value is empty (issue #5). 
@@ -197,6 +197,21 @@ Then, following custom link will allow you to add new user with the same form el
 
 Read more about links to objects updates in the next section.
 
+##### ![method] link.onChange( callback : any => void ) : Link
+
+Create the wrapper for existing link which will invoke callback whenever new
+value is set.
+
+##### ![method] link.pipe( transform : any => any ) : Link
+
+Create the wrapper for existing link which will invoke given transform function
+_before_ new value is set. Returned value will be used as new link value,
+and if it's `undefined` update will be rejected.
+ 
+```jsx
+<Input valueLink={ strLink.pipe( x => x && x.toUpperCase() ) }/>
+```
+
 ### Note for TypeScript users
 
 `Link` actually is parametric type `Link< T >`, where T is the type of the enclosed value.
@@ -249,12 +264,6 @@ const setValue = ( x, e ) => e.target.value;
 <input  value={ link.value }
         onChange={ link.action( setValue ) } />
 ```
-
-### Update events listeners
-
-##### ![method] link.onChange( x : any => void ) : void
-
-Attach change event listener, invoked when link value is changed through links API.
 
 ### Link to objects and arrays updates
 

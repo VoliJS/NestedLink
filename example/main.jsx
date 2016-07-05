@@ -113,7 +113,7 @@ const SimpleBinding = ({ strLink, boolLink }) => {
 
 const JointLinks = ({ strLink, str2Link }) => {
     strLink.check( isNumber );
-    strLink.onChange( x => str2Link.set( x ) );
+    const jointLink = strLink.onChange( x => str2Link.set( x ) );
 
     return (
         <fieldset>
@@ -121,12 +121,12 @@ const JointLinks = ({ strLink, str2Link }) => {
 
             <label>
                 First
-                <Input valueLink={ strLink }/>
+                <Input valueLink={ jointLink }/>
             </label>
 
             <label>
                 Should update when first changes
-                <Input valueLink={ str2Link }/>
+                <Input valueLink={ str2Link.pipe( x => x && x.toUpperCase() ) }/>
             </label>
         </fieldset>
     );
