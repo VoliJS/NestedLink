@@ -30,6 +30,7 @@ declare abstract class Link<T> {
     error: any;
     validationError: any;
     abstract set(x: T): void;
+    onChange(handler: (x: T) => void): void;
     requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
     action(transform: Transform<T>): EventHandler;

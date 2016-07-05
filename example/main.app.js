@@ -80,6 +80,7 @@
 	
 	            // Simple binding to inputs
 	            str: 67,
+	            str2: "dedede",
 	            bool: true,
 	
 	            // Binding to checkboxes
@@ -102,7 +103,7 @@
 	    },
 	
 	    render: function render() {
-	        var links = _valuelink2['default'].all(this, 'str', 'num', 'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag');
+	        var links = _valuelink2['default'].all(this, 'str', 'str2', 'num', 'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag');
 	
 	        return _react2['default'].createElement(
 	            'div',
@@ -110,6 +111,7 @@
 	            _react2['default'].createElement(SimpleBinding, { strLink: links.str, boolLink: links.bool }),
 	            _react2['default'].createElement(Numeric, { numLink: links.num }),
 	            _react2['default'].createElement(DeepLinkedInputs, { objLink: links.deep }),
+	            _react2['default'].createElement(JointLinks, { strLink: links.str, str2Link: links.str2 }),
 	            _react2['default'].createElement(CheckboxObjGroup, { flagsLink: links.objFlags }),
 	            _react2['default'].createElement(CustomCheckboxObjGroup, { flagsLink: links.objFlags }),
 	            _react2['default'].createElement(CheckboxListGroup, { flagsLink: links.arrFlags }),
@@ -190,8 +192,40 @@
 	    );
 	};
 	
-	var DeepLinkedInputs = function DeepLinkedInputs(_ref3) {
-	    var objLink = _ref3.objLink;
+	var JointLinks = function JointLinks(_ref3) {
+	    var strLink = _ref3.strLink;
+	    var str2Link = _ref3.str2Link;
+	
+	    strLink.check(isNumber);
+	    strLink.onChange(function (x) {
+	        return str2Link.set(x);
+	    });
+	
+	    return _react2['default'].createElement(
+	        'fieldset',
+	        null,
+	        _react2['default'].createElement(
+	            'legend',
+	            null,
+	            'Joint links'
+	        ),
+	        _react2['default'].createElement(
+	            'label',
+	            null,
+	            'First',
+	            _react2['default'].createElement(_tags.Input, { valueLink: strLink })
+	        ),
+	        _react2['default'].createElement(
+	            'label',
+	            null,
+	            'Should update when first changes',
+	            _react2['default'].createElement(_tags.Input, { valueLink: str2Link })
+	        )
+	    );
+	};
+	
+	var DeepLinkedInputs = function DeepLinkedInputs(_ref4) {
+	    var objLink = _ref4.objLink;
 	
 	    var arrayLink = objLink.at('text');
 	    return _react2['default'].createElement(
@@ -227,8 +261,8 @@
 	    );
 	};
 	
-	var CheckboxObjGroup = function CheckboxObjGroup(_ref4) {
-	    var flagsLink = _ref4.flagsLink;
+	var CheckboxObjGroup = function CheckboxObjGroup(_ref5) {
+	    var flagsLink = _ref5.flagsLink;
 	
 	    var links = flagsLink.pick('a', 'b');
 	
@@ -255,8 +289,8 @@
 	    );
 	};
 	
-	var CustomCheckboxObjGroup = function CustomCheckboxObjGroup(_ref5) {
-	    var flagsLink = _ref5.flagsLink;
+	var CustomCheckboxObjGroup = function CustomCheckboxObjGroup(_ref6) {
+	    var flagsLink = _ref6.flagsLink;
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -280,8 +314,8 @@
 	    );
 	};
 	
-	var CheckboxListGroup = function CheckboxListGroup(_ref6) {
-	    var flagsLink = _ref6.flagsLink;
+	var CheckboxListGroup = function CheckboxListGroup(_ref7) {
+	    var flagsLink = _ref7.flagsLink;
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -305,8 +339,8 @@
 	    );
 	};
 	
-	var RadioGroup = function RadioGroup(_ref7) {
-	    var flagLink = _ref7.flagLink;
+	var RadioGroup = function RadioGroup(_ref8) {
+	    var flagLink = _ref8.flagLink;
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -330,8 +364,8 @@
 	    );
 	};
 	
-	var SelectOption = function SelectOption(_ref8) {
-	    var flagLink = _ref8.flagLink;
+	var SelectOption = function SelectOption(_ref9) {
+	    var flagLink = _ref9.flagLink;
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -362,8 +396,8 @@
 	    );
 	};
 	
-	var CustomRadioGroup = function CustomRadioGroup(_ref9) {
-	    var flagLink = _ref9.flagLink;
+	var CustomRadioGroup = function CustomRadioGroup(_ref10) {
+	    var flagLink = _ref10.flagLink;
 	    return _react2['default'].createElement(
 	        'fieldset',
 	        null,
@@ -20902,6 +20936,14 @@
 	        enumerable: true,
 	        configurable: true
 	    });
+	    Link.prototype.onChange = function (handler) {
+	        var _this = this;
+	        var set = this.set;
+	        this.set = function (x) {
+	            handler(x);
+	            set.call(_this, x);
+	        };
+	    };
 	    // DEPRECATED: Old React method for backward compatibility
 	    Link.prototype.requestChange = function (x) {
 	        this.set(x);

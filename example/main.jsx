@@ -18,6 +18,7 @@ const App = React.createClass( {
 
             // Simple binding to inputs
             str       : 67,
+            str2      : "dedede",
             bool      : true,
 
             // Binding to checkboxes
@@ -40,13 +41,14 @@ const App = React.createClass( {
     },
 
     render(){
-        const links = Link.all( this, 'str', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
+        const links = Link.all( this, 'str', 'str2', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
 
         return (
             <div>
                 <SimpleBinding strLink={ links.str } boolLink={ links.bool } />
                 <Numeric numLink={ links.num } />
                 <DeepLinkedInputs objLink={ links.deep } />
+                <JointLinks strLink={ links.str } str2Link={ links.str2 } />
 
                 <CheckboxObjGroup flagsLink={ links.objFlags } />
                 <CustomCheckboxObjGroup flagsLink={ links.objFlags } />
@@ -104,6 +106,27 @@ const SimpleBinding = ({ strLink, boolLink }) => {
             <label>
                 Checkbox bound to bool
                 <Input type="checkbox" checkedLink={ boolLink }/>
+            </label>
+        </fieldset>
+    );
+};
+
+const JointLinks = ({ strLink, str2Link }) => {
+    strLink.check( isNumber );
+    strLink.onChange( x => str2Link.set( x ) );
+
+    return (
+        <fieldset>
+            <legend>Joint links</legend>
+
+            <label>
+                First
+                <Input valueLink={ strLink }/>
+            </label>
+
+            <label>
+                Should update when first changes
+                <Input valueLink={ str2Link }/>
             </label>
         </fieldset>
     );

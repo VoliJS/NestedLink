@@ -72,6 +72,14 @@ abstract class Link< T >{
     // Link set functions
     abstract set( x : T ) : void
 
+    onChange( handler : ( x : T ) => void ) : void {
+        const { set } = this;
+        this.set = ( x : T ) => {
+            handler( x );
+            set.call( this, x );
+        }
+    }
+
     // DEPRECATED: Old React method for backward compatibility
     requestChange( x : T ) : void {
         this.set( x );

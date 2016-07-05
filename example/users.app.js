@@ -20815,6 +20815,14 @@
 	        enumerable: true,
 	        configurable: true
 	    });
+	    Link.prototype.onChange = function (handler) {
+	        var _this = this;
+	        var set = this.set;
+	        this.set = function (x) {
+	            handler(x);
+	            set.call(_this, x);
+	        };
+	    };
 	    // DEPRECATED: Old React method for backward compatibility
 	    Link.prototype.requestChange = function (x) {
 	        this.set(x);

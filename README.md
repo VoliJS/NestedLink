@@ -51,6 +51,7 @@ Features:
 - Added "Users List" application example.
 - `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
 - Validator functions for `link.check` may contain default `error` message.
+- `link.onChange( x => ... )` for listening on link changes.
 - tags.jsx:
     - `<NumberInput/>` tag with input rejection for numbers.
     - All text input tags adds `required` class if there's validation error and value is empty (issue #5). 
@@ -248,6 +249,12 @@ const setValue = ( x, e ) => e.target.value;
 <input  value={ link.value }
         onChange={ link.action( setValue ) } />
 ```
+
+### Update events listeners
+
+##### ![method] link.onChange( x : any => void ) : void
+
+Attach change event listener, invoked when link value is changed through links API.
 
 ### Link to objects and arrays updates
 
