@@ -109,7 +109,7 @@ export const NumberInput = React.createClass( {
     },
 
     render(){
-        const { valueLink, ...props } = this.props,
+        const { valueLink, positive, integer, ...props } = this.props,
               error = valueLink.error || this.error;
 
         return <input { ...props }
