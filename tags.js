@@ -140,7 +140,9 @@ var NumberInput = _react2['default'].createClass({
     render: function render() {
         var _props = this.props;
         var valueLink = _props.valueLink;
-        var props = _objectWithoutProperties(_props, ['valueLink']);
+        var positive = _props.positive;
+        var integer = _props.integer;
+        var props = _objectWithoutProperties(_props, ['valueLink', 'positive', 'integer']);
         var error = valueLink.error || this.error;
 
         return _react2['default'].createElement('input', _extends({}, props, {
