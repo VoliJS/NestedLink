@@ -107,6 +107,10 @@ abstract class Link< T >{
         return new EqualsLink( this, truthyValue );
     }
 
+    enabled( defaultValue = '' ) : EnabledLink {
+        return new EnabledLink( this, defaultValue );
+    }
+
     // Array-only links methods
     contains( element : any ) : ContainsLink {
         return new ContainsLink( this, element );
@@ -212,8 +216,18 @@ export class EqualsLink extends Link< boolean > {
         super( parent.value === truthyValue );
     }
 
-    set( x : boolean ){
+    set( x : boolean ) : void {
         this.parent.set( x ? this.truthyValue : null );
+    }
+}
+
+export class EnabledLink extends Link< boolean > {
+    constructor( public parent : Link< any >, public defaultValue ){
+        super( parent.value != null );
+    }
+
+    set( x : boolean ){
+        this.parent.set( x ? this.defaultValue : null );
     }
 }
 

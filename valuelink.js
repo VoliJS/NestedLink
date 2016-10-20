@@ -74,6 +74,10 @@ var Link = (function () {
     Link.prototype.equals = function (truthyValue) {
         return new EqualsLink(this, truthyValue);
     };
+    Link.prototype.enabled = function (defaultValue) {
+        if (defaultValue === void 0) { defaultValue = ''; }
+        return new EnabledLink(this, defaultValue);
+    };
     // Array-only links methods
     Link.prototype.contains = function (element) {
         return new ContainsLink(this, element);
@@ -179,6 +183,19 @@ var EqualsLink = (function (_super) {
     return EqualsLink;
 }(Link));
 exports.EqualsLink = EqualsLink;
+var EnabledLink = (function (_super) {
+    __extends(EnabledLink, _super);
+    function EnabledLink(parent, defaultValue) {
+        _super.call(this, parent.value != null);
+        this.parent = parent;
+        this.defaultValue = defaultValue;
+    }
+    EnabledLink.prototype.set = function (x) {
+        this.parent.set(x ? this.defaultValue : null);
+    };
+    return EnabledLink;
+}(Link));
+exports.EnabledLink = EnabledLink;
 var ContainsLink = (function (_super) {
     __extends(ContainsLink, _super);
     function ContainsLink(parent, element) {

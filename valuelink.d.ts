@@ -28,7 +28,7 @@ declare abstract class Link<T> {
     static value<T>(value: T, set: (x: T) => void): CustomLink<T>;
     constructor(value: T);
     error: any;
-    validationError: any;
+    readonly validationError: any;
     abstract set(x: T): void;
     onChange(handler: (x: T) => void): CloneLink<T>;
     requestChange(x: T): void;
@@ -36,6 +36,7 @@ declare abstract class Link<T> {
     pipe(handler: Transform<T>): CloneLink<T>;
     action(transform: Transform<T>): EventHandler;
     equals(truthyValue: any): EqualsLink;
+    enabled(defaultValue?: string): EnabledLink;
     contains(element: any): ContainsLink;
     push(): void;
     unshift(): void;
@@ -69,6 +70,12 @@ export declare class EqualsLink extends Link<boolean> {
     parent: Link<any>;
     truthyValue: any;
     constructor(parent: Link<any>, truthyValue: any);
+    set(x: boolean): void;
+}
+export declare class EnabledLink extends Link<boolean> {
+    parent: Link<any>;
+    defaultValue: any;
+    constructor(parent: Link<any>, defaultValue: any);
     set(x: boolean): void;
 }
 export declare class ContainsLink extends Link<boolean> {

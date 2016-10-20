@@ -178,6 +178,22 @@ Useful for radio groups.
 const optionXLink = stringLink.equals( 'optionX' );
 ```
 
+##### ![method] linkToAny.enabled( defaultValue = '' ) : Link
+
+Create boolean link which sets original link to `null` on `false`, or to the given `defaultValue` on `true`.
+
+Useful for checkboxes controlling individual `<Input>` controls. `Input` must be modified to disable itself
+when its `valueLink.value === null`.
+
+```javascript
+const textLink = Link.state( this, 'text' );
+
+return (
+    <Checkbox checkedLink={ textLink.enabled() } />
+    <Input valueLink={ textLink } /> 
+);
+``` 
+
 ### Custom links
 
 ##### ![static] Link.value( value, nextValue => void ) : Link
