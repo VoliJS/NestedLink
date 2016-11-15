@@ -28,7 +28,7 @@ declare abstract class Link<T> {
     static value<T>(value: T, set: (x: T) => void): CustomLink<T>;
     constructor(value: T);
     error: any;
-    readonly validationError: any;
+    validationError: any;
     abstract set(x: T): void;
     onChange(handler: (x: T) => void): CloneLink<T>;
     requestChange(x: T): void;

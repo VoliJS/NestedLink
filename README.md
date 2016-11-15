@@ -225,7 +225,7 @@ Link.value( link.value, x => {
 });
 ```
 
-##### ![method] link.pipe( transform : any => any ) : Link
+##### ![method] link.pipe( transform : ( next, prev ) => any ) : Link
 
 Create the wrapper for existing link which will invoke given transform function
 _before_ new value is set. Returned value will be used as new link value,
@@ -233,7 +233,7 @@ and if it's `undefined` update will be rejected. Similar to:
 
 ```
 Link.value( link.value, x => {
-    const y = callback( x );
+    const y = callback( x, link.value );
     if( y !== undefined ){
         link.set( y );
     }

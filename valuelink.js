@@ -62,7 +62,7 @@ var Link = (function () {
     Link.prototype.pipe = function (handler) {
         var _this = this;
         return new CloneLink(this, function (x) {
-            var next = handler(x);
+            var next = handler(x, _this.value);
             next === void 0 || _this.set(next);
         });
     };

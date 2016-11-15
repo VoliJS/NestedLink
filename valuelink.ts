@@ -93,7 +93,7 @@ abstract class Link< T >{
     // Create new link which applies transform function on set.
     pipe( handler : Transform< T > ) : CloneLink< T > {
         return new CloneLink( this, x =>{
-            const next = handler( x );
+            const next = handler( x, this.value );
             next === void 0 || this.set( next );
         } );
     }
