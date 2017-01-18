@@ -211,6 +211,11 @@ export class StateLink< T > extends Link< T > {
     }
 }
 
+Object.defineProperty( StateLink.prototype, 'component', {
+    enumerable : false,
+    value : void 0
+});
+
 export class EqualsLink extends Link< boolean > {
     constructor( public parent : Link< any >, public truthyValue ){
         super( parent.value === truthyValue );

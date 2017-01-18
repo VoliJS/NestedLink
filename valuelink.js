@@ -170,6 +170,10 @@ var StateLink = (function (_super) {
     return StateLink;
 }(Link));
 exports.StateLink = StateLink;
+Object.defineProperty(StateLink.prototype, 'component', {
+    enumerable: false,
+    value: void 0
+});
 var EqualsLink = (function (_super) {
     __extends(EqualsLink, _super);
     function EqualsLink(parent, truthyValue) {
