@@ -23,18 +23,15 @@ export interface StatefulComponent{
     setState : ( attrs : {} ) => void
 
     // value links cache, to make pure render optimization possible
-    links? : StateLinks
+    _stateLink? : StateLink
 }
 
 // Main Link class. All links must extend it.
 abstract class Link< T >{
     // Create link to componen't state
-    static state< T >( component : StatefulComponent, key : string ) : StateLink< T >{
-        const value : T = component.state[ key ],
-            cache = component.links || ( component.links = {} ),
-            cached = cache[ key ];
-
-        return cached && cached.value === value ? cached : cache[ key ] = new StateLink( value, component, key );
+    static state< T >( component : StatefulComponent, key : string ) : Link< any > {
+        const stateLink = component._stateLink || ( component._stateLink = new StateLink( component ) );
+        return key ? stateLink.at( key ) : stateLink;
     };
 
     // Ensure that listed links are cached. Return links cache.
@@ -201,13 +198,25 @@ export class CloneLink< T > extends Link< T > {
     }
 }
 
-export class StateLink< T > extends Link< T > {
-    constructor( value : T, public component : StatefulComponent, public key : string ){
-        super( value );
+export class StateLink extends Link< Object > {
+    links : {}
+
+    constructor( public component : StatefulComponent ){
+        super( component.state );
     }
 
-    set( x : T ) : void {
-        this.component.setState({ [ this.key ] : x } );
+    set( x : Object ) : void {
+        this.component.setState( x );
+    }
+
+    at( key ){
+        const value = this.component.state[ key ],
+            cache =   this.links || ( this.links = {} ),
+            cached = cache[ key ];
+
+        return cached && cached.value === value ?
+                    cached :
+                    cache[ key ] = super.at( key );
     }
 }
 
