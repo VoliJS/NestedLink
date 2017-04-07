@@ -3,7 +3,8 @@ var webpack = require( 'webpack' );
 module.exports = {
     entry  : {
         main : './example/main.jsx',
-        users : './example/userslist.jsx'
+        users : './example/userslist.jsx',
+        asaf : './example/asaf.jsx',
     },
     output : {
         path       : __dirname + '/example',
