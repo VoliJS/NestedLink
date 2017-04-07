@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import Link from '../valuelink'
 import { Input } from '../tags'
 
 class EditableLabel extends React.Component {
+    static propTypes = {
+        textLink : PropTypes.instanceOf( Link )
+    }
+
     state =  { editing : null };
 
     render(){
@@ -13,11 +17,9 @@ class EditableLabel extends React.Component {
         return editingLink.value === null ? (
             <div onClick={ () => editingLink.set( value ) }>{ value }</div>
         ) : (
-            <div>
-                <Input valueLink={ editingLink }
-                       autoFocus={ true } onBlur={ () => editingLink.set( null ) }
-                />
-                <button onClick={ this.save }> Save </button>
+            <div onBlur={ () => editingLink.set( null ) }>
+                <Input valueLink={ editingLink } autoFocus={ true } />
+                <button onMouseDown={ this.save }> Save </button>
             </div>
         );
     }

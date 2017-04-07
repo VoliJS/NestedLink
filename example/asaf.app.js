@@ -102,20 +102,23 @@
 	                value
 	            ) : _react2['default'].createElement(
 	                'div',
-	                null,
-	                _react2['default'].createElement(_tags.Input, { valueLink: editingLink,
-	                    autoFocus: true,
-	                    onBlur: function () {
+	                { onBlur: function () {
 	                        return editingLink.set(null);
-	                    }
-	                }),
+	                    } },
+	                _react2['default'].createElement(_tags.Input, { valueLink: editingLink, autoFocus: true }),
 	                _react2['default'].createElement(
 	                    'button',
-	                    { onClick: this.save },
+	                    { onMouseDown: this.save },
 	                    ' Save '
 	                )
 	            );
 	        }
+	    }], [{
+	        key: 'propTypes',
+	        value: {
+	            textLink: _react.PropTypes.instanceOf(_valuelink2['default'])
+	        },
+	        enumerable: true
 	    }]);
 	
 	    return EditableLabel;
