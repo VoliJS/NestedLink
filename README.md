@@ -180,10 +180,11 @@ const optionXLink = stringLink.equals( 'optionX' );
 
 ##### ![method] linkToAny.enabled( defaultValue = '' ) : Link
 
-Create boolean link which sets original link to `null` on `false`, or to the given `defaultValue` on `true`.
+Create boolean link which value is `false` when parent link is `null` (or `undefined`), and `true` otherwise.
+Whenever the enabled-link is set to `true`, it sets parent link to the `defaultValue`.
 
-Useful for checkboxes controlling individual `<Input>` controls. `Input` must be modified to disable itself
-when its `valueLink.value === null`.
+This type of links is used to support enabling/disabling of individual form controls with a dedicated checkbox.
+`<Input>` control and the rest of form controls must be modified to disable themselves when its `valueLink.value === null`.
 
 ```javascript
 const textLink = Link.state( this, 'text' );
