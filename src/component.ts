@@ -18,10 +18,10 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
     }
 }
 
-Link.all = < P, S >( component : React.Component< P, S >, ..._keys : ( keyof S )[] ) => linkAll( <Component< P, S >>component, _keys );
-Link.state = < P, S >( component : React.Component< P, S >, key : ( keyof S ) ) => linkAt( <Component< P, S >>component, key );
+Link.all = < P, S >( component : React.Component< P, S >, ..._keys : ( keyof S )[] ) => linkAll( <LinkedComponent< P, S >>component, _keys );
+Link.state = < P, S >( component : React.Component< P, S >, key : ( keyof S ) ) => linkAt( <LinkedComponent< P, S >>component, key );
 
-function linkAll< P, S >( component : Component< P, S >, _keys : ( keyof S )[] ) : LinksCache< S >{
+function linkAll< P, S >( component : LinkedComponent< P, S >, _keys : ( keyof S )[] ) : LinksCache< S >{
     const { state } = component,
             cache = component.links || ( component.links = <LinksCache< S >>{} ),
             keys = _keys.length ? _keys : <( keyof S )[]>Object.keys( state );
@@ -38,7 +38,7 @@ function linkAll< P, S >( component : Component< P, S >, _keys : ( keyof S )[] )
     return cache;
 }
 
-function linkAt< P, S, K extends keyof S>( component : Component< P, S>, key : K ) : Link< S[ K ] >{
+function linkAt< P, S, K extends keyof S>( component : LinkedComponent< P, S>, key : K ) : Link< S[ K ] >{
     const value = component.state[ key ],
         cache = component.links || ( component.links = <LinksCache< S >>{} ),
         cached = cache[ key ];
@@ -47,7 +47,7 @@ function linkAt< P, S, K extends keyof S>( component : Component< P, S>, key : K
 }
 
 export class StateLink< P, S, K extends keyof S > extends Link< S[ K ] > {
-    constructor( public component : Component< P, S >, public key : K, value : S[ K ] ){
+    constructor( public component : LinkedComponent< P, S >, public key : K, value : S[ K ] ){
         super( value );
     }
 

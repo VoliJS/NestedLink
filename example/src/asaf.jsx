@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'valuelink'
+import Link, { LinkedComponent } from 'valuelink'
 import { Input } from 'valuelink/tags'
 
-class EditableLabel extends React.Component {
+class EditableLabel extends LinkedComponent {
     static propTypes = {
         textLink : PropTypes.instanceOf( Link )
     }
@@ -12,7 +12,7 @@ class EditableLabel extends React.Component {
 
     render(){
         const { value } = this.props.textLink,
-                editingLink = Link.state( this, 'editing' );
+                editingLink = this.linkAt( 'editing' );
 
         return editingLink.value === null ? (
             <div onClick={ () => editingLink.set( value ) }>{ value }</div>
@@ -31,13 +31,13 @@ class EditableLabel extends React.Component {
     }
 }
 
-class App extends React.Component {
+class App extends LinkedComponent {
     state = {
         labels : [ 'how', 'it', 'will', 'be', 'in', 'elm?' ]
     };
 
     render(){
-        const labelsLink = Link.state( this, 'labels' );
+        const labelsLink = this.linkAt( 'labels' );
 
         return (
             <div>

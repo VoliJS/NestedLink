@@ -7,13 +7,12 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'valuelink'
+import Link, { LinkedComponent } from 'valuelink'
 import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'valuelink/tags'
 
-const App = React.createClass( {
-    getInitialState(){
-        // All this stuff we can link to
-        return {
+class App extends LinkedComponent {
+    // All this stuff we can link to
+    state = {
             num : 0,
 
             // Simple binding to inputs
@@ -37,11 +36,10 @@ const App = React.createClass( {
 
             // that will be bound to radio and select list
             radioFlag : 'a'
-        }
-    },
+    }
 
     render(){
-        const links = Link.all( this, 'str', 'str2', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
+        const links = this.linkAll();
 
         return (
             <div>
@@ -61,7 +59,7 @@ const App = React.createClass( {
             </div>
         );
     }
-} );
+}
 
 const isNumber = x => !isNaN( Number( x ) );
 
