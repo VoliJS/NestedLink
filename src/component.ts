@@ -6,7 +6,7 @@ export interface DataBindingSource< S >{
     linkAll( ...keys : ( keyof S )[] ) : LinksCache< S >
 }
 
-export abstract class Component< P, S > extends React.Component< P, S > implements DataBindingSource< S > {
+export abstract class LinkedComponent< P, S > extends React.Component< P, S > implements DataBindingSource< S > {
     links : LinksCache< S > = null;
 
     linkAt< K extends keyof S>( key : K ) : Link< S[ K ] >{

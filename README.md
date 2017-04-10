@@ -2,10 +2,10 @@
 
 # Purely functional data binding for React
 
-Library for purely functional data binding in React based on `value link` pattern.
+Lightweight (6.5K minified) purely functional two-way data binding for the React based on `value link` pattern.
 
 Approach used by this library significantly differs to common way of dealing with state and forms in React.
-While based on original React Link idea, `valuelink` moves it far further providing simple and elegant solutions
+While losely based on the original React Link idea, `valuelink` moves it far further providing simple and elegant solutions
 for common problems, such as data binding of the complex state and form validation.
 
 Introductory tutorials explaining the basics of the 'Value Link' pattern:
@@ -14,7 +14,7 @@ Introductory tutorials explaining the basics of the 'Value Link' pattern:
 - [Managing state and forms with React, Part 2: Validation](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
 - [State and forms in React, part 3: Managing Complex State](https://medium.com/@gaperton/state-and-forms-in-react-part-3-handling-the-complex-state-acf369244d37#.x0fjcxljo)
 
-Working examples are [here](https://volicon.github.io/NestedLink/)
+Examples are [here](https://volicon.github.io/NestedLink/)
 
 Features:
 
@@ -34,27 +34,17 @@ Features:
 > helping you to build large-scale React applications with a powerful and fast [NestedTypes](https://github.com/Volicon/NestedTypes/)
 > classical OO models.
 
-# New in 1.3
+# New in 1.4
 
-- API for links cache, dramatically simplifying forms data binding:
-    - All links created with `Link.state` are cached, and are recreated only when value is different.
-    - `const links = Link.all( this, 'attr1', 'attr2', ... )` makes sure that links for specified `state` members
-        are cached, and returns the reference to the cache. Thus, `links.attr1` is the direct reference to the link.
-    - Links cache is directly accessible in `render()` with `this.links`.
-- Link methods for purely functional updates of the enclosed object:
-    - Links to arrays: `unshift(...)`, `push(...)`, `splice(...)` proxy call to native Array methods.
-    - Links to arrays and objects: `remove( key )` removes element with specified key.
-    - Links to array and object members: `remove()` removes element from parent object or array.
-- Methods for links to objects and arrays:
-    - `link.pick( key1, key2, ... )` creates an object with links to listed object members, in the same way as `Link.all`.
-    - `link.clone()` creates shallow copy of the enclosed object.
-- Added "Users List" application example.
-- `link.toggle` is _removed_. Use `link.update( x => !x )` instead.
-- Validator functions for `link.check` may contain default `error` message.
-- `link.onChange( callback )` and `link.pipe( transform )` for listening on link changes.
-- tags.jsx:
-    - `<NumberInput/>` tag with input rejection for numbers.
-    - All text input tags adds `required` class if there's validation error and value is empty (issue #5). 
+- New ES6 API for value links creation:
+    - Extend the `LinkedComponent` base class instead of `React.Component`.
+    - Use `this.linkAt( 'stateKey' )` instead of `Link.state( this, 'stateKey' )`.
+    - Use `this.linkAll( 'key1', 'key2', ... )` instead of `Link.all( this, 'key1', 'key2', ... )`.
+    - `this.linkAll()` without arguments will link each member of the state.
+    - New API is precisely typed with the recent TypeScript features. `this.linkAt( 'a' )` will cause compilation error if 'a' is not a member of the state. Generated links are properly typed as well.
+- Support for modern bundlers in the package.json (`module` field points to `lib` folder with transpiled ES6-import modules).
+- UMD module is included in `dist` folder (exporting `NestedLink` global variable).
+- Updated examples.
 
 # Installation
 
@@ -81,30 +71,54 @@ Links can be created and used inside of the React `component.render()` method.
 
 ### Linking to the state attributes
 
+##### ![method] LinkedComponent.linkAt( stateKey ) : Link
+
+Create link to an attribute of the component's state. Component must extend `LinkedComponent` class.
+
+Can be overriden to create custom data binding for something different than the React state.
+
+```javascript
+const nameLink = this.linkAt( 'name' ),
+      emailLink = this.linkAt( 'email' );
+```
+
+##### ![method] LinkedComponent.linkAll( stateKey1, stateKey2, ... ) : { [ key ] : Link }
+
+Create an object with links to listed state members. When no keys are provided, it creates link to 
+every member of the state. Component must extend `LinkedComponent` class.
+
+Can be overriden to create custom data binding for something different than the React state.
+
+```javascript
+const links = this.linkAll( 'name', 'email' ),
+      { name, email } = links;
+```
+
 ##### ![static] Link.state( this, stateKey ) : Link
 
-You can create link to an attribute of component state directly:
+Same as `component.linkAt()`, but works with any component class.
 
 ```javascript
 const nameLink = Link.state( this, 'name' ),
       emailLink = Link.state( this, 'email' );
 ```
 
-##### ![var] this.links : { [ key ] : Link } 
-
-All links to the state are _cached_ inside the `component.link` object.
-When you create the link to the value which has not been changed since the last `render`,
-link object will be _reused_. Which means that you can use `pure render` optimization.
-
 ##### ![static] Link.all( this, stateKey1, stateKey2, ... ) : { [ key ] : Link }
 
-`Link.all` ensures that links to the listed state members are cached and up to date,
-and returns `this.links` object.
+Same as `component.linkAll()`, but works with any component class.
 
 ```javascript
 const links = Link.all( this, 'name', 'email' ),
       { name, email } = links;
 ```
+
+##### ![var] this.links : { [ key ] : Link } 
+
+All links created during `render()` are _cached_ inside the `component.link` object.
+Direct access to the cache may be used in event handlers to reference these links.
+
+> When you create the link to the value which has not been changed since the last `render`,
+> link object will be _reused_. Which means that it's safe to use `pure render` optimization.
 
 ### Links to object and arrays
 
@@ -118,16 +132,13 @@ updated, it will lead to proper purely functional update (with shallow copying) 
 parent element.
 
 ```javascript
-const deepLink = Link.state( this, 'array' ).at( 0 ).at( 'name' );
-
+const deepLink = this.linkAt( 'array' ).at( 0 ).at( 'name' );
 deepLink.set( 'Joe' ); // Will update component state.array
 ```
 
 ##### ![method] linkToObject.pick( key1, key2, ... ) : { [ key ] : Link }
  
 Create links to the object's members, and wrap them in an object.
-
-Example:
 
 ```javascript
 const links = userLink.pick( 'name', 'email' ),
@@ -187,7 +198,7 @@ This type of links is used to support enabling/disabling of individual form cont
 `<Input>` control and the rest of form controls must be modified to disable themselves when its `valueLink.value === null`.
 
 ```javascript
-const textLink = Link.state( this, 'text' );
+const textLink = this.linkAt( 'text' );
 
 return (
     <Checkbox checkedLink={ textLink.enabled() } />
@@ -219,7 +230,7 @@ Read more about links to objects updates in the next section.
 Create the wrapper for existing link which will invoke callback whenever new
 value is set. Similar to:
 
-```
+```javascript
 Link.value( link.value, x => {
     callback( x );
     link.set( x );
@@ -249,12 +260,17 @@ Usage example:
 
 ### Note for TypeScript users
 
-`Link` actually is parametric type `Link< T >`, where T is the type of the enclosed value.
-And both `Link.value< T >` and `Link.state< T >` are parametric functions. For `Link.state` type is always inferred
-as `Object`, so you can refine it manually:
+`Link` is the parametric type `Link< T >`, where T is the type of the enclosed value.
+
+TypeScript properly infers type of the link and perform static checks failing on missing state members.
 
 ```javascript
-const nameLink = Link.state< string >( this, 'name' );
+interface MyState {
+    name : string
+}
+...
+const nameLink = this.linkAt( 'name' ); // Link< string >
+const missingLink = this.linkAt( 'age' ); // Compile-time error - no such a member in state.
 ```
     
 ## Link updates

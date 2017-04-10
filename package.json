@@ -1,15 +1,13 @@
 {
   "name": "valuelink",
-  "version": "1.4.0",
+  "version": "1.4.1-rc01",
   "description": "Two-way data binding and validation for React state",
   "main": "./dist",
   "module": "./lib",
   "types": "./lib",
   "files": [
     "dist",
-    "lib",
-    "tags.jsx",
-    "tags.js"
+    "lib"
   ],
   "repository": {
     "type": "git",
