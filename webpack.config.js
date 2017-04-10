@@ -1,32 +1,30 @@
-var webpack = require( 'webpack' );
-
 module.exports = {
-    entry  : {
-        main : './example/main.jsx',
-        users : './example/userslist.jsx',
-        asaf : './example/asaf.jsx',
-    },
+    entry : "./lib/index.js",
+
     output : {
-        path       : __dirname + '/example',
-        publicPath : '/',
-        filename   : '[name].app.js'
+        filename      : './dist/index.js',
+        library       : "NestedLink",
+        libraryTarget : 'umd'
     },
 
     devtool : 'source-map',
 
     resolve : {
-        modulesDirectories : [ 'example', '.', 'node_modules' ]
+        extensions : [ '.ts', '.js' ] 
     },
 
-    module : {
-        loaders : [
+    module: {
+        rules: [
             {
-                test    : /\.jsx?$/,
-                exclude : /(node_modules)/,
-                loader  : 'babel?optional[]=runtime'
+                test: /\.tsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'ts-loader'
             },
-
-            { test : /\.css$/, loader : "style-loader!css-loader" }
-        ]
+            {
+                enforce : "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            }
+        ],
     }
 };

@@ -1,14 +1,16 @@
 {
     "compileOnSave": true,
-    
     "files": [
-        "./valuelink.ts"
+        "./src/index.ts"
     ],
     
     "compilerOptions": {
+        "alwaysStrict": true,
+        "importHelpers": true,
+        "outDir": "lib",
         "declaration": true,
         "target": "es5",
-        "module":"commonjs",
+        "module": "es6",
         "sourceMap": true
     }
 }
