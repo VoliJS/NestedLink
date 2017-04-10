@@ -22,11 +22,12 @@ export abstract class Component< P, S > implements DataBindingSource< S > extend
         return cached && cached.value === value ? cached : cache[ key ] = new StateLink( this, key, value );
     }
 
-    linkAll( ...keys : ( keyof S )[] ) : LinksCache< S >{
+    linkAll( ...args : ( keyof S )[] ) : LinksCache< S >{
         const { state } = this,
-                cache = this.links || ( this.links = <LinksCache< S >>{} );
+                cache = this.links || ( this.links = <LinksCache< S >>{} ),
+                keys = args.length ? args : <keyof S>Object.keys( state );
 
-        for( let key of arguments ){
+        for( let key of keys ){
             const value = state[ key ],
                 cached = cache[ key ];
 
