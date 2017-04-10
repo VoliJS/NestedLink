@@ -48,13 +48,16 @@ Features:
 
 # Installation
 
+## To use in your project
+
 `npm install valuelink`
 
-CommonJS module, MIT License. No side dependencies.
+Both UMD and ES6-imports modules are available. MIT License. No side dependencies.
 
 ```javascript
 // Links
-import Link from 'valuelink'
+import React from 'react'
+import Link, { LinkedComponent } from 'valuelink'
 
 // You'll need this components with React 15.x instead of standard ones.
 import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
@@ -62,6 +65,20 @@ import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags.jsx'
 
 `tags.jsx` intended to be starting boilerplate for your custom components. Copy this file to your project,
 and start hacking.
+
+## To start hacking
+
+If you want to play with the examples, fix the bug, or whatever:
+
+`npm install` - installs the dependencies.
+
+`npm run build` - compiles everything including examples.
+
+## To create your custom data binding
+
+It's really straightforward. Look at the `component.ts` file to see how binding to React state is implemented, it should be a good start.
+Basically, all you need is to subclass React.Component and make your own `linkAt` and `linkAll` methods.
+You can either use `Link.value` inside to create links dynamically, or extend the `Link` as it's done there.
 
 # How to
 
