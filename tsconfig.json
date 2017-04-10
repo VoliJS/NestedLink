@@ -1,16 +1,23 @@
 {
     "compileOnSave": true,
     "files": [
-        "./src/index.ts"
+        "./src/index.ts",
+        "./src/tags.tsx"
     ],
     
     "compilerOptions": {
         "alwaysStrict": true,
-        "importHelpers": true,
+        "importHelpers": false,
+        "noEmitHelpers": false,
         "outDir": "lib",
         "declaration": true,
         "target": "es5",
         "module": "es6",
-        "sourceMap": true
+        "sourceMap": true,
+        "jsx": "react",
+        "baseUrl": "./",
+        "paths": {
+            "tslib" : ["node_modules/tslib/tslib.d.ts"]
+        }
     }
 }

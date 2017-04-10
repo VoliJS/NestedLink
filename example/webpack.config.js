@@ -1,4 +1,7 @@
-var webpack = require( 'webpack' );
+var webpack = require( 'webpack' ),
+    path = require( 'path' );
+
+    console.log( __dirname );
 
 module.exports = {
     entry  : {
@@ -7,7 +10,7 @@ module.exports = {
         asaf : './example/src/asaf.jsx',
     },
     output : {
-        path       : __dirname,
+        path       : path.resolve( __dirname, 'dist' ),
         publicPath : '/dist',
         filename   : '[name].js'
     },
@@ -17,8 +20,7 @@ module.exports = {
     resolve : {
         modules : [ '.', '../node_modules' ],
         alias : {
-            valuelink : __dirname + '/lib/index.js',
-            'valuelink/tags' : './tags.js'
+            valuelink : path.resolve( __dirname, '../lib' )
         }
     },
 
@@ -31,10 +33,7 @@ module.exports = {
                         loader: "style-loader"
                     },
                     {
-                        loader: "css-loader",
-                        options: {
-                            modules: true
-                        }
+                        loader: "css-loader"
                     }
                 ]
             },

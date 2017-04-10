@@ -2,9 +2,9 @@
   "name": "valuelink",
   "version": "1.4.0",
   "description": "Two-way data binding and validation for React state",
-  "main": "./dist/index.js",
-  "module": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist",
+  "module": "./lib",
+  "types": "./lib",
   "files": [
     "dist",
     "lib",
@@ -32,6 +32,9 @@
     "url": "https://github.com/Volicon/valuelink/issues"
   },
   "homepage": "https://github.com/Volicon/valuelink#readme",
+  "dependencies": {
+    "react": "*"
+  },
   "devDependencies": {
     "@types/react": "^15.0.21",
     "babel-cli": "*",
@@ -48,20 +51,18 @@
     "babel-runtime": "*",
     "classnames": "^2.2.0",
     "css-loader": "*",
-    "react": "*",
     "react-dom": "*",
     "react-modal": "^1.2.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "*",
-    "tslib": "^1.6.0",
     "typescript": "*",
     "webpack": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lib && npm run build-tags && npm run predeploy",
+    "build": "npm run build-lib && npm run build-examples && npm run predeploy",
     "build-lib": "node_modules/.bin/tsc",
-    "build-tags": "node_modules/.bin/babel tags.jsx --out-file tags.js",
+    "build-examples":"node_modules/.bin/webpack -p --config example/webpack.config.js",
     "predeploy": "node_modules/.bin/webpack -p"
   }
 }

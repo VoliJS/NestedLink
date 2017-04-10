@@ -26,5 +26,9 @@ module.exports = {
                 loader: "source-map-loader"
             }
         ],
+    },
+
+    externals : {
+        react : 'react'
     }
 };

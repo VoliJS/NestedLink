@@ -13,47 +13,18 @@ export interface Validator< T >{
     error? : any
 }
 
-export type Iterator = ( link : ChainedLink, key : string | number ) => any
-
-export type StateLinks = { [ attrName : string ] : StateLink< any > }
-export type ChainedLinks = { [ attrName : string ] : ChainedLink }
-
-export interface StatefulComponent{
-    state : {}
-    setState : ( attrs : {} ) => void
-
-    // value links cache, to make pure render optimization possible
-    links? : StateLinks
+export type LinksCache< S > = {
+    [ K in keyof S ] : Link< S[ K ] >
 }
 
+export type Iterator = ( link : ChainedLink, key : string | number ) => any
+export type ChainedLinks = { [ attrName : string ] : ChainedLink }
+
 // Main Link class. All links must extend it.
-abstract class Link< T >{
-    // Create link to componen't state
-    static state< T >( component : StatefulComponent, key : string ) : StateLink< T >{
-        const value : T = component.state[ key ],
-            cache = component.links || ( component.links = {} ),
-            cached = cache[ key ];
-
-        return cached && cached.value === value ? cached : cache[ key ] = new StateLink( value, component, key );
-    };
-
-    // Ensure that listed links are cached. Return links cache.
-    static all( component : StatefulComponent ) : StateLinks {
-        const { state } = component,
-            links = component.links || ( component.links = {} );
-
-        for( let i = 1; i < arguments.length; i++ ){
-            const key : string = arguments[ i ],
-                value = state[ key ],
-                cached = links[ key ];
-
-            if( !cached || cached.value !== value ) {
-                links[ key ] = new StateLink( value, component, key );
-            }
-        }
-
-        return links;
-    }
+export abstract class Link< T >{
+    // @deprecated API. Use component subclass.
+    static state : < P, S, K extends keyof S>( component : React.Component< P, S >, key : K ) => Link< S[ K ] >;
+    static all : < P, S >( component : React.Component< P, S >, ..._keys : ( keyof S )[] ) => LinksCache< S >;
 
     // Create custom link to arbitrary value
     static value< T >( value : T, set : ( x : T ) => void ) : CustomLink< T >{
@@ -177,8 +148,6 @@ abstract class Link< T >{
         return this;
     }
 }
-
-export default Link;
 
 export class CustomLink< T > extends Link< T > {
     set( x ){}

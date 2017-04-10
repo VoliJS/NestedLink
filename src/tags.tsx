@@ -5,7 +5,8 @@
  */
 
 
-import React, { PropTypes } from 'react'
+import * as React from 'react'
+import { Validator, Link } from './link'
 
 const setValue     = ( x, e ) => e.target.value;
 const setBoolValue = ( x, e ) => Boolean( e.target.checked );
@@ -18,7 +19,6 @@ const setBoolValue = ( x, e ) => Boolean( e.target.checked );
  *      <input type="radio"    valueLink={ linkToSelectedValue } value="option1value" />
  *      <input type="text"     valueLink={ linkToString } />
  */
-
 
 function validationClasses( props, value, error ){
     let classNames = props.className ? [ props.className ] : [];
@@ -58,33 +58,36 @@ export const Input = ( props ) =>{
     }
 };
 
-export const isRequired = x => x != null && x !== '';
+export const isRequired : Validator< any > = x => x != null && x !== '';
 isRequired.error = 'Required';
 
 const emailPattern   = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-export const isEmail = x => x.match( emailPattern );
+export const isEmail : Validator< string > = x => Boolean( x.match( emailPattern ) );
 isEmail.error = 'Should be valid email';
 
 // This number component rejects invalid input and modify link only with valid number values.
 // Implementing numeric input rejection might be tricky.
-export const NumberInput = React.createClass( {
-    propTypes : {
-        positive  : PropTypes.bool,
-        integer   : PropTypes.bool,
-        valueLink : PropTypes.object
-    },
+export interface NumberInputProps {
+        positive  : boolean,
+        integer   : boolean,
+        valueLink : Link< number >    
+}
 
+export class NumberInput extends React.Component< NumberInputProps, {} >{
     componentWillMount(){
         // Initialize component state
         this.setAndConvert( this.props.valueLink.value );
-    },
+    }
+
+    value : string;
+    error : any;
 
     setValue( x ){
         // We're not using native state in order to avoid race condition.
         this.value = String( x );
         this.error = this.value === '' || isNaN( Number( x ) );
         this.forceUpdate();
-    },
+    }
 
     setAndConvert( x ){
         let value = Number( x );
@@ -98,7 +101,7 @@ export const NumberInput = React.createClass( {
         }
 
         this.setValue( value );
-    },
+    }
 
     componentWillReceiveProps( nextProps ){
         const { valueLink : next } = nextProps;
@@ -106,10 +109,10 @@ export const NumberInput = React.createClass( {
         if( Number( next.value ) !== Number( this.value ) ){
             this.setAndConvert( next.value ); // keep state being synced
         }
-    },
+    }
 
     render(){
-        const { valueLink, ...props } = this.props,
+        const { valueLink, positive, integer, ...props } = this.props,
               error = valueLink.error || this.error;
 
         return <input { ...props }
@@ -119,9 +122,9 @@ export const NumberInput = React.createClass( {
                       onKeyPress={ this.onKeyPress }
                       onChange={ this.onChange }
         />;
-    },
+    }
 
-    onKeyPress( e ){
+    onKeyPress = e =>{
         const { charCode } = e,
               { integer, positive } = this.props,
               allowed = ( positive ? [] : [ 45 ]).concat( integer ? [] : [ 46 ] );
@@ -133,9 +136,9 @@ export const NumberInput = React.createClass( {
             allowed.indexOf( charCode ) < 0 ){ // allowed char codes
             e.preventDefault();
         }
-    },
+    };
 
-    onChange( e ){
+    onChange = e => {
         // Update local state...
         const { value } = e.target;
         this.setValue( value );
@@ -151,7 +154,7 @@ export const NumberInput = React.createClass( {
             } );
         }
     }
-} );
+}
 
 /**
  * Wrapper for standard <textarea/> to be compliant with React 0.14 valueLink semantic.

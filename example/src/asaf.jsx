@@ -18,7 +18,8 @@ class EditableLabel extends React.Component {
             <div onClick={ () => editingLink.set( value ) }>{ value }</div>
         ) : (
             <div onBlur={ () => editingLink.set( null ) }>
-                <Input valueLink={ editingLink } autoFocus={ true } />
+                <Input valueLink={ editingLink } autoFocus={ true }
+                       onKeyDown={ e => e.keyCode == 13 && this.save() }/>
                 <button onMouseDown={ this.save }> Save </button>
             </div>
         );
