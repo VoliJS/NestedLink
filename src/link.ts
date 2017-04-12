@@ -17,8 +17,8 @@ export type LinksCache< S > = {
     [ K in keyof S ] : Link< S[ K ] >
 }
 
-export type Iterator = ( link : ChainedLink, key : string | number ) => any
-export type ChainedLinks = { [ attrName : string ] : ChainedLink }
+export type Iterator = ( link : ElementLink, key : string | number ) => any
+export type ChainedLinks = { [ attrName : string ] : ElementLink }
 
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
@@ -117,8 +117,8 @@ export abstract class Link< T >{
         this.set( _.remove( _.clone( value ), key ) );
     }
 
-    at( key : string | number ) : ChainedLink {
-        return new ChainedLink( this, key );
+    at< K extends keyof T >( key : K ) : ElementLink<T[K], T> {
+        return new ElementLink<T[K], T>( this, key );
     }
 
     clone() : T {
@@ -131,7 +131,7 @@ export abstract class Link< T >{
 
         for( let i = 0; i < arguments.length; i++ ){
             const key : string = arguments[ i ];
-            links[ key ] = new ChainedLink( this, key );
+            links[ key ] = new ElementLink( this, key );
         }
 
         return links;
@@ -213,12 +213,12 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class ChainedLink extends Link< any > {
-    constructor( public parent : Link< {} >, public key : string | number ){
-        super( parent.value[ key ] );
+export class ElementLink< T, P > extends Link< T > {
+    constructor( public parent : Link< P >, public key : keyof P ){
+        super( <any>parent.value[ key ] );
     }
 
-    remove( key? ){
+    remove( key? : keyof P ){
         if( key === void 0 ){
             this.parent.remove( this.key );
         }
@@ -228,13 +228,15 @@ export class ChainedLink extends Link< any > {
     }
 
     // Set new element value to parent array or object, performing purely functional update.
-    set( x ){
+    set( x : T ){
         if( this.value !== x ){
             this.parent.update( value => {
-                value[ this.key ] = x;
+                value[ this.key ] = <any>x;
                 return value;
             } );
         }
     };
 }
 
+let x : Link<number[]>;
+x.at(1)
