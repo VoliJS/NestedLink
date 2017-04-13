@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.4.1-rc01",
+  "version": "1.4.1-rc02",
   "description": "Two-way data binding and validation for React state",
   "main": "./dist",
   "module": "./lib",
