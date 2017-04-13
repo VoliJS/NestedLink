@@ -71,12 +71,12 @@ export abstract class Link< T >{
         return e => this.update( transform, e );
     }
 
-    equals( truthyValue ) : Link<boolean> {
+    equals( truthyValue : T ) : Link<boolean> {
         return new EqualsLink( this, truthyValue );
     }
 
-    enabled( defaultValue : any = '' ) : Link<boolean> {
-        return new EnabledLink( this, defaultValue );
+    enabled( defaultValue? : T ) : Link<boolean> {
+        return new EnabledLink( this, defaultValue || "" );
     }
 
     // Array-only links methods

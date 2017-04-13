@@ -22,8 +22,8 @@ export declare abstract class Link<T> {
     update(transform: Transform<T>, e?: Object): void;
     pipe(handler: Transform<T>): Link<T>;
     action(transform: Transform<T>): EventHandler;
-    equals(truthyValue: any): Link<boolean>;
-    enabled(defaultValue?: any): Link<boolean>;
+    equals(truthyValue: T): Link<boolean>;
+    enabled(defaultValue?: T): Link<boolean>;
     contains<E>(this: Link<E[]>, element: E): Link<boolean>;
     push<E>(this: Link<E[]>, ...args: E[]): void;
     unshift<E>(this: Link<E[]>, ...args: E[]): void;
