@@ -8,10 +8,6 @@ export interface Validator<T> {
 export declare type LinksCache<S, X extends keyof S> = {
     [K in X]: Link<S[K]>;
 };
-export declare type Iterator<T> = (link: LinkAt<T>, key: string | number) => any;
-export declare type ChainedLinks = {
-    [attrName: string]: LinkAt<any>;
-};
 export declare abstract class Link<T> {
     value: T;
     static state: <P, S, K extends keyof S>(component: React.Component<P, S>, key: K) => Link<S[K]>;
@@ -32,16 +28,16 @@ export declare abstract class Link<T> {
     push<E>(this: Link<E[]>, ...args: E[]): void;
     unshift<E>(this: Link<E[]>, ...args: E[]): void;
     splice(start: number, deleteCount?: number): any;
-    map<E, Z>(this: Link<E[]>, iterator: (link: LinkAt<E>, idx: number) => Z): Z[];
+    map<E, Z>(this: Link<E[]>, iterator: (link: LinkAt<E, number>, idx: number) => Z): Z[];
     map<E, Z>(this: Link<{
         [key: string]: E;
-    }>, iterator: (link: LinkAt<E>, idx: string) => Z): Z[];
+    }>, iterator: (link: LinkAt<E, string>, idx: string) => Z): Z[];
     removeAt<E>(this: Link<E[]>, key: number): void;
     removeAt<E>(this: Link<{
         [key: string]: E;
     }>, key: string): void;
-    at<E>(this: Link<E[]>, key: number): LinkAt<E>;
-    at<K extends keyof T, E extends T[K]>(key: K): LinkAt<E>;
+    at<E>(this: Link<E[]>, key: number): LinkAt<E, number>;
+    at<K extends keyof T, E extends T[K]>(key: K): LinkAt<E, K>;
     clone(): T;
     pick<K extends keyof T>(...keys: K[]): {
         [P in K]: Link<T[P]>;
@@ -81,10 +77,10 @@ export declare class ContainsLink extends Link<boolean> {
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export declare class LinkAt<E> extends Link<E> {
+export declare class LinkAt<E, K> extends Link<E> {
     private parent;
-    key: string | number;
-    constructor(parent: Link<any>, key: string | number);
+    key: K;
+    constructor(parent: Link<any>, key: K);
     remove(): void;
     set(x: E): void;
 }

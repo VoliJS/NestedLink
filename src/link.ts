@@ -17,9 +17,6 @@ export type LinksCache< S, X extends keyof S> = {
     [ K in X ] : Link< S[ K ] >
 }
 
-export type Iterator<T> = ( link : LinkAt<T>, key : string | number ) => any
-export type ChainedLinks = { [ attrName : string ] : LinkAt<any> }
-
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
     // @deprecated API. Use component subclass.
@@ -109,8 +106,8 @@ export abstract class Link< T >{
     }
 
     // Array and objects universal collection methods
-    map<E, Z>( this : Link<E[]>, iterator : ( link : LinkAt<E>, idx : number ) => Z ) : Z[];
-    map<E, Z>( this : Link<{[ key : string ] : E }>, iterator : ( link : LinkAt<E>, idx : string ) => Z ) : Z[];
+    map<E, Z>( this : Link<E[]>, iterator : ( link : LinkAt<E, number>, idx : number ) => Z ) : Z[];
+    map<E, Z>( this : Link<{[ key : string ] : E }>, iterator : ( link : LinkAt<E, string>, idx : string ) => Z ) : Z[];
     map( iterator ) {
         return helpers( this.value ).map( this, iterator );
     }
@@ -124,8 +121,8 @@ export abstract class Link< T >{
         this.set( _.remove( _.clone( value ), key ) );
     }
 
-    at< E >( this : Link< E[] >, key : number ) : LinkAt<E>;
-    at< K extends keyof T, E extends T[K]>( key : K ) : LinkAt<E>;
+    at< E >( this : Link< E[] >, key : number ) : LinkAt<E, number>;
+    at< K extends keyof T, E extends T[K]>( key : K ) : LinkAt<E, K>;
     at( key ){
         return new LinkAt( this, key );
     }
@@ -223,8 +220,8 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class LinkAt< E > extends Link< E > {
-    constructor( private parent : Link< any >, public key : string | number ){
+export class LinkAt< E, K > extends Link< E > {
+    constructor( private parent : Link< any >, public key : K ){
         super( parent.value[ key ] );
     }
 
