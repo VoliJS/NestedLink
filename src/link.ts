@@ -109,8 +109,8 @@ export abstract class Link< T >{
     }
 
     // Array and objects universal collection methods
-    map<E, Z>( this : LinkAt<E[]>, iterator : ( link : LinkAt<E>, idx : number ) => Z ) : Z[];
-    map<E, Z>( this : LinkAt<{[ key : string ] : E }>, iterator : ( link : LinkAt<E>, idx : string ) => Z ) : Z[];
+    map<E, Z>( this : Link<E[]>, iterator : ( link : LinkAt<E>, idx : number ) => Z ) : Z[];
+    map<E, Z>( this : Link<{[ key : string ] : E }>, iterator : ( link : LinkAt<E>, idx : string ) => Z ) : Z[];
     map( iterator ) {
         return helpers( this.value ).map( this, iterator );
     }
