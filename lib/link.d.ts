@@ -32,8 +32,8 @@ export declare abstract class Link<T> {
     push<E>(this: Link<E[]>, ...args: E[]): void;
     unshift<E>(this: Link<E[]>, ...args: E[]): void;
     splice(start: number, deleteCount?: number): any;
-    map<E, Z>(this: Link<E[]>, iterator: (link: LinkAt<E>, idx: number) => Z): Z[];
-    map<E, Z>(this: Link<{
+    map<E, Z>(this: LinkAt<E[]>, iterator: (link: LinkAt<E>, idx: number) => Z): Z[];
+    map<E, Z>(this: LinkAt<{
         [key: string]: E;
     }>, iterator: (link: LinkAt<E>, idx: string) => Z): Z[];
     removeAt<E>(this: Link<E[]>, key: number): void;

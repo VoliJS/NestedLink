@@ -38,7 +38,7 @@ export type AnyProps = { [ key : string ] : any };
 
 export function Input( props : { type : 'checkbox', checkedLink : Link<boolean> } & AnyProps ) : JSX.Element;
 export function Input( props : { type : 'radio', value : any, valueLink : Link<any> } & AnyProps ) : JSX.Element;
-export function Input( props : { valueLink : Link<string> }) : JSX.Element;
+export function Input( props : { valueLink : Link<string> } & AnyProps ) : JSX.Element;
 export function Input( props ){
     const { valueLink, checkedLink, ...rest } = props,
           type = props.type,

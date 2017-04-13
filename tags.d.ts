@@ -20,7 +20,7 @@ export declare function Input(props: {
 } & AnyProps): JSX.Element;
 export declare function Input(props: {
     valueLink: Link<string>;
-}): JSX.Element;
+} & AnyProps): JSX.Element;
 export declare const isRequired: Validator<any>;
 export declare const isEmail: Validator<string>;
 export interface NumberInputProps {
