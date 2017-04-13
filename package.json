@@ -61,6 +61,6 @@
     "build": "npm run build-lib && npm run build-examples && npm run predeploy",
     "build-lib": "node_modules/.bin/tsc",
     "build-examples":"node_modules/.bin/webpack -p --config example/webpack.config.js",
-    "predeploy": "node_modules/.bin/webpack -p"
+    "predeploy": "node_modules/.bin/webpack -p && cp lib/tags.* ."
   }
 }
