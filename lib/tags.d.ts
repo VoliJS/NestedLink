@@ -6,15 +6,29 @@
  */
 import * as React from 'react';
 import { Validator, Link } from './link';
-export declare const Input: (props: any) => JSX.Element;
+export declare type AnyProps = {
+    [key: string]: any;
+};
+export declare function Input(props: {
+    type: 'checkbox';
+    checkedLink: Link<boolean>;
+} & AnyProps): JSX.Element;
+export declare function Input(props: {
+    type: 'radio';
+    value: any;
+    valueLink: Link<any>;
+} & AnyProps): JSX.Element;
+export declare function Input(props: {
+    valueLink: Link<string>;
+}): JSX.Element;
 export declare const isRequired: Validator<any>;
 export declare const isEmail: Validator<string>;
 export interface NumberInputProps {
-    positive: boolean;
-    integer: boolean;
+    positive?: boolean;
+    integer?: boolean;
     valueLink: Link<number>;
 }
-export declare class NumberInput extends React.Component<NumberInputProps, {}> {
+export declare class NumberInput extends React.Component<NumberInputProps & AnyProps, {}> {
     componentWillMount(): void;
     value: string;
     error: any;
@@ -32,9 +46,8 @@ export declare class NumberInput extends React.Component<NumberInputProps, {}> {
  *     <TextArea valueLink={ linkToText } />
  */
 export declare const TextArea: ({valueLink, ...props}: {
-    [x: string]: any;
-    valueLink: any;
-}) => JSX.Element;
+    valueLink: Link<string>;
+} & AnyProps) => JSX.Element;
 /**
  * Wrapper for standard <select/> to be compliant with React 0.14 valueLink semantic.
  * Regular <option/> tags must be used:
@@ -45,10 +58,8 @@ export declare const TextArea: ({valueLink, ...props}: {
  *     </Select>
  */
 export declare const Select: ({valueLink, children, ...props}: {
-    [x: string]: any;
-    valueLink: any;
-    children: any;
-}) => JSX.Element;
+    valueLink: Link<any>;
+} & AnyProps) => JSX.Element;
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
  * Intended to be used with offhand bool link:
@@ -56,10 +67,8 @@ export declare const Select: ({valueLink, children, ...props}: {
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
 export declare const Radio: ({className, checkedLink, children}: {
-    className?: string;
-    checkedLink: any;
-    children: any;
-}) => JSX.Element;
+    checkedLink: Link<boolean>;
+} & AnyProps) => JSX.Element;
 /**
  * Simple custom <Checkbox /> tag implementation.
  * Takes any type of boolean link. Can be easily styled.
@@ -67,7 +76,5 @@ export declare const Radio: ({className, checkedLink, children}: {
  *     <Checkbox checkedLink={ boolLink } />
  */
 export declare const Checkbox: ({className, checkedLink, children}: {
-    className?: string;
-    checkedLink: any;
-    children: any;
-}) => JSX.Element;
+    valueLink: Link<boolean>;
+} & AnyProps) => JSX.Element;

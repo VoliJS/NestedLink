@@ -34,7 +34,12 @@ function validationClasses( props, value, error ){
     return classNames.join( ' ' );
 }
 
-export const Input = ( props ) =>{
+export type AnyProps = { [ key : string ] : any };
+
+export function Input( props : { type : 'checkbox', checkedLink : Link<boolean> } & AnyProps ) : JSX.Element;
+export function Input( props : { type : 'radio', value : any, valueLink : Link<any> } & AnyProps ) : JSX.Element;
+export function Input( props : { valueLink : Link<string> }) : JSX.Element;
+export function Input( props ){
     const { valueLink, checkedLink, ...rest } = props,
           type = props.type,
           link = valueLink || checkedLink;
@@ -68,12 +73,12 @@ isEmail.error = 'Should be valid email';
 // This number component rejects invalid input and modify link only with valid number values.
 // Implementing numeric input rejection might be tricky.
 export interface NumberInputProps {
-        positive  : boolean,
-        integer   : boolean,
+        positive?  : boolean,
+        integer?   : boolean,
         valueLink : Link< number >    
 }
 
-export class NumberInput extends React.Component< NumberInputProps, {} >{
+export class NumberInput extends React.Component< NumberInputProps & AnyProps, {} >{
     componentWillMount(){
         // Initialize component state
         this.setAndConvert( this.props.valueLink.value );
@@ -162,7 +167,7 @@ export class NumberInput extends React.Component< NumberInputProps, {} >{
  *
  *     <TextArea valueLink={ linkToText } />
  */
-export const TextArea = ( { valueLink, ...props } ) => (
+export const TextArea = ( { valueLink, ...props } : { valueLink : Link<string> } & AnyProps) => (
     <textarea {...props}
         className={ validationClasses( props, valueLink.value , valueLink.error ) }
         value={ valueLink.value }
@@ -178,7 +183,7 @@ export const TextArea = ( { valueLink, ...props } ) => (
  *         <option value="b">B</option>
  *     </Select>
  */
-export const Select = ( { valueLink, children, ...props } ) => (
+export const Select = ( { valueLink, children, ...props } : { valueLink : Link<any> } & AnyProps ) => (
     <select {...props}
         value={ valueLink.value }
         onChange={ valueLink.action( setValue ) }>
@@ -192,8 +197,7 @@ export const Select = ( { valueLink, children, ...props } ) => (
  *
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
-
-export const Radio = ( { className = 'radio', checkedLink, children } ) => (
+export const Radio = ( { className = 'radio', checkedLink, children } : { checkedLink : Link<boolean> } & AnyProps ) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( () => true ) }
     >
@@ -207,8 +211,7 @@ export const Radio = ( { className = 'radio', checkedLink, children } ) => (
  *
  *     <Checkbox checkedLink={ boolLink } />
  */
-
-export const Checkbox = ( { className = 'checkbox', checkedLink, children } ) => (
+export const Checkbox = ( { className = 'checkbox', checkedLink, children } : { valueLink : Link<boolean> } & AnyProps) => (
     <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
          onClick={ checkedLink.action( x => !x ) }
     >
