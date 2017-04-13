@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.4.1-rc06",
+  "version": "1.4.1-rc07",
   "description": "Two-way data binding and validation for React state",
   "main": "./dist",
   "module": "./lib",
@@ -8,6 +8,7 @@
   "files": [
     "dist",
     "lib",
+    "src",
     "tags.js",
     "tags.d.js",
     "tags.js.map"
