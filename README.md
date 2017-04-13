@@ -2,11 +2,10 @@
 
 # Purely functional data binding for React
 
-Lightweight (6.5K minified) purely functional two-way data binding for the React based on `value link` pattern.
+Lightweight (6.5K minified) purely functional two-way data binding for the React designed for TypeScript and ES6.
 
-Approach used by this library significantly differs to common way of dealing with state and forms in React.
-While losely based on the original React Link idea, `valuelink` moves it far further providing simple and elegant solutions
-for common problems, such as data binding of the complex state and form validation.
+While losely based on the original React Link idea, `valuelink` develops the idea further providing simple and elegant solutions
+for many common problems, such as data binding of the complex state elements and form validation.
 
 Introductory tutorials explaining the basics of the 'Value Link' pattern:
 
@@ -18,15 +17,16 @@ Examples are [here](https://volicon.github.io/NestedLink/)
 
 Features:
 
-- Able to link complex React state with nested objects and arrays.
-- All major data binding scenarios are supported, including radio groups and select lists.
+- Support for all major data binding scenarios, including radio groups and select lists.
 - Declarative form validation.
-- Support for 'pure render' optimization.
-- Reference implementation of 'linked' UI controls (`tags.jsx`).
-    - Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
-    - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
-- TypeScript source and type definitions.
-- Backward compatible with standard React 0.14 links API
+- Easy handling of the complex React state with nested objects and arrays.
+- 'pure render' optimization friendly due to the value links caching. 
+- Exact type inference with the TypeScript.
+
+Reference implementation of 'linked' UI controls included (`tags.jsx`).
+
+- Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
+- Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
 
 ![Value Links](/images/valuelinks.jpg)
 
