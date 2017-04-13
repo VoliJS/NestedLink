@@ -3,12 +3,12 @@ import * as React from 'react';
 import { Link, LinksCache } from './link';
 export interface DataBindingSource<S> {
     linkAt<K extends keyof S>(key: K): Link<S[K]>;
-    linkAll(...keys: (keyof S)[]): LinksCache<S>;
+    linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
 }
 export declare abstract class LinkedComponent<P, S> extends React.Component<P, S> implements DataBindingSource<S> {
-    links: LinksCache<S>;
+    links: LinksCache<S, keyof S>;
     linkAt<K extends keyof S>(key: K): Link<S[K]>;
-    linkAll(...args: (keyof S)[]): LinksCache<S>;
+    linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
 }
 export declare class StateLink<P, S, K extends keyof S> extends Link<S[K]> {
     component: LinkedComponent<P, S>;

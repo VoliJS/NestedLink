@@ -5,38 +5,47 @@ export interface Validator<T> {
     (value: T): boolean;
     error?: any;
 }
-export declare type LinksCache<S> = {
-    [K in keyof S]: Link<S[K]>;
+export declare type LinksCache<S, X extends keyof S> = {
+    [K in X]: Link<S[K]>;
 };
-export declare type Iterator = (link: ChainedLink, key: string | number) => any;
+export declare type Iterator<T> = (link: LinkAt<T>, key: string | number) => any;
 export declare type ChainedLinks = {
-    [attrName: string]: ChainedLink;
+    [attrName: string]: LinkAt<any>;
 };
 export declare abstract class Link<T> {
     value: T;
     static state: <P, S, K extends keyof S>(component: React.Component<P, S>, key: K) => Link<S[K]>;
-    static all: <P, S>(component: React.Component<P, S>, ..._keys: (keyof S)[]) => LinksCache<S>;
-    static value<T>(value: T, set: (x: T) => void): CustomLink<T>;
+    static all: <P, S, K extends keyof S>(component: React.Component<P, S>, ..._keys: K[]) => LinksCache<S, K>;
+    static value<T>(value: T, set: (x: T) => void): Link<T>;
     constructor(value: T);
     error: any;
     readonly validationError: any;
     abstract set(x: T): void;
-    onChange(handler: (x: T) => void): CloneLink<T>;
+    onChange(handler: (x: T) => void): Link<T>;
     requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
-    pipe(handler: Transform<T>): CloneLink<T>;
+    pipe(handler: Transform<T>): Link<T>;
     action(transform: Transform<T>): EventHandler;
-    equals(truthyValue: any): EqualsLink;
-    enabled(defaultValue?: string): EnabledLink;
-    contains(element: any): ContainsLink;
-    push(): void;
-    unshift(): void;
-    splice(): void;
-    map(iterator: Iterator): any[];
-    remove(key: string | number): void;
-    at(key: string | number): ChainedLink;
+    equals(truthyValue: any): Link<boolean>;
+    enabled(defaultValue?: any): Link<boolean>;
+    contains<E>(this: Link<E[]>, element: E): Link<boolean>;
+    push<E>(this: Link<E[]>, ...args: E[]): void;
+    unshift<E>(this: Link<E[]>, ...args: E[]): void;
+    splice(start: number, deleteCount?: number): any;
+    map<E, Z>(this: Link<E[]>, iterator: (link: LinkAt<E>, idx: number) => Z): Z[];
+    map<E, Z>(this: Link<{
+        [key: string]: E;
+    }>, iterator: (link: LinkAt<E>, idx: string) => Z): Z[];
+    removeAt<E>(this: Link<E[]>, key: number): void;
+    removeAt<E>(this: Link<{
+        [key: string]: E;
+    }>, key: string): void;
+    at<E>(this: Link<E[]>, key: number): LinkAt<E>;
+    at<K extends keyof T, E extends T[K]>(key: K): LinkAt<E>;
     clone(): T;
-    pick(): ChainedLinks;
+    pick<K extends keyof T>(...keys: K[]): {
+        [P in K]: Link<T[P]>;
+    };
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
@@ -72,10 +81,10 @@ export declare class ContainsLink extends Link<boolean> {
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export declare class ChainedLink extends Link<any> {
-    parent: Link<{}>;
+export declare class LinkAt<E> extends Link<E> {
+    private parent;
     key: string | number;
-    constructor(parent: Link<{}>, key: string | number);
-    remove(key?: any): void;
-    set(x: any): void;
+    constructor(parent: Link<any>, key: string | number);
+    remove(): void;
+    set(x: E): void;
 }

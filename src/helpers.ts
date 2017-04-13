@@ -36,7 +36,7 @@ const dummyHelpers : Helper = {
 };
 
 // `map` and `clone` for plain JS objects
-const objectHelpers : Helper = {
+export const objectHelpers : Helper = {
     // Map through the link to object
     map( link : IterableLink, iterator : Iterator ) : any[] {
         let mapped = [];

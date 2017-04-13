@@ -12,4 +12,5 @@ export interface Helper {
     remove(obj: any, key: string | number): any;
 }
 export declare function helpers(value: any): Helper;
+export declare const objectHelpers: Helper;
 export declare const arrayHelpers: Helper;

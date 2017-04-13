@@ -3,7 +3,7 @@
  *
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
-import { helpers, arrayHelpers } from './helpers'
+import { helpers, arrayHelpers, objectHelpers } from './helpers'
 
 export type Transform< T > = ( value : T, event? : {} ) => T
 export type EventHandler = ( event : {} ) => void
@@ -13,21 +13,21 @@ export interface Validator< T >{
     error? : any
 }
 
-export type LinksCache< S > = {
-    [ K in keyof S ] : Link< S[ K ] >
+export type LinksCache< S, X extends keyof S> = {
+    [ K in X ] : Link< S[ K ] >
 }
 
-export type Iterator = ( link : ChainedLink, key : string | number ) => any
-export type ChainedLinks = { [ attrName : string ] : ChainedLink }
+export type Iterator<T> = ( link : LinkAt<T>, key : string | number ) => any
+export type ChainedLinks = { [ attrName : string ] : LinkAt<any> }
 
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
     // @deprecated API. Use component subclass.
     static state : < P, S, K extends keyof S>( component : React.Component< P, S >, key : K ) => Link< S[ K ] >;
-    static all : < P, S >( component : React.Component< P, S >, ..._keys : ( keyof S )[] ) => LinksCache< S >;
+    static all : < P, S, K extends keyof S >( component : React.Component< P, S >, ..._keys : K[] ) => LinksCache< S, K >;
 
     // Create custom link to arbitrary value
-    static value< T >( value : T, set : ( x : T ) => void ) : CustomLink< T >{
+    static value< T >( value : T, set : ( x : T ) => void ) : Link< T >{
         return new CustomLink( value, set );
     }
 
@@ -43,7 +43,7 @@ export abstract class Link< T >{
     // Link set functions
     abstract set( x : T ) : void
 
-    onChange( handler : ( x : T ) => void ) : CloneLink< T > {
+    onChange( handler : ( x : T ) => void ) : Link< T > {
         return new CloneLink( this, (x : T ) => {
             handler( x );
             this.set( x );
@@ -62,7 +62,7 @@ export abstract class Link< T >{
     }
 
     // Create new link which applies transform function on set.
-    pipe( handler : Transform< T > ) : CloneLink< T > {
+    pipe( handler : Transform< T > ) : Link< T > {
         return new CloneLink( this, x =>{
             const next = handler( x, this.value );
             next === void 0 || this.set( next );
@@ -74,31 +74,34 @@ export abstract class Link< T >{
         return e => this.update( transform, e );
     }
 
-    equals( truthyValue ) : EqualsLink {
+    equals( truthyValue ) : Link<boolean> {
         return new EqualsLink( this, truthyValue );
     }
 
-    enabled( defaultValue = '' ) : EnabledLink {
+    enabled( defaultValue : any = '' ) : Link<boolean> {
         return new EnabledLink( this, defaultValue );
     }
 
     // Array-only links methods
-    contains( element : any ) : ContainsLink {
+    contains<E>( this : Link<E[]>, element : E ) : Link<boolean>{
         return new ContainsLink( this, element );
     }
 
-    push() : void {
+    push<E>( this : Link<E[]>, ...args : E[] ) : void;
+    push(){
         const array = arrayHelpers.clone( this.value );
         Array.prototype.push.apply( array, arguments );
         this.set( array );
     }
 
+    unshift<E>( this : Link<E[]>, ...args : E[] ) : void;
     unshift() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.unshift.apply( array, arguments );
         this.set( array );
     }
 
+    splice( start : number, deleteCount? : number );
     splice() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.splice.apply( array, arguments );
@@ -106,19 +109,25 @@ export abstract class Link< T >{
     }
 
     // Array and objects universal collection methods
-    map( iterator : Iterator ) : any[] {
+    map<E, Z>( this : Link<E[]>, iterator : ( link : LinkAt<E>, idx : number ) => Z ) : Z[];
+    map<E, Z>( this : Link<{[ key : string ] : E }>, iterator : ( link : LinkAt<E>, idx : string ) => Z ) : Z[];
+    map( iterator ) {
         return helpers( this.value ).map( this, iterator );
     }
 
-    remove( key : string | number ) : void {
+    removeAt<E>( this : Link<E[]>, key : number ) : void;
+    removeAt<E>( this : Link<{ [ key : string ] : E }>, key : string ) : void;
+    removeAt( key ){
         const { value } = this,
             _ = helpers( value );
 
         this.set( _.remove( _.clone( value ), key ) );
     }
 
-    at( key : string | number ) : ChainedLink {
-        return new ChainedLink( this, key );
+    at< E >( this : Link< E[] >, key : number ) : LinkAt<E>;
+    at< K extends keyof T, E extends T[K]>( key : K ) : LinkAt<E>;
+    at( key ){
+        return new LinkAt( this, key );
     }
 
     clone() : T {
@@ -126,12 +135,13 @@ export abstract class Link< T >{
         return helpers( value ).clone( value );
     }
 
-    pick() : ChainedLinks {
-        let links : ChainedLinks = {};
+    pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: Link<T[P]>}
+    pick() {
+        let links = {};
 
         for( let i = 0; i < arguments.length; i++ ){
             const key : string = arguments[ i ];
-            links[ key ] = new ChainedLink( this, key );
+            links[ key ] = new LinkAt( this, key );
         }
 
         return links;
@@ -213,22 +223,17 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class ChainedLink extends Link< any > {
-    constructor( public parent : Link< {} >, public key : string | number ){
+export class LinkAt< E > extends Link< E > {
+    constructor( private parent : Link< any >, public key : string | number ){
         super( parent.value[ key ] );
     }
 
-    remove( key? ){
-        if( key === void 0 ){
-            this.parent.remove( this.key );
-        }
-        else{
-            super.remove( key );
-        }
+    remove(){
+        this.parent.removeAt( <any>this.key );
     }
 
     // Set new element value to parent array or object, performing purely functional update.
-    set( x ){
+    set( x : E ) : void {
         if( this.value !== x ){
             this.parent.update( value => {
                 value[ this.key ] = x;
@@ -237,4 +242,3 @@ export class ChainedLink extends Link< any > {
         }
     };
 }
-
