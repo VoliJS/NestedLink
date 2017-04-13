@@ -36,6 +36,7 @@ Features:
 
 # New in 1.4
 
+- (!) `link.remove( key )` is renamed to `link.removeAt( key )`; `link.remove()` will work as usual for the links to array/object elements.
 - New ES6 API for value links creation:
     - Extend the `LinkedComponent` base class instead of `React.Component`.
     - Use `this.linkAt( 'stateKey' )` instead of `Link.state( this, 'stateKey' )`.
@@ -353,7 +354,7 @@ Creates action to update enclosed object or array.
                             }) } />
 ```
 
-##### ![method] linkToObject.remove( key ) : void
+##### ![method] linkToObject.removeAt( key ) : void
 
 ##### ![method] linkToObject.at( key ).remove() : void
 
