@@ -30,6 +30,7 @@ Reference implementation of 'linked' UI controls (`valuelink/tags`):
 - [Typical data binding scenarios](https://volicon.github.io/NestedLink/example/databinding.html)([source](/example/src/databinding.jsx))
 - [Reusable stateful components](https://volicon.github.io/NestedLink/example/asaf.html)([source](/example/src/asaf.jsx))
 - [Complex app state example](https://volicon.github.io/NestedLink/)([source](/example/src/userslist.jsx))
+- [TodoMVC](https://github.com/gaperton/TodoMVC-NestedLink)
 
 ## [API Reference](/docs/api.md)
 
@@ -50,7 +51,7 @@ import React from 'react'
 import Link, { LinkedComponent } from 'valuelink'
 
 // You need these component wrappers instead of standard ones to use data binding.
-import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags'
+import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/lib/tags'
 ```
 
 Refer to the [databinding examples](/example/src/databinding.jsx) and the [manual](/docs/databinding.md) for the typical data binding scenarios.
