@@ -73,7 +73,7 @@ You can either use `Link.value` inside to create links dynamically, or extend th
 
 ### Start hacking
 
-![/docs/images/valuelinks.jpg]
+!(design)[/docs/images/valuelinks.jpg]
 
 If you want to play with the examples, fix the bug, or whatever:
 
