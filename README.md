@@ -50,7 +50,7 @@ import React from 'react'
 import Link, { LinkedComponent } from 'valuelink'
 
 // You need these component wrappers instead of standard ones to use data binding.
-import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags'
+import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/lib/tags'
 ```
 
 Refer to the [databinding examples](/example/src/databinding.jsx) and the [manual](/docs/databinding.md) for the typical data binding scenarios.
