@@ -22,7 +22,7 @@ You can find working examples [here](https://volicon.github.io/NestedLink/) ([so
 - 'pure render' optimization friendly.
 - Full static type checks with the TypeScript.
 
-Reference implementation of 'linked' UI controls (`tags.jsx`):
+Reference implementation of 'linked' UI controls (`valuelink/tags`):
 
 - Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
 - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
@@ -31,9 +31,11 @@ Reference implementation of 'linked' UI controls (`tags.jsx`):
 
 ## [Data binding tutorial and examples](/docs/databinding.md)
 
-Here are the set of [working](https://volicon.github.io/valuelink/databinding.html) [examples](/databinding.html) for typical data binding use cases.
+Examples:
 
-Also, there's [working](https://volicon.github.io/valuelink) [example](/example/userslist.jsx) of an application managing the users list.
+- [Typical data binding scenarios](https://volicon.github.io/valuelink/example/databinding.html)([source](/example/src/databinding.jsx))
+- [Reusable stateful components](https://volicon.github.io/NestedLink/example/asaf.html)([source](/example/src/asaf.jsx))
+- [Complex app state example](https://volicon.github.io/NestedLink/)([source](/example/src/userslist.jsx))
 
 ## How to
 
