@@ -6,7 +6,7 @@ Lightweight (6.5K minified) purely functional two-way data binding for the React
 While losely based on the original React Link idea, `valuelink` develops the concept further providing simple and elegant solutions
 for handling of the compound state and form validation.
 
-ValueLinks provides Here's the series of 5-minute tutorials to quickly understand the concept and its rationale:
+Here's the series of 5-minute tutorials to quickly understand the concept and its rationale:
 
 - [The basics of ValueLink design pattern](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
 - [Form validation with ValueLinks](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
