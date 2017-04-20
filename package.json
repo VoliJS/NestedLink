@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./dist",
   "module": "./lib",
@@ -10,8 +10,7 @@
     "lib",
     "src",
     "tags.js",
-    "tags.d.js",
-    "tags.js.map"
+    "tags.jsx"
   ],
   "repository": {
     "type": "git",
