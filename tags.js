@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Linked React components for building forms implementing React 0.14 valueLink semantic.
  *
@@ -30,7 +31,8 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import * as React from 'react';
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
 var setValue = function (x, e) { return e.target.value; };
 var setBoolValue = function (x, e) { return Boolean(e.target.checked); };
 /**
@@ -51,7 +53,7 @@ function validationClasses(props, value, error) {
     }
     return classNames.join(' ');
 }
-export function Input(props) {
+function Input(props) {
     var valueLink = props.valueLink, checkedLink = props.checkedLink, rest = __rest(props, ["valueLink", "checkedLink"]), type = props.type, link = valueLink || checkedLink;
     switch (type) {
         case 'checkbox':
@@ -62,12 +64,13 @@ export function Input(props) {
             return React.createElement("input", __assign({}, rest, { className: validationClasses(rest, valueLink.value, valueLink.error), value: String(valueLink.value), onChange: valueLink.action(setValue) }));
     }
 }
+exports.Input = Input;
 ;
-export var isRequired = function (x) { return x != null && x !== ''; };
-isRequired.error = 'Required';
+exports.isRequired = function (x) { return x != null && x !== ''; };
+exports.isRequired.error = 'Required';
 var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-export var isEmail = function (x) { return Boolean(x.match(emailPattern)); };
-isEmail.error = 'Should be valid email';
+exports.isEmail = function (x) { return Boolean(x.match(emailPattern)); };
+exports.isEmail.error = 'Should be valid email';
 var NumberInput = (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
@@ -130,14 +133,14 @@ var NumberInput = (function (_super) {
     };
     return NumberInput;
 }(React.Component));
-export { NumberInput };
+exports.NumberInput = NumberInput;
 /**
  * Wrapper for standard <textarea/> to be compliant with React 0.14 valueLink semantic.
  * Simple supports for link validation - adds 'invalid' class if link has an error.
  *
  *     <TextArea valueLink={ linkToText } />
  */
-export var TextArea = function (_a) {
+exports.TextArea = function (_a) {
     var valueLink = _a.valueLink, props = __rest(_a, ["valueLink"]);
     return (React.createElement("textarea", __assign({}, props, { className: validationClasses(props, valueLink.value, valueLink.error), value: valueLink.value, onChange: valueLink.action(setValue) })));
 };
@@ -150,7 +153,7 @@ export var TextArea = function (_a) {
  *         <option value="b">B</option>
  *     </Select>
  */
-export var Select = function (_a) {
+exports.Select = function (_a) {
     var valueLink = _a.valueLink, children = _a.children, props = __rest(_a, ["valueLink", "children"]);
     return (React.createElement("select", __assign({}, props, { value: valueLink.value, onChange: valueLink.action(setValue) }), children));
 };
@@ -160,7 +163,7 @@ export var Select = function (_a) {
  *
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
-export var Radio = function (_a) {
+exports.Radio = function (_a) {
     var _b = _a.className, className = _b === void 0 ? 'radio' : _b, checkedLink = _a.checkedLink, children = _a.children;
     return (React.createElement("div", { className: className + (checkedLink.value ? ' selected' : ''), onClick: checkedLink.action(function () { return true; }) }, children));
 };
@@ -170,8 +173,7 @@ export var Radio = function (_a) {
  *
  *     <Checkbox checkedLink={ boolLink } />
  */
-export var Checkbox = function (_a) {
+exports.Checkbox = function (_a) {
     var _b = _a.className, className = _b === void 0 ? 'checkbox' : _b, checkedLink = _a.checkedLink, children = _a.children;
     return (React.createElement("div", { className: className + (checkedLink.value ? ' selected' : ''), onClick: checkedLink.action(function (x) { return !x; }) }, children));
 };
-//# sourceMappingURL=tags.js.map

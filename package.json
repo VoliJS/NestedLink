@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./dist",
   "module": "./lib",
@@ -62,9 +62,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build-lib && npm run build-examples && npm run predeploy",
-    "build-jsx" : "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && rm -rf ./temp",
+    "build-jsx" : "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
     "build-lib": "node_modules/.bin/tsc",
     "build-examples":"node_modules/.bin/webpack -p --config example/webpack.config.js",
-    "predeploy": "node_modules/.bin/webpack -p && cp lib/tags.js . && npm run build-jsx"
+    "predeploy": "node_modules/.bin/webpack -p && npm run build-jsx"
   }
 }

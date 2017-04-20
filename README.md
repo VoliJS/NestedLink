@@ -50,14 +50,17 @@ Usage:
 import React from 'react'
 import Link, { LinkedComponent } from 'valuelink'
 
-// You need these component wrappers instead of standard ones to use data binding.
+// If you're using TypeScript or the modern module bundler (like webpack 2) supporting ES6 imports and "tree shaking".
 import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/lib/tags'
+
+// For all other cases there's CommonJS tags module, when previous option won't work.
+import { Input, TextArea, Select, Radio, Checkbox } from 'valuelink/tags'
 ```
 
 Refer to the [databinding examples](/example/src/databinding.jsx) and the [manual](/docs/databinding.md) for the typical data binding scenarios.
 
-[/lib](/lib) folder contains ES5 modules prebuilt with ES6 exports suitable for modern build tools like `webpack 2`.
-[/dist](/dist) folder contains minified UMD ES5 assembly exporting `NestedLink` global valiable.
+* [/lib](/lib) folder contains ES5 modules prebuilt with ES6 exports suitable for modern build tools like `webpack 2`.
+* [/dist](/dist) folder contains minified UMD ES5 assembly exporting `NestedLink` global valiable.
 
 ### Create your own data bound controls
 
