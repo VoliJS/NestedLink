@@ -25,6 +25,8 @@ Reference implementation of 'linked' UI controls (`valuelink/tags`):
 - Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
 - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
 
+![dialog](/docs/images/dialog.jpg)
+
 ## Examples
 
 - [Typical data binding scenarios](https://volicon.github.io/NestedLink/example/databinding.html)([source](/example/src/databinding.jsx))
