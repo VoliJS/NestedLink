@@ -87,9 +87,6 @@ If you want to play with the examples, fix the bug, or whatever:
 
 `npm run build` - compiles everything including examples.
 
----
-![usedby](/docs/images/usedby.png)
-
 ## 1.4 Release Notes
 
 - (!) `link.remove( key )` is renamed to `link.removeAt( key )`; `link.remove()` will work as usual for the links to array/object elements.
@@ -102,3 +99,6 @@ If you want to play with the examples, fix the bug, or whatever:
 - Support for modern bundlers in the package.json (`module` field points to `lib` folder with transpiled ES6-import modules).
 - UMD module is included in `dist` folder (exporting `NestedLink` global variable).
 - Updated examples.
+
+---
+![usedby](/docs/images/usedby.png)
