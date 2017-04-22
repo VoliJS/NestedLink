@@ -87,6 +87,9 @@ If you want to play with the examples, fix the bug, or whatever:
 
 `npm run build` - compiles everything including examples.
 
+---
+![usedby](/docs/images/usedby.png)
+
 ## 1.4 Release Notes
 
 - (!) `link.remove( key )` is renamed to `link.removeAt( key )`; `link.remove()` will work as usual for the links to array/object elements.
