@@ -96,6 +96,33 @@ var list = stringArrayLink.map( ( itemLink, index ) => {
 });
 ```
 
+## Bind to control
+
+#### ![var] link.props : { value, onChange }
+
+Bind link to the standard form control consuming value and onChange props.
+
+```javascript
+<input {...link.props} />
+```
+
+#### Custom data-bound controls
+
+You're encouraged to create your own semantic form controls to take the full advantage
+ of the value links features. An example of the control:
+
+```javascript
+const Input = ({ valueLink, ...props }) => (
+    <div className={`form-control ${ valueLink.error ? 'error' : '' }`}>
+        <input {...props}
+            value={ valueLink.value }
+            onChange={ e => valueLink.set( e.target.value ) }
+        />
+        <div className="validation-error">{ valueLink.error || '' }</div>
+    </div>
+);
+```
+
 ## Offhand boolean links
 
 ##### ![method] linkToArray.contains( element ) : Link

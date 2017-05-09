@@ -18,6 +18,10 @@ export declare abstract class Link<T> {
     readonly validationError: any;
     abstract set(x: T): void;
     onChange(handler: (x: T) => void): Link<T>;
+    readonly props: {
+        value: T;
+        onChange: (e: any) => void;
+    };
     requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
     pipe(handler: Transform<T>): Link<T>;

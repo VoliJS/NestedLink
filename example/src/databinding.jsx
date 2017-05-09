@@ -92,6 +92,11 @@ const SimpleBinding = ({ strLink, boolLink }) => {
             <legend>Direct state fields binding</legend>
 
             <label>
+                Standard input
+                <input { ...strLink.props }/>
+            </label>
+
+            <label>
                 String
                 <Input valueLink={ strLink }/>
             </label>

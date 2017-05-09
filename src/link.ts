@@ -47,6 +47,11 @@ export abstract class Link< T >{
         });
     }
 
+    // <input { ...link.props } />
+    get props(){
+        return { value : this.value, onChange : e => this.set( e.target.value ) };
+    }
+
     // DEPRECATED: Old React method for backward compatibility
     requestChange( x : T ) : void {
         this.set( x );

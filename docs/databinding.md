@@ -1,6 +1,16 @@
 # Data binding Reference
 
-Here's the reference for data bound tags from [valuelink/tags](/src/tags.tsx).
+Link can be bound to the standard form control consuming value and onChange props like this:
+
+```javascript
+<input {...link.props} />
+```
+
+In order to take the full advantage of the value link pattern you're encouraged to create
+custom semantic form control wrappers, encapsulating the markup for form layout and validation.
+
+Here's the reference for data bound tags from [valuelink/tags](/src/tags.tsx) which might be used
+as starting boilerplate.
 
 ### Text and number form fields 
 

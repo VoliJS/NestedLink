@@ -87,18 +87,9 @@ If you want to play with the examples, fix the bug, or whatever:
 
 `npm run build` - compiles everything including examples.
 
-## 1.4 Release Notes
+## 1.5 Release Notes
 
-- (!) `link.remove( key )` is renamed to `link.removeAt( key )`; `link.remove()` will work as usual for the links to array/object elements.
-- New ES6 API for value links creation:
-    - Extend the `LinkedComponent` base class instead of `React.Component`.
-    - Use `this.linkAt( 'stateKey' )` instead of `Link.state( this, 'stateKey' )`.
-    - Use `this.linkAll( 'key1', 'key2', ... )` instead of `Link.all( this, 'key1', 'key2', ... )`.
-    - `this.linkAll()` without arguments will link each member of the state.
-    - New API is precisely typed with the recent TypeScript features. `this.linkAt( 'a' )` will cause compilation error if 'a' is not a member of the state. Generated links are properly typed as well.
-- Support for modern bundlers in the package.json (`module` field points to `lib` folder with transpiled ES6-import modules).
-- UMD module is included in `dist` folder (exporting `NestedLink` global variable).
-- Updated examples.
+- `<input {...link.props} />` can be used to bind the link to any of the standard controls expecting `value` and `onChange` props.
 
 ---
 ![usedby](/docs/images/usedby.png)
