@@ -49,7 +49,13 @@ export abstract class Link< T >{
 
     // <input { ...link.props } />
     get props(){
-        return { value : this.value, onChange : e => this.set( e.target.value ) };
+        return typeof this.value === 'boolean' ? {
+            checked : this.value,
+            onChange : e => this.set( Boolean( e.target.checked ) as any )
+        }:{
+            value : this.value,
+            onChange : e => this.set( e.target.value )
+        };
     }
 
     // DEPRECATED: Old React method for backward compatibility

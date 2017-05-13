@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./dist",
   "module": "./lib",

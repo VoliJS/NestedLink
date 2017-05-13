@@ -163,7 +163,7 @@ const CheckboxObjGroup = ({ flagsLink }) => {
                 A: <Input type="checkbox" checkedLink={ links.a }/>
             </label>
             <label>
-                B: <Input type="checkbox" checkedLink={ links.b }/>
+                B: <input type="checkbox" { ...links.b.props }/>
             </label>
         </fieldset>
     );
@@ -200,7 +200,7 @@ const RadioGroup = ({ flagLink }) => (
             A: <Input type="radio" valueLink={ flagLink } value="a" />
         </label>
         <label>
-            B: <Input type="radio" valueLink={ flagLink } value="b" />
+            B: <input type="radio" { ...flagLink.equals( 'b' ).props } />
         </label>
     </fieldset>
 );

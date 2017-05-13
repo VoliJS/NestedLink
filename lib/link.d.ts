@@ -19,6 +19,9 @@ export declare abstract class Link<T> {
     abstract set(x: T): void;
     onChange(handler: (x: T) => void): Link<T>;
     readonly props: {
+        checked: (T & true) | (T & false);
+        onChange: (e: any) => void;
+    } | {
         value: T;
         onChange: (e: any) => void;
     };
