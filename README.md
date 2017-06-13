@@ -1,9 +1,9 @@
-![logo](/docs/images/value-link-logo.png) 
+![logo](/docs/images/value-link-logo.png)
 
 # Purely functional data binding for React
 
 Lightweight (6.5K minified) purely functional two-way data binding for the React designed to be used in TypeScript and ES6.
-While losely based on the original React Link idea, `valuelink` develops the concept further providing simple and elegant solutions
+While loosely based on the original React Link idea, `valuelink` develops the concept further providing simple and elegant solutions
 for handling of the compound state and form validation.
 
 Here's the series of 5-minute tutorials to quickly understand the concept and its rationale:
@@ -25,7 +25,7 @@ Reference implementation of 'linked' UI controls (`valuelink/tags`):
 - Standard tags: `<Input />` and `<TextArea />` (with validation), `<Select />`,
 - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
 
-![dialog](/docs/images/dialog.jpg)
+![dialog](/docs/images/comparison.png)
 
 ## Examples
 
