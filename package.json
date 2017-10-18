@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./dist",
   "module": "./lib",
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/Volicon/valuelink#readme",
   "peerDependencies": {
-    "react": "*"
+    "react": "^15.0.0"
   },
   "devDependencies": {
     "@types/react": "^15.0.21",
@@ -52,8 +52,11 @@
     "babel-runtime": "*",
     "classnames": "^2.2.0",
     "css-loader": "*",
-    "react-dom": "*",
+    "react-dom": "^15.0.0",
     "react-modal": "^1.2.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "*",
     "typescript": "*",
@@ -62,9 +65,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build-lib && npm run build-examples && npm run predeploy",
-    "build-jsx" : "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
+    "build-jsx": "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
     "build-lib": "node_modules/.bin/tsc",
-    "build-examples":"node_modules/.bin/webpack -p --config example/webpack.config.js",
-    "predeploy": "node_modules/.bin/webpack -p && npm run build-jsx"
+    "build-examples": "node_modules/.bin/webpack -p --config example/webpack.config.js",
+    "predeploy": "node_modules/.bin/rollup --config && npm run build-jsx"
   }
 }
