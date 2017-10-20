@@ -1,7 +1,8 @@
 import './main.css'
 import ReactDOM from 'react-dom'
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'proptypes'
 
 import Link, { LinkedComponent } from 'valuelink'
 import Modal from 'react-modal'

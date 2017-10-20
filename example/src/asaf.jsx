@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'proptypes'
 import ReactDOM from 'react-dom'
 import Link, { LinkedComponent } from 'valuelink'
 import { Input } from 'valuelink/tags'

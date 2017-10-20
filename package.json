@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./dist",
   "module": "./lib",
@@ -34,10 +34,11 @@
   },
   "homepage": "https://github.com/Volicon/valuelink#readme",
   "peerDependencies": {
-    "react": "^15.0.0"
+    "react": "*"
   },
   "devDependencies": {
     "@types/react": "^15.0.21",
+    "proptypes": "*",
     "babel-cli": "*",
     "babel-core": "*",
     "babel-loader": "*",
@@ -52,11 +53,12 @@
     "babel-runtime": "*",
     "classnames": "^2.2.0",
     "css-loader": "*",
-    "react-dom": "^15.0.0",
-    "react-modal": "^1.2.1",
-    "rollup": "^0.50.0",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
+    "react": "*",
+    "react-dom": "^16.0.0",
+    "react-modal": "^3.0.4",
+    "rollup": "*",
+    "rollup-plugin-node-resolve": "*",
+    "rollup-plugin-uglify": "*",
     "source-map-loader": "^0.2.1",
     "style-loader": "*",
     "typescript": "*",
@@ -64,10 +66,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lib && npm run build-examples && npm run predeploy",
+    "build": "npm run build-lib && npm run build-dist && npm run build-examples",
     "build-jsx": "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
     "build-lib": "node_modules/.bin/tsc",
     "build-examples": "node_modules/.bin/webpack -p --config example/webpack.config.js",
-    "predeploy": "node_modules/.bin/rollup --config && npm run build-jsx"
+    "build-dist": "node_modules/.bin/rollup --config && npm run build-jsx"
   }
 }
