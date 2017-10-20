@@ -48,8 +48,8 @@ export class NumberInput extends React.Component {
             const { charCode } = e, { integer, positive } = this.props, allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
             if (e.ctrlKey)
                 return;
-            if (charCode &&
-                (charCode < 48 || charCode > 57) &&
+            if (charCode && // allow control characters
+                (charCode < 48 || charCode > 57) && // char is number
                 allowed.indexOf(charCode) < 0) {
                 e.preventDefault();
             }

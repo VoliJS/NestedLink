@@ -71,7 +71,7 @@ exports.isRequired.error = 'Required';
 var emailPattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 exports.isEmail = function (x) { return Boolean(x.match(emailPattern)); };
 exports.isEmail.error = 'Should be valid email';
-var NumberInput = (function (_super) {
+var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -79,8 +79,8 @@ var NumberInput = (function (_super) {
             var charCode = e.charCode, _a = _this.props, integer = _a.integer, positive = _a.positive, allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
             if (e.ctrlKey)
                 return;
-            if (charCode &&
-                (charCode < 48 || charCode > 57) &&
+            if (charCode && // allow control characters
+                (charCode < 48 || charCode > 57) && // char is number
                 allowed.indexOf(charCode) < 0) {
                 e.preventDefault();
             }
