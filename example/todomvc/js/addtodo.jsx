@@ -1,29 +1,25 @@
-import React from 'nestedreact'
-import { Input } from 'valuelink/tags.jsx'
+import React from 'react'
+import { LinkedComponent } from 'valuelink';
 
-const AddTodo = React.createClass( {
-    props : {
-        onEnter : Function.value( function(){} )
-    },
-
-    state : {
-        desc : String
-    },
+export default class AddTodo extends LinkedComponent {
+    state = {
+        desc : ""
+    }
 
     render(){
         return (
             <header className="header">
                 <h1>todos</h1>
 
-                <Input className="new-todo" placeholder="What needs to be done?" autofocus
-                       valueLink={ this.state.getLink( 'desc' ) }
+                <input className="new-todo" placeholder="What needs to be done?" autoFocus
+                       { ...this.linkAt( 'desc' ).props }
                        onKeyDown={ this.onKeyDown }
                 />
             </header>
         );
-    },
+    }
 
-    onKeyDown( { keyCode } ){
+    onKeyDown = ( { keyCode } ) =>{
         if( keyCode === 13 ){
             let { state, props } = this;
 
@@ -31,6 +27,4 @@ const AddTodo = React.createClass( {
             state.desc = "";
         }
     }
-} );
-
-export default AddTodo;
+}

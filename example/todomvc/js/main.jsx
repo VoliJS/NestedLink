@@ -1,30 +1,26 @@
 import 'css/app.css'
-import React from 'nestedreact'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import {ToDo} from './model.js'
 import TodoList from './todolist.jsx'
 import Filter from './filter.jsx'
 import AddTodo from './addtodo.jsx'
-
+import { LinkedComponent } from 'valuelink'
 
 function removeDone( todos ){
     return todos.filter( todo => !todo.done );
 }
 
-const App = React.createClass( {
-    // Declare component state
-    getInitialState(){
-        return {
-            todos : [],
-            filterDone : null
-        }
-    },
+class App extends LinkedComponent {
+    state = {
+        todos : [],
+        filterDone : null
+    }
 
     getActiveCount(){
-        let count = 0;
-        this.todos.forEach( todo => todo.done || count++ );
-        return count;
-    },
+        return this.state.todos.reduce( ( count, x ) => (
+            x.done ? count : count + 1
+        ), 0 );
+    }
 
     componentWillMount(){
         const json = JSON.parse( localStorage.getItem( 'todo-mvc' ) || "{}" );
@@ -36,10 +32,10 @@ const App = React.createClass( {
             // Save state back to the local storage
             localStorage.setItem( 'todo-mvc', JSON.stringify( this.state ) );
         }
-    },
+    }
 
     render(){
-        const links = Link.all( this, 'todos', 'filterDone' ),
+        const links = this.linkAll(),
               { todos, filterDone } = this.state,
               hasTodos = Boolean( todos.length );
 
@@ -67,7 +63,7 @@ const App = React.createClass( {
             </div>
         );
     }
-} );
+}
 
 ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
 

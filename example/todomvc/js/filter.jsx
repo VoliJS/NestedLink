@@ -1,4 +1,4 @@
-import React from 'nestedreact'
+import React from 'react'
 
 const Filter = ( { count, filterLink, onClear } ) => (
     <footer className="footer">
