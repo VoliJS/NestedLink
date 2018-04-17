@@ -81,7 +81,7 @@ var NumberInput = /** @class */ (function (_super) {
                 return;
             if (charCode && // allow control characters
                 (charCode < 48 || charCode > 57) && // char is number
-                allowed.indexOf(charCode) < 0) {
+                allowed.indexOf(charCode) < 0) { // allowed char codes
                 e.preventDefault();
             }
         };

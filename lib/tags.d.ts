@@ -39,7 +39,7 @@ export declare class NumberInput extends React.Component<NumberInputProps, {}> {
  *
  *     <TextArea valueLink={ linkToText } />
  */
-export declare const TextArea: ({valueLink, ...props}: {
+export declare const TextArea: ({ valueLink, ...props }: {
     valueLink: Link<string>;
 } & React.HTMLProps<HTMLTextAreaElement>) => JSX.Element;
 /**
@@ -51,7 +51,7 @@ export declare const TextArea: ({valueLink, ...props}: {
  *         <option value="b">B</option>
  *     </Select>
  */
-export declare const Select: ({valueLink, children, ...props}: {
+export declare const Select: ({ valueLink, children, ...props }: {
     valueLink: Link<any>;
 } & React.HTMLProps<HTMLSelectElement>) => JSX.Element;
 /**
@@ -60,7 +60,7 @@ export declare const Select: ({valueLink, children, ...props}: {
  *
  *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
  */
-export declare const Radio: ({className, checkedLink, children}: {
+export declare const Radio: ({ className, checkedLink, children }: {
     checkedLink: Link<boolean>;
 } & React.HTMLProps<HTMLDivElement>) => JSX.Element;
 /**
@@ -69,6 +69,6 @@ export declare const Radio: ({className, checkedLink, children}: {
  *
  *     <Checkbox checkedLink={ boolLink } />
  */
-export declare const Checkbox: ({className, checkedLink, children}: {
+export declare const Checkbox: ({ className, checkedLink, children }: {
     checkedLink: Link<boolean>;
 } & React.HTMLProps<HTMLDivElement>) => JSX.Element;

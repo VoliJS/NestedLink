@@ -21,9 +21,11 @@ export declare abstract class Link<T> {
     readonly props: {
         checked: (T & true) | (T & false);
         onChange: (e: any) => void;
+        value?: undefined;
     } | {
         value: T;
         onChange: (e: any) => void;
+        checked?: undefined;
     };
     requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
