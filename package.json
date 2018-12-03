@@ -61,13 +61,14 @@
     "rollup-plugin-uglify": "^3.0.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.20.3",
-    "typescript": "^2.8.1",
+    "tslib": "^1.9.3",
+    "typescript": "*",
     "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.14"
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-lib && npm run build-dist && npm run build-examples",
+    "build": "yarn && npm run build-lib && npm run build-dist && npm run build-examples",
     "build-jsx": "node_modules/.bin/tsc ./src/tags.tsx --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
     "build-lib": "node_modules/.bin/tsc",
     "build-examples": "node_modules/.bin/webpack -p --config example/webpack.config.js",

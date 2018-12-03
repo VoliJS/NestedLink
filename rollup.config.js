@@ -11,6 +11,7 @@ export default {
         format : 'umd',
         name   : 'NestedLink',
         exports: 'named',
+        sourcemap: true,
         globals: {
             react: 'React'
         }
@@ -19,7 +20,7 @@ export default {
         resolve(), //for support of `import X from "directory"` rather than verbose `import X from "directory/index"`
         uglify()
     ],
-    sourcemap: true,
+    
     external: [
         'react'
     ]

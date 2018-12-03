@@ -7,8 +7,8 @@
     
     "compilerOptions": {
         "alwaysStrict": true,
-        "importHelpers": false,
-        "noEmitHelpers": false,
+        "importHelpers": true,
+        "noEmitHelpers": true,
         "outDir": "lib",
         "declaration": true,
         "target": "es5",

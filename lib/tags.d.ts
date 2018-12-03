@@ -1,4 +1,3 @@
-/// <reference types="react" />
 /**
  * Linked React components for building forms implementing React 0.14 valueLink semantic.
  *
