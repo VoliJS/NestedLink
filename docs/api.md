@@ -4,6 +4,25 @@
 
 Links can be created and used inside of the React `component.render()` method.
 
+### Linking to state with React Hook
+
+##### ![static] useLink( initValue ) : Link
+
+`useLink` hook creates the component's state variable wrapped in a hook.
+
+```javascript
+import { useLink } from 'nestedlink'
+import * as React from 'react'
+
+export const MyCoolComponent = ( props ) => {
+    const name = useLink( '' );
+
+    return (
+        <input {...name.props} />
+    )
+}
+```
+
 ### Linking to the state attributes
 
 ##### ![method] LinkedComponent.linkAt( stateKey ) : Link

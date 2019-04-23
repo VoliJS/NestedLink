@@ -9,6 +9,7 @@
         "alwaysStrict": true,
         "importHelpers": true,
         "noEmitHelpers": true,
+        "moduleResolution": "node",
         "outDir": "lib",
         "declaration": true,
         "target": "es5",

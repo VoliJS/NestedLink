@@ -7,7 +7,7 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link, { LinkedComponent } from 'valuelink'
+import { LinkedComponent, useLink } from 'valuelink'
 import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'valuelink/tags'
 
 class App extends LinkedComponent {
@@ -56,6 +56,7 @@ class App extends LinkedComponent {
                 <RadioGroup flagLink={ links.radioFlag } />
                 <SelectOption flagLink={ links.radioFlag } />
                 <CustomRadioGroup flagLink={ links.radioFlag } />
+                <HooksExample />
             </div>
         );
     }
@@ -228,6 +229,28 @@ const CustomRadioGroup = ({ flagLink }) => (
         </label>
     </fieldset>
 );
+
+const HooksExample = ({ flagLink }) => {
+    const email = useLink( '' ),
+          isRealEmail = useLink( true );
+
+    return (
+        <fieldset>
+            <legend>Cool React hooks</legend>
+            
+            <label>
+                Email: <input { ...email.props } />
+            </label>
+
+            <label>
+                Is real email: <input type="radio" { ...isRealEmail.equals( true ).props } />
+            </label>
+            <label>
+                It was fake! <input type="radio" { ...isRealEmail.equals( false ).props } />
+            </label>
+        </fieldset>
+    )
+}
 
 ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
 
