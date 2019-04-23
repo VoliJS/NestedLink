@@ -6,7 +6,7 @@ Lightweight (6.5K minified) purely functional two-way data binding for the React
 
 ```javascript
 // Minimal working example demonstrating the two-way data binding with React Hook.
-import { useLink } from 'nestedlink'
+import { useLink } from 'valuelink'
 import * as React from 'react'
 
 export const MyCoolComponent = ( props ) => {
