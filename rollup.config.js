@@ -4,8 +4,6 @@ import uglify from 'rollup-plugin-uglify';
 export default {
     input : 'lib/index.js',
 
-    context: 'window',
-
     output : {
         file   : 'dist/index.js',
         format : 'umd',
