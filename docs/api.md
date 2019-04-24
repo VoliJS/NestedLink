@@ -23,6 +23,51 @@ export const MyCoolComponent = ( props ) => {
 }
 ```
 
+##### ![static] linksValues({ [ name ] : Link }) : { [ name ] : value }
+
+Extracts link values.
+
+```javascript
+export const MyCoolComponent = ( props ) => {
+    const name = useLink( 'a' ),
+          email = useLink( 'b' ),
+
+    ...
+    const values = linksValues({ name, email });
+    console.log( values ); // { name : 'a', email : 'b' }
+}
+```
+
+##### ![static] linksErrors({ [ name ] : Link }) : { [ name ] : value }
+
+Extracts link validation errors. Returns an empty object if there are no errors.
+
+```javascript
+export const MyCoolComponent = ( props ) => {
+    const name = useLink( 'a' ),
+          email = useLink( 'b' ),
+
+    ...
+    const values = linksErrors({ name, email });
+    console.log( values ); // { name : 'a', email : 'b' }
+}
+```
+
+##### ![static] setLinks({ [ name ] : Link }) : void
+
+Bulk set links from the object with values.
+
+```javascript
+export const MyCoolComponent = ( props ) => {
+    const name = useLink( 'a' ),
+          email = useLink( 'b' ),
+
+    ...
+    // Somewhere on I/O completion:
+    setLinks({ name, email }, json);
+}
+```
+
 ### Linking to the state attributes
 
 ##### ![method] LinkedComponent.linkAt( stateKey ) : Link

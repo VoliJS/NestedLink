@@ -2,7 +2,7 @@
 
 # Purely functional data binding for React
 
-Lightweight (6.5K minified) purely functional two-way data binding for the React designed to be used in TypeScript and ES6. Having much in common with `useState` React Hook, `valuelink` develops the concept further providing simple and elegant solutions for handling of the compound state and form validation.
+Lightweight (6.5K minified) purely functional two-way data binding for the React designed to be used in TypeScript and ES6. Having much in common with `useState` React Hook, `valuelink` develops the concept much further providing the simple and elegant solution for handling of the compound state and form validation.
 
 ```javascript
 // Minimal working example demonstrating the two-way data binding with React Hook.
@@ -32,8 +32,8 @@ NestedLink is used as two-way data binding technology in [React-MVx](https://vol
 - Declarative binding of the component state elements to form controls.
 - Instant "as you type" form validation.
 - Easy handling of nested state with objects and arrays.
+- Pricise TypeScript typings.
 - 'pure render' optimization friendly.
-- Full static type checks with the TypeScript.
 
 Reference implementation of 'linked' UI controls (`valuelink/tags`):
 
@@ -47,7 +47,7 @@ Reference implementation of 'linked' UI controls (`valuelink/tags`):
 - [Typical data binding scenarios](https://volicon.github.io/NestedLink/example/databinding.html)([source](/example/src/databinding.jsx))
 - [Reusable stateful components](https://volicon.github.io/NestedLink/example/asaf.html)([source](/example/src/asaf.jsx))
 - [Complex app state example](https://volicon.github.io/NestedLink/)([source](/example/src/userslist.jsx))
-- [TodoMVC](https://github.com/gaperton/TodoMVC-NestedLink)
+- [TodoMVC](/NestedLink/example/todomvc/)([source](/example/todomvc/src))
 
 ## [API Reference](/docs/api.md)
 
