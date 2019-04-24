@@ -102,7 +102,17 @@ If you want to play with the examples, fix the bug, or whatever:
 
 `npm run build` - compiles everything including examples.
 
-## 1.5 Release Notes
+## Release Notes
+### v1.6
+
+React Hooks support.
+
+- `useLink( initValue )` - create linked state.
+- `setLinks({ lnk1, lnk2, ... }, json )` - bulk set link values from an object.
+- `linksValues({ lnk1, lnk2, ... })` - extract values object from links.
+- `linksErrors({ lnk1, lnk2, ... })` - extract errors object from links.
+
+### v1.5
 
 - `<input {...link.props} />` can be used to bind the link to any of the standard controls expecting `value` and `onChange` props.
 
