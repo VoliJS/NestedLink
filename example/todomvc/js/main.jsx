@@ -6,19 +6,9 @@ import { Filter } from './filter.jsx'
 import { AddTodo } from './addtodo.jsx'
 import { useLink } from 'valuelink'
 
-function removeDone( todos ){
-    return todos.filter( todo => !todo.done );
-}
-
 const App = () => {
     const todos = useLink( [] ),
         filterDone = useLink( null );
-
-    function getActiveCount(){
-        return todos.value.reduce( ( count, x ) => (
-            x.done ? count : count + 1
-        ), 0 );
-    }
 
     const hasTodos = Boolean( todos.value.length );
 
@@ -31,7 +21,7 @@ const App = () => {
                                         filterDone={ filterDone.value }
                 /> }
 
-                { hasTodos && <Filter count={ getActiveCount() }
+                { hasTodos && <Filter count={ getActiveCount( todos ) }
                                         filterLink={ filterDone }
                                         onClear={ todos.action( removeDone ) }
                 />}
@@ -46,6 +36,17 @@ const App = () => {
         </div>
     );
 }
+
+function removeDone( todos ){
+    return todos.filter( todo => !todo.done );
+}
+
+function getActiveCount( todos ){
+    return todos.value.reduce( ( count, x ) => (
+        x.done ? count : count + 1
+    ), 0 );
+}
+
 
 ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
 

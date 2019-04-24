@@ -2,23 +2,17 @@ import React from 'react'
 import cx from 'classnames'
 import Link, { useLink } from 'valuelink'
 
-class AllDoneLink extends Link{
-    constructor( todosLink ){
-        super( todosLink.value.every( todo => todo.done ) );
-        this.parent = todosLink;
-    }
-
-    set( x ){
-        this.parent.update( todos =>{
-            todos.forEach( todo => todo.done = Boolean( x ) );
-            return todos;
-        });
-    }
-}
-
 export const TodoList = ({ todosLink, filterDone }) => {
     const editingLink = useLink( null ),
-        allDoneLink = new AllDoneLink( todosLink );
+        allDoneLink = Link.value(
+            todosLink.value.every( todo => todo.done ),
+            x => {
+                todosLink.update( todos => {
+                    todos.forEach( todo => todo.done = Boolean( x ) );
+                    return todos;
+                });
+            }
+        );
 
     return (
         <section className="main">
