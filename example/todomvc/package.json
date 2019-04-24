@@ -1,30 +1,25 @@
 {
   "private": true,
   "dependencies": {
-    "todomvc-app-css": "^2.0.0",
+    "todomvc-app-css": "^2.2.0",
     "todomvc-common": "^1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "*",
-    "babel-core": "*",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-react": "^7.0.0",
+    "classnames": "^2.2.6",
     "babel-loader": "*",
-    "babel-plugin-add-module-exports": "*",
-    "babel-plugin-transform-class-properties": "*",
-    "babel-plugin-transform-decorators-legacy": "*",
-    "babel-plugin-transform-object-rest-spread": "*",
-    "babel-plugin-transform-react-constant-elements": "*",
-    "babel-plugin-transform-react-inline-elements": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-react": "*",
-    "babel-runtime": "*",
-    "classnames": "*",
+    "source-map-loader": "*",
     "css-loader": "^0.28.11",
-    "react": "^16.3.2",
     "proptypes": "*",
-    "react-dom": "^16.3.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "style-loader": "^0.20.3",
-    "valuelink": "*",
-    "webpack": "^4.6.0"
+    "valuelink": "^1.6.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

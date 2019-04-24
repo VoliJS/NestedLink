@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'proptypes'
 import cx from 'classnames'
-import Link, { LinkedComponent } from 'valuelink'
+import Link, { useLink } from 'valuelink'
 
 class AllDoneLink extends Link{
     constructor( todosLink ){
@@ -17,42 +16,28 @@ class AllDoneLink extends Link{
     }
 }
 
-class TodoList extends LinkedComponent {
-    static propTypes = {
-        todosLink  : PropTypes.instanceOf( Link ),
-        filterDone : PropTypes.bool
-    }
+export const TodoList = ({ todosLink, filterDone }) => {
+    const editingLink = useLink( null ),
+        allDoneLink = new AllDoneLink( todosLink );
 
-    state = {
-        editing : null
-    }
+    return (
+        <section className="main">
+            <input id="toggle-all" className="toggle-all" type="checkbox"
+                    { ...allDoneLink.props }/>
 
-    render(){
-        const { todosLink, filterDone } = this.props,
-              editingLink = Link.state( this, 'editing' ),
-              allDoneLink = new AllDoneLink( todosLink );
+            <label htmlFor="toggle-all">Mark all as complete</label>
 
-        return (
-            <section className="main">
-                <input id="toggle-all" className="toggle-all" type="checkbox"
-                       { ...allDoneLink.props }/>
-
-                <label htmlFor="toggle-all">Mark all as complete</label>
-
-                <ul className="todo-list">
-                    { todosLink.map( ( todoLink, i ) => {
-                        if( filterDone === null || filterDone === todoLink.value.done ){
-                            return <TodoItem key={ i } todoLink={ todoLink }
-                                             editingLink={ editingLink }/>;
-                        }
-                    } ) }
-                </ul>
-            </section>
-        );
-    }
+            <ul className="todo-list">
+                { todosLink.map( ( todoLink, i ) => {
+                    if( filterDone === null || filterDone === todoLink.value.done ){
+                        return <TodoItem key={ i } todoLink={ todoLink }
+                                            editingLink={ editingLink }/>;
+                    }
+                } ) }
+            </ul>
+        </section>
+    );
 }
-
-export default TodoList;
 
 function clearOnEnter( x, e ){
     if( e.keyCode === 13 ) return null;

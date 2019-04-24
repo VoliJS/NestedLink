@@ -1,30 +1,24 @@
 import React from 'react'
-import { LinkedComponent } from 'valuelink';
+import { useLink } from 'valuelink';
 
-export default class AddTodo extends LinkedComponent {
-    state = {
-        desc : ""
-    }
+export const AddTodo = ({ onEnter }) => {
+    const desc = useLink('');
 
-    render(){
-        return (
-            <header className="header">
-                <h1>todos</h1>
-
-                <input className="new-todo" placeholder="What needs to be done?" autoFocus
-                       { ...this.linkAt( 'desc' ).props }
-                       onKeyDown={ this.onKeyDown }
-                />
-            </header>
-        );
-    }
-
-    onKeyDown = ( { keyCode } ) =>{
+    function onKeyDown( { keyCode } ){
         if( keyCode === 13 ){
-            let { state, props } = this;
-
-            state.desc && props.onEnter( state.desc );
-            state.desc = "";
+            desc.value && onEnter( desc.value );
+            desc.set("");
         }
     }
+
+    return (
+        <header className="header">
+            <h1>todos</h1>
+
+            <input className="new-todo" placeholder="What needs to be done?" autoFocus
+                   { ...desc.props }
+                   onKeyDown={ onKeyDown }
+            />
+        </header>
+    );
 }
