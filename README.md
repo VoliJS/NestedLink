@@ -17,7 +17,7 @@ export const MyCoolComponent = ( props ) => {
     )
 }
 ```
-An introductory article, explaining the rationale behind the design and giving the high-level overview of how amazing the NestedLink is: [React Hooks, form validation, and complex state](https://itnext.io/react-hooks-and-two-way-data-binding-dd4210f0ed94)
+An introductory article, explaining the rationale behind the design and giving the high-level overview of how amazing NestedLink is: [React Hooks, form validation, and complex state](https://itnext.io/react-hooks-and-two-way-data-binding-dd4210f0ed94)
 
 Here's the series of 5-minute tutorials to quickly understand the concept and its rationale (examples uses the standard React state, though state hooks are supported as well):
 
