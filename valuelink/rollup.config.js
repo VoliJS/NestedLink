@@ -5,7 +5,7 @@ export default {
     input : 'lib/index.js',
 
     output : {
-        file   : 'dist/index.js',
+        file   : 'min/index.js',
         format : 'umd',
         name   : 'NestedLink',
         exports: 'named',
