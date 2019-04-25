@@ -31,6 +31,8 @@ node_modules
 *.ipr
 *.iws
 
+.vscode
+
 ## Plugin-specific files:
 
 # IntelliJ

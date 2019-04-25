@@ -12,7 +12,7 @@ module.exports = {
     devtool : 'source-map',
 
     resolve : {
-        modulesDirectories : [ 'node_modules', 'js', '' ]
+        modules : [ 'node_modules', 'js', '.' ]
     },
 
     plugins : [
@@ -23,20 +23,34 @@ module.exports = {
         } )
     ],
 
+    mode : 'development',
+    
     module : {
-        loaders : [
+        rules : [
             {
-                test    : /\.js$/,
-                exclude : /(node_modules)/,
-                loader  : 'babel?optional[]=runtime'
+                test : /\.css$/,
+                use : [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: true
+                        }
+                    }
+                ]
             },
-
             {
-                test    : /\.jsx$/,
-                loader  : 'babel?optional[]=runtime'
+                test    : /\.jsx?$/,
+                exclude : /(node_modules|lib)/,
+                loader  : 'babel-loader'
             },
-
-            { test : /\.css$/, loader : "style-loader!css-loader" }
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre"
+            }
         ]
     }
 };

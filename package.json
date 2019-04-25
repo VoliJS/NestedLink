@@ -1,8 +1,17 @@
 {
   "name": "valuelink",
-  "version": "1.3.6",
-  "description": "React valueLink implementation with links to objects, validation, and purely functional state updates.",
-  "main": "valuelink.js",
+  "version": "1.6.2",
+  "description": "Purely functional two-way data binding and form validation for React",
+  "main": "./dist",
+  "module": "./lib",
+  "types": "./lib",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "tags.js",
+    "tags.jsx"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Volicon/valuelink.git"
@@ -24,35 +33,45 @@
     "url": "https://github.com/Volicon/valuelink/issues"
   },
   "homepage": "https://github.com/Volicon/valuelink#readme",
+  "peerDependencies": {
+    "react": "*"
+  },
   "devDependencies": {
-    "babel": "<6.0.0",
-    "babel-core": "<6.0.0",
-    "babel-loader": "<6.0.0",
-    "babel-runtime": "<6.0.0",
+    "@types/react": "*",
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-add-module-exports": "*",
+    "babel-plugin-transform-class-properties": "*",
+    "babel-plugin-transform-decorators-legacy": "*",
+    "babel-plugin-transform-object-rest-spread": "*",
+    "babel-plugin-transform-react-constant-elements": "*",
+    "babel-plugin-transform-react-inline-elements": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "babel-runtime": "*",
     "classnames": "^2.2.0",
-    "css-loader": "^0.23.0",
+    "css-loader": "^0.28.11",
+    "proptypes": "*",
     "react": "*",
     "react-dom": "*",
-    "react-modal": "^1.2.1",
-    "style-loader": "^0.13.0",
-    "typescript": "^1.8.10",
-    "webpack": "^1.12.6"
+    "react-modal": "^3.4.1",
+    "rollup": "^0.58.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.20.3",
+    "tslib": "^1.9.3",
+    "typescript": "*",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^3.1.2"
   },
-  "files": [
-    "valuelink.js",
-    "valuelink.js.map",
-    "valuelink.ts",
-    "valuelink.d.ts",
-    "tags.jsx",
-    "LICENSE"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-links && npm run build-tags && npm run build-examples",
-
-    "build-links" : "node_modules/.bin/tsc",
-    "build-examples" : "node_modules/.bin/webpack",
-    "build-tags" : "node_modules/.bin/babel tags.jsx --out-file tags.js",
-    "watch": "node_modules/.bin/webpack --progress --colors --watch"
+    "build": "yarn && npm run build-lib && npm run build-dist && npm run build-examples",
+    "build-jsx": "node_modules/.bin/tsc ./src/tags.tsx --moduleResolution node --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./temp && cp ./temp/tags.jsx . && node_modules/.bin/tsc ./src/tags.tsx --jsx react --module commonjs --target ES5 --outDir ./temp && cp ./temp/tags.js . && rm -rf ./temp",
+    "build-lib": "node_modules/.bin/tsc",
+    "build-examples": "node_modules/.bin/webpack -p --config example/webpack.config.js",
+    "build-dist": "node_modules/.bin/rollup --config && npm run build-jsx"
   }
 }

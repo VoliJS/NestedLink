@@ -1,23 +1,22 @@
 import './main.css'
 import ReactDOM from 'react-dom'
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'proptypes'
 
-import Link from 'valuelink'
+import Link, { LinkedComponent } from 'valuelink'
 import Modal from 'react-modal'
-import {Input, isRequired, isEmail } from 'tags'
+import {Input, isRequired, isEmail } from 'valuelink/tags'
 
-export const UsersList = React.createClass( {
-    getInitialState(){
-        return {
-            users   : [],
-            dialog  : null,
-            editing : null
-        }
-    },
+export class UsersList extends LinkedComponent {
+    state = {
+        users   : [],
+        dialog  : null,
+        editing : null
+    };
 
     render(){
-        const usersLink = Link.state( this, 'users' ),
+        const usersLink = this.linkAt( 'users' ),
               { dialog, editing } = this.state;
 
         return (
@@ -46,16 +45,16 @@ export const UsersList = React.createClass( {
                 </Modal>
             </div>
         );
-    },
+    }
 
-    closeDialog(){
+    closeDialog = () => {
         this.setState( { dialog : null } );
-    },
+    }
 
     openDialog( name, editing = null ){
         this.setState( { dialog : name, editing : editing } );
     }
-} );
+}
 
 const Header = () =>(
     <div className="users-row">
@@ -84,39 +83,37 @@ const UserRow = ( { userLink, onEdit } ) =>{
     )
 };
 
-const EditUser = React.createClass( {
-    propTypes : {
+class EditUser extends LinkedComponent{
+    static propTypes = {
         userLink : PropTypes.instanceOf( Link ).isRequired,
         onClose  : PropTypes.func.isRequired
-    },
+    };
 
-    getInitialState(){
-        return {
-            name     : '',
-            email    : '',
-            isActive : true
-        }
-    },
+    state = {
+        name     : '',
+        email    : '',
+        isActive : true
+    };
 
     componentWillMount(){
         this.setState( this.props.userLink.value );
-    },
+    }
 
-    onSubmit( e ){
+    onSubmit = e => {
         e.preventDefault();
 
         const { userLink, onClose } = this.props;
 
         userLink.set( this.state );
         onClose();
-    },
+    }
 
-    onCancel(){
+    onCancel = () => {
         this.props.onClose();
-    },
+    }
 
     render(){
-        const linked = Link.all( this, 'name', 'email', 'isActive' );
+        const linked = this.linkAll();
 
         linked.name
               .check( isRequired )
@@ -149,7 +146,7 @@ const EditUser = React.createClass( {
             </form>
         );
     }
-} );
+}
 
 const ValidatedInput = ( props ) => (
     <div>

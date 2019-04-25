@@ -7,17 +7,17 @@
 import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Link from 'valuelink'
-import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'tags'
+import { LinkedComponent, useLink } from 'valuelink'
+import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'valuelink/tags'
 
-const App = React.createClass( {
-    getInitialState(){
-        // All this stuff we can link to
-        return {
+class App extends LinkedComponent {
+    // All this stuff we can link to
+    state = {
             num : 0,
 
             // Simple binding to inputs
             str       : 67,
+            str2      : "dedede",
             bool      : true,
 
             // Binding to checkboxes
@@ -36,17 +36,17 @@ const App = React.createClass( {
 
             // that will be bound to radio and select list
             radioFlag : 'a'
-        }
-    },
+    }
 
     render(){
-        const links = Link.all( this, 'str', 'num',  'bool', 'deep', 'objFlags', 'arrFlags', 'radioFlag' );
+        const links = this.linkAll();
 
         return (
             <div>
                 <SimpleBinding strLink={ links.str } boolLink={ links.bool } />
                 <Numeric numLink={ links.num } />
                 <DeepLinkedInputs objLink={ links.deep } />
+                <JointLinks strLink={ links.str } str2Link={ links.str2 } />
 
                 <CheckboxObjGroup flagsLink={ links.objFlags } />
                 <CustomCheckboxObjGroup flagsLink={ links.objFlags } />
@@ -56,10 +56,11 @@ const App = React.createClass( {
                 <RadioGroup flagLink={ links.radioFlag } />
                 <SelectOption flagLink={ links.radioFlag } />
                 <CustomRadioGroup flagLink={ links.radioFlag } />
+                <HooksExample />
             </div>
         );
     }
-} );
+}
 
 const isNumber = x => !isNaN( Number( x ) );
 
@@ -92,6 +93,11 @@ const SimpleBinding = ({ strLink, boolLink }) => {
             <legend>Direct state fields binding</legend>
 
             <label>
+                Standard input
+                <input { ...strLink.props }/>
+            </label>
+
+            <label>
                 String
                 <Input valueLink={ strLink }/>
             </label>
@@ -104,6 +110,27 @@ const SimpleBinding = ({ strLink, boolLink }) => {
             <label>
                 Checkbox bound to bool
                 <Input type="checkbox" checkedLink={ boolLink }/>
+            </label>
+        </fieldset>
+    );
+};
+
+const JointLinks = ({ strLink, str2Link }) => {
+    strLink.check( isNumber );
+    const jointLink = strLink.onChange( x => str2Link.set( x ) );
+
+    return (
+        <fieldset>
+            <legend>Joint links</legend>
+
+            <label>
+                First
+                <Input valueLink={ jointLink }/>
+            </label>
+
+            <label>
+                Should update when first changes
+                <Input valueLink={ str2Link.pipe( x => x && x.toUpperCase() ) }/>
             </label>
         </fieldset>
     );
@@ -137,7 +164,7 @@ const CheckboxObjGroup = ({ flagsLink }) => {
                 A: <Input type="checkbox" checkedLink={ links.a }/>
             </label>
             <label>
-                B: <Input type="checkbox" checkedLink={ links.b }/>
+                B: <input type="checkbox" { ...links.b.props }/>
             </label>
         </fieldset>
     );
@@ -174,7 +201,7 @@ const RadioGroup = ({ flagLink }) => (
             A: <Input type="radio" valueLink={ flagLink } value="a" />
         </label>
         <label>
-            B: <Input type="radio" valueLink={ flagLink } value="b" />
+            B: <input type="radio" { ...flagLink.equals( 'b' ).props } />
         </label>
     </fieldset>
 );
@@ -202,6 +229,28 @@ const CustomRadioGroup = ({ flagLink }) => (
         </label>
     </fieldset>
 );
+
+const HooksExample = ({ flagLink }) => {
+    const email = useLink( '' ),
+          isRealEmail = useLink( true );
+
+    return (
+        <fieldset>
+            <legend>Cool React hooks</legend>
+            
+            <label>
+                Email: <input { ...email.props } />
+            </label>
+
+            <label>
+                Is real email: <input type="radio" { ...isRealEmail.equals( true ).props } />
+            </label>
+            <label>
+                It was fake! <input type="radio" { ...isRealEmail.equals( false ).props } />
+            </label>
+        </fieldset>
+    )
+}
 
 ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
 

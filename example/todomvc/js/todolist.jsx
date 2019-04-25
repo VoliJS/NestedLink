@@ -1,59 +1,37 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import cx from 'classnames'
-import { Input } from 'valuelink/tags.jsx'
-import Link from 'valuelink'
+import Link, { useLink } from 'valuelink'
 
-class AllDoneLink extends Link{
-    constructor( todosLink ){
-        super( todosLink.value.every( todo => todo.done ) );
-        this.parent = todosLink;
-    }
-
-    set( x ){
-        this.parent.update( todos =>{
-            todos.forEach( todo => todo.done = Boolean( x ) );
-            return todos;
-        });
-    }
-}
-
-const TodoList = React.createClass( {
-    propTypes : {
-        todosLink  : PropTypes.instanceOf( Link ),
-        filterDone : PropTypes.bool
-    },
-
-    getInitialState(){
-        return {
-            editing : null
-        }
-    },
-
-    render(){
-        const { todosLink, filterDone } = this.props,
-              editingLink = Link.state( this, 'editing' );
-
-        return (
-            <section className="main">
-                <Input className="toggle-all" type="checkbox"
-                       checkedLink={ new AllDoneLink( todosLink ) }/>
-
-                <label htmlFor="toggle-all">Mark all as complete</label>
-
-                <ul className="todo-list">
-                    { todosLink.map( ( todoLink, i ) => {
-                        if( filterDone === null || filterDone === todoLink.value.done ){
-                            return <TodoItem key={ i } todoLink={ todoLink }
-                                             editingLink={ editingLink }/>;
-                        }
-                    } ) }
-                </ul>
-            </section>
+export const TodoList = ({ todosLink, filterDone }) => {
+    const editingLink = useLink( null ),
+        allDoneLink = Link.value(
+            todosLink.value.every( todo => todo.done ),
+            x => {
+                todosLink.update( todos => {
+                    todos.forEach( todo => todo.done = Boolean( x ) );
+                    return todos;
+                });
+            }
         );
-    }
-} );
 
-export default TodoList;
+    return (
+        <section className="main">
+            <input id="toggle-all" className="toggle-all" type="checkbox"
+                    { ...allDoneLink.props }/>
+
+            <label htmlFor="toggle-all">Mark all as complete</label>
+
+            <ul className="todo-list">
+                { todosLink.map( ( todoLink, i ) => {
+                    if( filterDone === null || filterDone === todoLink.value.done ){
+                        return <TodoItem key={ i } todoLink={ todoLink }
+                                            editingLink={ editingLink }/>;
+                    }
+                } ) }
+            </ul>
+        </section>
+    );
+}
 
 function clearOnEnter( x, e ){
     if( e.keyCode === 13 ) return null;
@@ -71,8 +49,8 @@ const TodoItem = ( { todoLink, editingLink } ) =>{
     return (
         <li className={ className }>
             <div className="view">
-                <Input className="toggle" type="checkbox"
-                       checkedLink={ todoLink.at( 'done' ) }/>
+                <input className="toggle" type="checkbox"
+                       { ...todoLink.at( 'done' ).props }/>
 
                 <label onDoubleClick={ editingLink.action( () => todoLink.key ) }>
                     { todo.desc }
@@ -81,8 +59,8 @@ const TodoItem = ( { todoLink, editingLink } ) =>{
                 <button className="destroy" onClick={ () => todoLink.remove() }/>
             </div>
 
-            { editing && <Input className="edit"
-                                valueLink={ todoLink.at( 'desc' ) }
+            { editing && <input className="edit"
+                                { ...todoLink.at( 'desc' ).props }
                                 autoFocus={ true }
                                 onBlur={ editingLink.action( () => null ) }
                                 onKeyDown={ editingLink.action( clearOnEnter ) }/> }

@@ -1,6 +1,6 @@
-import React from 'nestedreact'
+import React from 'react'
 
-const Filter = ( { count, filterLink, onClear } ) => (
+export const Filter = ( { count, filterLink, onClear } ) => (
     <footer className="footer">
 		<span className="todo-count">
 			<strong>{ count }</strong> item left
@@ -29,8 +29,6 @@ const Filter = ( { count, filterLink, onClear } ) => (
         </button>
     </footer>
 );
-
-export default Filter;
 
 const Radio = ( { checkedLink, children, ...props } ) => (
     <a className={ checkedLink.value ? 'selected' : '' }
