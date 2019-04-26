@@ -86,314 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./css/app.css":
-/*!*********************!*\
-  !*** ./css/app.css ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../node_modules/css-loader??ref--4-1!./app.css */ "./node_modules/css-loader/index.js?!./css/app.css");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./js/addtodo.jsx":
-/*!************************!*\
-  !*** ./js/addtodo.jsx ***!
-  \************************/
-/*! exports provided: AddTodo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddTodo", function() { return AddTodo; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! valuelink */ "./node_modules/valuelink/lib/index.js");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-var AddTodo = function AddTodo(_ref) {
-  var onEnter = _ref.onEnter;
-  var desc = Object(valuelink__WEBPACK_IMPORTED_MODULE_1__["useLink"])('');
-
-  function onKeyDown(_ref2) {
-    var keyCode = _ref2.keyCode;
-
-    if (keyCode === 13) {
-      desc.value && onEnter(desc.value);
-      desc.set("");
-    }
-  }
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-    className: "header"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "todos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
-    className: "new-todo",
-    placeholder: "What needs to be done?",
-    autoFocus: true
-  }, desc.props, {
-    onKeyDown: onKeyDown
-  })));
-};
-
-/***/ }),
-
-/***/ "./js/filter.jsx":
-/*!***********************!*\
-  !*** ./js/filter.jsx ***!
-  \***********************/
-/*! exports provided: Filter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-
-var Filter = function Filter(_ref) {
-  var count = _ref.count,
-      filterLink = _ref.filterLink,
-      onClear = _ref.onClear;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
-    className: "footer"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "todo-count"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, count), " item left"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "filters"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(null),
-    href: "#/"
-  }, "All")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(false),
-    href: "#/active"
-  }, "Active")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(true),
-    href: "#/completed"
-  }, "Completed"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "clear-completed",
-    onClick: onClear
-  }, "Clear completed"));
-};
-
-var Radio = function Radio(_ref2) {
-  var checkedLink = _ref2.checkedLink,
-      children = _ref2.children,
-      props = _objectWithoutProperties(_ref2, ["checkedLink", "children"]);
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", _extends({
-    className: checkedLink.value ? 'selected' : '',
-    onClick: function onClick() {
-      return checkedLink.set(true);
-    }
-  }, props), children);
-};
-
-/***/ }),
-
-/***/ "./js/main.jsx":
-/*!*********************!*\
-  !*** ./js/main.jsx ***!
-  \*********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var css_app_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! css/app.css */ "./css/app.css");
-/* harmony import */ var css_app_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(css_app_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _todolist_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todolist.jsx */ "./js/todolist.jsx");
-/* harmony import */ var _filter_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./filter.jsx */ "./js/filter.jsx");
-/* harmony import */ var _addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./addtodo.jsx */ "./js/addtodo.jsx");
-/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! valuelink */ "./node_modules/valuelink/lib/index.js");
-
-
-
-
-
-
-
-
-var App = function App() {
-  var todos = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])([]),
-      filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])(null);
-  var hasTodos = Boolean(todos.value.length);
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("section", {
-    className: "todoapp"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__["AddTodo"], {
-    onEnter: function onEnter(desc) {
-      return todos.push({
-        done: false,
-        desc: desc
-      });
-    }
-  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_todolist_jsx__WEBPACK_IMPORTED_MODULE_3__["TodoList"], {
-    todosLink: todos,
-    filterDone: filterDone.value
-  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_filter_jsx__WEBPACK_IMPORTED_MODULE_4__["Filter"], {
-    count: getActiveCount(todos),
-    filterLink: filterDone,
-    onClear: todos.action(removeDone)
-  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("footer", {
-    className: "info"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Double-click to edit a todo"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Template by ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-    href: "http://sindresorhus.com"
-  }, "Sindre Sorhus")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Created by ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-    href: "http://todomvc.com"
-  }, "Vlad Balin")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Part of ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
-    href: "http://todomvc.com"
-  }, "TodoMVC"))));
-};
-
-function removeDone(todos) {
-  return todos.filter(function (todo) {
-    return !todo.done;
-  });
-}
-
-function getActiveCount(todos) {
-  return todos.value.reduce(function (count, x) {
-    return x.done ? count : count + 1;
-  }, 0);
-}
-
-react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(App, null), document.getElementById('app-mount-root'));
-
-/***/ }),
-
-/***/ "./js/todolist.jsx":
-/*!*************************!*\
-  !*** ./js/todolist.jsx ***!
-  \*************************/
-/*! exports provided: TodoList */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoList", function() { return TodoList; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! valuelink */ "./node_modules/valuelink/lib/index.js");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-
-var TodoList = function TodoList(_ref) {
-  var todosLink = _ref.todosLink,
-      filterDone = _ref.filterDone;
-  var editingLink = Object(valuelink__WEBPACK_IMPORTED_MODULE_2__["useLink"])(null),
-      allDoneLink = valuelink__WEBPACK_IMPORTED_MODULE_2__["default"].value(todosLink.value.every(function (todo) {
-    return todo.done;
-  }), function (x) {
-    todosLink.update(function (todos) {
-      todos.forEach(function (todo) {
-        return todo.done = Boolean(x);
-      });
-      return todos;
-    });
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
-    className: "main"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
-    id: "toggle-all",
-    className: "toggle-all",
-    type: "checkbox"
-  }, allDoneLink.props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    htmlFor: "toggle-all"
-  }, "Mark all as complete"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "todo-list"
-  }, todosLink.map(function (todoLink, i) {
-    if (filterDone === null || filterDone === todoLink.value.done) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TodoItem, {
-        key: i,
-        todoLink: todoLink,
-        editingLink: editingLink
-      });
-    }
-  })));
-};
-
-function clearOnEnter(x, e) {
-  if (e.keyCode === 13) return null;
-}
-
-var TodoItem = function TodoItem(_ref2) {
-  var todoLink = _ref2.todoLink,
-      editingLink = _ref2.editingLink;
-  var editing = editingLink.value === todoLink.key,
-      todo = todoLink.value,
-      className = classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-    'completed': todo.done,
-    'view': !todo.done,
-    'editing': editing
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    className: className
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "view"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
-    className: "toggle",
-    type: "checkbox"
-  }, todoLink.at('done').props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    onDoubleClick: editingLink.action(function () {
-      return todoLink.key;
-    })
-  }, todo.desc), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "destroy",
-    onClick: function onClick() {
-      return todoLink.remove();
-    }
-  })), editing && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
-    className: "edit"
-  }, todoLink.at('desc').props, {
-    autoFocus: true,
-    onBlur: editingLink.action(function () {
-      return null;
-    }),
-    onKeyDown: editingLink.action(clearOnEnter)
-  })));
-};
-
-/***/ }),
-
-/***/ "./node_modules/classnames/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/classnames/index.js ***!
-  \******************************************/
+/***/ "../../node_modules/classnames/index.js":
+/*!*************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/classnames/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -452,31 +148,31 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./css/app.css":
-/*!*********************************************************!*\
-  !*** ./node_modules/css-loader??ref--4-1!./css/app.css ***!
-  \*********************************************************/
+/***/ "../../node_modules/css-loader/index.js?!./css/app.css":
+/*!****************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "../../node_modules/css-loader/lib/css-base.js")(false);
 // imports
 
 
 // module
-exports.push([module.i, "._2poqbOCYuDDRYOmLq9Dyn9 {\n\tbackground: black;\n}\n", ""]);
+exports.push([module.i, "._1ab5eBImiH2kKUQGzE_hKY {\r\n\tbackground: black;\r\n}\r\n", ""]);
 
 // exports
 exports.locals = {
-	"something": "_2poqbOCYuDDRYOmLq9Dyn9"
+	"something": "_1ab5eBImiH2kKUQGzE_hKY"
 };
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/*!*************************************************!*\
-  !*** ./node_modules/css-loader/lib/css-base.js ***!
-  \*************************************************/
+/***/ "../../node_modules/css-loader/lib/css-base.js":
+/*!********************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -560,10 +256,10 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ "./node_modules/object-assign/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/object-assign/index.js ***!
-  \*********************************************/
+/***/ "../../node_modules/object-assign/index.js":
+/*!****************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/object-assign/index.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -662,10 +358,10 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
-/***/ "./node_modules/prop-types/checkPropTypes.js":
-/*!***************************************************!*\
-  !*** ./node_modules/prop-types/checkPropTypes.js ***!
-  \***************************************************/
+/***/ "../../node_modules/prop-types/checkPropTypes.js":
+/*!**********************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -682,7 +378,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (true) {
-  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
+  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js");
   var loggedTypeFailures = {};
   var has = Function.call.bind(Object.prototype.hasOwnProperty);
 
@@ -776,10 +472,10 @@ module.exports = checkPropTypes;
 
 /***/ }),
 
-/***/ "./node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \*************************************************************/
+/***/ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js":
+/*!********************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -800,10 +496,10 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ "./node_modules/react-dom/cjs/react-dom.development.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/react-dom/cjs/react-dom.development.js ***!
-  \*************************************************************/
+/***/ "../../node_modules/react-dom/cjs/react-dom.development.js":
+/*!********************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -825,11 +521,11 @@ if (true) {
   (function() {
 'use strict';
 
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var _assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
-var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
-var scheduler = __webpack_require__(/*! scheduler */ "./node_modules/scheduler/index.js");
-var tracing = __webpack_require__(/*! scheduler/tracing */ "./node_modules/scheduler/tracing.js");
+var React = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+var _assign = __webpack_require__(/*! object-assign */ "../../node_modules/object-assign/index.js");
+var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "../../node_modules/prop-types/checkPropTypes.js");
+var scheduler = __webpack_require__(/*! scheduler */ "../../node_modules/scheduler/index.js");
+var tracing = __webpack_require__(/*! scheduler/tracing */ "../../node_modules/scheduler/tracing.js");
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -22090,10 +21786,10 @@ module.exports = reactDom;
 
 /***/ }),
 
-/***/ "./node_modules/react-dom/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/react-dom/index.js ***!
-  \*****************************************/
+/***/ "../../node_modules/react-dom/index.js":
+/*!************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/index.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22129,16 +21825,16 @@ function checkDCE() {
 }
 
 if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-dom.development.js */ "./node_modules/react-dom/cjs/react-dom.development.js");
+  module.exports = __webpack_require__(/*! ./cjs/react-dom.development.js */ "../../node_modules/react-dom/cjs/react-dom.development.js");
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/react/cjs/react.development.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/react/cjs/react.development.js ***!
-  \*****************************************************/
+/***/ "../../node_modules/react/cjs/react.development.js":
+/*!************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22160,8 +21856,8 @@ if (true) {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
-var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
+var _assign = __webpack_require__(/*! object-assign */ "../../node_modules/object-assign/index.js");
+var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "../../node_modules/prop-types/checkPropTypes.js");
 
 // TODO: this is special because it gets imported during build.
 
@@ -24048,10 +23744,10 @@ module.exports = react;
 
 /***/ }),
 
-/***/ "./node_modules/react/index.js":
-/*!*************************************!*\
-  !*** ./node_modules/react/index.js ***!
-  \*************************************/
+/***/ "../../node_modules/react/index.js":
+/*!********************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/index.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24059,16 +23755,16 @@ module.exports = react;
 
 
 if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "./node_modules/react/cjs/react.development.js");
+  module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "../../node_modules/react/cjs/react.development.js");
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/scheduler/cjs/scheduler-tracing.development.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \*********************************************************************/
+/***/ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js":
+/*!****************************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24500,10 +24196,10 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 
 /***/ }),
 
-/***/ "./node_modules/scheduler/cjs/scheduler.development.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/scheduler/cjs/scheduler.development.js ***!
-  \*************************************************************/
+/***/ "../../node_modules/scheduler/cjs/scheduler.development.js":
+/*!********************************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25208,14 +24904,14 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "../../node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
-/***/ "./node_modules/scheduler/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/scheduler/index.js ***!
-  \*****************************************/
+/***/ "../../node_modules/scheduler/index.js":
+/*!************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/index.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25223,16 +24919,16 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 
 
 if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/scheduler.development.js */ "./node_modules/scheduler/cjs/scheduler.development.js");
+  module.exports = __webpack_require__(/*! ./cjs/scheduler.development.js */ "../../node_modules/scheduler/cjs/scheduler.development.js");
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/scheduler/tracing.js":
-/*!*******************************************!*\
-  !*** ./node_modules/scheduler/tracing.js ***!
-  \*******************************************/
+/***/ "../../node_modules/scheduler/tracing.js":
+/*!**************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25240,16 +24936,16 @@ if (false) {} else {
 
 
 if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/scheduler-tracing.development.js */ "./node_modules/scheduler/cjs/scheduler-tracing.development.js");
+  module.exports = __webpack_require__(/*! ./cjs/scheduler-tracing.development.js */ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js");
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/lib/addStyles.js":
-/*!****************************************************!*\
-  !*** ./node_modules/style-loader/lib/addStyles.js ***!
-  \****************************************************/
+/***/ "../../node_modules/style-loader/lib/addStyles.js":
+/*!***********************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25316,7 +25012,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
+var	fixUrls = __webpack_require__(/*! ./urls */ "../../node_modules/style-loader/lib/urls.js");
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -25633,10 +25329,10 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/lib/urls.js":
-/*!***********************************************!*\
-  !*** ./node_modules/style-loader/lib/urls.js ***!
-  \***********************************************/
+/***/ "../../node_modules/style-loader/lib/urls.js":
+/*!******************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -25733,10 +25429,10 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ "./node_modules/tslib/tslib.es6.js":
-/*!*****************************************!*\
-  !*** ./node_modules/tslib/tslib.es6.js ***!
-  \*****************************************/
+/***/ "../../node_modules/tslib/tslib.es6.js":
+/*!************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
+  \************************************************************************/
 /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25951,10 +25647,41 @@ function __importDefault(mod) {
 
 /***/ }),
 
-/***/ "./node_modules/valuelink/lib/component.js":
-/*!*************************************************!*\
-  !*** ./node_modules/valuelink/lib/component.js ***!
-  \*************************************************/
+/***/ "../../node_modules/webpack/buildin/global.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ "../../valuelink/lib/component.js":
+/*!*******************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/component.js ***!
+  \*******************************************************************/
 /*! exports provided: LinkedComponent, StateLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25962,10 +25689,10 @@ function __importDefault(mod) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkedComponent", function() { return LinkedComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StateLink", function() { return StateLink; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./link */ "./node_modules/valuelink/lib/link.js");
+/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./link */ "../../valuelink/lib/link.js");
 
 
 
@@ -26032,10 +25759,10 @@ var StateLink = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/valuelink/lib/helpers.js":
-/*!***********************************************!*\
-  !*** ./node_modules/valuelink/lib/helpers.js ***!
-  \***********************************************/
+/***/ "../../valuelink/lib/helpers.js":
+/*!*****************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/helpers.js ***!
+  \*****************************************************************/
 /*! exports provided: helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26109,40 +25836,82 @@ var arrayHelpers = {
 
 /***/ }),
 
-/***/ "./node_modules/valuelink/lib/hooks.js":
-/*!*********************************************!*\
-  !*** ./node_modules/valuelink/lib/hooks.js ***!
-  \*********************************************/
-/*! exports provided: useLink */
+/***/ "../../valuelink/lib/hooks.js":
+/*!***************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
+  \***************************************************************/
+/*! exports provided: useLink, linksValues, linksErrors, setLinks */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "linksValues", function() { return linksValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "linksErrors", function() { return linksErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLinks", function() { return setLinks; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "./node_modules/valuelink/lib/link.js");
+/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "../../valuelink/lib/link.js");
 
 
+/**
+ * Create the linked local state.
+ */
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
     return new _link__WEBPACK_IMPORTED_MODULE_1__["CustomLink"](value, set);
+}
+/**
+ * Unwrap object with links, returning an object of a similar shape filled with link values.
+ */
+function linksValues(links) {
+    return unwrap(links, 'error');
+}
+/**
+ * Unwrap object with links, returning an object of a similar shape filled with link errors.
+ */
+function linksErrors(links) {
+    return unwrap(links, 'value');
+}
+/**
+ * Assing links with values from the source object.
+ * Used for
+ *    setLinks({ name, email }, json);
+ */
+function setLinks(links, source) {
+    for (var _i = 0, _a = Object.keys(links); _i < _a.length; _i++) {
+        var key = _a[_i];
+        if (source.hasOwnProperty(key)) {
+            links[key].set(source[key]);
+        }
+    }
+}
+function unwrap(links, field) {
+    var values = {};
+    for (var _i = 0, _a = Object.keys(links); _i < _a.length; _i++) {
+        var key = _a[_i];
+        var value = links[key][field];
+        if (value !== void 0) {
+            values[key] = value;
+        }
+    }
+    return values;
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/valuelink/lib/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/valuelink/lib/index.js ***!
-  \*********************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink */
+/***/ "../../valuelink/lib/index.js":
+/*!***************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
+  \***************************************************************/
+/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, linksValues, linksErrors, setLinks */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./link */ "./node_modules/valuelink/lib/link.js");
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "./node_modules/valuelink/lib/component.js");
+/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./link */ "../../valuelink/lib/link.js");
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "../../valuelink/lib/component.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LinkedComponent", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["LinkedComponent"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateLink", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["StateLink"]; });
@@ -26161,8 +25930,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LinkAt", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["LinkAt"]; });
 
-/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "./node_modules/valuelink/lib/hooks.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../valuelink/lib/hooks.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "linksValues", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["linksValues"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "linksErrors", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["linksErrors"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setLinks", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["setLinks"]; });
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_link__WEBPACK_IMPORTED_MODULE_0__["Link"]);
@@ -26173,10 +25948,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/valuelink/lib/link.js":
-/*!********************************************!*\
-  !*** ./node_modules/valuelink/lib/link.js ***!
-  \********************************************/
+/***/ "../../valuelink/lib/link.js":
+/*!**************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/link.js ***!
+  \**************************************************************/
 /*! exports provided: Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26189,8 +25964,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnabledLink", function() { return EnabledLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContainsLink", function() { return ContainsLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkAt", function() { return LinkAt; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "./node_modules/valuelink/lib/helpers.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "../../valuelink/lib/helpers.js");
 
 /**
  * Advanced React links for purely functional two-way data binding
@@ -26423,34 +26198,307 @@ var LinkAt = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
+/***/ "./css/app.css":
+/*!*********************!*\
+  !*** ./css/app.css ***!
+  \*********************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var g;
 
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--4-1!./app.css */ "../../node_modules/css-loader/index.js?!./css/app.css");
 
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./js/addtodo.jsx":
+/*!************************!*\
+  !*** ./js/addtodo.jsx ***!
+  \************************/
+/*! exports provided: AddTodo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddTodo", function() { return AddTodo; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+var AddTodo = function AddTodo(_ref) {
+  var onEnter = _ref.onEnter;
+  var desc = Object(valuelink__WEBPACK_IMPORTED_MODULE_1__["useLink"])('');
+
+  function onKeyDown(_ref2) {
+    var keyCode = _ref2.keyCode;
+
+    if (keyCode === 13) {
+      desc.value && onEnter(desc.value);
+      desc.set("");
+    }
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+    className: "header"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "todos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
+    className: "new-todo",
+    placeholder: "What needs to be done?",
+    autoFocus: true
+  }, desc.props, {
+    onKeyDown: onKeyDown
+  })));
+};
+
+/***/ }),
+
+/***/ "./js/filter.jsx":
+/*!***********************!*\
+  !*** ./js/filter.jsx ***!
+  \***********************/
+/*! exports provided: Filter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+
+var Filter = function Filter(_ref) {
+  var count = _ref.count,
+      filterLink = _ref.filterLink,
+      onClear = _ref.onClear;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+    className: "footer"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "todo-count"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, count), " item left"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "filters"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
+    checkedLink: filterLink.equals(null),
+    href: "#/"
+  }, "All")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
+    checkedLink: filterLink.equals(false),
+    href: "#/active"
+  }, "Active")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
+    checkedLink: filterLink.equals(true),
+    href: "#/completed"
+  }, "Completed"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "clear-completed",
+    onClick: onClear
+  }, "Clear completed"));
+};
+
+var Radio = function Radio(_ref2) {
+  var checkedLink = _ref2.checkedLink,
+      children = _ref2.children,
+      props = _objectWithoutProperties(_ref2, ["checkedLink", "children"]);
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", _extends({
+    className: checkedLink.value ? 'selected' : '',
+    onClick: function onClick() {
+      return checkedLink.set(true);
+    }
+  }, props), children);
+};
+
+/***/ }),
+
+/***/ "./js/main.jsx":
+/*!*********************!*\
+  !*** ./js/main.jsx ***!
+  \*********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var css_app_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! css/app.css */ "./css/app.css");
+/* harmony import */ var css_app_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(css_app_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "../../node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _todolist_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todolist.jsx */ "./js/todolist.jsx");
+/* harmony import */ var _filter_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./filter.jsx */ "./js/filter.jsx");
+/* harmony import */ var _addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./addtodo.jsx */ "./js/addtodo.jsx");
+/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+
+
+
+
+
+
+
+
+var App = function App() {
+  var todos = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])([]),
+      filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])(null);
+  var hasTodos = Boolean(todos.value.length);
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("section", {
+    className: "todoapp"
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__["AddTodo"], {
+    onEnter: function onEnter(desc) {
+      return todos.push({
+        done: false,
+        desc: desc
+      });
+    }
+  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_todolist_jsx__WEBPACK_IMPORTED_MODULE_3__["TodoList"], {
+    todosLink: todos,
+    filterDone: filterDone.value
+  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_filter_jsx__WEBPACK_IMPORTED_MODULE_4__["Filter"], {
+    count: getActiveCount(todos),
+    filterLink: filterDone,
+    onClear: todos.action(removeDone)
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("footer", {
+    className: "info"
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Double-click to edit a todo"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Template by ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+    href: "http://sindresorhus.com"
+  }, "Sindre Sorhus")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Created by ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+    href: "http://todomvc.com"
+  }, "Vlad Balin")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Part of ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+    href: "http://todomvc.com"
+  }, "TodoMVC"))));
+};
+
+function removeDone(todos) {
+  return todos.filter(function (todo) {
+    return !todo.done;
+  });
 }
 
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
+function getActiveCount(todos) {
+  return todos.value.reduce(function (count, x) {
+    return x.done ? count : count + 1;
+  }, 0);
+}
 
-module.exports = g;
+react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(App, null), document.getElementById('app-mount-root'));
 
+/***/ }),
+
+/***/ "./js/todolist.jsx":
+/*!*************************!*\
+  !*** ./js/todolist.jsx ***!
+  \*************************/
+/*! exports provided: TodoList */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoList", function() { return TodoList; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "../../node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+var TodoList = function TodoList(_ref) {
+  var todosLink = _ref.todosLink,
+      filterDone = _ref.filterDone;
+  var editingLink = Object(valuelink__WEBPACK_IMPORTED_MODULE_2__["useLink"])(null),
+      allDoneLink = valuelink__WEBPACK_IMPORTED_MODULE_2__["default"].value(todosLink.value.every(function (todo) {
+    return todo.done;
+  }), function (x) {
+    todosLink.update(function (todos) {
+      todos.forEach(function (todo) {
+        return todo.done = Boolean(x);
+      });
+      return todos;
+    });
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+    className: "main"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
+    id: "toggle-all",
+    className: "toggle-all",
+    type: "checkbox"
+  }, allDoneLink.props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    htmlFor: "toggle-all"
+  }, "Mark all as complete"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "todo-list"
+  }, todosLink.map(function (todoLink, i) {
+    if (filterDone === null || filterDone === todoLink.value.done) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TodoItem, {
+        key: i,
+        todoLink: todoLink,
+        editingLink: editingLink
+      });
+    }
+  })));
+};
+
+function clearOnEnter(x, e) {
+  if (e.keyCode === 13) return null;
+}
+
+var TodoItem = function TodoItem(_ref2) {
+  var todoLink = _ref2.todoLink,
+      editingLink = _ref2.editingLink;
+  var editing = editingLink.value === todoLink.key,
+      todo = todoLink.value,
+      className = classnames__WEBPACK_IMPORTED_MODULE_1___default()({
+    'completed': todo.done,
+    'view': !todo.done,
+    'editing': editing
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: className
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "view"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
+    className: "toggle",
+    type: "checkbox"
+  }, todoLink.at('done').props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    onDoubleClick: editingLink.action(function () {
+      return todoLink.key;
+    })
+  }, todo.desc), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "destroy",
+    onClick: function onClick() {
+      return todoLink.remove();
+    }
+  })), editing && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
+    className: "edit"
+  }, todoLink.at('desc').props, {
+    autoFocus: true,
+    onBlur: editingLink.action(function () {
+      return null;
+    }),
+    onKeyDown: editingLink.action(clearOnEnter)
+  })));
+};
 
 /***/ })
 

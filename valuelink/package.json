@@ -2,7 +2,7 @@
   "name": "valuelink",
   "version": "2.0.0",
   "description": "Purely functional two-way data binding and form validation for React",
-  "main": "./dist",
+  "main": "./min",
   "module": "./lib",
   "types": "./lib",
   "files": [

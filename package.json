@@ -1,6 +1,6 @@
 {
-    "private":true,
-    "workspaces":[
+    "private": true,
+    "workspaces": [
         "valuelink",
         "type-r-link",
         "linked-controls",

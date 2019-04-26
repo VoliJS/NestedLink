@@ -1,0 +1,18 @@
+{
+  "presets":["react", ["es2015", {"loose": true}] ],
+  "plugins":[
+    "transform-decorators-legacy",
+    "transform-object-rest-spread",
+    "add-module-exports",
+    "transform-class-properties"
+  ],
+
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-constant-elements",
+        "transform-react-inline-elements"
+      ]
+    }
+  }
+}
