@@ -6,13 +6,16 @@ import { CustomLink, Link } from './link'
  */
 export function useLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState );
-    return new CustomLink( value, set );
+    return new CustomLink<S>( value, set );
 }
 
-export function useLinkedState<T extends Link<object>>
-    ( links : { [ K in keyof T["value"] ] : Link<T["value"][K]> }, link : T ) : void {
+export function useLinkedState<T>( link : Link<T> ) : Link<T> {
+    const localLink = useLink( link.value );
+
     useEffect(()=>{
-        Link.setValues( links, link.value );
+        localLink.set( link.value );
     }, [ link.value ]);
+
+    return localLink;
 }
 

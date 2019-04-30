@@ -1,7 +1,7 @@
 import './main.css'
 import ReactDOM from 'react-dom'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Link, { useLink, useLinkedState } from 'valuelink'
 import Modal from 'react-modal'
@@ -80,26 +80,25 @@ const UserRow = ( { userLink, onEdit } ) =>{
     )
 };
 
+
 const EditUser = ({ userLink, onClose }) => {
     // Initialize local state
-    const user = {
-        name     : useLink( '' ),
-        email    : useLink( '' ),
-        isActive : useLink( true )
-    };
-
-    // Sync local state with upper state
-    useLinkedState( user, userLink );
+    const user = useLinkedState( userLink ).pick();
 
     // Form submit handler
     function onSubmit( e ){
         e.preventDefault();
         
         // Assign local state back to the props
-        userLink.setWithLinks( user );
+        userLink.set( Link.getValues( user ) );
 
         // Close the dialog
         onClose();
+    }
+
+    function onClear(){
+        // Assign local state back to the props
+        Link.setValues( user, userLink.value );
     }
 
     // Apply validation rules

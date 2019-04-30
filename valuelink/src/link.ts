@@ -89,10 +89,6 @@ export abstract class Link< T >{
         });
     }
 
-    setWithLinks( links : LinksHash ) : void {
-        this.set( Link.getValues( links ) as any );
-    }
-
     // <input { ...link.props } />
     get props(){
         return typeof this.value === 'boolean' ? {
