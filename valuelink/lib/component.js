@@ -9,41 +9,29 @@ var LinkedComponent = /** @class */ (function (_super) {
         return _this;
     }
     LinkedComponent.prototype.linkAt = function (key) {
-        return linkAt(this, key);
+        var value = this.state[key], cache = this.links || (this.links = {}), cached = cache[key];
+        return cached && cached.value === value ?
+            cached :
+            cache[key] = new StateLink(this, key, value);
     };
     LinkedComponent.prototype.linkAll = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return linkAll(this, args);
+        var state = this.state, cache = this.links || (this.links = {}), keys = args.length ? args : Object.keys(state);
+        for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
+            var key = keys_1[_a];
+            var value = state[key], cached = cache[key];
+            if (!cached || cached.value !== value) {
+                cache[key] = new StateLink(this, key, value);
+            }
+        }
+        return cache;
     };
     return LinkedComponent;
 }(React.Component));
 export { LinkedComponent };
-Link.all = function (component) {
-    var _keys = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        _keys[_i - 1] = arguments[_i];
-    }
-    return linkAll(component, _keys);
-};
-Link.state = linkAt;
-function linkAll(component, _keys) {
-    var state = component.state, cache = component.links || (component.links = {}), keys = _keys.length ? _keys : Object.keys(state);
-    for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-        var key = keys_1[_i];
-        var value = state[key], cached = cache[key];
-        if (!cached || cached.value !== value) {
-            cache[key] = new StateLink(component, key, value);
-        }
-    }
-    return cache;
-}
-function linkAt(component, key) {
-    var value = component.state[key], cache = component.links || (component.links = {}), cached = cache[key];
-    return cached && cached.value === value ? cached : cache[key] = new StateLink(component, key, value);
-}
 var StateLink = /** @class */ (function (_super) {
     tslib_1.__extends(StateLink, _super);
     function StateLink(component, key, value) {

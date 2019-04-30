@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare type Transform<T> = (value: T, event?: {}) => T;
 export declare type EventHandler = (event: {}) => void;
 export interface Validator<T> {
@@ -10,8 +9,6 @@ export declare type LinksCache<S, X extends keyof S> = {
 };
 export declare abstract class Link<T> {
     value: T;
-    static state: <P, S, K extends keyof S>(component: React.Component<P, S>, key: K) => Link<S[K]>;
-    static all: <P, S, K extends keyof S>(component: React.Component<P, S>, ..._keys: K[]) => LinksCache<S, K>;
     static value<T>(value: T, set: (x: T) => void): Link<T>;
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
@@ -25,16 +22,16 @@ export declare abstract class Link<T> {
     static getErrors<K extends keyof L, L extends LinksHash>(links: L): {
         [name in K]: L[name]["value"];
     };
+    /**
+     * Return true if an object with links contains any errors.
+     */
     static hasErrors<L extends LinksHash>(links: L): boolean;
     /**
     * Assing links with values from the source object.
-    * Used for
-    *    setLinks({ name, email }, json);
     */
     static setValues(links: LinksHash, source: object): void;
     constructor(value: T);
     error: any;
-    readonly validationError: any;
     abstract set(x: T): void;
     onChange(handler: (x: T) => void): Link<T>;
     readonly props: {
@@ -46,7 +43,6 @@ export declare abstract class Link<T> {
         onChange: (e: any) => void;
         checked?: undefined;
     };
-    requestChange(x: T): void;
     update(transform: Transform<T>, e?: Object): void;
     pipe(handler: Transform<T>): Link<T>;
     action(transform: Transform<T>): EventHandler;

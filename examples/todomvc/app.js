@@ -25704,41 +25704,29 @@ var LinkedComponent = /** @class */ (function (_super) {
         return _this;
     }
     LinkedComponent.prototype.linkAt = function (key) {
-        return linkAt(this, key);
+        var value = this.state[key], cache = this.links || (this.links = {}), cached = cache[key];
+        return cached && cached.value === value ?
+            cached :
+            cache[key] = new StateLink(this, key, value);
     };
     LinkedComponent.prototype.linkAll = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return linkAll(this, args);
+        var state = this.state, cache = this.links || (this.links = {}), keys = args.length ? args : Object.keys(state);
+        for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
+            var key = keys_1[_a];
+            var value = state[key], cached = cache[key];
+            if (!cached || cached.value !== value) {
+                cache[key] = new StateLink(this, key, value);
+            }
+        }
+        return cache;
     };
     return LinkedComponent;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]));
 
-_link__WEBPACK_IMPORTED_MODULE_2__["Link"].all = function (component) {
-    var _keys = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        _keys[_i - 1] = arguments[_i];
-    }
-    return linkAll(component, _keys);
-};
-_link__WEBPACK_IMPORTED_MODULE_2__["Link"].state = linkAt;
-function linkAll(component, _keys) {
-    var state = component.state, cache = component.links || (component.links = {}), keys = _keys.length ? _keys : Object.keys(state);
-    for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-        var key = keys_1[_i];
-        var value = state[key], cached = cache[key];
-        if (!cached || cached.value !== value) {
-            cache[key] = new StateLink(component, key, value);
-        }
-    }
-    return cache;
-}
-function linkAt(component, key) {
-    var value = component.state[key], cache = component.links || (component.links = {}), cached = cache[key];
-    return cached && cached.value === value ? cached : cache[key] = new StateLink(component, key, value);
-}
 var StateLink = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](StateLink, _super);
     function StateLink(component, key, value) {
@@ -25840,7 +25828,7 @@ var arrayHelpers = {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
   \***************************************************************/
-/*! exports provided: useLink, useLinkedState, useLocalStorage */
+/*! exports provided: useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25848,18 +25836,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return useLinkedState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return useLocalStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return useIO; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "../../valuelink/lib/link.js");
 
 
 /**
- * Create the linked local state.
+ * Create the link to the local state.
  */
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
     return new _link__WEBPACK_IMPORTED_MODULE_1__["CustomLink"](value, set);
 }
+/**
+ * Create the link to the local state which is synchronized with another link
+ * in one direction. When the link change, the linked state changes too.
+ */
 function useLinkedState(link) {
     var localLink = useLink(link.value);
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
@@ -25867,6 +25860,12 @@ function useLinkedState(link) {
     }, [link.value]);
     return localLink;
 }
+/**
+ * Persists links in local storage under the given key.
+ * Links will be loaded on component's mount, and saved on unmount.
+ * @param key - string key for the localStorage entry.
+ * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
+ */
 function useLocalStorage(key, state) {
     // save state to use on unmount...
     var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
@@ -25880,6 +25879,31 @@ function useLocalStorage(key, state) {
         };
     }, []);
 }
+/**
+ * Wait for the promise (or async function) completion.
+ * Execute operation once when mounted, returning `null` while the operation is pending.
+ * When operation is completed, returns "ok" or "fail" depending on the result and
+ * forces the local component update.
+ *
+ * const isReady = useIO( async () => {
+ *      const data = await fetchData();
+ *      link.set( data );
+ * });
+ */
+function useIO(fun, condition) {
+    if (condition === void 0) { condition = []; }
+    // save state to use on unmount...
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null), isReady = _a[0], setIsReady = _a[1];
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+        fun()
+            .then(function () { return setIsReady("ok"); })
+            .catch(function () { return setIsReady("fail"); });
+        return function () {
+            setIsReady(null);
+        };
+    }, condition);
+    return isReady;
+}
 
 
 /***/ }),
@@ -25888,7 +25912,7 @@ function useLocalStorage(key, state) {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
   \***************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage */
+/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25919,6 +25943,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLinkedState"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLocalStorage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useIO"]; });
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_link__WEBPACK_IMPORTED_MODULE_0__["Link"]);
@@ -25956,7 +25982,6 @@ __webpack_require__.r(__webpack_exports__);
 
 // Main Link class. All links must extend it.
 var Link = /** @class */ (function () {
-    // create 
     function Link(value) {
         this.value = value;
     }
@@ -25976,6 +26001,9 @@ var Link = /** @class */ (function () {
     Link.getErrors = function (links) {
         return unwrap(links, 'error');
     };
+    /**
+     * Return true if an object with links contains any errors.
+     */
     Link.hasErrors = function (links) {
         for (var key in links) {
             if (links.hasOwnProperty(key) && links[key].error) {
@@ -25986,8 +26014,6 @@ var Link = /** @class */ (function () {
     };
     /**
     * Assing links with values from the source object.
-    * Used for
-    *    setLinks({ name, email }, json);
     */
     Link.setValues = function (links, source) {
         if (source) {
@@ -25998,12 +26024,6 @@ var Link = /** @class */ (function () {
             }
         }
     };
-    Object.defineProperty(Link.prototype, "validationError", {
-        // DEPRECATED: Old error holder for backward compatibility with Volicon code base
-        get: function () { return this.error; },
-        enumerable: true,
-        configurable: true
-    });
     Link.prototype.onChange = function (handler) {
         var _this = this;
         return new CloneLink(this, function (x) {
@@ -26026,10 +26046,6 @@ var Link = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // DEPRECATED: Old React method for backward compatibility
-    Link.prototype.requestChange = function (x) {
-        this.set(x);
-    };
     // Immediately update the link value using given transform function.
     Link.prototype.update = function (transform, e) {
         var next = transform(this.clone(), e);

@@ -19,10 +19,6 @@ export type LinksCache< S, X extends keyof S> = {
 
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
-    // @deprecated API. Use component subclass.
-    static state : < P, S, K extends keyof S>( component : React.Component< P, S >, key : K ) => Link< S[ K ] >;
-    static all : < P, S, K extends keyof S >( component : React.Component< P, S >, ..._keys : K[] ) => LinksCache< S, K >;
-
     // Create custom link to arbitrary value
     static value< T >( value : T, set : ( x : T ) => void ) : Link< T >{
         return new CustomLink( value, set );
@@ -44,6 +40,9 @@ export abstract class Link< T >{
         return unwrap( links, 'error' ) as any;
     }
 
+    /**
+     * Return true if an object with links contains any errors.
+     */
     static hasErrors<L extends LinksHash>( links : L )
         : boolean {
         for( let key in links ){
@@ -57,8 +56,6 @@ export abstract class Link< T >{
 
     /**
     * Assing links with values from the source object.
-    * Used for 
-    *    setLinks({ name, email }, json);
     */
     static setValues( links : LinksHash, source : object ) : void {
         if( source ){
@@ -70,14 +67,10 @@ export abstract class Link< T >{
         }
     }
 
-    // create 
     constructor( public value : T ){}
 
     // Validation error. Usually is a string with error text, but can hold any type.
     error : any
-
-    // DEPRECATED: Old error holder for backward compatibility with Volicon code base
-    get validationError() : any { return this.error }
 
     // Link set functions
     abstract set( x : T ) : void
@@ -98,11 +91,6 @@ export abstract class Link< T >{
             value : this.value,
             onChange : e => this.set( e.target.value )
         };
-    }
-
-    // DEPRECATED: Old React method for backward compatibility
-    requestChange( x : T ) : void {
-        this.set( x );
     }
 
     // Immediately update the link value using given transform function.

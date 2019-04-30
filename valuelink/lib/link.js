@@ -7,7 +7,6 @@ import * as tslib_1 from "tslib";
 import { helpers, arrayHelpers } from './helpers';
 // Main Link class. All links must extend it.
 var Link = /** @class */ (function () {
-    // create 
     function Link(value) {
         this.value = value;
     }
@@ -27,6 +26,9 @@ var Link = /** @class */ (function () {
     Link.getErrors = function (links) {
         return unwrap(links, 'error');
     };
+    /**
+     * Return true if an object with links contains any errors.
+     */
     Link.hasErrors = function (links) {
         for (var key in links) {
             if (links.hasOwnProperty(key) && links[key].error) {
@@ -37,8 +39,6 @@ var Link = /** @class */ (function () {
     };
     /**
     * Assing links with values from the source object.
-    * Used for
-    *    setLinks({ name, email }, json);
     */
     Link.setValues = function (links, source) {
         if (source) {
@@ -49,12 +49,6 @@ var Link = /** @class */ (function () {
             }
         }
     };
-    Object.defineProperty(Link.prototype, "validationError", {
-        // DEPRECATED: Old error holder for backward compatibility with Volicon code base
-        get: function () { return this.error; },
-        enumerable: true,
-        configurable: true
-    });
     Link.prototype.onChange = function (handler) {
         var _this = this;
         return new CloneLink(this, function (x) {
@@ -77,10 +71,6 @@ var Link = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // DEPRECATED: Old React method for backward compatibility
-    Link.prototype.requestChange = function (x) {
-        this.set(x);
-    };
     // Immediately update the link value using given transform function.
     Link.prototype.update = function (transform, e) {
         var next = transform(this.clone(), e);
