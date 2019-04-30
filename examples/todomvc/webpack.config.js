@@ -4,7 +4,7 @@ module.exports = {
     entry  : './js/main.jsx',
     output : {
         // export itself to a global var
-        path       : __dirname,
+        path       : __dirname + '/bundles',
         publicPath : '/',
         filename   : 'app.js'
     },
@@ -14,14 +14,6 @@ module.exports = {
     resolve : {
         modules : [ 'node_modules', 'js', '.' ]
     },
-
-    plugins : [
-        new webpack.ProvidePlugin( {
-            $          : "jquery",
-            jQuery     : 'expose?jQuery!jquery',
-            _          : "underscore"
-        } )
-    ],
 
     mode : 'development',
     

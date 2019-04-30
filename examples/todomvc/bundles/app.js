@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../node_modules/classnames/index.js":
-/*!*************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/classnames/index.js ***!
-  \*************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/classnames/index.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -149,9 +149,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ }),
 
 /***/ "../../node_modules/css-loader/index.js?!./css/app.css":
-/*!****************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
-  \****************************************************************************************/
+/*!*****************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -160,19 +160,19 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "._1ab5eBImiH2kKUQGzE_hKY {\r\n\tbackground: black;\r\n}\r\n", ""]);
+exports.push([module.i, "._2poqbOCYuDDRYOmLq9Dyn9 {\n\tbackground: black;\n}\n", ""]);
 
 // exports
 exports.locals = {
-	"something": "_1ab5eBImiH2kKUQGzE_hKY"
+	"something": "_2poqbOCYuDDRYOmLq9Dyn9"
 };
 
 /***/ }),
 
 /***/ "../../node_modules/css-loader/lib/css-base.js":
-/*!********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
-  \********************************************************************************/
+/*!*********************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -257,9 +257,9 @@ function toComment(sourceMap) {
 /***/ }),
 
 /***/ "../../node_modules/object-assign/index.js":
-/*!****************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/object-assign/index.js ***!
-  \****************************************************************************/
+/*!*****************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/object-assign/index.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -359,9 +359,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /***/ }),
 
 /***/ "../../node_modules/prop-types/checkPropTypes.js":
-/*!**********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
-  \**********************************************************************************/
+/*!***********************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -473,9 +473,9 @@ module.exports = checkPropTypes;
 /***/ }),
 
 /***/ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -497,9 +497,9 @@ module.exports = ReactPropTypesSecret;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/cjs/react-dom.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21787,9 +21787,9 @@ module.exports = reactDom;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/index.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react-dom/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21832,9 +21832,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/react/cjs/react.development.js":
-/*!************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
-  \************************************************************************************/
+/*!*************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23745,9 +23745,9 @@ module.exports = react;
 /***/ }),
 
 /***/ "../../node_modules/react/index.js":
-/*!********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/index.js ***!
-  \********************************************************************/
+/*!*********************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react/index.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23762,9 +23762,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js":
-/*!****************************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \****************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24197,9 +24197,9 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24909,9 +24909,9 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/index.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24926,9 +24926,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/tracing.js":
-/*!**************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
-  \**************************************************************************/
+/*!***************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24943,9 +24943,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/addStyles.js":
-/*!***********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
-  \***********************************************************************************/
+/*!************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25330,9 +25330,9 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/urls.js":
-/*!******************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
-  \******************************************************************************/
+/*!*******************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -25430,9 +25430,9 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ "../../node_modules/tslib/tslib.es6.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
+  \*************************************************************************/
 /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25679,9 +25679,9 @@ module.exports = g;
 /***/ }),
 
 /***/ "../../valuelink/lib/component.js":
-/*!*******************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/component.js ***!
-  \*******************************************************************/
+/*!********************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/component.js ***!
+  \********************************************************************/
 /*! exports provided: LinkedComponent, StateLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25748,9 +25748,9 @@ var StateLink = /** @class */ (function (_super) {
 /***/ }),
 
 /***/ "../../valuelink/lib/helpers.js":
-/*!*****************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/helpers.js ***!
-  \*****************************************************************/
+/*!******************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/helpers.js ***!
+  \******************************************************************/
 /*! exports provided: helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25825,9 +25825,9 @@ var arrayHelpers = {
 /***/ }),
 
 /***/ "../../valuelink/lib/hooks.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
-  \***************************************************************/
+/*!****************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/hooks.js ***!
+  \****************************************************************/
 /*! exports provided: useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25909,9 +25909,9 @@ function useIO(fun, condition) {
 /***/ }),
 
 /***/ "../../valuelink/lib/index.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
-  \***************************************************************/
+/*!****************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/index.js ***!
+  \****************************************************************/
 /*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25956,9 +25956,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "../../valuelink/lib/link.js":
-/*!**************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/link.js ***!
-  \**************************************************************/
+/*!***************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/link.js ***!
+  \***************************************************************/
 /*! exports provided: Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26018,8 +26018,10 @@ var Link = /** @class */ (function () {
     Link.setValues = function (links, source) {
         if (source) {
             for (var key in links) {
-                if (source.hasOwnProperty(key)) {
-                    source[key] === void 0 || links[key].set(source[key]);
+                var sourceKey = trim(key);
+                if (source.hasOwnProperty(sourceKey)) {
+                    var sourceVal = source[sourceKey];
+                    sourceVal === void 0 || links[key].set(sourceVal);
                 }
             }
         }
@@ -26231,11 +26233,14 @@ function unwrap(links, field) {
         if (links.hasOwnProperty(key)) {
             var value = links[key][field];
             if (value !== void 0) {
-                values[key] = value;
+                values[trim(key)] = value;
             }
         }
     }
     return values;
+}
+function trim(key) {
+    return key[0] === '$' ? key.slice(1) : key;
 }
 
 
@@ -26290,14 +26295,14 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 var AddTodo = function AddTodo(_ref) {
   var onEnter = _ref.onEnter;
-  var desc = Object(valuelink__WEBPACK_IMPORTED_MODULE_1__["useLink"])('');
+  var $desc = Object(valuelink__WEBPACK_IMPORTED_MODULE_1__["useLink"])('');
 
   function onKeyDown(_ref2) {
     var keyCode = _ref2.keyCode;
 
     if (keyCode === 13) {
-      desc.value && onEnter(desc.value);
-      desc.set("");
+      $desc.value && onEnter($desc.value);
+      $desc.set("");
     }
   }
 
@@ -26307,7 +26312,7 @@ var AddTodo = function AddTodo(_ref) {
     className: "new-todo",
     placeholder: "What needs to be done?",
     autoFocus: true
-  }, desc.props, {
+  }, $desc.props, {
     onKeyDown: onKeyDown
   })));
 };
@@ -26335,7 +26340,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 var Filter = function Filter(_ref) {
   var count = _ref.count,
-      filterLink = _ref.filterLink,
+      $filter = _ref.$filter,
       onClear = _ref.onClear;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
     className: "footer"
@@ -26344,13 +26349,13 @@ var Filter = function Filter(_ref) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, count), " item left"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "filters"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(null),
+    $checked: $filter.equals(null),
     href: "#/"
   }, "All")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(false),
+    $checked: $filter.equals(false),
     href: "#/active"
   }, "Active")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Radio, {
-    checkedLink: filterLink.equals(true),
+    $checked: $filter.equals(true),
     href: "#/completed"
   }, "Completed"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "clear-completed",
@@ -26359,14 +26364,14 @@ var Filter = function Filter(_ref) {
 };
 
 var Radio = function Radio(_ref2) {
-  var checkedLink = _ref2.checkedLink,
+  var $checked = _ref2.$checked,
       children = _ref2.children,
-      props = _objectWithoutProperties(_ref2, ["checkedLink", "children"]);
+      props = _objectWithoutProperties(_ref2, ["$checked", "children"]);
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", _extends({
-    className: checkedLink.value ? 'selected' : '',
+    className: $checked.value ? 'selected' : '',
     onClick: function onClick() {
-      return checkedLink.set(true);
+      return $checked.set(true);
     }
   }, props), children);
 };
@@ -26388,10 +26393,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "../../node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _todolist_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todolist.jsx */ "./js/todolist.jsx");
-/* harmony import */ var _filter_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./filter.jsx */ "./js/filter.jsx");
-/* harmony import */ var _addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./addtodo.jsx */ "./js/addtodo.jsx");
-/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+/* harmony import */ var valuelink__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+/* harmony import */ var _addtodo_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./addtodo.jsx */ "./js/addtodo.jsx");
+/* harmony import */ var _filter_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./filter.jsx */ "./js/filter.jsx");
+/* harmony import */ var _todolist_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./todolist.jsx */ "./js/todolist.jsx");
 
 
 
@@ -26401,29 +26406,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var App = function App() {
-  var todos = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])([]),
-      filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])(null),
-      hasTodos = Boolean(todos.value.length);
-  Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLocalStorage"])('todos', {
-    todos: todos,
-    filterDone: filterDone
+  var $todos = Object(valuelink__WEBPACK_IMPORTED_MODULE_3__["useLink"])([]),
+      $filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_3__["useLink"])(null),
+      hasTodos = Boolean($todos.value.length);
+  Object(valuelink__WEBPACK_IMPORTED_MODULE_3__["useLocalStorage"])('todos', {
+    $todos: $todos,
+    $filterDone: $filterDone
   });
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("section", {
     className: "todoapp"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__["AddTodo"], {
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_addtodo_jsx__WEBPACK_IMPORTED_MODULE_4__["AddTodo"], {
     onEnter: function onEnter(desc) {
-      return todos.push({
+      return $todos.push({
         done: false,
         desc: desc
       });
     }
-  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_todolist_jsx__WEBPACK_IMPORTED_MODULE_3__["TodoList"], {
-    todosLink: todos,
-    filterDone: filterDone.value
-  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_filter_jsx__WEBPACK_IMPORTED_MODULE_4__["Filter"], {
-    count: getActiveCount(todos),
-    filterLink: filterDone,
-    onClear: todos.action(removeDone)
+  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_todolist_jsx__WEBPACK_IMPORTED_MODULE_6__["TodoList"], {
+    $todos: $todos,
+    filterDone: $filterDone.value
+  }), hasTodos && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_filter_jsx__WEBPACK_IMPORTED_MODULE_5__["Filter"], {
+    count: getActiveCount($todos),
+    $filter: $filterDone,
+    onClear: $todos.action(removeDone)
   })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("footer", {
     className: "info"
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Double-click to edit a todo"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Template by ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
@@ -26475,36 +26480,41 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-var TodoList = function TodoList(_ref) {
-  var todosLink = _ref.todosLink,
-      filterDone = _ref.filterDone;
-  var editingLink = Object(valuelink__WEBPACK_IMPORTED_MODULE_2__["useLink"])(null),
-      allDoneLink = valuelink__WEBPACK_IMPORTED_MODULE_2__["default"].value(todosLink.value.every(function (todo) {
+
+var allDone = function allDone($todos) {
+  return valuelink__WEBPACK_IMPORTED_MODULE_2__["default"].value($todos.value.every(function (todo) {
     return todo.done;
   }), function (x) {
-    todosLink.update(function (todos) {
+    $todos.update(function (todos) {
       todos.forEach(function (todo) {
         return todo.done = Boolean(x);
       });
       return todos;
     });
   });
+};
+
+var TodoList = function TodoList(_ref) {
+  var $todos = _ref.$todos,
+      filterDone = _ref.filterDone;
+  var $editing = Object(valuelink__WEBPACK_IMPORTED_MODULE_2__["useLink"])(null),
+      $allDone = allDone($todos);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
     className: "main"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
     id: "toggle-all",
     className: "toggle-all",
     type: "checkbox"
-  }, allDoneLink.props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+  }, $allDone.props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "toggle-all"
   }, "Mark all as complete"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "todo-list"
-  }, todosLink.map(function (todoLink, i) {
-    if (filterDone === null || filterDone === todoLink.value.done) {
+  }, $todos.map(function ($todo, i) {
+    if (filterDone === null || filterDone === $todo.value.done) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TodoItem, {
         key: i,
-        todoLink: todoLink,
-        editingLink: editingLink
+        $todo: $todo,
+        $editing: $editing
       });
     }
   })));
@@ -26515,10 +26525,10 @@ function clearOnEnter(x, e) {
 }
 
 var TodoItem = function TodoItem(_ref2) {
-  var todoLink = _ref2.todoLink,
-      editingLink = _ref2.editingLink;
-  var editing = editingLink.value === todoLink.key,
-      todo = todoLink.value,
+  var $todo = _ref2.$todo,
+      $editing = _ref2.$editing;
+  var editing = $editing.value === $todo.key,
+      todo = $todo.value,
       className = classnames__WEBPACK_IMPORTED_MODULE_1___default()({
     'completed': todo.done,
     'view': !todo.done,
@@ -26531,23 +26541,23 @@ var TodoItem = function TodoItem(_ref2) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
     className: "toggle",
     type: "checkbox"
-  }, todoLink.at('done').props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    onDoubleClick: editingLink.action(function () {
-      return todoLink.key;
+  }, $todo.at('done').props)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    onDoubleClick: $editing.action(function () {
+      return $todo.key;
     })
   }, todo.desc), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "destroy",
     onClick: function onClick() {
-      return todoLink.remove();
+      return $todo.remove();
     }
   })), editing && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", _extends({
     className: "edit"
-  }, todoLink.at('desc').props, {
+  }, $todo.at('desc').props, {
     autoFocus: true,
-    onBlur: editingLink.action(function () {
+    onBlur: $editing.action(function () {
       return null;
     }),
-    onKeyDown: editingLink.action(clearOnEnter)
+    onKeyDown: $editing.action(clearOnEnter)
   })));
 };
 

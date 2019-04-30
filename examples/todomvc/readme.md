@@ -1,6 +1,6 @@
-# NestedReact • [TodoMVC](http://todomvc.com)
+# NestedLink • [TodoMVC](http://todomvc.com)
 
-This TodoMVC application is written to demonstrate how powerful and expressive declarative OO data layer can be in React.
+This TodoMVC application is written to demonstrate the expressive power of the state management with React hooks.
 
 It features pure unidirectional data flow (which is common for Flux applications) achieved with conventional OO design
 technique.

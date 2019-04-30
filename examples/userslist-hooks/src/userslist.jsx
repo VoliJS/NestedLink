@@ -1,11 +1,11 @@
-import './main.css'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+import Link, { useLink, useLinkedState, useLocalStorage } from 'valuelink';
+import { Input, isEmail, isRequired } from 'valuelink/tags';
+import './main.css';
 
-import React, { useEffect } from 'react'
 
-import Link, { useLink, useLinkedState } from 'valuelink'
-import Modal from 'react-modal'
-import {Input, isRequired, isEmail } from 'valuelink/tags'
 
 const newUser = {
     name : '',
@@ -15,17 +15,19 @@ const newUser = {
 
 export const UsersList = () => {
     // Declare the local state.
-    const users = useLink( [] ),
-        dialog  = useLink( null ),
-        editing = useLink( null );
+    const $users = useLink( [] ),
+        $dialog  = useLink( null ),
+        $editing = useLink( null );
+
+    useLocalStorage({ $users });
 
     // Create the function which sets dialog to `null`.
-    const closeDialog = dialog.action( () => null );
+    const closeDialog = $dialog.action( () => null );
 
     // Function to open the dialog.
     function openDialog( name, editing = null ){
-        dialog.set( name );
-        editing.set( editing );
+        $dialog.set( name );
+        $editing.set( editing );
     }
 
     return (
@@ -36,23 +38,23 @@ export const UsersList = () => {
 
             <Header/>
 
-            { users.map( ( userLink, i ) => (
+            { $users.map( ( $user, i ) => (
                 <UserRow key={ i }
-                            userLink={ userLink }
+                            $user={ $user }
                             onEdit={ () => openDialog( 'editUser', i ) }
                 />
             ) )}
 
-            <Modal isOpen={ dialog === 'addUser' }>
-                <EditUser userLink={
+            <Modal isOpen={ $dialog.value === 'addUser' }>
+                <EditUser $user={
                         /* The custom link to add created user to the state */
-                        Link.value( newUser, x => users.push( x ) )
+                        Link.value( newUser, x => $users.push( x ) )
                     }
                     onClose={ closeDialog } />
             </Modal>
 
-            <Modal isOpen={ dialog === 'editUser' }>
-                <EditUser userLink={ users.at( editing ) }
+            <Modal isOpen={ $dialog.value === 'editUser' }>
+                <EditUser $user={ $users.at( $editing.value ) }
                             onClose={ closeDialog }/>
             </Modal>
         </div>
@@ -68,35 +70,35 @@ const Header = () =>(
     </div>
 );
 
-const UserRow = ( { userLink, onEdit } ) =>{
-    const isActiveLink = userLink.at( 'isActive' ),
-          user         = userLink.value;
+const UserRow = ( { $user, onEdit } ) =>{
+    const $isActive = $user.at( 'isActive' ),
+          user      = $user.value;
 
     return (
         <div className="users-row" onDoubleClick={ onEdit }>
             <div>{ user.name }</div>
             <div>{ user.email }</div>
-            <div onClick={ isActiveLink.action( x => !x ) }>
+            <div onClick={ $isActive.action( x => !x ) }>
                 { user.isActive ? 'Yes' : 'No' }</div>
             <div>
                 <button onClick={ onEdit }>Edit</button>
-                <button onClick={ () => userLink.remove() }>X</button>
+                <button onClick={ () => $user.remove() }>X</button>
             </div>
         </div>
     )
 };
 
 
-const EditUser = ({ userLink, onClose }) => {
+const EditUser = ({ $user, onClose }) => {
     // Initialize local state
-    const user = useLinkedState( userLink ).pick();
+    const user$ = useLinkedState( $user ).pick();
 
     // Form submit handler
     function onSubmit( e ){
         e.preventDefault();
         
         // Assign local state back to the props
-        userLink.set( Link.getValues( user ) );
+        $user.set( Link.getValues( user$ ) );
 
         // Close the dialog
         onClose();
@@ -104,33 +106,33 @@ const EditUser = ({ userLink, onClose }) => {
 
     function onClear(){
         // Assign local state back to the props
-        Link.setValues( user, userLink.value );
+        Link.setValues( user$, $user.value );
     }
 
     // Apply validation rules
-    user.name
+    user$.name
         .check( isRequired )
         .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
 
-    user.email
+    user$.email
         .check( isRequired )
         .check( isEmail );
 
     return (
         <form onSubmit={ onSubmit }>
             <label>
-                Name: <ValidatedInput type="text" valueLink={ user.name }/>
+                Name: <ValidatedInput type="text" valueLink={ user$.name }/>
             </label>
 
             <label>
-                Email: <ValidatedInput type="text" valueLink={ user.email }/>
+                Email: <ValidatedInput type="text" valueLink={ user$.email }/>
             </label>
 
             <label>
-                Is active: <Input type="checkbox" checkedLink={ user.isActive }/>
+                Is active: <Input type="checkbox" checkedLink={ user$.isActive }/>
             </label>
 
-            <button type="submit" disabled={ Link.hasErrors( user ) }>
+            <button type="submit" disabled={ Link.hasErrors( user$ ) }>
                 Save
             </button>
             <button type="button" onClick={ onClose }>

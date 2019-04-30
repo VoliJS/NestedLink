@@ -43,8 +43,10 @@ var Link = /** @class */ (function () {
     Link.setValues = function (links, source) {
         if (source) {
             for (var key in links) {
-                if (source.hasOwnProperty(key)) {
-                    source[key] === void 0 || links[key].set(source[key]);
+                var sourceKey = trim(key);
+                if (source.hasOwnProperty(sourceKey)) {
+                    var sourceVal = source[sourceKey];
+                    sourceVal === void 0 || links[key].set(sourceVal);
                 }
             }
         }
@@ -256,10 +258,13 @@ function unwrap(links, field) {
         if (links.hasOwnProperty(key)) {
             var value = links[key][field];
             if (value !== void 0) {
-                values[key] = value;
+                values[trim(key)] = value;
             }
         }
     }
     return values;
+}
+function trim(key) {
+    return key[0] === '$' ? key.slice(1) : key;
 }
 //# sourceMappingURL=link.js.map

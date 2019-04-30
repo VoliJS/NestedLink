@@ -60,8 +60,10 @@ export abstract class Link< T >{
     static setValues( links : LinksHash, source : object ) : void {
         if( source ){
             for( let key in links ){
-                if( source.hasOwnProperty( key ) ){
-                    source[ key ] === void 0 || links[ key ].set( source[ key ] );
+                const sourceKey = trim( key );
+                if( source.hasOwnProperty( sourceKey ) ){
+                    const sourceVal = source[ sourceKey ];
+                    sourceVal === void 0 || links[ key ].set( sourceVal );
                 }
             }    
         }
@@ -292,10 +294,14 @@ function unwrap( links : LinksHash, field : string) : object {
         if( links.hasOwnProperty( key ) ){
             const value = links[ key ][ field ];
             if( value !== void 0 ){
-                values[ key ] = value;
+                values[ trim( key ) ] = value;
             }
         }
     }
 
     return values;
+}
+
+function trim( key : string ){
+    return key[ 0 ] === '$' ? key.slice( 1 ) : key;
 }

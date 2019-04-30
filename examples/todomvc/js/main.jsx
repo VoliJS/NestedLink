@@ -1,30 +1,30 @@
-import 'css/app.css'
-import React, { useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
-import { TodoList } from './todolist.jsx'
-import { Filter } from './filter.jsx'
-import { AddTodo } from './addtodo.jsx'
-import Link, { useLink, useLocalStorage } from 'valuelink'
+import 'css/app.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { useLink, useLocalStorage } from 'valuelink';
+import { AddTodo } from './addtodo.jsx';
+import { Filter } from './filter.jsx';
+import { TodoList } from './todolist.jsx';
 
 const App = () => {
-    const todos = useLink( [] ),
-        filterDone = useLink( null ),
-        hasTodos = Boolean( todos.value.length );
+    const $todos = useLink( [] ),
+        $filterDone = useLink( null ),
+        hasTodos = Boolean( $todos.value.length );
 
-    useLocalStorage( 'todos', { todos, filterDone });
+    useLocalStorage( 'todos', { $todos, $filterDone });
 
     return (
         <div>
             <section className="todoapp">
-                <AddTodo onEnter={ desc => todos.push({ done : false, desc : desc }) }/>
+                <AddTodo onEnter={ desc => $todos.push({ done : false, desc : desc }) }/>
 
-                { hasTodos && <TodoList todosLink={ todos }
-                                        filterDone={ filterDone.value }
+                { hasTodos && <TodoList $todos={ $todos }
+                                        filterDone={ $filterDone.value }
                 /> }
 
-                { hasTodos && <Filter count={ getActiveCount( todos ) }
-                                        filterLink={ filterDone }
-                                        onClear={ todos.action( removeDone ) }
+                { hasTodos && <Filter count={ getActiveCount( $todos ) }
+                                        $filter={ $filterDone }
+                                        onClear={ $todos.action( removeDone ) }
                 />}
             </section>
 

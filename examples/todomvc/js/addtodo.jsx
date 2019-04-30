@@ -2,12 +2,12 @@ import React from 'react'
 import { useLink } from 'valuelink';
 
 export const AddTodo = ({ onEnter }) => {
-    const desc = useLink('');
+    const $desc = useLink('');
 
     function onKeyDown( { keyCode } ){
         if( keyCode === 13 ){
-            desc.value && onEnter( desc.value );
-            desc.set("");
+            $desc.value && onEnter( $desc.value );
+            $desc.set("");
         }
     }
 
@@ -16,7 +16,7 @@ export const AddTodo = ({ onEnter }) => {
             <h1>todos</h1>
 
             <input className="new-todo" placeholder="What needs to be done?" autoFocus
-                   { ...desc.props }
+                   { ...$desc.props }
                    onKeyDown={ onKeyDown }
             />
         </header>

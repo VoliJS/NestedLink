@@ -10,10 +10,10 @@ import { useLink } from 'valuelink'
 import * as React from 'react'
 
 export const MyCoolComponent = ( props ) => {
-    const name = useLink( '' );
+    const $name = useLink( '' );
 
     return (
-        <input {...name.props} />
+        <input {...$name.props} />
     )
 }
 ```
