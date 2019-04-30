@@ -28,6 +28,48 @@ export abstract class Link< T >{
         return new CustomLink( value, set );
     }
 
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    static getValues<K extends keyof L, L extends LinksHash>( links : L )
+       : { [ name in K ] : any } {
+       return unwrap( links, 'error' ) as any;
+    }
+
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    static getErrors<K extends keyof L, L extends LinksHash>( links : L )
+        : { [ name in K ] : L[name]["value"] } {
+        return unwrap( links, 'value' ) as any;
+    }
+
+    static hasErrors<K extends keyof L, L extends LinksHash>( links : L )
+        : boolean {
+        for( let key in links ){
+            if( links.hasOwnProperty( key ) && links[ key ].error ){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+    * Assing links with values from the source object.
+    * Used for 
+    *    setLinks({ name, email }, json);
+    */
+    static setValues( links : LinksHash, source : object ) : void {
+        if( source ){
+            for( let key in links ){
+                if( source.hasOwnProperty( key ) ){
+                    links[ key ].set( source[ key ] );
+                }
+            }    
+        }
+    }
+
     // create 
     constructor( public value : T ){}
 
@@ -45,6 +87,10 @@ export abstract class Link< T >{
             handler( x );
             this.set( x );
         });
+    }
+
+    setWithLinks( links : LinksHash ) : void {
+        this.set( Link.getValues( links ) as any );
     }
 
     // <input { ...link.props } />
@@ -249,4 +295,23 @@ export class LinkAt< E, K > extends Link< E > {
             } );
         }
     };
+}
+
+export interface LinksHash {
+    [ name : string ] : Link<any>
+}
+
+function unwrap( links : LinksHash, field : string) : object {
+    const values = {};
+
+    for( let key in links ){
+        if( links.hasOwnProperty( key ) ){
+            const value = links[ key ][ field ];
+            if( value !== void 0 ){
+                values[ key ] = value;
+            }
+        }
+    }
+
+    return values;
 }

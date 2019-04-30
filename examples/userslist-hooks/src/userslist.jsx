@@ -1,10 +1,9 @@
 import './main.css'
 import ReactDOM from 'react-dom'
 
-import React, { useEffect } from 'react'
-import PropTypes from 'proptypes'
+import React from 'react'
 
-import Link, { useLink } from 'valuelink'
+import Link, { useLink, useLinkedState } from 'valuelink'
 import Modal from 'react-modal'
 import {Input, isRequired, isEmail } from 'valuelink/tags'
 
@@ -41,7 +40,7 @@ export const UsersList = () => {
             <Modal isOpen={ dialog === 'addUser' }>
                 <EditUser userLink={
                         /* The custom link to add created user to the state */
-                        Link.value( {}, x => users.push( x ) )
+                        Link.value( null, x => users.push( x ) )
                     }
                     onClose={ closeDialog } />
             </Modal>
@@ -82,47 +81,51 @@ const UserRow = ( { userLink, onEdit } ) =>{
 };
 
 const EditUser = ({ userLink, onClose }) => {
-    // Initialize local state on mount taking it from the userLink
-    const user = useLink( () =>({
-        name     : '',
-        email    : '',
-        isActive : true,
-        ...userLink.value
-    }));
+    // Initialize local state
+    const user = {
+        name     : useLink( '' ),
+        email    : useLink( '' ),
+        isActive : useLink( true )
+    };
+
+    // Sync local state with upper state
+    useLinkedState( user, userLink );
 
     // Form submit handler
     function onSubmit( e ){
         e.preventDefault();
+        
+        // Assign local state back to the props
+        userLink.setWithLinks( user );
 
-        userLink.set( user.value );
+        // Close the dialog
         onClose();
     }
 
-    // Extract links to `localUser` elements
-    const { name, email, isActive } = user.pick();
-
     // Apply validation rules
-    name.check( isRequired )
+    user.name
+        .check( isRequired )
         .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
 
-    email.check( isRequired )
-         .check( isEmail );
+    user.email
+        .check( isRequired )
+        .check( isEmail );
 
     return (
         <form onSubmit={ onSubmit }>
             <label>
-                Name: <ValidatedInput type="text" valueLink={ name }/>
+                Name: <ValidatedInput type="text" valueLink={ user.name }/>
             </label>
 
             <label>
-                Email: <ValidatedInput type="text" valueLink={ email }/>
+                Email: <ValidatedInput type="text" valueLink={ user.email }/>
             </label>
 
             <label>
-                Is active: <Input type="checkbox" checkedLink={ isActive }/>
+                Is active: <Input type="checkbox" checkedLink={ user.isActive }/>
             </label>
 
-            <button type="submit" disabled={ name.error || email.error }>
+            <button type="submit" disabled={ Link.hasErrors( user ) }>
                 Save
             </button>
             <button type="button" onClick={ onClose }>

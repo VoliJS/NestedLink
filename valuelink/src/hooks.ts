@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CustomLink, Link } from './link'
 
 /**
@@ -9,48 +9,10 @@ export function useLink<S>( initialState : S | (() => S) ){
     return new CustomLink( value, set );
 }
 
-export interface LinksHash {
-    [ name : string ] : Link<any>
+export function useLinkedState<T extends Link<object>>
+    ( links : { [ K in keyof T["value"] ] : Link<T["value"][K]> }, link : T ) : void {
+    useEffect(()=>{
+        Link.setValues( links, link.value );
+    }, [ link.value ]);
 }
 
-/**
- * Unwrap object with links, returning an object of a similar shape filled with link values.
- */
-export function linksValues<K extends keyof L, L extends LinksHash>( links : L )
-    : { [ name in K ] : any } {
-    return unwrap( links, 'error' ) as any;
-}
-
-/**
- * Unwrap object with links, returning an object of a similar shape filled with link errors.
- */
-export function linksErrors<K extends keyof L, L extends LinksHash>( links : L )
-    : { [ name in K ] : L[name]["value"] } {
-    return unwrap( links, 'value' ) as any;
-}
-
-/**
- * Assing links with values from the source object.
- * Used for 
- *    setLinks({ name, email }, json);
- */
-export function setLinks( links : LinksHash, source : object ) : void {
-    for( let key of Object.keys( links ) ){
-        if( source.hasOwnProperty( key ) ){
-            links[ key ].set( source[ key ] );
-        }
-    }
-}
-
-function unwrap( links : LinksHash, field : string) : object {
-    const values = {};
-
-    for( let key of Object.keys( links ) ){
-        const value = links[ key ][ field ];
-        if( value !== void 0 ){
-            values[ key ] = value;
-        }
-    }
-
-    return values;
-}
