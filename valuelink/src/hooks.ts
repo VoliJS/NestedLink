@@ -34,3 +34,22 @@ export function useLocalStorage( key : string, state : LinksHash ){
         }
     },[]);
 }
+
+/**
+ * Wait for I/O completion
+ * 
+ * const isReady = useIO( () => model.fetch() );
+ * 
+ */
+export function useIO( fun : () => Promise<any> ) : "ok" | "fail" {
+    // save state to use on unmount...
+    const [ isReady, setIsReady ] = useState( null );
+
+    useEffect(()=>{
+        fun()
+            .then(() => setIsReady( "ok" ) )
+            .catch(() => setIsReady( "fail" ) );
+    },[]);
+
+    return isReady;
+}
