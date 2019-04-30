@@ -145,10 +145,10 @@ export abstract class Link< T >{
 
     pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: Link<T[P]>}
     pick() {
-        let links = {};
+        let links = {}, keys = arguments.length ? arguments : Object.keys( this.value );
 
-        for( let i = 0; i < arguments.length; i++ ){
-            const key : string = arguments[ i ];
+        for( let i = 0; i < keys.length; i++ ){
+            const key : string = keys[ i ];
             links[ key ] = new LinkAt( this, key );
         }
 
