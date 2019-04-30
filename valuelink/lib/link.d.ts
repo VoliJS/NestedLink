@@ -13,6 +13,25 @@ export declare abstract class Link<T> {
     static state: <P, S, K extends keyof S>(component: React.Component<P, S>, key: K) => Link<S[K]>;
     static all: <P, S, K extends keyof S>(component: React.Component<P, S>, ..._keys: K[]) => LinksCache<S, K>;
     static value<T>(value: T, set: (x: T) => void): Link<T>;
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    static getValues<K extends keyof L, L extends LinksHash>(links: L): {
+        [name in K]: any;
+    };
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    static getErrors<K extends keyof L, L extends LinksHash>(links: L): {
+        [name in K]: L[name]["value"];
+    };
+    static hasErrors<L extends LinksHash>(links: L): boolean;
+    /**
+    * Assing links with values from the source object.
+    * Used for
+    *    setLinks({ name, email }, json);
+    */
+    static setValues(links: LinksHash, source: object): void;
     constructor(value: T);
     error: any;
     readonly validationError: any;
@@ -92,4 +111,7 @@ export declare class LinkAt<E, K> extends Link<E> {
     constructor(parent: Link<any>, key: K);
     remove(): void;
     set(x: E): void;
+}
+export interface LinksHash {
+    [name: string]: Link<any>;
 }

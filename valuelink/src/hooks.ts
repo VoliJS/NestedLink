@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { CustomLink, Link } from './link'
+import { useState, useEffect, useRef } from 'react'
+import { CustomLink, Link, LinksHash } from './link'
 
 /**
  * Create the linked local state.
@@ -19,3 +19,18 @@ export function useLinkedState<T>( link : Link<T> ) : Link<T> {
     return localLink;
 }
 
+export function useLocalStorage( key : string, state : LinksHash ){
+    // save state to use on unmount...
+    const stateRef = useRef<LinksHash>();
+    stateRef.current = state;
+
+    useEffect(()=>{
+        const savedData = JSON.parse( localStorage.getItem( 'todos' ) || '{}' );
+        Link.setValues( stateRef.current, savedData );
+
+        return () =>{
+            const dataToSave = Link.getValues( stateRef.current );
+            localStorage.setItem( key, JSON.stringify( dataToSave ) );
+        }
+    },[]);
+}

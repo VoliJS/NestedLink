@@ -7,6 +7,12 @@ import Link, { useLink, useLinkedState } from 'valuelink'
 import Modal from 'react-modal'
 import {Input, isRequired, isEmail } from 'valuelink/tags'
 
+const newUser = {
+    name : '',
+    email : '',
+    isActive : true
+}
+
 export const UsersList = () => {
     // Declare the local state.
     const users = useLink( [] ),
@@ -40,7 +46,7 @@ export const UsersList = () => {
             <Modal isOpen={ dialog === 'addUser' }>
                 <EditUser userLink={
                         /* The custom link to add created user to the state */
-                        Link.value( null, x => users.push( x ) )
+                        Link.value( newUser, x => users.push( x ) )
                     }
                     onClose={ closeDialog } />
             </Modal>

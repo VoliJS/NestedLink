@@ -1,16 +1,17 @@
 import 'css/app.css'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import { TodoList } from './todolist.jsx'
 import { Filter } from './filter.jsx'
 import { AddTodo } from './addtodo.jsx'
-import { useLink } from 'valuelink'
+import Link, { useLink, useLocalStorage } from 'valuelink'
 
 const App = () => {
     const todos = useLink( [] ),
-        filterDone = useLink( null );
+        filterDone = useLink( null ),
+        hasTodos = Boolean( todos.value.length );
 
-    const hasTodos = Boolean( todos.value.length );
+    useLocalStorage( 'todos', { todos, filterDone });
 
     return (
         <div>
@@ -48,5 +49,7 @@ function getActiveCount( todos ){
 }
 
 
-ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
+const appRoot = document.getElementById( 'app-mount-root' );
+ReactDOM.render( <App />, appRoot );
+window.addEventListener("unload", () => ReactDOM.unmountComponentAtNode( appRoot ) );
 

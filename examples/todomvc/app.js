@@ -25840,15 +25840,14 @@ var arrayHelpers = {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
   \***************************************************************/
-/*! exports provided: useLink, linksValues, linksErrors, setLinks */
+/*! exports provided: useLink, useLinkedState, useLocalStorage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "linksValues", function() { return linksValues; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "linksErrors", function() { return linksErrors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLinks", function() { return setLinks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return useLinkedState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return useLocalStorage; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "../../valuelink/lib/link.js");
@@ -25861,41 +25860,25 @@ function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
     return new _link__WEBPACK_IMPORTED_MODULE_1__["CustomLink"](value, set);
 }
-/**
- * Unwrap object with links, returning an object of a similar shape filled with link values.
- */
-function linksValues(links) {
-    return unwrap(links, 'error');
+function useLinkedState(link) {
+    var localLink = useLink(link.value);
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+        localLink.set(link.value);
+    }, [link.value]);
+    return localLink;
 }
-/**
- * Unwrap object with links, returning an object of a similar shape filled with link errors.
- */
-function linksErrors(links) {
-    return unwrap(links, 'value');
-}
-/**
- * Assing links with values from the source object.
- * Used for
- *    setLinks({ name, email }, json);
- */
-function setLinks(links, source) {
-    for (var _i = 0, _a = Object.keys(links); _i < _a.length; _i++) {
-        var key = _a[_i];
-        if (source.hasOwnProperty(key)) {
-            links[key].set(source[key]);
-        }
-    }
-}
-function unwrap(links, field) {
-    var values = {};
-    for (var _i = 0, _a = Object.keys(links); _i < _a.length; _i++) {
-        var key = _a[_i];
-        var value = links[key][field];
-        if (value !== void 0) {
-            values[key] = value;
-        }
-    }
-    return values;
+function useLocalStorage(key, state) {
+    // save state to use on unmount...
+    var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
+    stateRef.current = state;
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+        var savedData = JSON.parse(localStorage.getItem('todos') || '{}');
+        _link__WEBPACK_IMPORTED_MODULE_1__["Link"].setValues(stateRef.current, savedData);
+        return function () {
+            var dataToSave = _link__WEBPACK_IMPORTED_MODULE_1__["Link"].getValues(stateRef.current);
+            localStorage.setItem(key, JSON.stringify(dataToSave));
+        };
+    }, []);
 }
 
 
@@ -25905,7 +25888,7 @@ function unwrap(links, field) {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
   \***************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, linksValues, linksErrors, setLinks */
+/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25933,11 +25916,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../valuelink/lib/hooks.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "linksValues", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["linksValues"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLinkedState"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "linksErrors", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["linksErrors"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setLinks", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["setLinks"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLocalStorage"]; });
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_link__WEBPACK_IMPORTED_MODULE_0__["Link"]);
@@ -25982,6 +25963,40 @@ var Link = /** @class */ (function () {
     // Create custom link to arbitrary value
     Link.value = function (value, set) {
         return new CustomLink(value, set);
+    };
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    Link.getValues = function (links) {
+        return unwrap(links, 'value');
+    };
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    Link.getErrors = function (links) {
+        return unwrap(links, 'error');
+    };
+    Link.hasErrors = function (links) {
+        for (var key in links) {
+            if (links.hasOwnProperty(key) && links[key].error) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**
+    * Assing links with values from the source object.
+    * Used for
+    *    setLinks({ name, email }, json);
+    */
+    Link.setValues = function (links, source) {
+        if (source) {
+            for (var key in links) {
+                if (source.hasOwnProperty(key)) {
+                    source[key] === void 0 || links[key].set(source[key]);
+                }
+            }
+        }
     };
     Object.defineProperty(Link.prototype, "validationError", {
         // DEPRECATED: Old error holder for backward compatibility with Volicon code base
@@ -26073,9 +26088,9 @@ var Link = /** @class */ (function () {
         return Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(value).clone(value);
     };
     Link.prototype.pick = function () {
-        var links = {};
-        for (var i = 0; i < arguments.length; i++) {
-            var key = arguments[i];
+        var links = {}, keys = arguments.length ? arguments : Object.keys(this.value);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
             links[key] = new LinkAt(this, key);
         }
         return links;
@@ -26194,6 +26209,18 @@ var LinkAt = /** @class */ (function (_super) {
     return LinkAt;
 }(Link));
 
+function unwrap(links, field) {
+    var values = {};
+    for (var key in links) {
+        if (links.hasOwnProperty(key)) {
+            var value = links[key][field];
+            if (value !== void 0) {
+                values[key] = value;
+            }
+        }
+    }
+    return values;
+}
 
 
 /***/ }),
@@ -26359,8 +26386,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var App = function App() {
   var todos = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])([]),
-      filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])(null);
-  var hasTodos = Boolean(todos.value.length);
+      filterDone = Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLink"])(null),
+      hasTodos = Boolean(todos.value.length);
+  Object(valuelink__WEBPACK_IMPORTED_MODULE_6__["useLocalStorage"])('todos', {
+    todos: todos,
+    filterDone: filterDone
+  });
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("section", {
     className: "todoapp"
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_addtodo_jsx__WEBPACK_IMPORTED_MODULE_5__["AddTodo"], {
@@ -26400,7 +26431,11 @@ function getActiveCount(todos) {
   }, 0);
 }
 
-react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(App, null), document.getElementById('app-mount-root'));
+var appRoot = document.getElementById('app-mount-root');
+react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(App, null), appRoot);
+window.addEventListener("unload", function () {
+  return react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.unmountComponentAtNode(appRoot);
+});
 
 /***/ }),
 

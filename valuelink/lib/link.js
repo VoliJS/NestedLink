@@ -15,6 +15,40 @@ var Link = /** @class */ (function () {
     Link.value = function (value, set) {
         return new CustomLink(value, set);
     };
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    Link.getValues = function (links) {
+        return unwrap(links, 'value');
+    };
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    Link.getErrors = function (links) {
+        return unwrap(links, 'error');
+    };
+    Link.hasErrors = function (links) {
+        for (var key in links) {
+            if (links.hasOwnProperty(key) && links[key].error) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**
+    * Assing links with values from the source object.
+    * Used for
+    *    setLinks({ name, email }, json);
+    */
+    Link.setValues = function (links, source) {
+        if (source) {
+            for (var key in links) {
+                if (source.hasOwnProperty(key)) {
+                    source[key] === void 0 || links[key].set(source[key]);
+                }
+            }
+        }
+    };
     Object.defineProperty(Link.prototype, "validationError", {
         // DEPRECATED: Old error holder for backward compatibility with Volicon code base
         get: function () { return this.error; },
@@ -105,9 +139,9 @@ var Link = /** @class */ (function () {
         return helpers(value).clone(value);
     };
     Link.prototype.pick = function () {
-        var links = {};
-        for (var i = 0; i < arguments.length; i++) {
-            var key = arguments[i];
+        var links = {}, keys = arguments.length ? arguments : Object.keys(this.value);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
             links[key] = new LinkAt(this, key);
         }
         return links;
@@ -226,4 +260,16 @@ var LinkAt = /** @class */ (function (_super) {
     return LinkAt;
 }(Link));
 export { LinkAt };
+function unwrap(links, field) {
+    var values = {};
+    for (var key in links) {
+        if (links.hasOwnProperty(key)) {
+            var value = links[key][field];
+            if (value !== void 0) {
+                values[key] = value;
+            }
+        }
+    }
+    return values;
+}
 //# sourceMappingURL=link.js.map

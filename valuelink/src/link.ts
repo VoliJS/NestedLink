@@ -33,7 +33,7 @@ export abstract class Link< T >{
     */
     static getValues<K extends keyof L, L extends LinksHash>( links : L )
        : { [ name in K ] : any } {
-       return unwrap( links, 'error' ) as any;
+       return unwrap( links, 'value' ) as any;
     }
 
     /**
@@ -41,10 +41,10 @@ export abstract class Link< T >{
      */
     static getErrors<K extends keyof L, L extends LinksHash>( links : L )
         : { [ name in K ] : L[name]["value"] } {
-        return unwrap( links, 'value' ) as any;
+        return unwrap( links, 'error' ) as any;
     }
 
-    static hasErrors<K extends keyof L, L extends LinksHash>( links : L )
+    static hasErrors<L extends LinksHash>( links : L )
         : boolean {
         for( let key in links ){
             if( links.hasOwnProperty( key ) && links[ key ].error ){
@@ -64,7 +64,7 @@ export abstract class Link< T >{
         if( source ){
             for( let key in links ){
                 if( source.hasOwnProperty( key ) ){
-                    links[ key ].set( source[ key ] );
+                    source[ key ] === void 0 || links[ key ].set( source[ key ] );
                 }
             }    
         }
