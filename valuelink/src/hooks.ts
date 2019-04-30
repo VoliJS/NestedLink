@@ -41,7 +41,7 @@ export function useLocalStorage( key : string, state : LinksHash ){
  * const isReady = useIO( () => model.fetch() );
  * 
  */
-export function useIO( fun : () => Promise<any> ) : "ok" | "fail" {
+export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : "ok" | "fail" {
     // save state to use on unmount...
     const [ isReady, setIsReady ] = useState( null );
 
@@ -49,7 +49,11 @@ export function useIO( fun : () => Promise<any> ) : "ok" | "fail" {
         fun()
             .then(() => setIsReady( "ok" ) )
             .catch(() => setIsReady( "fail" ) );
-    },[]);
+        
+        return () =>{
+            setIsReady( null );
+        }
+    }, condition);
 
     return isReady;
 }
