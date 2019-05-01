@@ -13,10 +13,6 @@ export interface Validator< T >{
     error? : any
 }
 
-export type LinksCache< S, X extends keyof S> = {
-    [ K in X ] : Link< S[ K ] >
-}
-
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
     // Create custom link to arbitrary value
@@ -185,6 +181,19 @@ export abstract class Link< T >{
         }
 
         return links;
+    }
+
+    $all() : {[ P in keyof T ]: Link<T[P]>}{
+        let links : LinksHash = {},
+            { value } = this;
+
+        for( let key in value ){
+            if( value.hasOwnProperty( key ) ){
+                links[ '$' + key ] = new LinkAt( this, key );
+            }
+        }
+
+        return links as any;
     }
 
     /**

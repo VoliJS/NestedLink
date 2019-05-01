@@ -1,7 +1,13 @@
-import ReactDOM from 'react-dom'
-import { LinkedComponent, useLink } from 'valuelink'
-import { Input, NumberInput, Select, TextArea, Radio, Checkbox } from 'valuelink/tags'
+import './main.css';
 
+import ReactDOM from 'react-dom';
+import { LinkedComponent } from 'valuelink';
+import { CheckboxListGroup, CheckboxObjGroup, CustomCheckboxObjGroup } from './checkbox';
+import { DeepLinkedInputs, JointLinks } from './complex';
+import { HooksExample } from './hooks';
+import { Numeric, SimpleBinding } from './inputs';
+import { CustomRadioGroup, RadioGroup } from './radio';
+    
 class App extends LinkedComponent {
     // All this stuff we can link to
     state = {
@@ -31,23 +37,23 @@ class App extends LinkedComponent {
     }
 
     render(){
-        const links = this.linkAll();
+        const state$ = this.linkAll();
 
         return (
             <div>
-                <SimpleBinding strLink={ links.str } boolLink={ links.bool } />
-                <Numeric numLink={ links.num } />
-                <DeepLinkedInputs objLink={ links.deep } />
-                <JointLinks strLink={ links.str } str2Link={ links.str2 } />
+                <SimpleBinding $str={ state$.str } $bool={ state$.bool } />
+                <Numeric $num={ state$.num } />
+                <DeepLinkedInputs $obj={ state$.deep } />
+                <JointLinks $str={ state$.str } $str2={ state$.str2 } />
 
-                <CheckboxObjGroup flagsLink={ links.objFlags } />
-                <CustomCheckboxObjGroup flagsLink={ links.objFlags } />
+                <CheckboxObjGroup $flags={ state$.objFlags } />
+                <CustomCheckboxObjGroup $flags={ state$.objFlags } />
 
-                <CheckboxListGroup flagsLink={ links.arrFlags } />
+                <CheckboxListGroup $flags={ state$.arrFlags } />
 
-                <RadioGroup flagLink={ links.radioFlag } />
-                <SelectOption flagLink={ links.radioFlag } />
-                <CustomRadioGroup flagLink={ links.radioFlag } />
+                <RadioGroup $flag={ state$.radioFlag } />
+                <SelectOption $flag={ state$.radioFlag } />
+                <CustomRadioGroup $flag={ state$.radioFlag } />
                 <HooksExample />
             </div>
         );

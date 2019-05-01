@@ -1,5 +1,9 @@
 import * as React from 'react'
-import { Link, LinksCache } from './link'
+import { Link } from './link'
+
+export type LinksCache< S, X extends keyof S> = {
+    [ K in X ] : Link< S[ K ] >
+}
 
 export interface DataBindingSource< S >{
     linkAt< K extends keyof S>( key : K ) : Link< S[ K ] >
@@ -9,7 +13,12 @@ export interface DataBindingSource< S >{
 export abstract class LinkedComponent< P, S > extends React.Component< P, S > implements DataBindingSource< S > {
     links : LinksCache< S, keyof S > = null;
 
-    linkAt< K extends keyof S>( key : K ) : Link< S[ K ] >{
+    // @deprecated use `this.$at( key )`
+    linkAt<K extends keyof S>( key : K ) : Link<S[K]>{
+        return this.$at( key );
+    }
+
+    $at<K extends keyof S>( key : K ) : Link<S[K]>{
         const value = this.state[ key ],
         cache = this.links || ( this.links = {} as any ),
         cached = cache[ key ];

@@ -138,6 +138,15 @@ var Link = /** @class */ (function () {
         }
         return links;
     };
+    Link.prototype.$all = function () {
+        var links = {}, value = this.value;
+        for (var key in value) {
+            if (value.hasOwnProperty(key)) {
+                links['$' + key] = new LinkAt(this, key);
+            }
+        }
+        return links;
+    };
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */

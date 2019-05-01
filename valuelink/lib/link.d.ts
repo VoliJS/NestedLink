@@ -4,9 +4,6 @@ export interface Validator<T> {
     (value: T): boolean;
     error?: any;
 }
-export declare type LinksCache<S, X extends keyof S> = {
-    [K in X]: Link<S[K]>;
-};
 export declare abstract class Link<T> {
     value: T;
     static value<T>(value: T, set: (x: T) => void): Link<T>;
@@ -65,6 +62,9 @@ export declare abstract class Link<T> {
     clone(): T;
     pick<K extends keyof T>(...keys: K[]): {
         [P in K]: Link<T[P]>;
+    };
+    $all(): {
+        [P in keyof T]: Link<T[P]>;
     };
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.

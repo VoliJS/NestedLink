@@ -16,7 +16,7 @@ export class UsersList extends LinkedComponent {
     };
 
     render(){
-        const usersLink = this.linkAt( 'users' ),
+        const $users = this.$at( 'users' ),
               { dialog, editing } = this.state;
 
         return (
@@ -27,20 +27,20 @@ export class UsersList extends LinkedComponent {
 
                 <Header/>
 
-                { usersLink.map( ( userLink, i ) => (
+                { $users.map( ( $user, i ) => (
                     <UserRow key={ i }
-                             userLink={ userLink }
+                             $user={ $user }
                              onEdit={ () => this.openDialog( 'editUser', i ) }
                     />
                 ) )}
 
                 <Modal isOpen={ dialog === 'addUser' }>
-                    <EditUser userLink={ Link.value( {}, x => usersLink.push( x ) ) }
+                    <EditUser $user={ Link.value( {}, x => $users.push( x ) ) }
                               onClose={ this.closeDialog }/>
                 </Modal>
 
                 <Modal isOpen={ dialog === 'editUser' }>
-                    <EditUser userLink={ usersLink.at( editing ) }
+                    <EditUser $user={ $users.at( editing ) }
                               onClose={ this.closeDialog }/>
                 </Modal>
             </div>
@@ -65,9 +65,9 @@ const Header = () =>(
     </div>
 );
 
-const UserRow = ( { userLink, onEdit } ) =>{
-    const isActiveLink = userLink.at( 'isActive' ),
-          user         = userLink.value;
+const UserRow = ( { $user, onEdit } ) =>{
+    const isActiveLink = $user.at( 'isActive' ),
+          user         = $user.value;
 
     return (
         <div className="users-row" onDoubleClick={ onEdit }>
@@ -77,7 +77,7 @@ const UserRow = ( { userLink, onEdit } ) =>{
                 { user.isActive ? 'Yes' : 'No' }</div>
             <div>
                 <button onClick={ onEdit }>Edit</button>
-                <button onClick={ () => userLink.remove() }>X</button>
+                <button onClick={ () => $user.remove() }>X</button>
             </div>
         </div>
     )
@@ -85,7 +85,7 @@ const UserRow = ( { userLink, onEdit } ) =>{
 
 class EditUser extends LinkedComponent{
     static propTypes = {
-        userLink : PropTypes.instanceOf( Link ).isRequired,
+        $user : PropTypes.instanceOf( Link ).isRequired,
         onClose  : PropTypes.func.isRequired
     };
 
@@ -96,15 +96,15 @@ class EditUser extends LinkedComponent{
     };
 
     componentWillMount(){
-        this.setState( this.props.userLink.value );
+        this.setState( this.props.$user.value );
     }
 
     onSubmit = e => {
         e.preventDefault();
 
-        const { userLink, onClose } = this.props;
+        const { $user, onClose } = this.props;
 
-        userLink.set( this.state );
+        $user.set( this.state );
         onClose();
     }
 
@@ -113,31 +113,31 @@ class EditUser extends LinkedComponent{
     }
 
     render(){
-        const linked = this.linkAll();
+        const user$ = this.linkAll();
 
-        linked.name
+        user$.name
               .check( isRequired )
               .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
 
-        linked.email
+        user$.email
               .check( isRequired )
               .check( isEmail );
 
         return (
             <form onSubmit={ this.onSubmit }>
                 <label>
-                    Name: <ValidatedInput type="text" valueLink={ linked.name }/>
+                    Name: <ValidatedInput type="text" $value={ user$.name }/>
                 </label>
 
                 <label>
-                    Email: <ValidatedInput type="text" valueLink={ linked.email }/>
+                    Email: <ValidatedInput type="text" $value={ user$.email }/>
                 </label>
 
                 <label>
-                    Is active: <Input type="checkbox" checkedLink={ linked.isActive }/>
+                    Is active: <Input type="checkbox" $checked={ user$.isActive }/>
                 </label>
 
-                <button type="submit" disabled={ linked.name.error || linked.email.error }>
+                <button type="submit" disabled={ Link.hasErrors( user$ ) }>
                     Save
                 </button>
                 <button type="button" onClick={ this.onCancel }>
@@ -152,7 +152,7 @@ const ValidatedInput = ( props ) => (
     <div>
         <Input { ...props } />
         <div className="validation-error">
-            { props.valueLink.error || '' }
+            { props.$value.error || '' }
         </div>
     </div>
 );

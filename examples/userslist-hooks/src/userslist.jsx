@@ -91,14 +91,14 @@ const UserRow = ( { $user, onEdit } ) =>{
 
 const EditUser = ({ $user, onClose }) => {
     // Initialize local state
-    const user$ = useLinkedState( $user ).pick();
+    const user = useLinkedState( $user ).$all();
 
     // Form submit handler
     function onSubmit( e ){
         e.preventDefault();
         
         // Assign local state back to the props
-        $user.set( Link.getValues( user$ ) );
+        $user.set( Link.getValues( user ) );
 
         // Close the dialog
         onClose();
@@ -106,33 +106,33 @@ const EditUser = ({ $user, onClose }) => {
 
     function onClear(){
         // Assign local state back to the props
-        Link.setValues( user$, $user.value );
+        Link.setValues( user, $user.value );
     }
 
     // Apply validation rules
-    user$.name
+    user.$name
         .check( isRequired )
         .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
 
-    user$.email
+    user.$email
         .check( isRequired )
         .check( isEmail );
 
     return (
         <form onSubmit={ onSubmit }>
             <label>
-                Name: <ValidatedInput type="text" valueLink={ user$.name }/>
+                Name: <ValidatedInput type="text" $value={ user.$name }/>
             </label>
 
             <label>
-                Email: <ValidatedInput type="text" valueLink={ user$.email }/>
+                Email: <ValidatedInput type="text" $value={ user.$email }/>
             </label>
 
             <label>
-                Is active: <Input type="checkbox" checkedLink={ user$.isActive }/>
+                Is active: <Input type="checkbox" $value={ user.$isActive }/>
             </label>
 
-            <button type="submit" disabled={ Link.hasErrors( user$ ) }>
+            <button type="submit" disabled={ Link.hasErrors( user ) }>
                 Save
             </button>
             <button type="button" onClick={ onClose }>
@@ -146,7 +146,7 @@ const ValidatedInput = ( props ) => (
     <div>
         <Input { ...props } />
         <div className="validation-error">
-            { props.valueLink.error || '' }
+            { props.$value.error || '' }
         </div>
     </div>
 );

@@ -9,7 +9,7 @@ Lightweight (6.5K minified) purely functional two-way data binding for the React
 import { useLink } from 'valuelink'
 import * as React from 'react'
 
-export const MyCoolComponent = ( props ) => {
+export const MyCoolComponent = () => {
     const $name = useLink( '' );
 
     return (

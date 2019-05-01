@@ -3,7 +3,7 @@
 Link can be bound to the standard form control consuming value and onChange props like this:
 
 ```javascript
-<input {...link.props} />
+<input {...$value.props} />
 ```
 
 In order to take the full advantage of the value link pattern you're encouraged to create
@@ -22,8 +22,8 @@ as starting boilerplate.
 These wrappers will add `invalid` class to enclosed HTML element, if an error is present in the bound link.
 
 ```jsx
-<Input type="text" valueLink={ link } />
-<TextArea valueLink={ link } />
+<Input type="text" $value={ $link } />
+<TextArea $value={ $link } />
 ```
 
 ##### `<NumberInput/>`
@@ -37,9 +37,9 @@ There's also cross-browser implementation of *numeric input* tag. It has followi
 `<NumberInput>` validates its value, and adds `invalid` class to enclosed input element if it's not a number.
 
 ```jsx
-<NumberInput valueLink={ link } />
-<NumberInput valueLink={ link } integer={ true }/>
-<NumberInput valueLink={ link } positive={ true }/>
+<NumberInput $value={ $link } />
+<NumberInput $value={ $link } integer={ true }/>
+<NumberInput $value={ $link } positive={ true }/>
 ```
 
 ### Checkboxes
@@ -49,8 +49,8 @@ There's also cross-browser implementation of *numeric input* tag. It has followi
 Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
 
 ```jsx
-<Input type="text" checkedLink={ booleanLink } />
-<Input type="text" checkedLink={ arrayLink.contains( 'option' ) } />
+<Input type="text" $checked={ booleanLink } />
+<Input type="text" $checked={ $array.contains( 'option' ) } />
 ```
 
 ##### `<Checkbox/>`
@@ -63,8 +63,8 @@ By default, it has `checkbox` CSS class, which can be overridden by passing `cla
 It passes through anything else, including `children`.
  
 ```jsx
-<Checkbox checkedLink={ booleanLink } />
-<Checkbox checkedLink={ arrayLink.contains( 'option' ) } />
+<Checkbox $checked={ $boolean } />
+<Checkbox $checked={ $array.contains( 'option' ) } />
 ```
 
 ### Radio Groups and Select list
@@ -74,7 +74,7 @@ It passes through anything else, including `children`.
 Wrapper for standard `<select/>`. Regular `<option/>` tags must be used. All props are passed through.
 
 ```jsx
-<Select valueLink={ linkToSelectedValue }>
+<Select $value={ linkToSelectedValue }>
     <option value="a">A</option>
     <option value="b">B</option>
 </Select>
@@ -82,18 +82,18 @@ Wrapper for standard `<select/>`. Regular `<option/>` tags must be used. All pro
 
 ##### `<Input type="radio"/>`
       
-Wrapper for the standard `<input>`. Directly binds boolean value with `checkedLink` property.
+Wrapper for the standard `<input>`. Directly binds boolean value with `$checked` property.
 
-Can be directly bound to the state member using `valueLink` property.
+Can be directly bound to the state member using `$value` property.
 
 ```jsx
 <label>
     A:
-    <Input type="radio" valueLink={ flagLink } value="a" />
+    <Input type="radio" $value={ $flag } value="a" />
 </label>
 <label>
     B:
-    <Input type="radio" valueLink={ flagLink } value="b" />
+    <Input type="radio" $value={ $flag } value="b" />
 </label>
 ```
 
@@ -105,15 +105,15 @@ it can be easily styled.
 By default, it has `radio` CSS class, which can be overridden by passing `className` prop.
 It passes through anything else, including `children`.
 
-It *must* be used in conjunction with `link.equals( 'value' )` method.
+It *must* be used in conjunction with `$link.equals( 'value' )` method.
 
 ```jsx
 <label>
     A:
-    <Radio checkedLink={ flagLink.equals( 'a' ) } />
+    <Radio $checked={ $flag.equals( 'a' ) } />
 </label>
 <label>
     B:
-    <Radio checkedLink={ flagLink.equals( 'b' ) } />
+    <Radio $checked={ $flag.equals( 'b' ) } />
 </label>
 ```

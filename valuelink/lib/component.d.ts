@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { Link, LinksCache } from './link';
+import { Link } from './link';
+export declare type LinksCache<S, X extends keyof S> = {
+    [K in X]: Link<S[K]>;
+};
 export interface DataBindingSource<S> {
     linkAt<K extends keyof S>(key: K): Link<S[K]>;
     linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;

@@ -4,7 +4,7 @@
 
 Links can be created and used inside of the React `component.render()` method.
 
-### Linking to state with React Hook
+### State links with React Hook
 
 ##### ![static] useLink( initValue ) : Link
 
@@ -15,70 +15,70 @@ import { useLink } from 'valuelink'
 import * as React from 'react'
 
 export const MyCoolComponent = ( props ) => {
-    const name = useLink( '' );
+    const $name = useLink( '' );
 
     return (
-        <input {...name.props} />
+        <input {...$name.props} />
     )
 }
 ```
 
-##### ![static] linksValues({ [ name ] : Link }) : { [ name ] : value }
+##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
 
-Extracts link values.
+Extracts an object with link values. Leading $ is removed from property names in a result.
 
 ```javascript
 export const MyCoolComponent = ( props ) => {
-    const name = useLink( 'a' ),
-          email = useLink( 'b' ),
+    const $name = useLink( 'a' ),
+          $email = useLink( 'b' ),
 
     ...
-    const values = linksValues({ name, email });
+    const values = Link.getValues({ $name, $email });
     console.log( values ); // { name : 'a', email : 'b' }
 }
 ```
 
-##### ![static] linksErrors({ [ name ] : Link }) : { [ name ] : value }
+##### ![static] Link.getErrors({ [ name ] : Link }) : { [ name ] : value }
 
-Extracts link validation errors. Returns an empty object if there are no errors.
+Extracts link validation errors. Returns an empty object if there are no errors. Leading $ is removed from property names in a result.
 
 ```javascript
 export const MyCoolComponent = ( props ) => {
-    const name = useLink( 'a' ),
-          email = useLink( 'b' ),
+    const $name = useLink( 'a' ),
+          $email = useLink( 'b' ),
 
     ...
-    const values = linksErrors({ name, email });
+    const values = Link.getErrors({ $name, $email });
     console.log( values ); // { name : 'a', email : 'b' }
 }
 ```
 
-##### ![static] setLinks({ [ name ] : Link }) : void
+##### ![static] Link.setValues({ [ name ] : Link }) : void
 
-Bulk set links from the object with values.
+Bulk set links from the object with values. Values object must not contain the leading $ in names.
 
 ```javascript
 export const MyCoolComponent = ( props ) => {
-    const name = useLink( 'a' ),
-          email = useLink( 'b' ),
+    const $name = useLink( 'a' ),
+          $email = useLink( 'b' ),
 
     ...
     // Somewhere on I/O completion:
-    setLinks({ name, email }, json);
+    Link.setValues({ $name, $email }, json);
 }
 ```
 
 ### Linking to the state attributes
 
-##### ![method] LinkedComponent.linkAt( stateKey ) : Link
+##### ![method] LinkedComponent.$at( stateKey ) : Link
 
 Create link to an attribute of the component's state. Component must extend `LinkedComponent` class.
 
 Can be overriden to create custom data binding for something different than the React state.
 
 ```javascript
-const nameLink = this.linkAt( 'name' ),
-      emailLink = this.linkAt( 'email' );
+const $name = this.$at( 'name' ),
+      $email = this.$at( 'email' );
 ```
 
 ##### ![method] LinkedComponent.linkAll( stateKey1, stateKey2, ... ) : { [ key ] : Link }
@@ -89,29 +89,11 @@ every member of the state. Component must extend `LinkedComponent` class.
 Can be overriden to create custom data binding for something different than the React state.
 
 ```javascript
-const links = this.linkAll( 'name', 'email' ),
-      { name, email } = links;
+const state$ = this.linkAll( 'name', 'email' ),
+      { name, email } = state$;
 ```
 
-##### ![static] Link.state( this, stateKey ) : Link
-
-Same as `component.linkAt()`, but works with any component class.
-
-```javascript
-const nameLink = Link.state( this, 'name' ),
-      emailLink = Link.state( this, 'email' );
-```
-
-##### ![static] Link.all( this, stateKey1, stateKey2, ... ) : { [ key ] : Link }
-
-Same as `component.linkAll()`, but works with any component class.
-
-```javascript
-const links = Link.all( this, 'name', 'email' ),
-      { name, email } = links;
-```
-
-##### ![var] this.links : { [ key ] : Link } 
+##### ![var] this.links : { [ key ] : Link }
 
 All links created during `render()` are _cached_ inside the `component.link` object.
 Direct access to the cache may be used in event handlers to reference these links.
@@ -121,7 +103,7 @@ Direct access to the cache may be used in event handlers to reference these link
 
 ### Links to object and arrays
 
-##### ![method] linkToObject.at( key ) : Link
+##### ![method] $object.at( key ) : Link
 
 Create link to the member of array or object.
 
@@ -131,29 +113,29 @@ updated, it will lead to proper purely functional update (with shallow copying) 
 parent element.
 
 ```javascript
-const deepLink = this.linkAt( 'array' ).at( 0 ).at( 'name' );
-deepLink.set( 'Joe' ); // Will update component state.array
+const $name = this.$at( 'array' ).at( 0 ).at( 'name' );
+$name.set( 'Joe' ); // Will update component state.array
 ```
 
-##### ![method] linkToObject.pick( key1, key2, ... ) : { [ key ] : Link }
+##### ![method] $object.pick( key1, key2, ... ) : { [ key ] : Link }
  
-Create links to the object's members, and wrap them in an object.
+Create links to the object's members, and wrap them in an object. When no arguments are provided, it link all object's properties.
 
 ```javascript
-const links = userLink.pick( 'name', 'email' ),
-      { name, email } = links;
+const user$ = $user.pick( 'name', 'email' ),
+      { name, email } = user$;
 ```
 
-##### ![method] linkToObject.map( ( linkToItem, itemKey ) => any | void ) : any[]
+##### ![method] $objOrArray.map( ( $item, itemKey ) => any | void ) : any[]
 
 Map and filter through array or object.
 
 ```javascript
-var list = stringArrayLink.map( ( itemLink, index ) => {
-    if( itemLink.value ){ // Skip empty elements
+var list = $stringArray.map( ( $item, index ) => {
+    if( $item.value ){ // Skip empty elements
         return (
             <div key={ index }>
-                <Input valueLink={ itemLink } />
+                <Input $value={ $item } />
             </div>
         );
     }
@@ -162,12 +144,12 @@ var list = stringArrayLink.map( ( itemLink, index ) => {
 
 ## Bind to control
 
-#### ![var] link.props : { value, onChange }
+#### ![var] $something.props : { value, onChange }
 
 Bind link to the standard form control consuming value and onChange props.
 
 ```javascript
-<input {...link.props} />
+<input {...$something.props} />
 ```
 
 #### Custom data-bound controls
@@ -176,20 +158,20 @@ You're encouraged to create your own semantic form controls to take the full adv
  of the value links features. An example of the control:
 
 ```javascript
-const Input = ({ valueLink, ...props }) => (
-    <div className={`form-control ${ valueLink.error ? 'error' : '' }`}>
+const Input = ({ $value, ...props }) => (
+    <div className={`form-control ${ $value.error ? 'error' : '' }`}>
         <input {...props}
-            value={ valueLink.value }
-            onChange={ e => valueLink.set( e.target.value ) }
+            value={ $value.value }
+            onChange={ e => $value.set( e.target.value ) }
         />
-        <div className="validation-error">{ valueLink.error || '' }</div>
+        <div className="validation-error">{ $value.error || '' }</div>
     </div>
 );
 ```
 
 ## Offhand boolean links
 
-##### ![method] linkToArray.contains( element ) : Link
+##### ![method] $array.contains( element ) : Link
 
 Creates the link to the presence of value in array.
 
@@ -347,24 +329,24 @@ const setValue = ( x, e ) => e.target.value;
 Plain objects and arrays are shallow copied by `link.update()` and within `link.action()` handlers,
 thus it's safe just to update the value in place.
 
-##### ![method] linkToObject.update( clonedObject => Object ) : void
+##### ![method] $object.update( clonedObject => Object ) : void
  
 Update enclosed object or array.
 
-##### ![method] linkToObject.action( ( clonedObject, event ) => Object ) : ( event => void )
+##### ![method] $object.action( ( clonedObject, event ) => Object ) : ( event => void )
  
-Creates action to update enclosed object or array.
+Creates action to update enclosed object or array. Object is shallow copied before the update and it's safe to 
 
 ```javascript
-<button onClick={ () => objLink.update( obj => {
+<button onClick={ () => $object.update( obj => {
                                 obj.a = 1;
                                 return obj;
                             }) } />
 ```
 
-##### ![method] linkToObject.removeAt( key ) : void
+##### ![method] $object.removeAt( key ) : void
 
-##### ![method] linkToObject.at( key ).remove() : void
+##### ![method] $object.at( key ).remove() : void
 
 Remove element with a given key from the enclosed object ar array.
 
@@ -372,11 +354,11 @@ Remove element with a given key from the enclosed object ar array.
 
 Link to arrays proxies some important Array methods. 
 
-##### ![method] linkToArray.splice( ... ) : void
+##### ![method] $array.splice( ... ) : void
 
-##### ![method] linkToArray.push( ... ) : void
+##### ![method] $array.push( ... ) : void
 
-##### ![method] linkToArray.unshift( ... ) : void
+##### ![method] $array.unshift( ... ) : void
 
 Works in the same way and accepts the same parameters as corresponding Array method,
 but returns `undefined` and leads to the proper purely functional update of the parent object chain.
@@ -386,7 +368,7 @@ but returns `undefined` and leads to the proper purely functional update of the 
 > It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
 > on validation with value links.
 
-##### ![method] link.check( value => boolean, error = 'Invalid value' ) : Link
+##### ![method] $link.check( value => boolean, error = 'Invalid value' ) : Link
  
 Evaluate given condition for the current link value, and assign
 given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
@@ -401,7 +383,7 @@ isRequired.error = 'Required';
  
 Checks can be chained. In this case, the first check which fails will leave its error in the link.
 
-##### ![var] link.error : any | void
+##### ![var] $link.error : any | void
 
 This link field may be analyzed by custom `<Input />` control to indicate an error (see `tags.jsx` controls and supplied examples).
 
@@ -409,23 +391,23 @@ This mechanics can be used to add ad-hoc validation in `render`.
 
 ```javascript
 // Simple check
-const numLink = List.state( this, 'num' )
+const $num = this.$at( 'num' )
                 .check( x => x >= 0 && x <=5 );
 
-console.log( numLink.error );
+console.log( $num.error );
 
 // Check with error message
-const numLink = List.state( this, 'num' )
+const $num = this.$at( 'num' )
                 .check( x => x >= 0 && x <=5, 'Number must be between 0 and 5' );
 
-console.log( numLink.error );
+console.log( $num.error );
 
 // Chained checks
-const numLink = List.state( this, 'num' )
+const $num = this.$at( 'num' )
                 .check( x => x >= 0, 'Negative numbers are not allowed' )
                 .check( x => x <= 5, 'Number should be not greater than 5' );
 
-console.log( numLink.error );
+console.log( $num.error );
 ```
 
 [method]: /docs/images/method.png
