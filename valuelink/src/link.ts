@@ -171,6 +171,9 @@ export abstract class Link< T >{
         return helpers( value ).clone( value );
     }
 
+    /**
+     * Convert link to object to the object of links. Optionally filter by 
+     */
     pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: Link<T[P]>}
     pick() {
         let links = {}, keys = arguments.length ? arguments : Object.keys( this.value );
@@ -183,7 +186,10 @@ export abstract class Link< T >{
         return links;
     }
 
-    $all() : {[ P in keyof T ]: Link<T[P]>}{
+    /**
+     * Convert link to object to the object of links with $-keys.
+     */
+    $links() : {[ P in keyof T ]: Link<T[P]>}{
         let links : LinksHash = {},
             { value } = this;
 

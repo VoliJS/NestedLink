@@ -37,7 +37,7 @@ class App extends LinkedComponent {
     }
 
     render(){
-        const state$ = this.linkAll();
+        const state$ = this.state$();
 
         return (
             <div>

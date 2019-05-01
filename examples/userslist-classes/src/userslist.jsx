@@ -113,7 +113,7 @@ class EditUser extends LinkedComponent{
     }
 
     render(){
-        const user$ = this.linkAll();
+        const user$ = this.state$();
 
         user$.name
               .check( isRequired )

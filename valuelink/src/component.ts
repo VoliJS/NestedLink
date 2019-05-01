@@ -8,6 +8,8 @@ export type LinksCache< S, X extends keyof S> = {
 export interface DataBindingSource< S >{
     linkAt< K extends keyof S>( key : K ) : Link< S[ K ] >
     linkAll<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >
+    $at< K extends keyof S>( key : K ) : Link< S[ K ] >
+    state$<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >
 }
 
 export abstract class LinkedComponent< P, S > extends React.Component< P, S > implements DataBindingSource< S > {
@@ -28,8 +30,14 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
                     cache[ key ] = new StateLink( this, key, value );
     }
 
-    linkAll<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >;
-    linkAll( ...args : ( keyof S )[] ){
+    // @deprecated use `this.state$()`
+    linkAll<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >
+    linkAll(){
+        return this.state$.apply( this, arguments );
+    }
+
+    state$<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >;
+    state$( ...args : ( keyof S )[] ){
         const { state } = this,
             cache = this.links || ( this.links = <any>{} ),
             keys = args.length ? args : <( keyof S )[]>Object.keys( state );
