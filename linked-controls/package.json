@@ -6,8 +6,8 @@
   "module": "./js/indes.js",
   "types": "./js/index.d.ts",
   "files": [
-    "min",
-    "lib",
+    "js",
+    "jsx",
     "src"
   ],
   "repository": {
