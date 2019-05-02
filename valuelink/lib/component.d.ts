@@ -14,6 +14,13 @@ export declare abstract class LinkedComponent<P, S> extends React.Component<P, S
     linkAt<K extends keyof S>(key: K): Link<S[K]>;
     $at<K extends keyof S>(key: K): Link<S[K]>;
     linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
+    /**
+     * Get the object with links to the elements of the component's state.
+     * const state$ = this.state$();
+     *
+     * Get the links to the given list of state elements.
+     * const state$ = this.state$( 'a', 'b', 'c' );
+     */
     state$<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
 }
 export declare class StateLink<P, S, K extends keyof S> extends Link<S[K]> {

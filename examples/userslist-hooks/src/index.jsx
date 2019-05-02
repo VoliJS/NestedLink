@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import Link, { useLink, useLinkedState, useLocalStorage } from 'valuelink';
-import { Input, isEmail, isRequired } from 'valuelink/tags';
+import { Input, isEmail, isRequired } from 'linked-controls';
 import './main.css';
-
-
 
 const newUser = {
     name : '',

@@ -1,29 +1,20 @@
-var webpack = require( 'webpack' ),
-    path = require( 'path' );
-
-    console.log( __dirname );
+var webpack = require( 'webpack' );
 
 module.exports = {
-    entry  : {
-        main : './example/src/databinding.jsx',
-        users : './example/src/userslist.jsx',
-        asaf : './example/src/asaf.jsx',
-    },
+    entry  : './src/index.jsx',
     output : {
-        path       : path.resolve( __dirname, 'dist' ),
-        publicPath : '/dist',
-        filename   : '[name].js'
+        // export itself to a global var
+        path       : __dirname + '/bundles',
+        publicPath : '/',
+        filename   : 'app.js'
     },
 
     devtool : 'source-map',
 
     resolve : {
-        modules : [ '.', '../node_modules' ],
-        alias : {
-            valuelink : path.resolve( __dirname, '../lib' )
-        }
+        modules : [ 'node_modules', 'js', '.' ]
     },
-
+    
     module : {
         rules : [
             {
@@ -33,7 +24,10 @@ module.exports = {
                         loader: "style-loader"
                     },
                     {
-                        loader: "css-loader"
+                        loader: "css-loader",
+                        options: {
+                            modules: true
+                        }
                     }
                 ]
             },
@@ -41,6 +35,11 @@ module.exports = {
                 test    : /\.jsx?$/,
                 exclude : /(node_modules|lib)/,
                 loader  : 'babel-loader'
+            },
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre"
             }
         ]
     }

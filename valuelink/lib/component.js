@@ -12,6 +12,7 @@ var LinkedComponent = /** @class */ (function (_super) {
     LinkedComponent.prototype.linkAt = function (key) {
         return this.$at(key);
     };
+    // Get the link to the state member with the given key.
     LinkedComponent.prototype.$at = function (key) {
         var value = this.state[key], cache = this.links || (this.links = {}), cached = cache[key];
         return cached && cached.value === value ?

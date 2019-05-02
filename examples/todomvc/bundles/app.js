@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../node_modules/classnames/index.js":
-/*!*************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/classnames/index.js ***!
-  \*************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/classnames/index.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -149,9 +149,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ }),
 
 /***/ "../../node_modules/css-loader/index.js?!./css/app.css":
-/*!****************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
-  \****************************************************************************************/
+/*!*****************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -160,19 +160,19 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "._1ab5eBImiH2kKUQGzE_hKY {\r\n\tbackground: black;\r\n}\r\n", ""]);
+exports.push([module.i, "._2poqbOCYuDDRYOmLq9Dyn9 {\n\tbackground: black;\n}\n", ""]);
 
 // exports
 exports.locals = {
-	"something": "_1ab5eBImiH2kKUQGzE_hKY"
+	"something": "_2poqbOCYuDDRYOmLq9Dyn9"
 };
 
 /***/ }),
 
 /***/ "../../node_modules/css-loader/lib/css-base.js":
-/*!********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
-  \********************************************************************************/
+/*!*********************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -257,9 +257,9 @@ function toComment(sourceMap) {
 /***/ }),
 
 /***/ "../../node_modules/object-assign/index.js":
-/*!****************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/object-assign/index.js ***!
-  \****************************************************************************/
+/*!*****************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/object-assign/index.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -359,9 +359,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /***/ }),
 
 /***/ "../../node_modules/prop-types/checkPropTypes.js":
-/*!**********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
-  \**********************************************************************************/
+/*!***********************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -473,9 +473,9 @@ module.exports = checkPropTypes;
 /***/ }),
 
 /***/ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -497,9 +497,9 @@ module.exports = ReactPropTypesSecret;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/cjs/react-dom.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21787,9 +21787,9 @@ module.exports = reactDom;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/index.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react-dom/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21832,9 +21832,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/react/cjs/react.development.js":
-/*!************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
-  \************************************************************************************/
+/*!*************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23745,9 +23745,9 @@ module.exports = react;
 /***/ }),
 
 /***/ "../../node_modules/react/index.js":
-/*!********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/index.js ***!
-  \********************************************************************/
+/*!*********************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/react/index.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23762,9 +23762,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js":
-/*!****************************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \****************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24197,9 +24197,9 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
-  \********************************************************************************************/
+/*!*********************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24909,9 +24909,9 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/index.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24926,9 +24926,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/tracing.js":
-/*!**************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
-  \**************************************************************************/
+/*!***************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24943,9 +24943,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/addStyles.js":
-/*!***********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
-  \***********************************************************************************/
+/*!************************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25330,9 +25330,9 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/urls.js":
-/*!******************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
-  \******************************************************************************/
+/*!*******************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -25430,9 +25430,9 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ "../../node_modules/tslib/tslib.es6.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
-  \************************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
+  \*************************************************************************/
 /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25679,9 +25679,9 @@ module.exports = g;
 /***/ }),
 
 /***/ "../../valuelink/lib/component.js":
-/*!*******************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/component.js ***!
-  \*******************************************************************/
+/*!********************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/component.js ***!
+  \********************************************************************/
 /*! exports provided: LinkedComponent, StateLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25707,6 +25707,7 @@ var LinkedComponent = /** @class */ (function (_super) {
     LinkedComponent.prototype.linkAt = function (key) {
         return this.$at(key);
     };
+    // Get the link to the state member with the given key.
     LinkedComponent.prototype.$at = function (key) {
         var value = this.state[key], cache = this.links || (this.links = {}), cached = cache[key];
         return cached && cached.value === value ?
@@ -25755,9 +25756,9 @@ var StateLink = /** @class */ (function (_super) {
 /***/ }),
 
 /***/ "../../valuelink/lib/helpers.js":
-/*!*****************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/helpers.js ***!
-  \*****************************************************************/
+/*!******************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/helpers.js ***!
+  \******************************************************************/
 /*! exports provided: helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25832,9 +25833,9 @@ var arrayHelpers = {
 /***/ }),
 
 /***/ "../../valuelink/lib/hooks.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
-  \***************************************************************/
+/*!****************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/hooks.js ***!
+  \****************************************************************/
 /*! exports provided: useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25916,9 +25917,9 @@ function useIO(fun, condition) {
 /***/ }),
 
 /***/ "../../valuelink/lib/index.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
-  \***************************************************************/
+/*!****************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/index.js ***!
+  \****************************************************************/
 /*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25963,9 +25964,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "../../valuelink/lib/link.js":
-/*!**************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/link.js ***!
-  \**************************************************************/
+/*!***************************************************************!*\
+  !*** /Users/vbalin16/GitHub/NestedLink/valuelink/lib/link.js ***!
+  \***************************************************************/
 /*! exports provided: Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
