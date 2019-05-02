@@ -35,6 +35,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var standard_1 = require("./standard");
+var validators_1 = require("./validators");
 var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
@@ -72,7 +73,7 @@ var NumberInput = /** @class */ (function (_super) {
     NumberInput.prototype.setValue = function (x) {
         // We're not using native state in order to avoid race condition.
         this.value = String(x);
-        this.error = this.value === '' || isNaN(Number(x));
+        this.error = this.value === '' || !validators_1.isNumber(x);
         this.forceUpdate();
     };
     NumberInput.prototype.setAndConvert = function (x) {

@@ -23,7 +23,7 @@ error : any;
 setValue( x ){
     // We're not using native state in order to avoid race condition.
     this.value = String( x );
-    this.error = this.value === '' || isNumber;
+    this.error = this.value === '' || !isNumber( x );
     this.forceUpdate();
 }
 

@@ -51,8 +51,8 @@ export function Input( props ){
 
         case 'radio' :
             return <input {...rest}
-                checked={ link.value === props.value }
-                onChange={ e => { e.target.checked && link.set( props.value ) } }/>;
+                checked={ $checked ? $checked.value : $value.value === props.value }
+                onChange={ e => { e.target.checked && ( $checked ? $checked.set( true ) : link.set( props.value ) ) } }/>;
 
         default:
             return <input {...rest}

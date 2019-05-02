@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { validationClasses } from './standard';
+import { isNumber } from './validators';
 export class NumberInput extends React.Component {
     constructor() {
         super(...arguments);
@@ -35,7 +36,7 @@ export class NumberInput extends React.Component {
     setValue(x) {
         // We're not using native state in order to avoid race condition.
         this.value = String(x);
-        this.error = this.value === '' || isNaN(Number(x));
+        this.error = this.value === '' || !isNumber(x);
         this.forceUpdate();
     }
     setAndConvert(x) {

@@ -49,7 +49,7 @@ function Input(props) {
         case 'checkbox':
             return React.createElement("input", __assign({}, rest, { checked: Boolean(link.value), onChange: link.action(setBoolValue) }));
         case 'radio':
-            return React.createElement("input", __assign({}, rest, { checked: link.value === props.value, onChange: function (e) { e.target.checked && link.set(props.value); } }));
+            return React.createElement("input", __assign({}, rest, { checked: $checked ? $checked.value : $value.value === props.value, onChange: function (e) { e.target.checked && ($checked ? $checked.set(true) : link.set(props.value)); } }));
         default:
             return React.createElement("input", __assign({}, rest, { className: validationClasses(rest, $value.value, $value.error), value: String($value.value), onChange: $value.action(setValue) }));
     }
