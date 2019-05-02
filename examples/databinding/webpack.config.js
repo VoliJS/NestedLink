@@ -4,11 +4,7 @@ var webpack = require( 'webpack' ),
     console.log( __dirname );
 
 module.exports = {
-    entry  : {
-        main : './example/src/databinding.jsx',
-        users : './example/src/userslist.jsx',
-        asaf : './example/src/asaf.jsx',
-    },
+    entry  : './src/index.jsx',
     output : {
         path       : path.resolve( __dirname, 'dist' ),
         publicPath : '/dist',
@@ -18,10 +14,7 @@ module.exports = {
     devtool : 'source-map',
 
     resolve : {
-        modules : [ '.', '../node_modules' ],
-        alias : {
-            valuelink : path.resolve( __dirname, '../lib' )
-        }
+        modules : [ './node_modules' ],
     },
 
     module : {

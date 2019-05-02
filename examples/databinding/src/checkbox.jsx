@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Input } from 'valuelink/tags';
+import { Checkbox, Input } from 'linked-controls';
 
 export const CheckboxObjGroup = ({ $flags }) => {
     const flags$ = $flags.pick();

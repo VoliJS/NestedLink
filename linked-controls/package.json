@@ -1,10 +1,10 @@
 {
   "name": "linked-controls",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Data bound React controls consuming Links",
-  "main": "./min/index.js",
-  "module": "./lib/indes.js",
-  "types": "./lib/index.d.ts",
+  "main": "./js/index.js",
+  "module": "./js/indes.js",
+  "types": "./js/index.d.ts",
   "files": [
     "min",
     "lib",
@@ -41,7 +41,6 @@
     "valuelink":"*",
     "classnames": "^2.2.0",
     "proptypes": "*",
-    "react": "*",
     "rollup": "^0.58.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
@@ -51,7 +50,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn && yarn build-js && yarn build-jsx",
-    "build-js": "node_modules/.bin/tsc ./src/index.tsx --jsx react --module commonjs --target ES5 --outDir ./js",
-    "build-jsx": "node_modules/.bin/tsc ./src/index.tsx --moduleResolution node --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./jsx"
+    "build-js": "node_modules/.bin/tsc ./src/index.tsx --declaration true --sourceMap true --jsx react --module commonjs --target ES5 --outDir ./js",
+    "build-jsx": "node_modules/.bin/tsc ./src/index.tsx --declaration true --sourceMap true --moduleResolution node --jsx preserve --module es6 --target ESNext --lib ES2017,DOM --outDir ./jsx"
   }
 }

@@ -55,7 +55,7 @@ var NumberInput = /** @class */ (function (_super) {
             _this.setValue(value);
             var asNumber = Number(value);
             if (value && !isNaN(asNumber)) {
-                _this.props.valueLink.update(function (x) {
+                _this.props.$value.update(function (x) {
                     // Update link if value is changed
                     if (asNumber !== Number(x)) {
                         return asNumber;
@@ -67,7 +67,7 @@ var NumberInput = /** @class */ (function (_super) {
     }
     NumberInput.prototype.componentWillMount = function () {
         // Initialize component state
-        this.setAndConvert(this.props.valueLink.value);
+        this.setAndConvert(this.props.$value.value);
     };
     NumberInput.prototype.setValue = function (x) {
         // We're not using native state in order to avoid race condition.
@@ -86,15 +86,16 @@ var NumberInput = /** @class */ (function (_super) {
         this.setValue(value);
     };
     NumberInput.prototype.componentWillReceiveProps = function (nextProps) {
-        var next = nextProps.valueLink;
-        if (Number(next.value) !== Number(this.value)) {
-            this.setAndConvert(next.value); // keep state being synced
+        var $next = nextProps.$value;
+        if (Number($next.value) !== Number(this.value)) {
+            this.setAndConvert($next.value); // keep state being synced
         }
     };
     NumberInput.prototype.render = function () {
-        var _a = this.props, valueLink = _a.valueLink, positive = _a.positive, integer = _a.integer, props = __rest(_a, ["valueLink", "positive", "integer"]), error = valueLink.error || this.error;
+        var _a = this.props, $value = _a.$value, positive = _a.positive, integer = _a.integer, props = __rest(_a, ["$value", "positive", "integer"]), error = $value.error || this.error;
         return React.createElement("input", __assign({}, props, { type: "text", className: standard_1.validationClasses(props, this.value, error), value: this.value, onKeyPress: this.onKeyPress, onChange: this.onChange }));
     };
     return NumberInput;
 }(React.Component));
 exports.NumberInput = NumberInput;
+//# sourceMappingURL=number.js.map

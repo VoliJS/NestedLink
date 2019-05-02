@@ -8,13 +8,20 @@ var LinkedComponent = /** @class */ (function (_super) {
         _this.links = null;
         return _this;
     }
+    // @deprecated use `this.$at( key )`
     LinkedComponent.prototype.linkAt = function (key) {
+        return this.$at(key);
+    };
+    LinkedComponent.prototype.$at = function (key) {
         var value = this.state[key], cache = this.links || (this.links = {}), cached = cache[key];
         return cached && cached.value === value ?
             cached :
             cache[key] = new StateLink(this, key, value);
     };
     LinkedComponent.prototype.linkAll = function () {
+        return this.state$.apply(this, arguments);
+    };
+    LinkedComponent.prototype.state$ = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];

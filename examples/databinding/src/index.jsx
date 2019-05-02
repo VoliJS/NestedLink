@@ -1,12 +1,13 @@
 import './main.css';
 
+import React from 'react'
 import ReactDOM from 'react-dom';
 import { LinkedComponent } from 'valuelink';
-import { CheckboxListGroup, CheckboxObjGroup, CustomCheckboxObjGroup } from './checkbox';
-import { DeepLinkedInputs, JointLinks } from './complex';
-import { HooksExample } from './hooks';
-import { Numeric, SimpleBinding } from './inputs';
-import { CustomRadioGroup, RadioGroup } from './radio';
+import { CheckboxListGroup, CheckboxObjGroup, CustomCheckboxObjGroup } from './checkbox.jsx';
+import { DeepLinkedInputs, JointLinks } from './complex.jsx';
+import { HooksExample } from './hooks.jsx';
+import { Numeric, SimpleBinding, SelectOption } from './inputs.jsx';
+import { CustomRadioGroup, RadioGroup } from './radio.jsx';
     
 class App extends LinkedComponent {
     // All this stuff we can link to

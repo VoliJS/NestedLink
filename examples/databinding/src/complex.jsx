@@ -1,9 +1,10 @@
 import React from 'react';
-import { Input } from 'valuelink/tags';
+import { Input } from 'linked-controls';
+import { isNumber } from './inputs.jsx'
 
 export const JointLinks = ({ $str, $str2 }) => {
     $str.check( isNumber );
-    const jointLink = $str.onChange( x => $str2.set( x ) );
+    const $joint = $str.onChange( x => $str2.set( x ) );
 
     return (
         <fieldset>
@@ -11,7 +12,7 @@ export const JointLinks = ({ $str, $str2 }) => {
 
             <label>
                 First
-                <Input $value={ jointLink }/>
+                <Input $value={ $joint }/>
             </label>
 
             <label>

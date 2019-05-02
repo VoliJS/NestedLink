@@ -1,7 +1,7 @@
 import React from 'react';
-import { Input, NumberInput, Select, TextArea } from 'valuelink/tags';
+import { Input, NumberInput, Select, TextArea } from 'linked-controls';
 
-const isNumber = x => !isNaN( Number( x ) );
+export const isNumber = x => !isNaN( Number( x ) );
 
 export const Numeric = ({ $num }) => (
     <fieldset>
@@ -19,7 +19,7 @@ export const Numeric = ({ $num }) => (
 
         <label>
             Integer
-            <NumberInput $value={ $numLink } integer={ true } />
+            <NumberInput $value={ $num } integer={ true } />
         </label>
     </fieldset>
 );

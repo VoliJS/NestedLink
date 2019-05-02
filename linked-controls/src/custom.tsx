@@ -5,11 +5,11 @@ import { Link } from 'valuelink'
  * Simple custom <Radio/> tag implementation. Can be easily styled.
  * Intended to be used with offhand bool link:
  *
- *    <Radio checkedLink={ linkToValue.equals( optionValue ) />
+ *    <Radio $checked={ linkToValue.equals( optionValue ) />
  */
-export const Radio = ( { className = 'radio', checkedLink, children } : { checkedLink : Link<boolean> } & React.HTMLProps<HTMLDivElement> ) => (
-    <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
-         onClick={ checkedLink.action( () => true ) }
+export const Radio = ( { className = 'radio', $checked, children } : { $checked : Link<boolean> } & React.HTMLProps<HTMLDivElement> ) => (
+    <div className={ className + ( $checked.value ? ' selected' : '' ) }
+         onClick={ $checked.action( () => true ) }
     >
         { children }
     </div>
@@ -19,11 +19,11 @@ export const Radio = ( { className = 'radio', checkedLink, children } : { checke
  * Simple custom <Checkbox /> tag implementation.
  * Takes any type of boolean link. Can be easily styled.
  *
- *     <Checkbox checkedLink={ boolLink } />
+ *     <Checkbox $checked={ boolLink } />
  */
-export const Checkbox = ( { className = 'checkbox', checkedLink, children } : { checkedLink : Link<boolean> } & React.HTMLProps<HTMLDivElement> ) => (
-    <div className={ className + ( checkedLink.value ? ' selected' : '' ) }
-         onClick={ checkedLink.action( x => !x ) }
+export const Checkbox = ( { className = 'checkbox', $checked, children } : { $checked : Link<boolean> } & React.HTMLProps<HTMLDivElement> ) => (
+    <div className={ className + ( $checked.value ? ' selected' : '' ) }
+         onClick={ $checked.action( x => !x ) }
     >
         { children }
     </div>

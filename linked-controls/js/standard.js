@@ -24,12 +24,12 @@ var React = require("react");
 var setValue = function (x, e) { return e.target.value; };
 var setBoolValue = function (x, e) { return Boolean(e.target.checked); };
 /**
- * Wrapper for standard <input/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <input/> to be compliant with React 0.14 $value semantic.
  * Simple supports for link validation - adds 'invalid' class if link has an error.
  *
- *      <input type="checkbox" checkedLink={ linkToBool } />
- *      <input type="radio"    valueLink={ linkToSelectedValue } value="option1value" />
- *      <input type="text"     valueLink={ linkToString } />
+ *      <input type="checkbox" $checked={ linkToBool } />
+ *      <input type="radio"    $value={ linkToSelectedValue } value="option1value" />
+ *      <input type="text"     $value={ linkToString } />
  */
 function appendClass(classes, name) {
     return classes ? classes + ' ' + name : name;
@@ -44,38 +44,39 @@ function validationClasses(props, value, error) {
 }
 exports.validationClasses = validationClasses;
 function Input(props) {
-    var valueLink = props.valueLink, checkedLink = props.checkedLink, rest = __rest(props, ["valueLink", "checkedLink"]), type = props.type, link = valueLink || checkedLink;
+    var $value = props.$value, $checked = props.$checked, rest = __rest(props, ["$value", "$checked"]), type = props.type, link = $value || $checked;
     switch (type) {
         case 'checkbox':
             return React.createElement("input", __assign({}, rest, { checked: Boolean(link.value), onChange: link.action(setBoolValue) }));
         case 'radio':
             return React.createElement("input", __assign({}, rest, { checked: link.value === props.value, onChange: function (e) { e.target.checked && link.set(props.value); } }));
         default:
-            return React.createElement("input", __assign({}, rest, { className: validationClasses(rest, valueLink.value, valueLink.error), value: String(valueLink.value), onChange: valueLink.action(setValue) }));
+            return React.createElement("input", __assign({}, rest, { className: validationClasses(rest, $value.value, $value.error), value: String($value.value), onChange: $value.action(setValue) }));
     }
 }
 exports.Input = Input;
 ;
 /**
- * Wrapper for standard <textarea/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <textarea/> to be compliant with React 0.14 $value semantic.
  * Simple supports for link validation - adds 'invalid' class if link has an error.
  *
- *     <TextArea valueLink={ linkToText } />
+ *     <TextArea $value={ linkToText } />
  */
 exports.TextArea = function (_a) {
-    var valueLink = _a.valueLink, props = __rest(_a, ["valueLink"]);
-    return (React.createElement("textarea", __assign({}, props, { className: validationClasses(props, valueLink.value, valueLink.error), value: valueLink.value, onChange: valueLink.action(setValue) })));
+    var $value = _a.$value, props = __rest(_a, ["$value"]);
+    return (React.createElement("textarea", __assign({}, props, { className: validationClasses(props, $value.value, $value.error), value: $value.value, onChange: $value.action(setValue) })));
 };
 /**
- * Wrapper for standard <select/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <select/> to be compliant with React 0.14 $value semantic.
  * Regular <option/> tags must be used:
  *
- *     <Select valueLink={ linkToSelectedValue }>
+ *     <Select $value={ linkToSelectedValue }>
  *         <option value="a">A</option>
  *         <option value="b">B</option>
  *     </Select>
  */
 exports.Select = function (_a) {
-    var valueLink = _a.valueLink, children = _a.children, props = __rest(_a, ["valueLink", "children"]);
-    return (React.createElement("select", __assign({}, props, { value: valueLink.value, onChange: valueLink.action(setValue) }), children));
+    var $value = _a.$value, children = _a.children, props = __rest(_a, ["$value", "children"]);
+    return (React.createElement("select", __assign({}, props, { value: $value.value, onChange: $value.action(setValue) }), children));
 };
+//# sourceMappingURL=standard.js.map

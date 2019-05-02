@@ -19,7 +19,7 @@ export class NumberInput extends React.Component {
             this.setValue(value);
             const asNumber = Number(value);
             if (value && !isNaN(asNumber)) {
-                this.props.valueLink.update(x => {
+                this.props.$value.update(x => {
                     // Update link if value is changed
                     if (asNumber !== Number(x)) {
                         return asNumber;
@@ -30,7 +30,7 @@ export class NumberInput extends React.Component {
     }
     componentWillMount() {
         // Initialize component state
-        this.setAndConvert(this.props.valueLink.value);
+        this.setAndConvert(this.props.$value.value);
     }
     setValue(x) {
         // We're not using native state in order to avoid race condition.
@@ -49,13 +49,14 @@ export class NumberInput extends React.Component {
         this.setValue(value);
     }
     componentWillReceiveProps(nextProps) {
-        const { valueLink: next } = nextProps;
-        if (Number(next.value) !== Number(this.value)) {
-            this.setAndConvert(next.value); // keep state being synced
+        const { $value: $next } = nextProps;
+        if (Number($next.value) !== Number(this.value)) {
+            this.setAndConvert($next.value); // keep state being synced
         }
     }
     render() {
-        const { valueLink, positive, integer, ...props } = this.props, error = valueLink.error || this.error;
+        const { $value, positive, integer, ...props } = this.props, error = $value.error || this.error;
         return <input {...props} type="text" className={validationClasses(props, this.value, error)} value={this.value} onKeyPress={this.onKeyPress} onChange={this.onChange}/>;
     }
 }
+//# sourceMappingURL=number.jsx.map

@@ -138,7 +138,10 @@ var Link = /** @class */ (function () {
         }
         return links;
     };
-    Link.prototype.$all = function () {
+    /**
+     * Convert link to object to the object of links with $-keys.
+     */
+    Link.prototype.$links = function () {
         var links = {}, value = this.value;
         for (var key in value) {
             if (value.hasOwnProperty(key)) {

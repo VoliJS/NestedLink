@@ -60,10 +60,16 @@ export declare abstract class Link<T> {
     at<E>(this: Link<E[]>, key: number): LinkAt<E, number>;
     at<K extends keyof T, E extends T[K]>(key: K): LinkAt<E, K>;
     clone(): T;
+    /**
+     * Convert link to object to the object of links. Optionally filter by
+     */
     pick<K extends keyof T>(...keys: K[]): {
         [P in K]: Link<T[P]>;
     };
-    $all(): {
+    /**
+     * Convert link to object to the object of links with $-keys.
+     */
+    $links(): {
         [P in keyof T]: Link<T[P]>;
     };
     /**

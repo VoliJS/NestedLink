@@ -7,13 +7,13 @@ import { validationClasses } from './standard'
 export interface NumberInputProps extends React.HTMLProps<HTMLInputElement>{
     positive?  : boolean,
     integer?   : boolean,
-    valueLink : Link< number >
+    $value : Link< number >
 }
 
 export class NumberInput extends React.Component< NumberInputProps, {} >{
 componentWillMount(){
     // Initialize component state
-    this.setAndConvert( this.props.valueLink.value );
+    this.setAndConvert( this.props.$value.value );
 }
 
 value : string;
@@ -41,16 +41,16 @@ setAndConvert( x ){
 }
 
 componentWillReceiveProps( nextProps ){
-    const { valueLink : next } = nextProps;
+    const { $value : $next } = nextProps;
 
-    if( Number( next.value ) !== Number( this.value ) ){
-        this.setAndConvert( next.value ); // keep state being synced
+    if( Number( $next.value ) !== Number( this.value ) ){
+        this.setAndConvert( $next.value ); // keep state being synced
     }
 }
 
 render(){
-    const { valueLink, positive, integer, ...props } = this.props,
-          error = valueLink.error || this.error;
+    const { $value, positive, integer, ...props } = this.props,
+          error = $value.error || this.error;
 
     return <input { ...props }
                   type="text"
@@ -83,7 +83,7 @@ onChange = e => {
     const asNumber = Number( value );
 
     if( value && !isNaN( asNumber ) ){
-        this.props.valueLink.update( x =>{
+        this.props.$value.update( x =>{
             // Update link if value is changed
             if( asNumber !== Number( x ) ){
                 return asNumber;

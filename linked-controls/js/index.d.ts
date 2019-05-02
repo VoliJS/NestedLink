@@ -7,4 +7,6 @@ export * from './standard';
 export * from './custom';
 export * from './number';
 export * from './validators';
-//# sourceMappingURL=index.jsx.map
+export declare type AnyProps = {
+    [key: string]: any;
+};

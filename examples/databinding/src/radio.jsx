@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Radio } from 'valuelink/tags';
+import { Input, Radio } from 'linked-controls';
 
 export const RadioGroup = ({ $flag }) => (
     <fieldset>

@@ -5,12 +5,12 @@ const setValue     = ( x, e ) => e.target.value;
 const setBoolValue = ( x, e ) => Boolean( e.target.checked );
 
 /**
- * Wrapper for standard <input/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <input/> to be compliant with React 0.14 $value semantic.
  * Simple supports for link validation - adds 'invalid' class if link has an error.
  *
- *      <input type="checkbox" checkedLink={ linkToBool } />
- *      <input type="radio"    valueLink={ linkToSelectedValue } value="option1value" />
- *      <input type="text"     valueLink={ linkToString } />
+ *      <input type="checkbox" $checked={ linkToBool } />
+ *      <input type="radio"    $value={ linkToSelectedValue } value="option1value" />
+ *      <input type="text"     $value={ linkToString } />
  */
 
 function appendClass( classes, name ){
@@ -31,17 +31,17 @@ export function validationClasses( props, value, error ){
 }
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
-    valueLink? : Link<any>
-    checkedLink? : Link<boolean>
+    $value? : Link<any>
+    $checked? : Link<boolean>
     value? : any
 }
 
 export function Input( props : InputProps ) : JSX.Element;
 
 export function Input( props ){
-        const { valueLink, checkedLink, ...rest } = props,
+        const { $value, $checked, ...rest } = props,
           type = props.type,
-          link = valueLink || checkedLink;
+          link = $value || $checked;
 
     switch( type ){
         case 'checkbox':
@@ -56,38 +56,38 @@ export function Input( props ){
 
         default:
             return <input {...rest}
-                className={ validationClasses( rest, valueLink.value, valueLink.error ) }
-                value={ String( valueLink.value ) }
-                onChange={ valueLink.action( setValue ) }/>;
+                className={ validationClasses( rest, $value.value, $value.error ) }
+                value={ String( $value.value ) }
+                onChange={ $value.action( setValue ) }/>;
     }
 };
 
 /**
- * Wrapper for standard <textarea/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <textarea/> to be compliant with React 0.14 $value semantic.
  * Simple supports for link validation - adds 'invalid' class if link has an error.
  *
- *     <TextArea valueLink={ linkToText } />
+ *     <TextArea $value={ linkToText } />
  */
-export const TextArea = ( { valueLink, ...props } : { valueLink : Link<string> } & React.HTMLProps<HTMLTextAreaElement>) => (
+export const TextArea = ( { $value, ...props } : { $value : Link<string> } & React.HTMLProps<HTMLTextAreaElement>) => (
     <textarea {...props}
-        className={ validationClasses( props, valueLink.value , valueLink.error ) }
-        value={ valueLink.value }
-        onChange={ valueLink.action( setValue ) }/>
+        className={ validationClasses( props, $value.value , $value.error ) }
+        value={ $value.value }
+        onChange={ $value.action( setValue ) }/>
 );
 
 /**
- * Wrapper for standard <select/> to be compliant with React 0.14 valueLink semantic.
+ * Wrapper for standard <select/> to be compliant with React 0.14 $value semantic.
  * Regular <option/> tags must be used:
  *
- *     <Select valueLink={ linkToSelectedValue }>
+ *     <Select $value={ linkToSelectedValue }>
  *         <option value="a">A</option>
  *         <option value="b">B</option>
  *     </Select>
  */
-export const Select = ( { valueLink, children, ...props } : { valueLink : Link<any> } & React.HTMLProps<HTMLSelectElement> ) => (
+export const Select = ( { $value, children, ...props } : { $value : Link<any> } & React.HTMLProps<HTMLSelectElement> ) => (
     <select {...props}
-        value={ valueLink.value }
-        onChange={ valueLink.action( setValue ) }>
+        value={ $value.value }
+        onChange={ $value.action( setValue ) }>
         { children }
     </select>
 );
