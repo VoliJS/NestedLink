@@ -20,6 +20,7 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
         return this.$at( key );
     }
 
+    // Get the link to the state member with the given key.
     $at<K extends keyof S>( key : K ) : Link<S[K]>{
         const value = this.state[ key ],
         cache = this.links || ( this.links = {} as any ),
@@ -36,6 +37,13 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
         return this.state$.apply( this, arguments );
     }
 
+    /**
+     * Get the object with links to the elements of the component's state.
+     * const state$ = this.state$();
+     * 
+     * Get the links to the given list of state elements.
+     * const state$ = this.state$( 'a', 'b', 'c' );
+     */ 
     state$<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >;
     state$( ...args : ( keyof S )[] ){
         const { state } = this,

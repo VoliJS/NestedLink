@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name":"todomvc",
+  "name":"babel-valuelink-starter",
   "version": "1.0.0",
   "devDependencies": {
     "@babel/core": "^7.4.3",
