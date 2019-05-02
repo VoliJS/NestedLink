@@ -47,7 +47,7 @@ render(){
 }
 ```
 
-The methods working with an object of links can handle both $names and plain names, the leading $ is being stripped.
+The methods working with an object of links can handle both $names and plain names, the leading $ is being stripped. You shoudn't worry about that.
 
 ```javascript
 // It's fine.
