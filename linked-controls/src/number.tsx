@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Link } from 'valuelink'
 import { validationClasses } from './standard'
+import { isNumber } from './validators'
 
 // This number component rejects invalid input and modify link only with valid number values.
 // Implementing numeric input rejection might be tricky.
@@ -22,7 +23,7 @@ error : any;
 setValue( x ){
     // We're not using native state in order to avoid race condition.
     this.value = String( x );
-    this.error = this.value === '' || isNaN( Number( x ) );
+    this.error = this.value === '' || isNumber;
     this.forceUpdate();
 }
 

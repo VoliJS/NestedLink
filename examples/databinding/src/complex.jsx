@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input } from 'linked-controls';
-import { isNumber } from './inputs.jsx'
+import { Input, isNumber } from 'linked-controls';
 
 export const JointLinks = ({ $str, $str2 }) => {
     $str.check( isNumber );

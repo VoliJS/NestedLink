@@ -1,7 +1,5 @@
 import React from 'react';
-import { Input, NumberInput, Select, TextArea } from 'linked-controls';
-
-export const isNumber = x => !isNaN( Number( x ) );
+import { isNumber, Input, NumberInput, Select, TextArea } from 'linked-controls';
 
 export const Numeric = ({ $num }) => (
     <fieldset>

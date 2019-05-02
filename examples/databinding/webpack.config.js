@@ -11,6 +11,8 @@ module.exports = {
         filename   : '[name].js'
     },
 
+    mode : 'development',
+
     devtool : 'source-map',
 
     resolve : {
