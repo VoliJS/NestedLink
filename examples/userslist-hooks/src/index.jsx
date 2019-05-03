@@ -89,7 +89,7 @@ const UserRow = ( { $user, onEdit } ) =>{
 
 const EditUser = ({ $user, onClose }) => {
     // Initialize local state
-    const user = useLinkedState( $user ).$all();
+    const user = useLinkedState( $user ).$links();
 
     // Form submit handler
     function onSubmit( e ){
@@ -100,11 +100,6 @@ const EditUser = ({ $user, onClose }) => {
 
         // Close the dialog
         onClose();
-    }
-
-    function onClear(){
-        // Assign local state back to the props
-        Link.setValues( user, $user.value );
     }
 
     // Apply validation rules
