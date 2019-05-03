@@ -69,7 +69,7 @@ The series of 5-minute tutorials (with `React.Component`):
 
 ### [Linked Controls Reference](/linked-controls/README.md)
 
-### [Examples](https://volicon.github.io/NestedLink)([sources](/examples/))
+### [Examples](https://volijs.github.io/NestedLink)([sources](/examples/))
 
 ## How to
 
