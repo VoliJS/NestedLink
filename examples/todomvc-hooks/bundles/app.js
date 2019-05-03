@@ -148,10 +148,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
-/***/ "../../node_modules/css-loader/index.js?!./css/app.css":
-/*!****************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader??ref--4-1!./css/app.css ***!
-  \****************************************************************************************/
+/***/ "../../node_modules/css-loader/index.js!./css/app.css":
+/*!******************************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader!./css/app.css ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -160,12 +160,10 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "._1ab5eBImiH2kKUQGzE_hKY {\r\n\tbackground: black;\r\n}\r\n", ""]);
+exports.push([module.i, ".something {\r\n\tbackground: black;\r\n}\r\n", ""]);
 
 // exports
-exports.locals = {
-	"something": "_1ab5eBImiH2kKUQGzE_hKY"
-};
+
 
 /***/ }),
 
@@ -26274,7 +26272,7 @@ function trim(key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--4-1!./app.css */ "../../node_modules/css-loader/index.js?!./css/app.css");
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!./app.css */ "../../node_modules/css-loader/index.js!./css/app.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
