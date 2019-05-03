@@ -1,6 +1,6 @@
 {
   "name": "valuelink",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./min",
   "module": "./lib",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Volicon/valuelink.git"
+    "url": "git+https://github.com/VoliJS/valuelink.git"
   },
   "keywords": [
     "react",
@@ -28,9 +28,9 @@
   "author": "Vlad Balin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Volicon/valuelink/issues"
+    "url": "https://github.com/VoliJS/valuelink/issues"
   },
-  "homepage": "https://github.com/Volicon/valuelink#readme",
+  "homepage": "https://github.com/VoliJS/valuelink#readme",
   "peerDependencies": {
     "react": "*"
   },
