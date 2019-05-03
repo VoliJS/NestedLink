@@ -1,0 +1,56 @@
+{
+  "name": "valuelink",
+  "version": "2.0.0",
+  "description": "Purely functional two-way data binding and form validation for React",
+  "main": "./min",
+  "module": "./lib",
+  "types": "./lib",
+  "files": [
+    "min",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Volicon/valuelink.git"
+  },
+  "keywords": [
+    "react",
+    "valuelink",
+    "databinding",
+    "forms",
+    "binding",
+    "data",
+    "link",
+    "state",
+    "react-component"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Volicon/valuelink/issues"
+  },
+  "homepage": "https://github.com/Volicon/valuelink#readme",
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "classnames": "^2.2.0",
+    "css-loader": "^0.28.11",
+    "proptypes": "*",
+    "react": "*",
+    "react-dom": "*",
+    "rollup": "^0.58.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn && yarn compile && yarn minify",
+    "compile": "node_modules/.bin/tsc",
+    "minify": "node_modules/.bin/rollup --config"
+  }
+}
