@@ -41,7 +41,7 @@ const MyInput = ({ $value }) => (
 
 ## Features
 
-IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.
+***IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.***
 
 - Callback-free form controls binding to the component state.
 - Complete separation of the validation logic from the markup.
