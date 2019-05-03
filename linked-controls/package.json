@@ -1,7 +1,7 @@
 {
   "name": "linked-controls",
   "version": "1.0.0",
-  "description": "Data bound React controls consuming Links",
+  "description": "React controls using links from valuelink package",
   "main": "./js/index.js",
   "module": "./js/indes.js",
   "types": "./js/index.d.ts",
