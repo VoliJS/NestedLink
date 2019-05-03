@@ -101,9 +101,6 @@ const state$ = this.state$();
 
 Refer to the [databinding examples](/examples/databinding) and the [manual](/linked-controls/README.md) for the typical data binding scenarios.
 
-* [/lib](/lib) folder contains ES5 modules prebuilt with ES6 exports suitable for modern build tools like `webpack 2`.
-* [/dist](/dist) folder contains minified UMD ES5 assembly exporting `NestedLink` global valiable.
-
 ### Create your own data bound controls
 
 Use [linked-controls](/linked-controls) project as the starting boilerplate for your components.
@@ -114,7 +111,7 @@ NestedLink is an abstraction of the data binding independent on both the particu
 in the library is for the standard React state. It's fairly easy to create your own.
 
 You need to subclass React.Component and make your own `$at` and `state$` methods.
-You can either use `Link.value` inside to create links dynamically, or extend the `Link` as it's done in [/src/component.ts](/valuelink/src/component.ts).
+You can either use `Link.value` inside to create links dynamically, or extend the `Link` as it's done in [/valuelink/src/component.ts](/valuelink/src/component.ts).
 
 ### Start hacking
 
