@@ -81,15 +81,19 @@ const $name = this.$at( 'name' ),
       $email = this.$at( 'email' );
 ```
 
-##### ![method] LinkedComponent.linkAll( stateKey1, stateKey2, ... ) : { [ key ] : Link }
+##### ![method] LinkedComponent.state$( stateKey1, stateKey2, ... ) : { [ key ] : Link }
 
-Create an object with links to listed state members. When no keys are provided, it creates link to 
-every member of the state. Component must extend `LinkedComponent` class.
+Create an object with links to listed state members. When no keys are provided, it creates link to every member of the state. Component must extend `LinkedComponent` class.
 
 Can be overriden to create custom data binding for something different than the React state.
 
 ```javascript
-const state$ = this.linkAll( 'name', 'email' ),
+// Link specific state elements...
+const state$ = this.state$( 'name', 'email' ),
+      { name, email } = state$;
+
+// Link everythingsss
+const state$ = this.state$(),s
       { name, email } = state$;
 ```
 
