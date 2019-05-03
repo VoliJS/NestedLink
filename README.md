@@ -41,9 +41,12 @@ const MyInput = ({ $value }) => (
 
 ## Features
 
+IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.
+
 - Callback-free form controls binding to the component state.
 - Complete separation of the validation logic from the markup.
 - Easy handling of nested objects and arrays in the component state.
+- Complete support for the React Hooks API and functional components.
 - Pricise TypeScript typings.
 
 Reference implementation of 'linked' UI controls (optional `linked-controls` npm package):
