@@ -373,8 +373,8 @@ but returns `undefined` and leads to the proper purely functional update of the 
 Evaluate given condition for the current link value, and assign
 given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
 
-It's possible to assign default error message to the validator function. `tags.jsx` provides `isRequired` and `isEmail`
-generic validator functions as an examples. Excerpt from `tags.jsx`: 
+It's possible to assign default error message to the validator function. `linked-controls` package provides `isRequired` and `isEmail`
+generic validator functions as an examples: 
 
 ```jsx
 export const isRequired = x => x != null && x !== '';
@@ -385,9 +385,8 @@ Checks can be chained. In this case, the first check which fails will leave its 
 
 ##### ![var] $link.error : any | void
 
-This link field may be analyzed by custom `<Input />` control to indicate an error (see `tags.jsx` controls and supplied examples).
-
-This mechanics can be used to add ad-hoc validation in `render`. 
+This field is populated by the `link.check` method and must not be assigned manually.
+It should be used by a custom `<Input />` control to display an error (see `linked-controls` and examples).
 
 ```javascript
 // Simple check
@@ -410,6 +409,6 @@ const $num = this.$at( 'num' )
 console.log( $num.error );
 ```
 
-[method]: /docs/images/method.png
-[static]: /docs/images/static.png
-[var]: /docs/images/var.png
+[method]: /images/method.png
+[static]: /images/static.png
+[var]: /images/var.png

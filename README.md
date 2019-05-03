@@ -1,4 +1,4 @@
-![logo](/docs/images/value-link-logo.png)
+![logo](/images/value-link-logo.png)
 
 # Painless React forms, validation, and state management
 
@@ -99,7 +99,7 @@ const $name = this.$at('name');
 const state$ = this.state$();
 ```
 
-Refer to the [databinding examples](/examples/databinding) and the [manual](/docs/databinding.md) for the typical data binding scenarios.
+Refer to the [databinding examples](/examples/databinding) and the [manual](/linked-controls/README.md) for the typical data binding scenarios.
 
 * [/lib](/lib) folder contains ES5 modules prebuilt with ES6 exports suitable for modern build tools like `webpack 2`.
 * [/dist](/dist) folder contains minified UMD ES5 assembly exporting `NestedLink` global valiable.
@@ -118,9 +118,9 @@ You can either use `Link.value` inside to create links dynamically, or extend th
 
 ### Start hacking
 
-![design](/docs/images/valuelinks.jpg)
+![design](/images/valuelinks.jpg)
 
-If you want to play with the examples, fix the bug, or whatever:
+It's a very simple library written with TypeScript, there's no any magic inside (except some scary type annotations). If you want to play with the examples, fix the bug, or whatever:
 
 `yarn` - installs the dependencies.
 
@@ -153,4 +153,4 @@ React Hooks support.
 - `<input {...link.props} />` can be used to bind the link to any of the standard controls expecting `value` and `onChange` props.
 
 ---
-![usedby](/docs/images/usedby.png)
+![usedby](/images/usedby.png)
