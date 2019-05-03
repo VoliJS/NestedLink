@@ -32,6 +32,11 @@ module.exports = {
                 test    : /\.jsx?$/,
                 exclude : /(node_modules|lib)/,
                 loader  : 'babel-loader'
+            },
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre"
             }
         ]
     }

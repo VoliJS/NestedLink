@@ -35,7 +35,7 @@ export function useLocalStorage( key : string, state : LinksHash ){
     stateRef.current = state;
 
     useEffect(()=>{
-        const savedData = JSON.parse( localStorage.getItem( 'todos' ) || '{}' );
+        const savedData = JSON.parse( localStorage.getItem( key ) || '{}' );
         Link.setValues( stateRef.current, savedData );
 
         return () =>{

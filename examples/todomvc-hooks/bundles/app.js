@@ -25879,7 +25879,7 @@ function useLocalStorage(key, state) {
     var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
     stateRef.current = state;
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-        var savedData = JSON.parse(localStorage.getItem('todos') || '{}');
+        var savedData = JSON.parse(localStorage.getItem(key) || '{}');
         _link__WEBPACK_IMPORTED_MODULE_1__["Link"].setValues(stateRef.current, savedData);
         return function () {
             var dataToSave = _link__WEBPACK_IMPORTED_MODULE_1__["Link"].getValues(stateRef.current);

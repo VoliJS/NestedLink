@@ -1,10 +1,10 @@
-import './main.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import Link, { useLink, useLinkedState, useLocalStorage } from 'valuelink';
-import { Input, isEmail, isRequired } from 'linked-controls';
+import Link, { useLink, useLocalStorage } from 'valuelink';
 import './main.css';
+import { UserRow, Header } from './grid.jsx'
+import { EditUser } from './edit.jsx'
 
 const newUser = {
     name : '',
@@ -18,7 +18,7 @@ export const UsersList = () => {
         $dialog  = useLink( null ),
         $editing = useLink( null );
 
-    useLocalStorage({ $users });
+    useLocalStorage( 'users', { $users });
 
     // Create the function which sets dialog to `null`.
     const closeDialog = $dialog.action( () => null );
@@ -60,89 +60,6 @@ export const UsersList = () => {
     );
 }
 
-const Header = () =>(
-    <div className="users-row">
-        <div>Name</div>
-        <div>Email</div>
-        <div>Is Active</div>
-        <div/>
-    </div>
-);
-
-const UserRow = ( { $user, onEdit } ) =>{
-    const $isActive = $user.at( 'isActive' ),
-          user      = $user.value;
-
-    return (
-        <div className="users-row" onDoubleClick={ onEdit }>
-            <div>{ user.name }</div>
-            <div>{ user.email }</div>
-            <div onClick={ $isActive.action( x => !x ) }>
-                { user.isActive ? 'Yes' : 'No' }</div>
-            <div>
-                <button onClick={ onEdit }>Edit</button>
-                <button onClick={ () => $user.remove() }>X</button>
-            </div>
-        </div>
-    )
-};
-
-
-const EditUser = ({ $user, onClose }) => {
-    // Initialize local state
-    const user = useLinkedState( $user ).$links();
-
-    // Form submit handler
-    function onSubmit( e ){
-        e.preventDefault();
-        
-        // Assign local state back to the props
-        $user.set( Link.getValues( user ) );
-
-        // Close the dialog
-        onClose();
-    }
-
-    // Apply validation rules
-    user.$name
-        .check( isRequired )
-        .check( x => x.indexOf( ' ' ) < 0, 'Spaces are not allowed' );
-
-    user.$email
-        .check( isRequired )
-        .check( isEmail );
-
-    return (
-        <form onSubmit={ onSubmit }>
-            <label>
-                Name: <ValidatedInput type="text" $value={ user.$name }/>
-            </label>
-
-            <label>
-                Email: <ValidatedInput type="text" $value={ user.$email }/>
-            </label>
-
-            <label>
-                Is active: <Input type="checkbox" $value={ user.$isActive }/>
-            </label>
-
-            <button type="submit" disabled={ Link.hasErrors( user ) }>
-                Save
-            </button>
-            <button type="button" onClick={ onClose }>
-                Cancel
-            </button>
-        </form>
-    );
-}
-
-const ValidatedInput = ( props ) => (
-    <div>
-        <Input { ...props } />
-        <div className="validation-error">
-            { props.$value.error || '' }
-        </div>
-    </div>
-);
-
-ReactDOM.render( <UsersList />, document.getElementById( 'app-mount-root' ) );
+const root = document.getElementById( 'app-mount-root' );
+ReactDOM.render( <UsersList />, root );
+window.onunload = () => ReactDOM.unmountComponentAtNode( root );

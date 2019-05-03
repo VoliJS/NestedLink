@@ -29,7 +29,7 @@ export function useLocalStorage(key, state) {
     var stateRef = useRef();
     stateRef.current = state;
     useEffect(function () {
-        var savedData = JSON.parse(localStorage.getItem('todos') || '{}');
+        var savedData = JSON.parse(localStorage.getItem(key) || '{}');
         Link.setValues(stateRef.current, savedData);
         return function () {
             var dataToSave = Link.getValues(stateRef.current);
