@@ -23,7 +23,7 @@ const App = () => {
             <PickUser $selected={$selected} />
 
             <p>
-                Here is the <a href="https://github.com/VoliJS/NestedLink/examples/autocomplete/src">source code</a>.
+                Here is the <a href="https://github.com/VoliJS/NestedLink/blob/master/examples/autocomplete/src/autocomplete.jsx">source code</a>.
             </p>
         </div>
     )
