@@ -15,15 +15,4 @@ export declare function useLinkedState<T>(link: Link<T>): Link<T>;
  * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
  */
 export declare function useLocalStorage(key: string, state: LinksHash): void;
-/**
- * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning `null` while the operation is pending.
- * When operation is completed, returns "ok" or "fail" depending on the result and
- * forces the local component update.
- *
- * const isReady = useIO( async () => {
- *      const data = await fetchData();
- *      link.set( data );
- * });
- */
-export declare function useIO(fun: () => Promise<any>, condition?: any[]): null | "ok" | "fail";
+export declare function useIO(fun: () => Promise<any>, condition?: any[]): boolean;

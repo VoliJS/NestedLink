@@ -26272,19 +26272,21 @@ function useLocalStorage(key, state) {
  *      link.set( data );
  * });
  */
+function ioCounter(x, action) {
+    return action === 'add' ? x + 1 : x - 1;
+}
 function useIO(fun, condition) {
     if (condition === void 0) { condition = []; }
     // save state to use on unmount...
-    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null), isReady = _a[0], setIsReady = _a[1];
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useReducer"])(ioCounter, 0), isReady = _a[0], setIsReady = _a[1], isMounted = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () { return function () { return isMounted.current = false; }; }, []);
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-        fun()
-            .then(function () { return setIsReady("ok"); })
-            .catch(function () { return setIsReady("fail"); });
-        return function () {
-            setIsReady(null);
-        };
+        setIsReady('add');
+        fun().finally(function () {
+            isMounted.current && setIsReady("sub");
+        });
     }, condition);
-    return isReady;
+    return !isReady;
 }
 //# sourceMappingURL=hooks.js.map
 

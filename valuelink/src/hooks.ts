@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useReducer } from 'react'
 import { CustomLink, Link, LinksHash } from './link'
 
 /**
@@ -56,19 +56,25 @@ export function useLocalStorage( key : string, state : LinksHash ){
  *      link.set( data );
  * });
  */
-export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : null | "ok" | "fail" {
+
+function ioCounter( x, action ){
+    return action === 'add' ? x + 1 : x - 1;
+}
+
+export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : boolean {
     // save state to use on unmount...
-    const [ isReady, setIsReady ] = useState( null );
+    const [ isReady, setIsReady ] = useReducer( ioCounter, 0 ),
+        isMounted = useRef( true );
+
+    useEffect( () => () => isMounted.current = false, [] );
 
     useEffect(()=>{
-        fun()
-            .then(() => setIsReady( "ok" ) )
-            .catch(() => setIsReady( "fail" ) );
-        
-        return () =>{
-            setIsReady( null );
-        }
+        setIsReady( 'add' );
+
+        fun().finally(() => {
+            isMounted.current && setIsReady( "sub" );
+        });
     }, condition);
 
-    return isReady;
+    return !isReady;
 }
