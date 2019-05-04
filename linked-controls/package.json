@@ -1,6 +1,6 @@
 {
   "name": "linked-controls",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React controls using links from valuelink package",
   "main": "./js/index.js",
   "module": "./js/indes.js",

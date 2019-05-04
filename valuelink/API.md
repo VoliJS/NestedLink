@@ -23,6 +23,13 @@ export const MyCoolComponent = ( props ) => {
 }
 ```
 
+##### ![static] useSafeLink( initValue ) : Link
+
+`useSafeLink` works exactly like `useLink` but the link is safe to use in async I/O functions
+as it doesn't throw when being set while the component is unmounted.
+
+This hook is more expensive than the regular `useLink`.
+
 ##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
 
 Extracts an object with link values. Leading $ is removed from property names in a result.
