@@ -25834,12 +25834,13 @@ var arrayHelpers = {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
   \***************************************************************/
-/*! exports provided: useLink, useLinkedState, useLocalStorage, useIO */
+/*! exports provided: useLink, useSafeLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return useSafeLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return useLinkedState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return useLocalStorage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return useIO; });
@@ -25854,6 +25855,18 @@ __webpack_require__.r(__webpack_exports__);
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
     return new _link__WEBPACK_IMPORTED_MODULE_1__["CustomLink"](value, set);
+}
+/**
+ * Create the link to the local state which is safe to set when component is unmounted.
+ * Use this for the state which is set asycnhronously, as when I/O is completed.
+ */
+function useSafeLink(initialState) {
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
+    var isMounted = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () { return (function () {
+        isMounted.current = false;
+    }); }, []);
+    return _link__WEBPACK_IMPORTED_MODULE_1__["Link"].value(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Create the link to the local state which is synchronized with another link
@@ -25920,7 +25933,7 @@ function useIO(fun, condition) {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
   \***************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage, useIO */
+/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useSafeLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25947,6 +25960,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../valuelink/lib/hooks.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeLink"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLinkedState"]; });
 

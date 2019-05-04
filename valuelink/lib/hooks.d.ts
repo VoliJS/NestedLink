@@ -4,6 +4,11 @@ import { CustomLink, Link, LinksHash } from './link';
  */
 export declare function useLink<S>(initialState: S | (() => S)): CustomLink<S>;
 /**
+ * Create the link to the local state which is safe to set when component is unmounted.
+ * Use this for the state which is set asycnhronously, as when I/O is completed.
+ */
+export declare function useSafeLink<S>(initialState: S | (() => S)): Link<S>;
+/**
  * Create the link to the local state which is synchronized with another link
  * in one direction. When the link change, the linked state changes too.
  */

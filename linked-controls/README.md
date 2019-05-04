@@ -45,6 +45,13 @@ A cross-browser implementation of *numeric input* tag. It has following differen
 <NumberInput $value={ $link } positive={ true }/>
 ```
 
+##### `<ThrottledInput/>`
+
+Text input field updating the `$value` after the given timeout when user stopped typing (1 second by default).
+
+```jsx
+<ThrottledInput $value={$link} timeout={500} />
+```
 ### Checkboxes
 
 ##### `<Input type="checkbox" />`

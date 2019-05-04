@@ -18,3 +18,8 @@ export declare const Radio: ({ className, $checked, children }: {
 export declare const Checkbox: ({ className, $checked, children }: {
     $checked: Link<boolean>;
 } & React.HTMLProps<HTMLDivElement>) => JSX.Element;
+export declare const ThrottledInput: ({ $value, timeout, ...props }: {
+    [x: string]: any;
+    $value: any;
+    timeout?: number;
+}) => JSX.Element;

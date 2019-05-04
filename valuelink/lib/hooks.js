@@ -8,6 +8,18 @@ export function useLink(initialState) {
     return new CustomLink(value, set);
 }
 /**
+ * Create the link to the local state which is safe to set when component is unmounted.
+ * Use this for the state which is set asycnhronously, as when I/O is completed.
+ */
+export function useSafeLink(initialState) {
+    var _a = useState(initialState), value = _a[0], set = _a[1];
+    var isMounted = useRef(true);
+    useEffect(function () { return (function () {
+        isMounted.current = false;
+    }); }, []);
+    return Link.value(value, function (x) { return isMounted.current && set(x); });
+}
+/**
  * Create the link to the local state which is synchronized with another link
  * in one direction. When the link change, the linked state changes too.
  */

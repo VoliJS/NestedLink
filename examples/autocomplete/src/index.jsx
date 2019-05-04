@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import { useLink } from 'valuelink'
 
-import { Autocomplete } from './autocomplete.jsx'
+import { PickUser } from './autocomplete.jsx'
 
 const App = () => {
     const $selected = useLink( null );
@@ -20,7 +20,7 @@ const App = () => {
                 Thus, no server-side filtering, sorry. Just a fixed list of cool guys, no matter what you type.
                 But use your imagination. Imagination is more important than knowledge.
             </p>
-            <Autocomplete $selected={$selected} />
+            <PickUser $selected={$selected} />
 
             <p>
                 Here is the <a href="https://github.com/VoliJS/NestedLink/examples/autocomplete/src">source code</a>.

@@ -96,11 +96,38 @@
 "use strict";
 
 
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __rest = this && this.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+  return t;
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var React = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+
+var valuelink_1 = __webpack_require__(/*! valuelink */ "../../valuelink/lib/index.js");
+
+var hooks_1 = __webpack_require__(/*! ./hooks */ "../../linked-controls/js/hooks.js");
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
  * Intended to be used with offhand bool link:
@@ -141,6 +168,70 @@ exports.Checkbox = function (_a) {
     })
   }, children);
 };
+
+exports.ThrottledInput = function (_a) {
+  var $value = _a.$value,
+      _b = _a.timeout,
+      timeout = _b === void 0 ? 1000 : _b,
+      props = __rest(_a, ["$value", "timeout"]);
+
+  var $inputValue = valuelink_1.useLinkedState($value).onChange(hooks_1.useThrottle(function (x) {
+    return $value.set(x);
+  }, timeout, [$value.value]));
+  return React.createElement("input", __assign({}, $inputValue.props, props));
+};
+
+/***/ }),
+
+/***/ "../../linked-controls/js/hooks.js":
+/*!********************************************************************!*\
+  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/hooks.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __webpack_require__(/*! react */ "../../node_modules/react/index.js"); // Delays function calls for a given timeout.
+
+
+function useThrottle(fun, timeout, changes) {
+  if (changes === void 0) {
+    changes = [];
+  }
+
+  var timer = react_1.useRef(null);
+
+  function cancel() {
+    if (timer.current) clearTimeout(timer.current);
+  }
+
+  react_1.useEffect(function () {
+    return cancel;
+  }, changes);
+  return function () {
+    var _this = this;
+
+    var args = [];
+
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+
+    cancel();
+    timer.current = setTimeout(function () {
+      timer.current = null;
+      fun.apply(_this, args);
+    }, timeout);
+  };
+}
+
+exports.useThrottle = useThrottle;
 
 /***/ }),
 
@@ -26210,12 +26301,13 @@ var arrayHelpers = {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
   \***************************************************************/
-/*! exports provided: useLink, useLinkedState, useLocalStorage, useIO */
+/*! exports provided: useLink, useSafeLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return useSafeLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return useLinkedState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return useLocalStorage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return useIO; });
@@ -26230,6 +26322,18 @@ __webpack_require__.r(__webpack_exports__);
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
     return new _link__WEBPACK_IMPORTED_MODULE_1__["CustomLink"](value, set);
+}
+/**
+ * Create the link to the local state which is safe to set when component is unmounted.
+ * Use this for the state which is set asycnhronously, as when I/O is completed.
+ */
+function useSafeLink(initialState) {
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialState), value = _a[0], set = _a[1];
+    var isMounted = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () { return (function () {
+        isMounted.current = false;
+    }); }, []);
+    return _link__WEBPACK_IMPORTED_MODULE_1__["Link"].value(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Create the link to the local state which is synchronized with another link
@@ -26296,7 +26400,7 @@ function useIO(fun, condition) {
 /*!***************************************************************!*\
   !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
   \***************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useLinkedState, useLocalStorage, useIO */
+/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, useLink, useSafeLink, useLinkedState, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26323,6 +26427,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../valuelink/lib/hooks.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeLink"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLinkedState", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLinkedState"]; });
 
