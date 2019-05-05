@@ -30,7 +30,7 @@ export const Checkbox = ( { className = 'checkbox', $checked, children } : { $ch
     </div>
 );
 
-export const ThrottledInput = ({ $value, timeout = 1000, ...props }) => {
+export const DelayedInput = ({ $value, timeout = 1000, ...props }) => {
     const $inputValue : Link<any> = useLinkedState( $value )
         .onChange(
             useThrottle(

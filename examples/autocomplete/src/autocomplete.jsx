@@ -1,41 +1,50 @@
 import React from 'react'
 import Link, { useSafeLink, useLink, useIO } from 'valuelink';
 import { doSomething } from './io-mock'
-import { ThrottledInput } from 'linked-controls'
+import { DelayedInput } from 'linked-controls'
 
 export const PickUser = ({ $selected }) => {
-    const $showList = useLink( false ),
-          $filter = useLink('');
+    const $editing = useLink( false );
 
     return (
         <div>
-            <ThrottledInput $value={ $showList.value ? $filter : Link.value( userToString( $selected.value ) ) }
+            { $editing.value ?
+                <EditUser $selected={$selected}
+                          close={() => $editing.set( false )}/>
+            :
+                <input value={ userToString( $selected.value ) }
+                       onClick={ () => $editing.set( true ) }/>
+            }
+        </div>
+    )
+}
+
+export const EditUser = ({ $selected, close }) => {
+    const $filter = useLink('');
+
+    return (
+        <div>
+            <DelayedInput autoFocus
+                $value={ $filter }
                 placeholder="Start typing..."
-                onFocus={() => $showList.set( true )}
-                onBlur={onBlur}
-                 />
+                onBlur={ close } />
             
-            { $showList.value ?
-                <List filter={$filter.value} $selected={$selected} /> 
+            { $filter.value ?
+                <UsersList filter={$filter.value} $selected={$selected} />
             : void 0 }
         </div>
     );
-
-    function onBlur(){
-        $showList.set( false );
-        $filter.set( '' );
-    }
 }
 
-const List = ({ filter, $selected }) => {
+const UsersList = ({ filter, $selected }) => {
     const $users = useSafeLink([]);
 
     const ioComplete = useIO( async () => {
         filter.length > 0 && $users.set( await doSomething( filter ) );
     }, [ filter ]);
 
-    return filter ? (
-            <ul className="users-suggestions">
+    return (
+        <ul className="users-suggestions">
             { ioComplete ? $users.value.map( user => (
                 <li key={user.id}
                     className={ $selected.value && $selected.value.id === user.id ? 'selected' : '' }
@@ -45,7 +54,7 @@ const List = ({ filter, $selected }) => {
                 </li>
             )) : 'Loading...' }
         </ul>
-    ) : <div/>
+    )
 }
 
 function userToString( user ){
