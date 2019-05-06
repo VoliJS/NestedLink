@@ -1,7 +1,7 @@
-import React from 'react'
-import Link, { useSafeLink, useLink, useIO } from 'valuelink';
-import { doSomething } from './io-mock'
-import { DelayedInput } from 'linked-controls'
+import { DelayedInput } from 'linked-controls';
+import React from 'react';
+import { useIO, useLink, useSafeLink } from 'valuelink';
+import { doSomething as fetchUsers } from './io-mock';
 
 export const PickUser = ({ $selected }) => {
     const $editing = useLink( false );
@@ -40,7 +40,7 @@ const UsersList = ({ filter, $selected }) => {
     const $users = useSafeLink([]);
 
     const ioComplete = useIO( async () => {
-        filter.length > 0 && $users.set( await doSomething( filter ) );
+        $users.set( await fetchUsers( filter ) );
     }, [ filter ]);
 
     return (

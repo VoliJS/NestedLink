@@ -43,9 +43,9 @@ exports.Checkbox = function (_a) {
     var _b = _a.className, className = _b === void 0 ? 'checkbox' : _b, $checked = _a.$checked, children = _a.children;
     return (React.createElement("div", { className: className + ($checked.value ? ' selected' : ''), onClick: $checked.action(function (x) { return !x; }) }, children));
 };
-exports.ThrottledInput = function (_a) {
+exports.DelayedInput = function (_a) {
     var $value = _a.$value, _b = _a.timeout, timeout = _b === void 0 ? 1000 : _b, props = __rest(_a, ["$value", "timeout"]);
-    var $inputValue = valuelink_1.useLinkedState($value)
+    var $inputValue = valuelink_1.useBoundLink($value)
         .onChange(hooks_1.useThrottle(function (x) { return $value.set(x); }, timeout, [$value.value]));
     return React.createElement("input", __assign({}, $inputValue.props, props));
 };

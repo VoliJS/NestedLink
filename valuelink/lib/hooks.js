@@ -1,34 +1,69 @@
-import { useState, useEffect, useRef, useReducer } from 'react';
-import { CustomLink, Link } from './link';
+import * as tslib_1 from "tslib";
+import { useEffect, useRef, useState } from 'react';
+import { helpers } from './helpers';
+import { Link } from './link';
+var UseStateLink = /** @class */ (function (_super) {
+    tslib_1.__extends(UseStateLink, _super);
+    function UseStateLink(value, set) {
+        var _this = _super.call(this, value) || this;
+        _this.set = set;
+        return _this;
+    }
+    // Set the component's state value.
+    UseStateLink.prototype.set = function (x) { };
+    UseStateLink.prototype.update = function (fun, event) {
+        // update function must be overriden to use state set
+        // ability to delay an update, and to preserve link.update semantic.
+        this.set(function (x) {
+            var value = helpers(x).clone(x), result = fun(value, event);
+            return result === void 0 ? x : result;
+        });
+    };
+    return UseStateLink;
+}(Link));
+export { UseStateLink };
 /**
  * Create the link to the local state.
  */
 export function useLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1];
-    return new CustomLink(value, set);
+    return new UseStateLink(value, set);
 }
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
- * Use this for the state which is set asycnhronously, as when I/O is completed.
+ * Use this for the state which is set when async I/O is completed.
  */
 export function useSafeLink(initialState) {
-    var _a = useState(initialState), value = _a[0], set = _a[1];
-    var isMounted = useRef(true);
-    useEffect(function () { return (function () {
-        isMounted.current = false;
-    }); }, []);
-    return Link.value(value, function (x) { return isMounted.current && set(x); });
+    var _a = useState(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
+    return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
 }
 /**
- * Create the link to the local state which is synchronized with another link
- * in one direction. When the link change, the linked state changes too.
+ * Returns the ref which is true when component it mounted.
  */
-export function useLinkedState(link) {
-    var localLink = useLink(link.value);
-    useEffect(function () {
-        localLink.set(link.value);
-    }, [link.value]);
-    return localLink;
+export function useIsMountedRef() {
+    var isMounted = useRef(true);
+    useEffect(function () { return (function () { return isMounted.current = false; }); }, []);
+    return isMounted;
+}
+/**
+ * Create the link to the local state which is bound to another
+ * value or link in a single direction. When the source changes, the link changes too.
+ */
+export function useBoundLink(source) {
+    var value = source instanceof Link ? source.value : source, link = useLink(value);
+    useEffect(function () { return link.set(value); }, [value]);
+    link.action;
+    return link;
+}
+/**
+ * Create the safe link to the local state which is synchronized with another
+ * value or link in a single direction.
+ * When the source change, the linked state changes too.
+ */
+export function useSafeBoundLink(source) {
+    var value = source instanceof Link ? source.value : source, link = useSafeLink(value);
+    useEffect(function () { return link.set(value); }, [value]);
+    return link;
 }
 /**
  * Persists links in local storage under the given key.
@@ -60,20 +95,19 @@ export function useLocalStorage(key, state) {
  *      link.set( data );
  * });
  */
-function ioCounter(x, action) {
-    return action === 'add' ? x + 1 : x - 1;
-}
 export function useIO(fun, condition) {
     if (condition === void 0) { condition = []; }
-    // save state to use on unmount...
-    var _a = useReducer(ioCounter, 0), isReady = _a[0], setIsReady = _a[1], isMounted = useRef(true);
-    useEffect(function () { return function () { return isMounted.current = false; }; }, []);
+    // Counter of open I/O requests. If it's 0, I/O is completed.
+    // Counter is needed to handle the situation when the next request
+    // is issued before the previous one was completed.
+    var $isReady = useSafeLink(null);
     useEffect(function () {
-        setIsReady('add');
-        fun().finally(function () {
-            isMounted.current && setIsReady("sub");
-        });
+        // function in set instead of value to avoid race conditions with counter increment.
+        $isReady.set(function (x) { return (x || 0) + 1; });
+        fun().finally(function () { return $isReady.set(function (x) { return x - 1; }); });
     }, condition);
-    return !isReady;
+    // null is used to detect the first render when no requests issued yet
+    // but the I/O is not completed.
+    return $isReady.value === null ? false : !$isReady.value;
 }
 //# sourceMappingURL=hooks.js.map

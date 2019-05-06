@@ -8,7 +8,7 @@ Links can be created and used inside of the React `component.render()` method.
 
 ##### ![static] useLink( initValue ) : Link
 
-`useLink` hook creates the component's state variable wrapped in a hook.
+`useLink` hook works similar to the `useState` but it wraps `{ value, set }` in a link object.
 
 ```javascript
 import { useLink } from 'valuelink'
@@ -29,6 +29,40 @@ export const MyCoolComponent = ( props ) => {
 as it doesn't throw when being set while the component is unmounted.
 
 This hook is more expensive than the regular `useLink`.
+
+##### ![static] useBoundLink( linkOrValue ) : Link
+
+Works like `useLink` but the link is updated when the value changes.
+
+This hook is more expensive than the regular `useLink`.
+
+##### ![static] useSafeBoundLink( linkOrValue ) : Link
+
+The same as `useBoundLink`, but safe to set when the component is unmounted.
+
+This hook is more expensive than all other useLinks.
+
+##### ![static] useIsMountedRef() : { current : boolean }
+
+Returns the ref object `{ current : boolean }`. While the component is mounted, `ref.current` is true.
+
+##### ![static] useLocalStorage( key : string, { link1, link2, ... } )
+
+Persists given links to the local storage. Links must be wrapped in object.
+The state is loaded on component's mount, and saved on unmount.
+
+##### ![static] useIO( fun : () => Promise<any>, condition = [] ) : boolean
+
+Wait for the promise (or async function) completion.
+Execute operation once when mounted, returning `false` while the operation is pending.
+When operation is completed, returns `true` and forces the UI update.
+
+```javascript  
+const isReady = useIO( async () => {
+    const data = await fetchData();
+    $data.set( data );
+});
+```
 
 ##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
 

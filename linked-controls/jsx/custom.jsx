@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useLinkedState } from 'valuelink';
+import { useBoundLink } from 'valuelink';
 import { useThrottle } from './hooks';
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
@@ -19,8 +19,8 @@ export const Radio = ({ className = 'radio', $checked, children }) => (<div clas
 export const Checkbox = ({ className = 'checkbox', $checked, children }) => (<div className={className + ($checked.value ? ' selected' : '')} onClick={$checked.action(x => !x)}>
         {children}
     </div>);
-export const ThrottledInput = ({ $value, timeout = 1000, ...props }) => {
-    const $inputValue = useLinkedState($value)
+export const DelayedInput = ({ $value, timeout = 1000, ...props }) => {
+    const $inputValue = useBoundLink($value)
         .onChange(useThrottle(x => $value.set(x), timeout, [$value.value]));
     return <input {...$inputValue.props} {...props}/>;
 };

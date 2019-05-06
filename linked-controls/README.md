@@ -14,6 +14,15 @@ However, it's beneficial to create a custom form control wrappers encapsulating 
 
     npm install linked-controls --save-dev
 
+## React hooks
+
+##### useThrottle( fun, timeout, changes = [] )
+
+Produce throttled version of the `fun` function, which will be executed after the given delay in msecs.
+All external variabled used by fun must be listed in `changes` array to prevent race conditions.
+
+The hook is used by the `<DelayedInput/>`.
+
 ## List of controls
 
 ### Text and number form fields 
@@ -50,7 +59,7 @@ A cross-browser implementation of *numeric input* tag. It has following differen
 Text input field updating the `$value` after the given timeout when user stopped typing (1 second by default).
 
 ```jsx
-<ThrottledInput $value={$link} timeout={500} />
+<DelayedInput $value={$link} timeout={500} />
 ```
 ### Checkboxes
 

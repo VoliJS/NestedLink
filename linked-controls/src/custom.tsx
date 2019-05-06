@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Link, useLinkedState } from 'valuelink'
+import { Link, useBoundLink } from 'valuelink'
 import { useThrottle } from './hooks'
+import { string } from 'prop-types';
 
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
@@ -31,7 +32,7 @@ export const Checkbox = ( { className = 'checkbox', $checked, children } : { $ch
 );
 
 export const DelayedInput = ({ $value, timeout = 1000, ...props }) => {
-    const $inputValue : Link<any> = useLinkedState( $value )
+    const $inputValue = useBoundLink( $value as Link<string> )
         .onChange(
             useThrottle(
                 x => $value.set( x ),
