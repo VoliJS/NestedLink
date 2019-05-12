@@ -1,7 +1,7 @@
 {
   "name": "linked-controls",
-  "version": "1.0.0",
-  "description": "Data bound React controls consuming Links",
+  "version": "1.0.4",
+  "description": "React controls using links from valuelink package",
   "main": "./js/index.js",
   "module": "./js/indes.js",
   "types": "./js/index.d.ts",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Volicon/valuelink.git"
+    "url": "git+https://github.com/VoliJS/NestedLink.git"
   },
   "keywords": [
     "react",
@@ -28,9 +28,9 @@
   "author": "Vlad Balin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Volicon/valuelink/issues"
+    "url": "https://github.com/VoliJS/NestedLink/issues"
   },
-  "homepage": "https://github.com/Volicon/valuelink#readme",
+  "homepage": "https://github.com/VoliJS/NestedLink/linked-controls/",
   "peerDependencies": {
     "react": "*",
     "valuelink":"*"

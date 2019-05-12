@@ -41,7 +41,7 @@ const MyInput = ({ $value }) => (
 
 ## Features
 
-IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.
+***IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.***
 
 - Callback-free form controls binding to the component state.
 - Complete separation of the validation logic from the markup.
@@ -69,7 +69,7 @@ The series of 5-minute tutorials (with `React.Component`):
 
 ### [Linked Controls Reference](/linked-controls/README.md)
 
-### [Examples](https://volicon.github.io/NestedLink)([sources](/examples/))
+### [Examples](https://volijs.github.io/NestedLink)([sources](/examples/))
 
 ## How to
 

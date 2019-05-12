@@ -1,10 +1,10 @@
 import React from 'react';
-import Link, { useLinkedState } from 'valuelink';
+import Link, { useBoundLink } from 'valuelink';
 import { Input, ValidatedInput, isRequired, isEmail } from './controls.jsx';
 
 export const EditUser = ({ $user, onClose }) => {
     // Initialize local state
-    const user = useLinkedState( $user ).$links();
+    const user = useBoundLink( $user.value ).$links();
 
     // Form submit handler
     function onSubmit( e ){

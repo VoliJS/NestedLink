@@ -1,414 +1,156 @@
-# NestedLink API reference
+![logo](/images/value-link-logo.png)
 
-## Create link
+# Painless React forms, validation, and state management
 
-Links can be created and used inside of the React `component.render()` method.
+NestedLink is `useState` React Hook on steroids providing an elegant callback-free solution for complex forms with input validation and making the React state a perfect state container. It's lightweight (6.5K minified) and designed to be used with both JS and TypeScript.
 
-### State links with React Hook
+The `Link` is the object representing the writable reference to the member of the component's state encapsulating the value, function to update the value, and the validation error. `Link` class has a set of methods to perform useful transformations, such as `$link.props` generating the pair of standard `{ value, onChange }` props.
 
-##### ![static] useLink( initValue ) : Link
-
-`useLink` hook creates the component's state variable wrapped in a hook.
+`NestedLink` dramatically improves your React project's modularity and code readability.
 
 ```javascript
 import { useLink } from 'valuelink'
-import * as React from 'react'
+import { MyInput } from './controls.jsx'
 
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( '' );
+const coolState = { some : { name : '' } };
+const MyCoolComponent = () => {
+    // Digging through the object to get a link to the `coolState.some.name`
+    const $name = useLink( coolState ).at( 'some' ).at( 'name' )
+    
+    // applying the validation rules
+    $name.check( x => x.length > 0, 'Name is required' ),
+         .check( x => x.length > 2, 'Name is too short' );
+         .check( x => x.length < 20, 'Name is too long' );
 
     return (
-        <input {...$name.props} />
+        <MyInput $value={$name} />
     )
 }
-```
 
-##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
+// controls.jsx
+import * as React from 'react'
 
-Extracts an object with link values. Leading $ is removed from property names in a result.
-
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
-
-    ...
-    const values = Link.getValues({ $name, $email });
-    console.log( values ); // { name : 'a', email : 'b' }
-}
-```
-
-##### ![static] Link.getErrors({ [ name ] : Link }) : { [ name ] : value }
-
-Extracts link validation errors. Returns an empty object if there are no errors. Leading $ is removed from property names in a result.
-
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
-
-    ...
-    const values = Link.getErrors({ $name, $email });
-    console.log( values ); // { name : 'a', email : 'b' }
-}
-```
-
-##### ![static] Link.setValues({ [ name ] : Link }) : void
-
-Bulk set links from the object with values. Values object must not contain the leading $ in names.
-
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
-
-    ...
-    // Somewhere on I/O completion:
-    Link.setValues({ $name, $email }, json);
-}
-```
-
-### Linking to the state attributes
-
-##### ![method] LinkedComponent.$at( stateKey ) : Link
-
-Create link to an attribute of the component's state. Component must extend `LinkedComponent` class.
-
-Can be overriden to create custom data binding for something different than the React state.
-
-```javascript
-const $name = this.$at( 'name' ),
-      $email = this.$at( 'email' );
-```
-
-##### ![method] LinkedComponent.linkAll( stateKey1, stateKey2, ... ) : { [ key ] : Link }
-
-Create an object with links to listed state members. When no keys are provided, it creates link to 
-every member of the state. Component must extend `LinkedComponent` class.
-
-Can be overriden to create custom data binding for something different than the React state.
-
-```javascript
-const state$ = this.linkAll( 'name', 'email' ),
-      { name, email } = state$;
-```
-
-##### ![var] this.links : { [ key ] : Link }
-
-All links created during `render()` are _cached_ inside the `component.link` object.
-Direct access to the cache may be used in event handlers to reference these links.
-
-> When you create the link to the value which has not been changed since the last `render`,
-> link object will be _reused_. Which means that it's safe to use `pure render` optimization.
-
-### Links to object and arrays
-
-##### ![method] $object.at( key ) : Link
-
-Create link to the member of array or object.
-
-If linked value is plain object or array, it's possible to generate
-links to their members. Whenever this derivative links will be
-updated, it will lead to proper purely functional update (with shallow copying) of the
-parent element.
-
-```javascript
-const $name = this.$at( 'array' ).at( 0 ).at( 'name' );
-$name.set( 'Joe' ); // Will update component state.array
-```
-
-##### ![method] $object.pick( key1, key2, ... ) : { [ key ] : Link }
- 
-Create links to the object's members, and wrap them in an object. When no arguments are provided, it link all object's properties.
-
-```javascript
-const user$ = $user.pick( 'name', 'email' ),
-      { name, email } = user$;
-```
-
-##### ![method] $objOrArray.map( ( $item, itemKey ) => any | void ) : any[]
-
-Map and filter through array or object.
-
-```javascript
-var list = $stringArray.map( ( $item, index ) => {
-    if( $item.value ){ // Skip empty elements
-        return (
-            <div key={ index }>
-                <Input $value={ $item } />
-            </div>
-        );
-    }
-});
-```
-
-## Bind to control
-
-#### ![var] $something.props : { value, onChange }
-
-Bind link to the standard form control consuming value and onChange props.
-
-```javascript
-<input {...$something.props} />
-```
-
-#### Custom data-bound controls
-
-You're encouraged to create your own semantic form controls to take the full advantage
- of the value links features. An example of the control:
-
-```javascript
-const Input = ({ $value, ...props }) => (
-    <div className={`form-control ${ $value.error ? 'error' : '' }`}>
-        <input {...props}
-            value={ $value.value }
-            onChange={ e => $value.set( e.target.value ) }
-        />
-        <div className="validation-error">{ $value.error || '' }</div>
+// Custom form field with validation taking the link to the `value`
+const MyInput = ({ $value }) => (
+    <div>
+        <input {...$value.props} className={ $value.error ? 'error' : '' } />
+        <span>{ $value.error || '' }</span>
     </div>
-);
+)
 ```
 
-## Offhand boolean links
+## Features
 
-##### ![method] $array.contains( element ) : Link
+***IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.***
 
-Creates the link to the presence of value in array.
+- Callback-free form controls binding to the component state.
+- Complete separation of the validation logic from the markup.
+- Easy handling of nested objects and arrays in the component state.
+- Complete support for the React Hooks API and functional components.
+- Pricise TypeScript typings.
 
-Resulting link value is `true` whenever element is present in array, and `false` otherwise.
-Whenever resulting link is assigned with new value, it will flip `element` in the array.
+Reference implementation of 'linked' UI controls (optional `linked-controls` npm package):
 
-Useful for the large checkbox groups.
+- Standard tags: `<Input />`, `<TextArea />`, `<Select />`,
+- Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
+- Validator functions: `isNumber`, `isEmail`, `isRequred`.
+
+## Tutorials
+
+The rationale behind the design and a high-level overview of how amazing NestedLink is: [React Hooks, form validation, and complex state](https://itnext.io/react-hooks-and-two-way-data-binding-dd4210f0ed94)
+
+The series of 5-minute tutorials (with `React.Component`):
+
+- [The basics of ValueLink design pattern](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
+- [Form validation with ValueLinks](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
+- [Complex state with ValueLinks](https://medium.com/@gaperton/state-and-forms-in-react-part-3-handling-the-complex-state-acf369244d37#.x0fjcxljo)
+
+### [API Reference](./API.md)
+
+### [Linked Controls Reference](/linked-controls/README.md)
+
+### [Examples](https://volijs.github.io/NestedLink)([sources](/examples/))
+
+## How to
+
+### Use it in your project
+
+There are no side dependencies except `react` as peer dependency. Installation:
+
+`npm install valuelink --save-dev`
+
+Usage with React Hooks (check out the [React Hooks starting boilerplate](/examples/babel-starter)).
 
 ```javascript
-const optionXBoolLink = arrayLink.contains( 'optionX' );
-```
-
-##### ![method] linkToAny.equals( whenTrue ) : Link
-
-Create boolean link to value equality.
-
-Resulting link value is `true` whenever parent link value equals to `whenTrue`, and `false` otherwise.
-When resulting link is assigned with `true`, it sets parent link value with `whenTrue`, and with `null` otherwise.
-
-Useful for radio groups.
-
-```javascript
-const optionXLink = stringLink.equals( 'optionX' );
-```
-
-##### ![method] linkToAny.enabled( defaultValue = '' ) : Link
-
-Create boolean link which value is `false` when parent link is `null` (or `undefined`), and `true` otherwise.
-Whenever the enabled-link is set to `true`, it sets parent link to the `defaultValue`.
-
-This type of links is used to support enabling/disabling of individual form controls with a dedicated checkbox.
-`<Input>` control and the rest of form controls must be modified to disable themselves when its `valueLink.value === null`.
-
-```javascript
-const textLink = this.linkAt( 'text' );
-
-return (
-    <Checkbox checkedLink={ textLink.enabled() } />
-    <Input valueLink={ textLink } /> 
-);
-``` 
-
-### Custom links
-
-##### ![static] Link.value( value, nextValue => void ) : Link
-
-Create custom link with the given value and update function.
-
-It may be used for different scenarios. Good example is to use 'edit element' component for adding new element.
-
-Imagine that we have a component `<EditUser valueLink={ userLink } />` expecting the link to an object.
-When editing is finished, `EditUser` will update the given link with a new values.
-
-Then, following custom link will allow you to add new user with the same form element.
-
-```javascript
-<EditUser valueLink={ Link.value( {}, x => userArrayLink.push( x ) ) } />
-```
-
-Read more about links to objects updates in the next section.
-
-##### ![method] link.onChange( callback : any => void ) : Link
-
-Create the wrapper for existing link which will invoke callback whenever new
-value is set. Similar to:
-
-```javascript
-Link.value( link.value, x => {
-    callback( x );
-    link.set( x );
-});
-```
-
-##### ![method] link.pipe( transform : ( next, prev ) => any ) : Link
-
-Create the wrapper for existing link which will invoke given transform function
-_before_ new value is set. Returned value will be used as new link value,
-and if it's `undefined` update will be rejected. Similar to:
-
-```
-Link.value( link.value, x => {
-    const y = callback( x, link.value );
-    if( y !== undefined ){
-        link.set( y );
-    }
-});
-```  
-
-Usage example:
-
-```jsx
-<Input valueLink={ strLink.pipe( x => x && x.toUpperCase() ) }/>
-```
-
-### Note for TypeScript users
-
-`Link` is the parametric type `Link< T >`, where T is the type of the enclosed value.
-
-TypeScript properly infers type of the link and perform static checks failing on missing state members.
-
-```javascript
-interface MyState {
-    name : string
-}
+import React from 'react'
+import { useLink } from 'valuelink'
 ...
-const nameLink = this.linkAt( 'name' ); // Link< string >
-const missingLink = this.linkAt( 'age' ); // Compile-time error - no such a member in state.
-```
-    
-## Link updates
-
-### Simple value updates
-
-##### ![method] link.set( x ) : void
-
-##### ![method] link.requestChange( x ) : void
-
-Set link to the given value.
-
-```javascript
-<button onClick={ () => boolLink.set( !boolLink.value ) } />
+// Instead of const [ name, setName ] = useState('')
+const $name = useLink('');
 ```
 
-##### ![method] link.update( prevValue => any ) : void
-
-Update link value using the given value transform function.
+Usage with React Component.
 
 ```javascript
-<button onClick={ () => boolLink.update( x => !x ) } />
-```
-
-##### ![method] link.action( ( prevValue, event ) => any ) : ( event => void )
-
-Create UI event handler which will transform the link.
-
-`link.action` takes transform function, and produce a new function which takes single `event` argument.
-When it's called, `event` and link `value` are passes as transform parameters, and link will be updated 
-with returned value.
-
-This is particularly useful in (but not restricted to) UI event handlers.
-
-```javascript
-// simple click event handler...
-<button onClick={ boolLink.action( x => !x ) } />
-
-// manual binding to input control:
-const setValue = ( x, e ) => e.target.value;
+import React from 'react'
+// Instead of React.Component...
+import { LinkedComponent } from 'valuelink'
 ...
-<input  value={ link.value }
-        onChange={ link.action( setValue ) } />
+// In a render, do
+const $name = this.$at('name');
+// Or, to link all the state members at once...
+const state$ = this.state$();
 ```
 
-### Link to objects and arrays updates
+Refer to the [databinding examples](/examples/databinding) and the [manual](/linked-controls/README.md) for the typical data binding scenarios.
 
-Plain objects and arrays are shallow copied by `link.update()` and within `link.action()` handlers,
-thus it's safe just to update the value in place.
+### Create your own data bound controls
 
-##### ![method] $object.update( clonedObject => Object ) : void
- 
-Update enclosed object or array.
+Use [linked-controls](/linked-controls) project as the starting boilerplate for your components.
 
-##### ![method] $object.action( ( clonedObject, event ) => Object ) : ( event => void )
- 
-Creates action to update enclosed object or array. Object is shallow copied before the update and it's safe to 
+### Create the binding to the custom state container
 
-```javascript
-<button onClick={ () => $object.update( obj => {
-                                obj.a = 1;
-                                return obj;
-                            }) } />
-```
+NestedLink is an abstraction of the data binding independent on both the particular control and the state container. The [default binding](/valuelink/src/component.ts) implemented
+in the library is for the standard React state. It's fairly easy to create your own.
 
-##### ![method] $object.removeAt( key ) : void
+You need to subclass React.Component and make your own `$at` and `state$` methods.
+You can either use `Link.value` inside to create links dynamically, or extend the `Link` as it's done in [/valuelink/src/component.ts](/valuelink/src/component.ts).
 
-##### ![method] $object.at( key ).remove() : void
+### Start hacking
 
-Remove element with a given key from the enclosed object ar array.
+![design](/images/valuelinks.jpg)
 
-### Link to arrays updates
+It's a very simple library written with TypeScript, there's no any magic inside (except some scary type annotations). If you want to play with the examples, fix the bug, or whatever:
 
-Link to arrays proxies some important Array methods. 
+`yarn` - installs the dependencies.
 
-##### ![method] $array.splice( ... ) : void
+`yarn build` - compiles everything including examples.
 
-##### ![method] $array.push( ... ) : void
+## Release Notes
+### 2.0
 
-##### ![method] $array.unshift( ... ) : void
+- IMPORTANT: Repository is converted to the monorepository based on yarn worspaces.
+- IMPORTANT: `valuelink/tags.jsx` is moved to the dedicated package `linked-controls`.
+- Complete support of new React Hooks API.
+    - `useLink()` to create the state link.
+    - `useIO()` to perform promised IO on mount.
+    - `useLocalStorage()` to persist links to the local storage (loaded on mount, saved on unmount).
+- $-notation for the link variables.
+- New React.Component API (`this.linkAt -> this.$at`, `this.linkAll` -> `this.state$`)
+- Group operations `Link.getValues()`, `Link.setValues()`, `Link.getErrors()`
 
-Works in the same way and accepts the same parameters as corresponding Array method,
-but returns `undefined` and leads to the proper purely functional update of the parent object chain.
+### v1.6
 
-## Links validation
+React Hooks support.
 
-> It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
-> on validation with value links.
+- `useLink( initValue )` - create linked state.
+- `setLinks({ lnk1, lnk2, ... }, json )` - bulk set link values from an object.
+- `linksValues({ lnk1, lnk2, ... })` - extract values object from links.
+- `linksErrors({ lnk1, lnk2, ... })` - extract errors object from links.
 
-##### ![method] $link.check( value => boolean, error = 'Invalid value' ) : Link
- 
-Evaluate given condition for the current link value, and assign
-given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
+### v1.5
 
-It's possible to assign default error message to the validator function. `linked-controls` package provides `isRequired` and `isEmail`
-generic validator functions as an examples: 
+- `<input {...link.props} />` can be used to bind the link to any of the standard controls expecting `value` and `onChange` props.
 
-```jsx
-export const isRequired = x => x != null && x !== '';
-isRequired.error = 'Required';
-```
- 
-Checks can be chained. In this case, the first check which fails will leave its error in the link.
-
-##### ![var] $link.error : any | void
-
-This field is populated by the `link.check` method and must not be assigned manually.
-It should be used by a custom `<Input />` control to display an error (see `linked-controls` and examples).
-
-```javascript
-// Simple check
-const $num = this.$at( 'num' )
-                .check( x => x >= 0 && x <=5 );
-
-console.log( $num.error );
-
-// Check with error message
-const $num = this.$at( 'num' )
-                .check( x => x >= 0 && x <=5, 'Number must be between 0 and 5' );
-
-console.log( $num.error );
-
-// Chained checks
-const $num = this.$at( 'num' )
-                .check( x => x >= 0, 'Negative numbers are not allowed' )
-                .check( x => x <= 5, 'Number should be not greater than 5' );
-
-console.log( $num.error );
-```
-
-[method]: /images/method.png
-[static]: /images/static.png
-[var]: /images/var.png
+---
+![usedby](/images/usedby.png)

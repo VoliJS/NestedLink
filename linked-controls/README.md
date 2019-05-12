@@ -1,9 +1,8 @@
 # Linked Controls
 
-Reference implementation of linked form controls. Can be used as a starting boilerplate for
-your own controls with inlined validation errors.
+The reference implementation of React form controls using [value links](https://github.com/VoliJS/NestedLink). Can be used as is or as a starting boilerplate for your custom controls with inlined validation errors.
 
-Link can be bound to the any form control consuming `value` and `onChange` props, so linked controls from this package may be used but not really required.
+Link can be bound to the any form control consuming `value` and `onChange` props, so linked controls from this package may be used but are not really required.
 
 ```javascript
 <input {...$value.props} />
@@ -14,6 +13,15 @@ However, it's beneficial to create a custom form control wrappers encapsulating 
 ## Installation
 
     npm install linked-controls --save-dev
+
+## React hooks
+
+##### useThrottle( fun, timeout, changes = [] )
+
+Produce throttled version of the `fun` function, which will be executed after the given delay in msecs.
+All external variabled used by fun must be listed in `changes` array to prevent race conditions.
+
+The hook is used by the `<DelayedInput/>`.
 
 ## List of controls
 
@@ -46,6 +54,13 @@ A cross-browser implementation of *numeric input* tag. It has following differen
 <NumberInput $value={ $link } positive={ true }/>
 ```
 
+##### `<DelayedInput/>`
+
+Text input field updating the `$value` after the given timeout when user stopped typing (1 second by default).
+
+```jsx
+<DelayedInput $value={$link} timeout={500} />
+```
 ### Checkboxes
 
 ##### `<Input type="checkbox" />`

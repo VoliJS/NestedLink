@@ -5,6 +5,7 @@
         "noEmitHelpers": true,
         "moduleResolution": "node",
         "declaration": true,
+        "checkJs": true,
         "target": "es5",
         "module": "es6",
         "sourceMap": true,
