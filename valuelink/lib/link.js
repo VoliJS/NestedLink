@@ -5,6 +5,7 @@ import * as tslib_1 from "tslib";
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
 import { helpers, arrayHelpers } from './helpers';
+export { Link as StateRef };
 // Main Link class. All links must extend it.
 var Link = /** @class */ (function () {
     function Link(value) {

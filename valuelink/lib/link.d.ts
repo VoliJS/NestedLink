@@ -4,6 +4,7 @@ export interface Validator<T> {
     (value: T): boolean;
     error?: any;
 }
+export { Link as StateRef };
 export declare abstract class Link<T> {
     value: T;
     static value<T>(value: T, set: (x: T) => void): Link<T>;

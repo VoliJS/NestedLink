@@ -25977,7 +25977,7 @@ function useIO(fun, condition) {
 /*!*****************************************************************!*\
   !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/index.js ***!
   \*****************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, UseStateLink, useLink, useStateRef, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO */
+/*! exports provided: default, LinkedComponent, StateLink, StateRef, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, UseStateLink, useLink, useStateRef, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25987,6 +25987,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LinkedComponent", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["LinkedComponent"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateLink", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["StateLink"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["StateRef"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["Link"]; });
 
@@ -26040,11 +26042,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************************!*\
   !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/link.js ***!
   \****************************************************************/
-/*! exports provided: Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
+/*! exports provided: StateRef, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StateRef", function() { return Link; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return Link; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomLink", function() { return CustomLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CloneLink", function() { return CloneLink; });
@@ -26060,6 +26063,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
+
 
 // Main Link class. All links must extend it.
 var Link = /** @class */ (function () {
