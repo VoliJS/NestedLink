@@ -13,6 +13,8 @@ export interface Validator< T >{
     error? : any
 }
 
+export { Link as StateRef }
+
 // Main Link class. All links must extend it.
 export abstract class Link< T >{
     // Create custom link to arbitrary value
