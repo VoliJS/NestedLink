@@ -13,6 +13,7 @@ export declare abstract class Link<T> {
     static getValues<K extends keyof L, L extends LinksHash>(links: L): {
         [name in K]: any;
     };
+    current: T;
     /**
      * Unwrap object with links, returning an object of a similar shape filled with link errors.
      */

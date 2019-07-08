@@ -28,6 +28,10 @@ export abstract class Link< T >{
        return unwrap( links, 'value' ) as any;
     }
 
+    // Support useRef interface.
+    get current(){ return this.value; }
+    set current( x : T ){ this.set( x ); }
+
     /**
      * Unwrap object with links, returning an object of a similar shape filled with link errors.
      */

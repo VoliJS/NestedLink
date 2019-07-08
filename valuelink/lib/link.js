@@ -20,6 +20,13 @@ var Link = /** @class */ (function () {
     Link.getValues = function (links) {
         return unwrap(links, 'value');
     };
+    Object.defineProperty(Link.prototype, "current", {
+        // Support useRef interface.
+        get: function () { return this.value; },
+        set: function (x) { this.set(x); },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Unwrap object with links, returning an object of a similar shape filled with link errors.
      */

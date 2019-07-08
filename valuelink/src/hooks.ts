@@ -27,12 +27,14 @@ export class UseStateLink<T> extends Link<T> {
 }
 
 /**
- * Create the link to the local state.
+ * Create the ref to the local state.
  */
 export function useLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState );
     return new UseStateLink( value, set );
 }
+
+export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef }
 
 /**
  * Create the link to the local state which is safe to set when component is unmounted.

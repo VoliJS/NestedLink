@@ -23,12 +23,13 @@ var UseStateLink = /** @class */ (function (_super) {
 }(Link));
 export { UseStateLink };
 /**
- * Create the link to the local state.
+ * Create the ref to the local state.
  */
 export function useLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1];
     return new UseStateLink(value, set);
 }
+export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.

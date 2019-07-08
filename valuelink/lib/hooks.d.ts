@@ -6,9 +6,10 @@ export declare class UseStateLink<T> extends Link<T> {
     constructor(value: T, set: (x: T | ((x: T) => T)) => void);
 }
 /**
- * Create the link to the local state.
+ * Create the ref to the local state.
  */
 export declare function useLink<S>(initialState: S | (() => S)): UseStateLink<S>;
+export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.
