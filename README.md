@@ -65,7 +65,7 @@ The series of 5-minute tutorials (with `React.Component`):
 - [Form validation with ValueLinks](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
 - [Complex state with ValueLinks](https://medium.com/@gaperton/state-and-forms-in-react-part-3-handling-the-complex-state-acf369244d37#.x0fjcxljo)
 
-### [API Reference](/valuelink/README.md)
+### [API Reference](/valuelink/API.md)
 
 ### [Linked Controls Reference](/linked-controls/README.md)
 
