@@ -111,12 +111,21 @@ export function useIO(fun, condition) {
     // but the I/O is not completed.
     return $isReady.value === null ? false : !$isReady.value;
 }
-// Return an array of values to be used in useEffect hook.
-export function whenChanged() {
-    var objs = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        objs[_i] = arguments[_i];
+export function whenChanged(a, b, c, d) {
+    var length = arguments.length;
+    switch (length) {
+        case 1: return [extractChangeToken(a)];
+        case 2: return [extractChangeToken(a), extractChangeToken(b)];
+        case 3: return [extractChangeToken(a), extractChangeToken(b), extractChangeToken(c)];
+        default:
+            var array = [extractChangeToken(a), extractChangeToken(b), extractChangeToken(c), extractChangeToken(d)];
+            for (var i = 4; i < length; i++) {
+                array.push(extractChangeToken(arguments[i]));
+            }
+            return array;
     }
-    return objs.map(function (x) { return x && (x._changeToken || x); });
+}
+function extractChangeToken(x) {
+    return x && x._changeToken !== void 0 ? x._changeToken : x;
 }
 //# sourceMappingURL=hooks.js.map

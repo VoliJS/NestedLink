@@ -140,6 +140,25 @@ export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : bool
 }
 
 // Return an array of values to be used in useEffect hook.
-export function whenChanged( ...objs : any[] ) : any[] {
-    return objs.map( ( x : any ) => x && ( x._changeToken || x ) );
+export function whenChanged( ...objs : any[] ) : any[];
+export function whenChanged( a, b, c, d ) : any[] {
+    const { length } = arguments;
+    switch( length ){
+        case 1: return [ extractChangeToken( a ) ];
+        case 2: return [ extractChangeToken( a ), extractChangeToken( b ) ];
+        case 3: return [ extractChangeToken( a ), extractChangeToken( b ), extractChangeToken( c ) ];
+        
+        default:
+            const array = [ extractChangeToken( a ), extractChangeToken( b ), extractChangeToken( c ), extractChangeToken( d ) ];
+            
+            for( let i = 4; i < length; i++ ){
+                array.push( extractChangeToken( arguments[ i ] ) );
+            }
+
+            return array;
+    }
+}
+
+function extractChangeToken( x : any ){
+    return x && x._changeToken !== void 0 ? x._changeToken : x;
 }
