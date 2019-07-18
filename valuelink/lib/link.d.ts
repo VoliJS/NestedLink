@@ -73,7 +73,7 @@ export declare abstract class StateRef<T> {
      * Convert link to object to the object of links with $-keys.
      */
     $links(): {
-        [P in keyof T]: StateRef<T[P]>;
+        [key: string]: StateRef<any>;
     };
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.

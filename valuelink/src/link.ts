@@ -200,7 +200,7 @@ export abstract class StateRef< T >{
     /**
      * Convert link to object to the object of links with $-keys.
      */
-    $links() : {[ P in keyof T ]: StateRef<T[P]>}{
+    $links() : { [ key : string ] : StateRef<any> }{
         let links : RefsHash = {},
             { value } = this;
 
