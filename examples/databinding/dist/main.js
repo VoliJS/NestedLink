@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../linked-controls/js/custom.js":
-/*!*********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/custom.js ***!
-  \*********************************************************************/
+/*!***********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/custom.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -184,9 +184,9 @@ exports.DelayedInput = function (_a) {
 /***/ }),
 
 /***/ "../../linked-controls/js/hooks.js":
-/*!********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/hooks.js ***!
-  \********************************************************************/
+/*!**********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/hooks.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -241,9 +241,9 @@ exports.useThrottle = useThrottle;
 /***/ }),
 
 /***/ "../../linked-controls/js/index.js":
-/*!********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/index.js ***!
-  \********************************************************************/
+/*!**********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/index.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -274,9 +274,9 @@ __export(__webpack_require__(/*! ./validators */ "../../linked-controls/js/valid
 /***/ }),
 
 /***/ "../../linked-controls/js/number.js":
-/*!*********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/number.js ***!
-  \*********************************************************************/
+/*!***********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/number.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -444,9 +444,9 @@ exports.NumberInput = NumberInput;
 /***/ }),
 
 /***/ "../../linked-controls/js/standard.js":
-/*!***********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/standard.js ***!
-  \***********************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/standard.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -586,9 +586,9 @@ exports.Select = function (_a) {
 /***/ }),
 
 /***/ "../../linked-controls/js/validators.js":
-/*!*************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/linked-controls/js/validators.js ***!
-  \*************************************************************************/
+/*!***************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/linked-controls/js/validators.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -621,9 +621,9 @@ exports.isNumber.error = 'Should be a number';
 /***/ }),
 
 /***/ "../../node_modules/css-loader/index.js!./src/main.css":
-/*!*******************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader!./src/main.css ***!
-  \*******************************************************************************/
+/*!*********************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/css-loader!./src/main.css ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -632,7 +632,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.invalid.required {\r\n    border-color: yellow;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
+exports.push([module.i, ".invalid {\n    border-color: red;\n}\n\n.invalid.required {\n    border-color: yellow;\n}\n\n.checkbox,.radio {\n    margin: 3px;\n    display: inline-block;\n    width: 10px;\n    height : 10px;\n    border: solid;\n    border-width: 1px;\n}\n\n.selected {\n    background-color: black;\n}\n\nlabel {\n    display: block;\n    margin: 5px;\n}\n\ninput {\n    margin: 3px;\n}\n\n\n.users-row>div {\n    display: inline-block;\n    width : 15em;\n}\n\n.validation-error {\n    display: inline-block;\n    color: red;\n}\n\nlabel>div {\n    display: inline-block;\n}", ""]);
 
 // exports
 
@@ -640,9 +640,9 @@ exports.push([module.i, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.inval
 /***/ }),
 
 /***/ "../../node_modules/css-loader/lib/css-base.js":
-/*!********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
-  \********************************************************************************/
+/*!**********************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -727,9 +727,9 @@ function toComment(sourceMap) {
 /***/ }),
 
 /***/ "../../node_modules/object-assign/index.js":
-/*!****************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/object-assign/index.js ***!
-  \****************************************************************************/
+/*!******************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/object-assign/index.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -829,9 +829,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /***/ }),
 
 /***/ "../../node_modules/prop-types/checkPropTypes.js":
-/*!**********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
-  \**********************************************************************************/
+/*!************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -943,9 +943,9 @@ module.exports = checkPropTypes;
 /***/ }),
 
 /***/ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -967,9 +967,9 @@ module.exports = ReactPropTypesSecret;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/cjs/react-dom.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
-  \********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22257,9 +22257,9 @@ module.exports = reactDom;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react-dom/index.js ***!
-  \************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/react-dom/index.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22302,9 +22302,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/react/cjs/react.development.js":
-/*!************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
-  \************************************************************************************/
+/*!**************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24215,9 +24215,9 @@ module.exports = react;
 /***/ }),
 
 /***/ "../../node_modules/react/index.js":
-/*!********************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/react/index.js ***!
-  \********************************************************************/
+/*!**********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/react/index.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24232,9 +24232,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js":
-/*!****************************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \****************************************************************************************************/
+/*!******************************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24667,9 +24667,9 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler.development.js":
-/*!********************************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
-  \********************************************************************************************/
+/*!**********************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
+  \**********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25379,9 +25379,9 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/index.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/index.js ***!
-  \************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/scheduler/index.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25396,9 +25396,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/tracing.js":
-/*!**************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
-  \**************************************************************************/
+/*!****************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25413,9 +25413,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/addStyles.js":
-/*!***********************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
-  \***********************************************************************************/
+/*!*************************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25800,9 +25800,9 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/urls.js":
-/*!******************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
-  \******************************************************************************/
+/*!********************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -25900,9 +25900,9 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ "../../node_modules/tslib/tslib.es6.js":
-/*!************************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
-  \************************************************************************/
+/*!**************************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
+  \**************************************************************************/
 /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26149,9 +26149,9 @@ module.exports = g;
 /***/ }),
 
 /***/ "../../valuelink/lib/component.js":
-/*!*******************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/component.js ***!
-  \*******************************************************************/
+/*!*********************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/component.js ***!
+  \*********************************************************************/
 /*! exports provided: LinkedComponent, StateLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26226,9 +26226,9 @@ var StateLink = /** @class */ (function (_super) {
 /***/ }),
 
 /***/ "../../valuelink/lib/helpers.js":
-/*!*****************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/helpers.js ***!
-  \*****************************************************************/
+/*!*******************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/helpers.js ***!
+  \*******************************************************************/
 /*! exports provided: helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26303,22 +26303,27 @@ var arrayHelpers = {
 /***/ }),
 
 /***/ "../../valuelink/lib/hooks.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/hooks.js ***!
-  \***************************************************************/
-/*! exports provided: UseStateLink, useLink, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO */
+/*!*****************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/hooks.js ***!
+  \*****************************************************************/
+/*! exports provided: UseStateRef, useLink, useStateRef, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseStateLink", function() { return UseStateLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseStateRef", function() { return UseStateRef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useStateRef", function() { return useLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeStateRef", function() { return useSafeLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useBoundStateRef", function() { return useBoundLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeBoundStateRef", function() { return useSafeBoundLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return useSafeLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIsMountedRef", function() { return useIsMountedRef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useBoundLink", function() { return useBoundLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeBoundLink", function() { return useSafeBoundLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLocalStorage", function() { return useLocalStorage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return useIO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "whenChanged", function() { return whenChanged; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
@@ -26328,16 +26333,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var UseStateLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](UseStateLink, _super);
-    function UseStateLink(value, set) {
+var UseStateRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](UseStateRef, _super);
+    function UseStateRef(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
         return _this;
     }
     // Set the component's state value.
-    UseStateLink.prototype.set = function (x) { };
-    UseStateLink.prototype.update = function (fun, event) {
+    UseStateRef.prototype.set = function (x) { };
+    UseStateRef.prototype.update = function (fun, event) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
         this.set(function (x) {
@@ -26345,23 +26350,24 @@ var UseStateLink = /** @class */ (function (_super) {
             return result === void 0 ? x : result;
         });
     };
-    return UseStateLink;
+    return UseStateRef;
 }(_link__WEBPACK_IMPORTED_MODULE_3__["Link"]));
 
 /**
- * Create the link to the local state.
+ * Create the ref to the local state.
  */
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initialState), value = _a[0], set = _a[1];
-    return new UseStateLink(value, set);
+    return new UseStateRef(value, set);
 }
+
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.
  */
 function useSafeLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
-    return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
+    return new UseStateRef(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Returns the ref which is true when component it mounted.
@@ -26436,15 +26442,23 @@ function useIO(fun, condition) {
     // but the I/O is not completed.
     return $isReady.value === null ? false : !$isReady.value;
 }
+// Return an array of values to be used in useEffect hook.
+function whenChanged() {
+    var objs = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        objs[_i] = arguments[_i];
+    }
+    return objs.map(function (x) { return x && (x._changeToken || x); });
+}
 //# sourceMappingURL=hooks.js.map
 
 /***/ }),
 
 /***/ "../../valuelink/lib/index.js":
-/*!***************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/index.js ***!
-  \***************************************************************/
-/*! exports provided: default, LinkedComponent, StateLink, Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt, UseStateLink, useLink, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO */
+/*!*****************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/index.js ***!
+  \*****************************************************************/
+/*! exports provided: default, LinkedComponent, StateLink, Link, StateRef, CustomStateRef, ClonedStateRef, EqualsRef, EnabledRef, ContainsRef, RefAt, UseStateRef, useLink, useStateRef, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26457,22 +26471,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["Link"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomLink", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["CustomLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["StateRef"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CloneLink", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["CloneLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomStateRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["CustomStateRef"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EqualsLink", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["EqualsLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ClonedStateRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["ClonedStateRef"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EnabledLink", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["EnabledLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EqualsRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["EqualsRef"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContainsLink", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["ContainsLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EnabledRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["EnabledRef"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LinkAt", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["LinkAt"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContainsRef", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["ContainsRef"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RefAt", function() { return _link__WEBPACK_IMPORTED_MODULE_0__["RefAt"]; });
 
 /* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../valuelink/lib/hooks.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UseStateLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["UseStateLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UseStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["UseStateRef"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useStateRef"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeStateRef"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useBoundStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useBoundStateRef"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeBoundStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeBoundStateRef"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeLink"]; });
 
@@ -26486,6 +26510,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useIO"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "whenChanged", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["whenChanged"]; });
+
 
 /* harmony default export */ __webpack_exports__["default"] = (_link__WEBPACK_IMPORTED_MODULE_0__["Link"]);
 
@@ -26496,21 +26522,22 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "../../valuelink/lib/link.js":
-/*!**************************************************************!*\
-  !*** C:/Users/gaper/GitHub/NestedLink/valuelink/lib/link.js ***!
-  \**************************************************************/
-/*! exports provided: Link, CustomLink, CloneLink, EqualsLink, EnabledLink, ContainsLink, LinkAt */
+/*!****************************************************************!*\
+  !*** /Users/vladbalin/GitHub/NestedLink/valuelink/lib/link.js ***!
+  \****************************************************************/
+/*! exports provided: Link, StateRef, CustomStateRef, ClonedStateRef, EqualsRef, EnabledRef, ContainsRef, RefAt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return Link; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomLink", function() { return CustomLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CloneLink", function() { return CloneLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EqualsLink", function() { return EqualsLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnabledLink", function() { return EnabledLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContainsLink", function() { return ContainsLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkAt", function() { return LinkAt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return StateRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StateRef", function() { return StateRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomStateRef", function() { return CustomStateRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClonedStateRef", function() { return ClonedStateRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EqualsRef", function() { return EqualsRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnabledRef", function() { return EnabledRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContainsRef", function() { return ContainsRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RefAt", function() { return RefAt; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "../../valuelink/lib/helpers.js");
 
@@ -26520,31 +26547,47 @@ __webpack_require__.r(__webpack_exports__);
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
 
+
 // Main Link class. All links must extend it.
-var Link = /** @class */ (function () {
-    function Link(value) {
+var StateRef = /** @class */ (function () {
+    function StateRef(value) {
         this.value = value;
     }
     // Create custom link to arbitrary value
-    Link.value = function (value, set) {
-        return new CustomLink(value, set);
+    StateRef.value = function (value, set) {
+        return new CustomStateRef(value, set);
     };
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
     */
-    Link.getValues = function (links) {
+    StateRef.getValues = function (links) {
         return unwrap(links, 'value');
     };
+    Object.defineProperty(StateRef.prototype, "current", {
+        // EXPERIMENTAL: Support useRef interface.
+        get: function () { return this.value; },
+        set: function (x) { this.set(x); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StateRef.prototype, "_changeToken", {
+        // Private accessor for whenChanged. Uniform with Type-R models and collections API.
+        get: function () {
+            return this.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Unwrap object with links, returning an object of a similar shape filled with link errors.
      */
-    Link.getErrors = function (links) {
+    StateRef.getErrors = function (links) {
         return unwrap(links, 'error');
     };
     /**
      * Return true if an object with links contains any errors.
      */
-    Link.hasErrors = function (links) {
+    StateRef.hasErrors = function (links) {
         for (var key in links) {
             if (links.hasOwnProperty(key) && links[key].error) {
                 return true;
@@ -26555,7 +26598,7 @@ var Link = /** @class */ (function () {
     /**
     * Assing links with values from the source object.
     */
-    Link.setValues = function (links, source) {
+    StateRef.setValues = function (links, source) {
         if (source) {
             for (var key in links) {
                 var sourceKey = trim(key);
@@ -26566,14 +26609,14 @@ var Link = /** @class */ (function () {
             }
         }
     };
-    Link.prototype.onChange = function (handler) {
+    StateRef.prototype.onChange = function (handler) {
         var _this = this;
-        return new CloneLink(this, function (x) {
+        return new ClonedStateRef(this, function (x) {
             handler(x);
             _this.set(x);
         });
     };
-    Object.defineProperty(Link.prototype, "props", {
+    Object.defineProperty(StateRef.prototype, "props", {
         // <input { ...link.props } />
         get: function () {
             var _this = this;
@@ -26589,78 +26632,78 @@ var Link = /** @class */ (function () {
         configurable: true
     });
     // Immediately update the link value using given transform function.
-    Link.prototype.update = function (transform, e) {
+    StateRef.prototype.update = function (transform, e) {
         var next = transform(this.clone(), e);
         next === void 0 || this.set(next);
     };
     // Create new link which applies transform function on set.
-    Link.prototype.pipe = function (handler) {
+    StateRef.prototype.pipe = function (handler) {
         var _this = this;
-        return new CloneLink(this, function (x) {
+        return new ClonedStateRef(this, function (x) {
             var next = handler(x, _this.value);
             next === void 0 || _this.set(next);
         });
     };
     // Create UI event handler function which will update the link with a given transform function.
-    Link.prototype.action = function (transform) {
+    StateRef.prototype.action = function (transform) {
         var _this = this;
         return function (e) { return _this.update(transform, e); };
     };
-    Link.prototype.equals = function (truthyValue) {
-        return new EqualsLink(this, truthyValue);
+    StateRef.prototype.equals = function (truthyValue) {
+        return new EqualsRef(this, truthyValue);
     };
-    Link.prototype.enabled = function (defaultValue) {
-        return new EnabledLink(this, defaultValue || "");
+    StateRef.prototype.enabled = function (defaultValue) {
+        return new EnabledRef(this, defaultValue || "");
     };
     // Array-only links methods
-    Link.prototype.contains = function (element) {
-        return new ContainsLink(this, element);
+    StateRef.prototype.contains = function (element) {
+        return new ContainsRef(this, element);
     };
-    Link.prototype.push = function () {
+    StateRef.prototype.push = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.push.apply(array, arguments);
         this.set(array);
     };
-    Link.prototype.unshift = function () {
+    StateRef.prototype.unshift = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.unshift.apply(array, arguments);
         this.set(array);
     };
-    Link.prototype.splice = function () {
+    StateRef.prototype.splice = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.splice.apply(array, arguments);
         this.set(array);
     };
-    Link.prototype.map = function (iterator) {
+    StateRef.prototype.map = function (iterator) {
         return Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(this.value).map(this, iterator);
     };
-    Link.prototype.removeAt = function (key) {
+    StateRef.prototype.removeAt = function (key) {
         var value = this.value, _ = Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(value);
         this.set(_.remove(_.clone(value), key));
     };
-    Link.prototype.at = function (key) {
-        return new LinkAt(this, key);
+    StateRef.prototype.at = function (key) {
+        return new RefAt(this, key);
     };
-    Link.prototype.clone = function () {
+    StateRef.prototype.clone = function () {
         var value = this.value;
         return Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(value).clone(value);
     };
-    Link.prototype.pick = function () {
+    StateRef.prototype.pick = function () {
         var links = {}, keys = arguments.length ? arguments : Object.keys(this.value);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            links[key] = new LinkAt(this, key);
+            links[key] = new RefAt(this, key);
         }
         return links;
     };
     /**
      * Convert link to object to the object of links with $-keys.
      */
-    Link.prototype.$links = function () {
+    StateRef.prototype.$links = function () {
         var links = {}, value = this.value;
         for (var key in value) {
             if (value.hasOwnProperty(key)) {
-                links['$' + key] = new LinkAt(this, key);
+                links['$' + key] = new RefAt(this, key);
             }
         }
         return links;
@@ -26668,29 +26711,29 @@ var Link = /** @class */ (function () {
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
-    Link.prototype.check = function (whenValid, error) {
+    StateRef.prototype.check = function (whenValid, error) {
         if (!this.error && !whenValid(this.value)) {
             this.error = error || whenValid.error || defaultError;
         }
         return this;
     };
-    return Link;
+    return StateRef;
 }());
 
-var CustomLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](CustomLink, _super);
-    function CustomLink(value, set) {
+var CustomStateRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](CustomStateRef, _super);
+    function CustomStateRef(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
         return _this;
     }
-    CustomLink.prototype.set = function (x) { };
-    return CustomLink;
-}(Link));
+    CustomStateRef.prototype.set = function (x) { };
+    return CustomStateRef;
+}(StateRef));
 
-var CloneLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](CloneLink, _super);
-    function CloneLink(parent, set) {
+var ClonedStateRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ClonedStateRef, _super);
+    function ClonedStateRef(parent, set) {
         var _this = _super.call(this, parent.value) || this;
         _this.set = set;
         var error = parent.error;
@@ -26698,47 +26741,47 @@ var CloneLink = /** @class */ (function (_super) {
             _this.error = error;
         return _this;
     }
-    CloneLink.prototype.set = function (x) { };
-    return CloneLink;
-}(Link));
+    ClonedStateRef.prototype.set = function (x) { };
+    return ClonedStateRef;
+}(StateRef));
 
-var EqualsLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EqualsLink, _super);
-    function EqualsLink(parent, truthyValue) {
+var EqualsRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EqualsRef, _super);
+    function EqualsRef(parent, truthyValue) {
         var _this = _super.call(this, parent.value === truthyValue) || this;
         _this.parent = parent;
         _this.truthyValue = truthyValue;
         return _this;
     }
-    EqualsLink.prototype.set = function (x) {
+    EqualsRef.prototype.set = function (x) {
         this.parent.set(x ? this.truthyValue : null);
     };
-    return EqualsLink;
-}(Link));
+    return EqualsRef;
+}(StateRef));
 
-var EnabledLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EnabledLink, _super);
-    function EnabledLink(parent, defaultValue) {
+var EnabledRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EnabledRef, _super);
+    function EnabledRef(parent, defaultValue) {
         var _this = _super.call(this, parent.value != null) || this;
         _this.parent = parent;
         _this.defaultValue = defaultValue;
         return _this;
     }
-    EnabledLink.prototype.set = function (x) {
+    EnabledRef.prototype.set = function (x) {
         this.parent.set(x ? this.defaultValue : null);
     };
-    return EnabledLink;
-}(Link));
+    return EnabledRef;
+}(StateRef));
 
-var ContainsLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ContainsLink, _super);
-    function ContainsLink(parent, element) {
+var ContainsRef = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ContainsRef, _super);
+    function ContainsRef(parent, element) {
         var _this = _super.call(this, parent.value.indexOf(element) >= 0) || this;
         _this.parent = parent;
         _this.element = element;
         return _this;
     }
-    ContainsLink.prototype.set = function (x) {
+    ContainsRef.prototype.set = function (x) {
         var _this = this;
         var next = Boolean(x);
         if (this.value !== next) {
@@ -26746,27 +26789,27 @@ var ContainsLink = /** @class */ (function (_super) {
             this.parent.set(nextValue);
         }
     };
-    return ContainsLink;
-}(Link));
+    return ContainsRef;
+}(StateRef));
 
 var defaultError = 'Invalid value';
 /**
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-var LinkAt = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](LinkAt, _super);
-    function LinkAt(parent, key) {
+var RefAt = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](RefAt, _super);
+    function RefAt(parent, key) {
         var _this = _super.call(this, parent.value[key]) || this;
         _this.parent = parent;
         _this.key = key;
         return _this;
     }
-    LinkAt.prototype.remove = function () {
+    RefAt.prototype.remove = function () {
         this.parent.removeAt(this.key);
     };
     // Set new element value to parent array or object, performing purely functional update.
-    LinkAt.prototype.set = function (x) {
+    RefAt.prototype.set = function (x) {
         var _this = this;
         if (this.value !== x) {
             this.parent.update(function (value) {
@@ -26776,8 +26819,8 @@ var LinkAt = /** @class */ (function (_super) {
         }
     };
     ;
-    return LinkAt;
-}(Link));
+    return RefAt;
+}(StateRef));
 
 function unwrap(links, field) {
     var values = {};

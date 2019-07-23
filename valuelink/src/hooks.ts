@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { helpers } from './helpers';
-import { Link, LinksHash } from './link';
+import { Link as StateRef, RefsHash } from './link';
 
-export class UseStateLink<T> extends Link<T> {
+export class UseStateRef<T> extends StateRef<T> {
     // Set the component's state value.
     set( x : T | ( ( x : T ) => T ) ) : void {}
 
@@ -27,12 +27,14 @@ export class UseStateLink<T> extends Link<T> {
 }
 
 /**
- * Create the link to the local state.
+ * Create the ref to the local state.
  */
 export function useLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState );
-    return new UseStateLink( value, set );
+    return new UseStateRef( value, set );
 }
+
+export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef }
 
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
@@ -42,7 +44,7 @@ export function useSafeLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState ),
             isMounted = useIsMountedRef();
 
-    return new UseStateLink( value, x => isMounted.current && set( x ) );
+    return new UseStateRef( value, x => isMounted.current && set( x ) );
 }
 
 /**
@@ -62,8 +64,8 @@ export function useIsMountedRef(){
  * Create the link to the local state which is bound to another 
  * value or link in a single direction. When the source changes, the link changes too.
  */
-export function useBoundLink<T>( source : T | Link<T>) : Link<T> {
-    const value = source instanceof Link ? source.value : source,
+export function useBoundLink<T>( source : T | StateRef<T>) : StateRef<T> {
+    const value = source instanceof StateRef ? source.value : source,
           link = useLink( value );
 
     useEffect(() => link.set( value ), [ value ]);
@@ -77,8 +79,8 @@ export function useBoundLink<T>( source : T | Link<T>) : Link<T> {
  * value or link in a single direction.
  * When the source change, the linked state changes too.
  */
-export function useSafeBoundLink<T>( source : T ) : Link<T> {
-    const value = source instanceof Link ? source.value : source,
+export function useSafeBoundLink<T>( source : T | StateRef<T> ) : StateRef<T> {
+    const value = source instanceof StateRef ? source.value : source,
           link = useSafeLink( value );
  
     useEffect(() => link.set( value ), [ value ]);
@@ -92,17 +94,17 @@ export function useSafeBoundLink<T>( source : T ) : Link<T> {
  * @param key - string key for the localStorage entry.
  * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
  */
-export function useLocalStorage( key : string, state : LinksHash ){
+export function useLocalStorage( key : string, state : RefsHash ){
     // save state to use on unmount...
-    const stateRef = useRef<LinksHash>();
+    const stateRef = useRef<RefsHash>();
     stateRef.current = state;
 
     useEffect(()=>{
         const savedData = JSON.parse( localStorage.getItem( key ) || '{}' );
-        Link.setValues( stateRef.current, savedData );
+        StateRef.setValues( stateRef.current, savedData );
 
         return () =>{
-            const dataToSave = Link.getValues( stateRef.current );
+            const dataToSave = StateRef.getValues( stateRef.current );
             localStorage.setItem( key, JSON.stringify( dataToSave ) );
         }
     },[]);
@@ -135,4 +137,28 @@ export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : bool
     // null is used to detect the first render when no requests issued yet
     // but the I/O is not completed.
     return $isReady.value === null ? false : !$isReady.value;
+}
+
+// Return an array of values to be used in useEffect hook.
+export function whenChanged( ...objs : any[] ) : any[];
+export function whenChanged( a, b, c, d ) : any[] {
+    const { length } = arguments;
+    switch( length ){
+        case 1: return [ extractChangeToken( a ) ];
+        case 2: return [ extractChangeToken( a ), extractChangeToken( b ) ];
+        case 3: return [ extractChangeToken( a ), extractChangeToken( b ), extractChangeToken( c ) ];
+        
+        default:
+            const array = [ extractChangeToken( a ), extractChangeToken( b ), extractChangeToken( c ), extractChangeToken( d ) ];
+            
+            for( let i = 4; i < length; i++ ){
+                array.push( extractChangeToken( arguments[ i ] ) );
+            }
+
+            return array;
+    }
+}
+
+function extractChangeToken( x : any ){
+    return x && x._changeToken !== void 0 ? x._changeToken : x;
 }

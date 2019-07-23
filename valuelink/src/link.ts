@@ -13,25 +13,36 @@ export interface Validator< T >{
     error? : any
 }
 
+export { StateRef as Link }
+
 // Main Link class. All links must extend it.
-export abstract class Link< T >{
+export abstract class StateRef< T >{
     // Create custom link to arbitrary value
-    static value< T >( value : T, set : ( x : T ) => void ) : Link< T >{
-        return new CustomLink( value, set );
+    static value< T >( value : T, set : ( x : T ) => void ) : StateRef< T >{
+        return new CustomStateRef( value, set );
     }
 
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
     */
-    static getValues<K extends keyof L, L extends LinksHash>( links : L )
+    static getValues<K extends keyof L, L extends RefsHash>( links : L )
        : { [ name in K ] : any } {
        return unwrap( links, 'value' ) as any;
+    }
+
+    // EXPERIMENTAL: Support useRef interface.
+    get current(){ return this.value; }
+    set current( x : T ){ this.set( x ); }
+
+    // Private accessor for whenChanged. Uniform with Type-R models and collections API.
+    private get _changeToken(){
+        return this.value;
     }
 
     /**
      * Unwrap object with links, returning an object of a similar shape filled with link errors.
      */
-    static getErrors<K extends keyof L, L extends LinksHash>( links : L )
+    static getErrors<K extends keyof L, L extends RefsHash>( links : L )
         : { [ name in K ] : L[name]["value"] } {
         return unwrap( links, 'error' ) as any;
     }
@@ -39,7 +50,7 @@ export abstract class Link< T >{
     /**
      * Return true if an object with links contains any errors.
      */
-    static hasErrors<L extends LinksHash>( links : L )
+    static hasErrors<L extends RefsHash>( links : L )
         : boolean {
         for( let key in links ){
             if( links.hasOwnProperty( key ) && links[ key ].error ){
@@ -53,7 +64,7 @@ export abstract class Link< T >{
     /**
     * Assing links with values from the source object.
     */
-    static setValues( links : LinksHash, source : object ) : void {
+    static setValues( links : RefsHash, source : object ) : void {
         if( source ){
             for( let key in links ){
                 const sourceKey = trim( key );
@@ -73,8 +84,8 @@ export abstract class Link< T >{
     // Link set functions
     abstract set( x : T ) : void
 
-    onChange( handler : ( x : T ) => void ) : Link< T > {
-        return new CloneLink( this, (x : T ) => {
+    onChange( handler : ( x : T ) => void ) : StateRef< T > {
+        return new ClonedStateRef( this, (x : T ) => {
             handler( x );
             this.set( x );
         });
@@ -98,8 +109,8 @@ export abstract class Link< T >{
     }
 
     // Create new link which applies transform function on set.
-    pipe( handler : Transform< T > ) : Link< T > {
-        return new CloneLink( this, x =>{
+    pipe( handler : Transform< T > ) : StateRef< T > {
+        return new ClonedStateRef( this, x =>{
             const next = handler( x, this.value );
             next === void 0 || this.set( next );
         } );
@@ -110,27 +121,27 @@ export abstract class Link< T >{
         return e => this.update( transform, e );
     }
 
-    equals( truthyValue : T ) : Link<boolean> {
-        return new EqualsLink( this, truthyValue );
+    equals( truthyValue : T ) : StateRef<boolean> {
+        return new EqualsRef( this, truthyValue );
     }
 
-    enabled( defaultValue? : T ) : Link<boolean> {
-        return new EnabledLink( this, defaultValue || "" );
+    enabled( defaultValue? : T ) : StateRef<boolean> {
+        return new EnabledRef( this, defaultValue || "" );
     }
 
     // Array-only links methods
-    contains<E>( this : Link<E[]>, element : E ) : Link<boolean>{
-        return new ContainsLink( this, element );
+    contains<E>( this : StateRef<E[]>, element : E ) : StateRef<boolean>{
+        return new ContainsRef( this, element );
     }
 
-    push<E>( this : Link<E[]>, ...args : E[] ) : void;
+    push<E>( this : StateRef<E[]>, ...args : E[] ) : void;
     push(){
         const array = arrayHelpers.clone( this.value );
         Array.prototype.push.apply( array, arguments );
         this.set( array );
     }
 
-    unshift<E>( this : Link<E[]>, ...args : E[] ) : void;
+    unshift<E>( this : StateRef<E[]>, ...args : E[] ) : void;
     unshift() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.unshift.apply( array, arguments );
@@ -145,14 +156,14 @@ export abstract class Link< T >{
     }
 
     // Array and objects universal collection methods
-    map<E, Z>( this : Link<E[]>, iterator : ( link : LinkAt<E, number>, idx : number ) => Z ) : Z[];
-    map<E, Z>( this : Link<{[ key : string ] : E }>, iterator : ( link : LinkAt<E, string>, idx : string ) => Z ) : Z[];
+    map<E, Z>( this : StateRef<E[]>, iterator : ( link : RefAt<E, number>, idx : number ) => Z ) : Z[];
+    map<E, Z>( this : StateRef<{[ key : string ] : E }>, iterator : ( link : RefAt<E, string>, idx : string ) => Z ) : Z[];
     map( iterator ) {
         return helpers( this.value ).map( this, iterator );
     }
 
-    removeAt<E>( this : Link<E[]>, key : number ) : void;
-    removeAt<E>( this : Link<{ [ key : string ] : E }>, key : string ) : void;
+    removeAt<E>( this : StateRef<E[]>, key : number ) : void;
+    removeAt<E>( this : StateRef<{ [ key : string ] : E }>, key : string ) : void;
     removeAt( key ){
         const { value } = this,
             _ = helpers( value );
@@ -160,10 +171,10 @@ export abstract class Link< T >{
         this.set( _.remove( _.clone( value ), key ) );
     }
 
-    at< E >( this : Link< E[] >, key : number ) : LinkAt<E, number>;
-    at< K extends keyof T, E extends T[K]>( key : K ) : LinkAt<E, K>;
+    at< E >( this : StateRef< E[] >, key : number ) : RefAt<E, number>;
+    at< K extends keyof T, E extends T[K]>( key : K ) : RefAt<E, K>;
     at( key ){
-        return new LinkAt( this, key );
+        return new RefAt( this, key );
     }
 
     clone() : T {
@@ -174,13 +185,13 @@ export abstract class Link< T >{
     /**
      * Convert link to object to the object of links. Optionally filter by 
      */
-    pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: Link<T[P]>}
+    pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: StateRef<T[P]>}
     pick() {
         let links = {}, keys = arguments.length ? arguments : Object.keys( this.value );
 
         for( let i = 0; i < keys.length; i++ ){
             const key : string = keys[ i ];
-            links[ key ] = new LinkAt( this, key );
+            links[ key ] = new RefAt( this, key );
         }
 
         return links;
@@ -189,13 +200,13 @@ export abstract class Link< T >{
     /**
      * Convert link to object to the object of links with $-keys.
      */
-    $links() : {[ P in keyof T ]: Link<T[P]>}{
-        let links : LinksHash = {},
+    $links() : { [ key : string ] : StateRef<any> }{
+        let links : RefsHash = {},
             { value } = this;
 
         for( let key in value ){
             if( value.hasOwnProperty( key ) ){
-                links[ '$' + key ] = new LinkAt( this, key );
+                links[ '$' + key ] = new RefAt( this, key );
             }
         }
 
@@ -214,7 +225,7 @@ export abstract class Link< T >{
     }
 }
 
-export class CustomLink< T > extends Link< T > {
+export class CustomStateRef< T > extends StateRef< T > {
     set( x ){}
 
     constructor( value : T, set : ( x : T ) => void ){
@@ -223,10 +234,10 @@ export class CustomLink< T > extends Link< T > {
     }
 }
 
-export class CloneLink< T > extends Link< T > {
+export class ClonedStateRef< T > extends StateRef< T > {
     set( x ){}
 
-    constructor( parent : Link< T >, set : ( x : T ) => void ){
+    constructor( parent : StateRef< T >, set : ( x : T ) => void ){
         super( parent.value );
         this.set = set;
 
@@ -235,8 +246,8 @@ export class CloneLink< T > extends Link< T > {
     }
 }
 
-export class EqualsLink extends Link< boolean > {
-    constructor( public parent : Link< any >, public truthyValue ){
+export class EqualsRef extends StateRef< boolean > {
+    constructor( public parent : StateRef< any >, public truthyValue ){
         super( parent.value === truthyValue );
     }
 
@@ -245,8 +256,8 @@ export class EqualsLink extends Link< boolean > {
     }
 }
 
-export class EnabledLink extends Link< boolean > {
-    constructor( public parent : Link< any >, public defaultValue ){
+export class EnabledRef extends StateRef< boolean > {
+    constructor( public parent : StateRef< any >, public defaultValue ){
         super( parent.value != null );
     }
 
@@ -255,8 +266,8 @@ export class EnabledLink extends Link< boolean > {
     }
 }
 
-export class ContainsLink extends Link< boolean > {
-    constructor( public parent : Link< any >, public element : any ){
+export class ContainsRef extends StateRef< boolean > {
+    constructor( public parent : StateRef< any >, public element : any ){
         super( parent.value.indexOf( element ) >= 0 );
     }
 
@@ -278,8 +289,8 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class LinkAt< E, K > extends Link< E > {
-    constructor( private parent : Link< any >, public key : K ){
+export class RefAt< E, K > extends StateRef< E > {
+    constructor( private parent : StateRef< any >, public key : K ){
         super( parent.value[ key ] );
     }
 
@@ -298,11 +309,11 @@ export class LinkAt< E, K > extends Link< E > {
     };
 }
 
-export interface LinksHash {
-    [ name : string ] : Link<any>
+export interface RefsHash {
+    [ name : string ] : StateRef<any>
 }
 
-function unwrap( links : LinksHash, field : string) : object {
+function unwrap( links : RefsHash, field : string) : object {
     const values = {};
 
     for( let key in links ){
