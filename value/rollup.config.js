@@ -7,7 +7,7 @@ export default {
     output : {
         file   : 'min/index.js',
         format : 'umd',
-        name   : 'ValueLink',
+        name   : '@linked/react',
         exports: 'named',
         sourcemap: true,
     },

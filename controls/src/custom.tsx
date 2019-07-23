@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, useBoundLink } from 'valuelink'
+import { Link, useBoundLink } from '@linked/react'
 import { useThrottle } from './hooks'
 import { string } from 'prop-types';
 

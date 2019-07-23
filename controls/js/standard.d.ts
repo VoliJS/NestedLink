@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'valuelink';
+import { Link } from '@linked/react';
 export declare function validationClasses(props: any, value: any, error: any): any;
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
     $value?: Link<any>;

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'valuelink'
+import { Link } from '@linked/react'
 
 const setValue     = ( x, e ) => e.target.value;
 const setBoolValue = ( x, e ) => Boolean( e.target.checked );

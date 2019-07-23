@@ -9,7 +9,7 @@ The `Link` is the object representing the writable reference to the member of th
 `NestedLink` dramatically improves your React project's modularity and code readability.
 
 ```javascript
-import { useLink } from 'valuelink'
+import { useLink } from '@linked/react'
 import { MyInput } from './controls.jsx'
 
 const coolState = { some : { name : '' } };
@@ -83,7 +83,7 @@ Usage with React Hooks (check out the [React Hooks starting boilerplate](/exampl
 
 ```javascript
 import React from 'react'
-import { useLink } from 'valuelink'
+import { useLink } from '@linked/react'
 ...
 // Instead of const [ name, setName ] = useState('')
 const $name = useLink('');
@@ -94,7 +94,7 @@ Usage with React Component.
 ```javascript
 import React from 'react'
 // Instead of React.Component...
-import { LinkedComponent } from 'valuelink'
+import { LinkedComponent } from '@linked/react'
 ...
 // In a render, do
 const $name = this.$at('name');

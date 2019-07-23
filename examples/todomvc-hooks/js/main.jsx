@@ -1,7 +1,7 @@
 import 'css/app.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useLink, useLocalStorage } from 'valuelink';
+import { useLink, useLocalStorage } from '@linked/react';
 import { AddTodo } from './addtodo.jsx';
 import { Filter } from './filter.jsx';
 import { TodoList } from './todolist.jsx';

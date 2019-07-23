@@ -1,4 +1,4 @@
-import { Validator } from 'valuelink'
+import { Validator } from '@linked/react'
 
 export const isRequired : Validator<any> = x => x != null && x !== '';
 isRequired.error = 'Required';

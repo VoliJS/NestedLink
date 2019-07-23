@@ -5,6 +5,8 @@
  */
 import { arrayHelpers, helpers } from './helpers';
 
+export * from './helpers'
+
 export type Transform< T > = ( value : T, event? : {} ) => T
 export type EventHandler = ( event : {} ) => void
 

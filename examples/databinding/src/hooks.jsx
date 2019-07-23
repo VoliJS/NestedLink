@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
-import { useLink } from 'valuelink';
-import { isEmail, Input } from 'linked-controls';
+import { useLink } from '@linked/react';
+import { isEmail, Input } from '@linked/controls';
 
 export const HooksExample = () => {
     const $email = useLink( '' ).check( isEmail ),

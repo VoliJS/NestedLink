@@ -5,6 +5,7 @@ import * as tslib_1 from "tslib";
  * MIT License, (c) 2016 Vlad Balin, Volicon.
  */
 import { arrayHelpers, helpers } from './helpers';
+export * from './helpers';
 // Main Link class. All links must extend it.
 var ValueLink = /** @class */ (function () {
     function ValueLink(value) {

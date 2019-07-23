@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'valuelink';
+import { Link } from '@linked/react';
 export interface NumberInputProps extends React.HTMLProps<HTMLInputElement> {
     positive?: boolean;
     integer?: boolean;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useBoundLink } from 'valuelink';
+import { useBoundLink } from '@linked/react';
 import { useThrottle } from './hooks';
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.

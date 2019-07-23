@@ -1,7 +1,7 @@
 import React from 'react';
-import { Input } from 'linked-controls';
+import { Input } from '@linked/controls';
 
-export * from 'linked-controls'
+export * from '@linked/controls'
 
 export const ValidatedInput = ( props ) => (
     <div>

@@ -18,7 +18,7 @@
   "keywords": [
     "type-r",
     "react",
-    "valuelink",
+    "@linked/react",
     "databinding"
   ],
   "author": "Vlad Balin",
@@ -34,5 +34,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn && tsc && yarn minify",
     "minify": "rollup --config"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {}
 }

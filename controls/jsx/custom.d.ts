@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'valuelink';
+import { Link } from '@linked/react';
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
  * Intended to be used with offhand bool link:

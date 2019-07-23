@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ValueLink } from '@type-r/valuelink';
+import { ValueLink } from '@linked/value';
 export declare type LinksCache<S, X extends keyof S> = {
     [K in X]: ValueLink<S[K]>;
 };

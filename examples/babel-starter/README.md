@@ -65,7 +65,7 @@ You'll need custom controls if you want to use the validation.
 The `linked-controls` package is an example of how can it be done, and it may be used instead of standard controls. They are designed to be fully compatible but also accept links.
 
 ```javascript
-import { Input } from 'linked-controls'
+import { Input } from '@linked/controls'
 ...
 /* As easy as that. And it will add 'error' class if there's an error within a link */
 <Input $value={$name} />

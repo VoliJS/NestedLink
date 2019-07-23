@@ -1,6 +1,6 @@
-import { DelayedInput } from 'linked-controls';
+import { DelayedInput } from '@linked/controls';
 import React from 'react';
-import { useIO, useLink, useSafeLink } from 'valuelink';
+import { useIO, useLink, useSafeLink } from '@linked/react';
 import { doSomething as fetchUsers } from './io-mock';
 
 export const PickUser = ({ $selected }) => {

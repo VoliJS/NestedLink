@@ -16,7 +16,7 @@
   },
   "keywords": [
     "react",
-    "valuelink",
+    "@linked/react",
     "databinding",
     "forms",
     "binding",

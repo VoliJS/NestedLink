@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import Link, { useLink, useLocalStorage } from 'valuelink';
+import Link, { useLink, useLocalStorage } from '@linked/react';
 import './main.css';
 import { UserRow, Header } from './grid.jsx'
 import { EditUser } from './edit.jsx'

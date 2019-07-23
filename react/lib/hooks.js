@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { useEffect, useRef, useState } from 'react';
-import { ValueLink, helpers } from '@type-r/valuelink';
+import { ValueLink, helpers } from '@linked/value';
 var UseStateLink = /** @class */ (function (_super) {
     tslib_1.__extends(UseStateLink, _super);
     function UseStateLink(value, set) {
@@ -28,7 +28,7 @@ export function useLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1];
     return new UseStateLink(value, set);
 }
-export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
+export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.

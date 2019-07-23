@@ -16,7 +16,7 @@
   },
   "keywords": [
     "react",
-    "valuelink",
+    "@linked/react",
     "databinding",
     "forms",
     "binding",
@@ -31,14 +31,12 @@
     "url": "https://github.com/VoliJS/NestedLink/issues"
   },
   "homepage": "https://github.com/VoliJS/NestedLink/linked-controls/",
-  "peerDependencies": {
+  "dependencies": {
     "react": "*",
-    "valuelink":"*"
+    "@linked/react":"*"
   },
   "devDependencies": {
     "@types/react": "*",
-    "react": "*",
-    "valuelink":"*",
     "classnames": "^2.2.0",
     "proptypes": "*",
     "rollup": "^0.58.0",

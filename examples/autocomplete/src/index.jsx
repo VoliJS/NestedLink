@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import './main.css';
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { useLink } from 'valuelink'
+import { useLink } from '@linked/react'
 
 import { PickUser } from './autocomplete.jsx'
 

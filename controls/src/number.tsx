@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'valuelink'
+import { Link } from '@linked/react'
 import { validationClasses } from './standard'
 import { isNumber } from './validators'
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ValueLink, ValueLinkHash, helpers } from '../value/lib';
+import { ValueLink, ValueLinkHash, helpers } from '@linked/value';
 
 
 export class UseStateLink<T> extends ValueLink<T> {

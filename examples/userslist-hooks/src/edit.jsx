@@ -1,5 +1,5 @@
 import React from 'react';
-import Link, { useBoundLink } from 'valuelink';
+import Link, { useBoundLink } from '@linked/react';
 import { Input, ValidatedInput, isRequired, isEmail } from './controls.jsx';
 
 export const EditUser = ({ $user, onClose }) => {

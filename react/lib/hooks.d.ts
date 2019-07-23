@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ValueLink, ValueLinkHash } from '@type-r/valuelink';
+import { ValueLink, ValueLinkHash } from '@linked/value';
 export declare class UseStateLink<T> extends ValueLink<T> {
     set(x: T | ((x: T) => T)): void;
     update(fun: (x: T, event?: Object) => T, event?: Object): void;
@@ -9,7 +9,7 @@ export declare class UseStateLink<T> extends ValueLink<T> {
  * Create the ref to the local state.
  */
 export declare function useLink<S>(initialState: S | (() => S)): UseStateLink<S>;
-export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
+export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.

@@ -1,3 +1,4 @@
+export * from './helpers';
 export declare type Transform<T> = (value: T, event?: {}) => T;
 export declare type EventHandler = (event: {}) => void;
 export interface Validator<T> {

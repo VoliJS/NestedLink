@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import PropTypes from 'proptypes'
 
-import Link, { LinkedComponent } from 'valuelink'
+import Link, { LinkedComponent } from '@linked/react'
 import Modal from 'react-modal'
-import {Input, isRequired, isEmail } from 'linked-controls'
+import {Input, isRequired, isEmail } from '@linked/controls'
 
 export class UsersList extends LinkedComponent {
     state = {

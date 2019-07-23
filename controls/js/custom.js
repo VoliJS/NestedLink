@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var valuelink_1 = require("valuelink");
+var react_1 = require("@linked/react");
 var hooks_1 = require("./hooks");
 /**
  * Simple custom <Radio/> tag implementation. Can be easily styled.
@@ -45,7 +45,7 @@ exports.Checkbox = function (_a) {
 };
 exports.DelayedInput = function (_a) {
     var $value = _a.$value, _b = _a.timeout, timeout = _b === void 0 ? 1000 : _b, props = __rest(_a, ["$value", "timeout"]);
-    var $inputValue = valuelink_1.useBoundLink($value)
+    var $inputValue = react_1.useBoundLink($value)
         .onChange(hooks_1.useThrottle(function (x) { return $value.set(x); }, timeout, [$value.value]));
     return React.createElement("input", __assign({}, $inputValue.props, props));
 };

@@ -1,4 +1,4 @@
-import { Validator } from 'valuelink';
+import { Validator } from '@linked/react';
 export declare const isRequired: Validator<any>;
 export declare const isEmail: Validator<string>;
 export declare const isNumber: {

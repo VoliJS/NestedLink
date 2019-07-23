@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import * as React from 'react';
-import { ValueLink } from '@type-r/valuelink';
+import { ValueLink } from '@linked/value';
 var LinkedComponent = /** @class */ (function (_super) {
     tslib_1.__extends(LinkedComponent, _super);
     function LinkedComponent() {

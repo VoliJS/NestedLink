@@ -1,6 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
-import Link, { useLink } from 'valuelink'
+import Link, { useLink } from '@linked/react'
 
 const allDone = $todos =>
     Link.value(

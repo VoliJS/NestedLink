@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLink } from 'valuelink';
+import { useLink } from '@linked/react';
 
 export const AddTodo = ({ onEnter }) => {
     const $desc = useLink('');
