@@ -1,5 +1,5 @@
 {
-  "name": "valuelink",
+  "name": "@linked/react",
   "version": "2.0.9",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./min",
@@ -27,30 +27,25 @@
   ],
   "author": "Vlad Balin",
   "license": "MIT",
+
   "bugs": {
     "url": "https://github.com/VoliJS/NestedLink/issues"
   },
-  "homepage": "https://github.com/VoliJS/NestedLink/",
-  "peerDependencies": {
-    "react": "*"
-  },
-  "devDependencies": {
-    "@types/react": "*",
-    "classnames": "^2.2.0",
-    "css-loader": "^0.28.11",
-    "proptypes": "*",
+  
+  "homepage": "https://github.com/VoliJS/NestedLink/valuelink",
+  
+  "depencencies": {
     "react": "*",
-    "react-dom": "*",
-    "rollup": "^0.58.0",
-    "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-uglify": "^3.0.0",
-    "tslib": "^1.9.3",
-    "typescript": "*"
+    "@type-r/valuelink":"*",
+    "tslib": "^1.9.3"
   },
+
+  "devDependencies": {
+    "@types/react": "*"
+  },
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "yarn && yarn compile && yarn minify",
-    "compile": "node_modules/.bin/tsc",
-    "minify": "node_modules/.bin/rollup --config"
+    "build": "yarn && tsc && rollup --config"
   }
 }

@@ -2729,6 +2729,11 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+linked-controls@*, linked-controls@^1.0.0:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/linked-controls/-/linked-controls-1.0.4.tgz#aa85d481ae8f1395fc8d77620a4900766a6d0b09"
+  integrity sha512-NeIlXPs3yj3BxIYPRAaI9v6iu3/X0TJyi9vfFB+Q44fDuK3EbyoAeTaEyi8gFk2SdVQ6FQ36N5JJ4UfQqBPdZw==
+
 loader-runner@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.4.0.tgz#ed47066bfe534d7e84c4c7b9998c2a75607d9357"
@@ -3774,7 +3779,7 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@*, react-dom@^16.8.6:
+react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -4657,6 +4662,11 @@ v8-compile-cache@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.0.2.tgz#a428b28bb26790734c4fc8bc9fa106fccebf6a6c"
   integrity sha512-1wFuMUIM16MDJRCrpbpuEPTUGmM5QMUg0cr3KFwra2XgOgFcPGDQHDh3CszSCD2Zewc/dh/pamNEW8CbfDebUw==
+
+valuelink@*, valuelink@^2.0.0:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/valuelink/-/valuelink-2.0.9.tgz#cb2649adabd3699fe89e28d20c50221993733153"
+  integrity sha512-pY6VM7UZOeNHREjWcfq1fSC7oxZUV/K5wxyb5sB4FH+DN7T8PegxsGd3Vn1n23gNY6sunnBjrObLs4MllKbKVQ==
 
 vendors@^1.0.0:
   version "1.0.2"

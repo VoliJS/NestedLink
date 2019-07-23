@@ -1,0 +1,38 @@
+{
+  "name": "@linked/value",
+  "private": false,
+  "version": "3.0.0",
+  "description": "ValueLink class representing an abstract reference to the object's property",
+  "main": "./min",
+  "module": "./lib",
+  "types": "./lib",
+  "files": [
+    "min",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoliJS/NestedLink.git"
+  },
+  "keywords": [
+    "type-r",
+    "react",
+    "valuelink",
+    "databinding"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VoliJS/NestedLink/issues"
+  },
+  "homepage": "https://github.com/VoliJS/NestedLink/valuelink-class",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn && tsc && yarn minify",
+    "minify": "rollup --config"
+  }
+}

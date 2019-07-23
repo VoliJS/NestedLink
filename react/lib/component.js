@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import * as React from 'react';
-import { Link } from './link';
+import { ValueLink } from '@type-r/valuelink';
 var LinkedComponent = /** @class */ (function (_super) {
     tslib_1.__extends(LinkedComponent, _super);
     function LinkedComponent() {
@@ -54,6 +54,6 @@ var StateLink = /** @class */ (function (_super) {
         this.component.setState(attrs);
     };
     return StateLink;
-}(Link));
+}(ValueLink));
 export { StateLink };
 //# sourceMappingURL=component.js.map

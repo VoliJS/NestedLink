@@ -1,12 +1,19 @@
 {
     "private": true,
     "workspaces": [
-        "valuelink",
-        "type-r-link",
-        "linked-controls",
+        "value",
+        "react",
+        "controls",
         "examples/*"
     ],
     "scripts": {
         "build": "yarn workspaces run build"
-    }
+    },
+
+    "devDependencies": {
+        "rollup": "^0.58.0",
+        "rollup-plugin-node-resolve": "^3.3.0",
+        "rollup-plugin-uglify": "^3.0.0",
+        "typescript": "*"
+    }    
 }

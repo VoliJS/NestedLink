@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { Link } from './link';
+import { ValueLink } from '@type-r/valuelink';
 export declare type LinksCache<S, X extends keyof S> = {
-    [K in X]: Link<S[K]>;
+    [K in X]: ValueLink<S[K]>;
 };
 export interface DataBindingSource<S> {
-    linkAt<K extends keyof S>(key: K): Link<S[K]>;
+    linkAt<K extends keyof S>(key: K): ValueLink<S[K]>;
     linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
-    $at<K extends keyof S>(key: K): Link<S[K]>;
+    $at<K extends keyof S>(key: K): ValueLink<S[K]>;
     state$<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
 }
 export declare abstract class LinkedComponent<P, S> extends React.Component<P, S> implements DataBindingSource<S> {
     links: LinksCache<S, keyof S>;
-    linkAt<K extends keyof S>(key: K): Link<S[K]>;
-    $at<K extends keyof S>(key: K): Link<S[K]>;
+    linkAt<K extends keyof S>(key: K): ValueLink<S[K]>;
+    $at<K extends keyof S>(key: K): ValueLink<S[K]>;
     linkAll<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
     /**
      * Get the object with links to the elements of the component's state.
@@ -23,7 +23,7 @@ export declare abstract class LinkedComponent<P, S> extends React.Component<P, S
      */
     state$<K extends keyof S>(...keys: K[]): LinksCache<S, K>;
 }
-export declare class StateLink<P, S, K extends keyof S> extends Link<S[K]> {
+export declare class StateLink<P, S, K extends keyof S> extends ValueLink<S[K]> {
     component: LinkedComponent<P, S>;
     key: K;
     constructor(component: LinkedComponent<P, S>, key: K, value: S[K]);

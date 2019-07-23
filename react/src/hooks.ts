@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { helpers } from './helpers';
-import { Link as StateRef, RefsHash } from './link';
+import { ValueLink, ValueLinkHash, helpers } from '../value/lib';
 
-export class UseStateRef<T> extends StateRef<T> {
+
+export class UseStateLink<T> extends ValueLink<T> {
     // Set the component's state value.
     set( x : T | ( ( x : T ) => T ) ) : void {}
 
@@ -31,10 +31,10 @@ export class UseStateRef<T> extends StateRef<T> {
  */
 export function useLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState );
-    return new UseStateRef( value, set );
+    return new UseStateLink( value, set );
 }
 
-export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef }
+export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef }
 
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
@@ -44,7 +44,7 @@ export function useSafeLink<S>( initialState : S | (() => S) ){
     const [ value, set ] = useState( initialState ),
             isMounted = useIsMountedRef();
 
-    return new UseStateRef( value, x => isMounted.current && set( x ) );
+    return new UseStateLink( value, x => isMounted.current && set( x ) );
 }
 
 /**
@@ -64,8 +64,8 @@ export function useIsMountedRef(){
  * Create the link to the local state which is bound to another 
  * value or link in a single direction. When the source changes, the link changes too.
  */
-export function useBoundLink<T>( source : T | StateRef<T>) : StateRef<T> {
-    const value = source instanceof StateRef ? source.value : source,
+export function useBoundLink<T>( source : T | ValueLink<T>) : ValueLink<T> {
+    const value = source instanceof ValueLink ? source.value : source,
           link = useLink( value );
 
     useEffect(() => link.set( value ), [ value ]);
@@ -79,8 +79,8 @@ export function useBoundLink<T>( source : T | StateRef<T>) : StateRef<T> {
  * value or link in a single direction.
  * When the source change, the linked state changes too.
  */
-export function useSafeBoundLink<T>( source : T | StateRef<T> ) : StateRef<T> {
-    const value = source instanceof StateRef ? source.value : source,
+export function useSafeBoundLink<T>( source : T | ValueLink<T> ) : ValueLink<T> {
+    const value = source instanceof ValueLink ? source.value : source,
           link = useSafeLink( value );
  
     useEffect(() => link.set( value ), [ value ]);
@@ -94,17 +94,17 @@ export function useSafeBoundLink<T>( source : T | StateRef<T> ) : StateRef<T> {
  * @param key - string key for the localStorage entry.
  * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
  */
-export function useLocalStorage( key : string, state : RefsHash ){
+export function useLocalStorage( key : string, state : ValueLinkHash ){
     // save state to use on unmount...
-    const stateRef = useRef<RefsHash>();
+    const stateRef = useRef<ValueLinkHash>();
     stateRef.current = state;
 
     useEffect(()=>{
         const savedData = JSON.parse( localStorage.getItem( key ) || '{}' );
-        StateRef.setValues( stateRef.current, savedData );
+        ValueLink.setValues( stateRef.current, savedData );
 
         return () =>{
-            const dataToSave = StateRef.getValues( stateRef.current );
+            const dataToSave = ValueLink.getValues( stateRef.current );
             localStorage.setItem( key, JSON.stringify( dataToSave ) );
         }
     },[]);

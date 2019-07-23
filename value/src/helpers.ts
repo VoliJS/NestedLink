@@ -39,11 +39,14 @@ const dummyHelpers : Helper = {
 export const objectHelpers : Helper = {
     // Map through the link to object
     map( link : IterableLink, iterator : Iterator ) : any[] {
-        let mapped = [];
+        let mapped = [],
+            { value } = link
 
-        for( let key in link.value ){
-            const element = iterator( link.at( key ), key );
-            element === void 0 || ( mapped.push( element ) );
+        for( let key in value ){
+            if( value.hasOwnProperty( key ) ){
+                const element = iterator( link.at( key ), key );
+                element === void 0 || ( mapped.push( element ) );    
+            }
         }
 
         return mapped;
@@ -56,13 +59,7 @@ export const objectHelpers : Helper = {
 
      // Shallow clone plain JS object
     clone( object : {} ) : {} {
-        let cloned = {};
-
-        for( let key in object ){
-            cloned[ key ] = object[ key ];
-        }
-
-        return cloned;
+        return { ...object };
     }
 };
 

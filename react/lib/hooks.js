@@ -1,17 +1,16 @@
 import * as tslib_1 from "tslib";
 import { useEffect, useRef, useState } from 'react';
-import { helpers } from './helpers';
-import { Link as StateRef } from './link';
-var UseStateRef = /** @class */ (function (_super) {
-    tslib_1.__extends(UseStateRef, _super);
-    function UseStateRef(value, set) {
+import { ValueLink, helpers } from '@type-r/valuelink';
+var UseStateLink = /** @class */ (function (_super) {
+    tslib_1.__extends(UseStateLink, _super);
+    function UseStateLink(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
         return _this;
     }
     // Set the component's state value.
-    UseStateRef.prototype.set = function (x) { };
-    UseStateRef.prototype.update = function (fun, event) {
+    UseStateLink.prototype.set = function (x) { };
+    UseStateLink.prototype.update = function (fun, event) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
         this.set(function (x) {
@@ -19,15 +18,15 @@ var UseStateRef = /** @class */ (function (_super) {
             return result === void 0 ? x : result;
         });
     };
-    return UseStateRef;
-}(StateRef));
-export { UseStateRef };
+    return UseStateLink;
+}(ValueLink));
+export { UseStateLink };
 /**
  * Create the ref to the local state.
  */
 export function useLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1];
-    return new UseStateRef(value, set);
+    return new UseStateLink(value, set);
 }
 export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 /**
@@ -36,7 +35,7 @@ export { useLink as useStateRef, useSafeLink as useSafeStateRef, useBoundLink as
  */
 export function useSafeLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
-    return new UseStateRef(value, function (x) { return isMounted.current && set(x); });
+    return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Returns the ref which is true when component it mounted.
@@ -51,7 +50,7 @@ export function useIsMountedRef() {
  * value or link in a single direction. When the source changes, the link changes too.
  */
 export function useBoundLink(source) {
-    var value = source instanceof StateRef ? source.value : source, link = useLink(value);
+    var value = source instanceof ValueLink ? source.value : source, link = useLink(value);
     useEffect(function () { return link.set(value); }, [value]);
     link.action;
     return link;
@@ -62,7 +61,7 @@ export function useBoundLink(source) {
  * When the source change, the linked state changes too.
  */
 export function useSafeBoundLink(source) {
-    var value = source instanceof StateRef ? source.value : source, link = useSafeLink(value);
+    var value = source instanceof ValueLink ? source.value : source, link = useSafeLink(value);
     useEffect(function () { return link.set(value); }, [value]);
     return link;
 }
@@ -78,9 +77,9 @@ export function useLocalStorage(key, state) {
     stateRef.current = state;
     useEffect(function () {
         var savedData = JSON.parse(localStorage.getItem(key) || '{}');
-        StateRef.setValues(stateRef.current, savedData);
+        ValueLink.setValues(stateRef.current, savedData);
         return function () {
-            var dataToSave = StateRef.getValues(stateRef.current);
+            var dataToSave = ValueLink.getValues(stateRef.current);
             localStorage.setItem(key, JSON.stringify(dataToSave));
         };
     }, []);
