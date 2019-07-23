@@ -1,6 +1,6 @@
 {
   "name": "@linked/react",
-  "version": "2.0.9",
+  "version": "3.0.0",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./min",
   "module": "./lib",
@@ -27,23 +27,18 @@
   ],
   "author": "Vlad Balin",
   "license": "MIT",
-
   "bugs": {
     "url": "https://github.com/VoliJS/NestedLink/issues"
   },
-  
   "homepage": "https://github.com/VoliJS/NestedLink/valuelink",
-  
   "depencencies": {
     "react": "*",
-    "@type-r/valuelink":"*",
+    "@type-r/valuelink": "*",
     "tslib": "^1.9.3"
   },
-
   "devDependencies": {
     "@types/react": "*"
   },
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn && tsc && rollup --config"
