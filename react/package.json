@@ -1,6 +1,6 @@
 {
   "name": "@linked/react",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./min",
   "module": "./lib",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/VoliJS/NestedLink/valuelink",
   "depencencies": {
     "react": "*",
-    "@linked/value": "*",
+    "@linked/value": "^3.0.1",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
