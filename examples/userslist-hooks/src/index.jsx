@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import Link, { useLink, useLocalStorage } from '@linked/react';
+import Link, { useStateLink, useLocalStorage } from '@linked/react';
 import './main.css';
 import { UserRow, Header } from './grid.jsx'
 import { EditUser } from './edit.jsx'
@@ -14,9 +14,9 @@ const newUser = {
 
 export const UsersList = () => {
     // Declare the local state.
-    const $users = useLink( [] ),
-        $dialog  = useLink( null ),
-        $editing = useLink( null );
+    const $users = useStateLink( [] ),
+        $dialog  = useStateLink( null ),
+        $editing = useStateLink( null );
 
     useLocalStorage( 'users', { $users });
 
