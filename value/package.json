@@ -1,7 +1,7 @@
 {
   "name": "@linked/value",
   "private": false,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "ValueLink class representing an abstract reference to the object's property",
   "main": "./min",
   "module": "./lib",
@@ -32,8 +32,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "yarn && tsc && yarn minify",
-    "minify": "rollup --config"
+    "build": "yarn && tsc"
   },
   "directories": {
     "lib": "lib"
