@@ -39,14 +39,15 @@ export declare function useSafeBoundLink<T>(source: T | ValueLink<T>): ValueLink
 export declare function useLocalStorage(key: string, state: ValueLinkHash): void;
 /**
  * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning `null` while the operation is pending.
- * When operation is completed, returns "ok" or "fail" depending on the result and
- * forces the local component update.
+ * Execute operation once when mounted, returning:
+ * - `false` while the I/O operation is pending;
+ * - `true` if I/O is complete without exception;
+ * - `exception` object if I/O promise failed.
  *
  * const isReady = useIO( async () => {
  *      const data = await fetchData();
  *      link.set( data );
  * });
  */
-export declare function useIO(fun: () => Promise<any>, condition?: any[]): boolean;
+export declare function useIO(fun: () => Promise<any>, condition?: any[]): boolean | any;
 export declare function whenChanged(...objs: any[]): any[];

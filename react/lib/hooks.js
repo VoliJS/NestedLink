@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
+import { helpers, ValueLink } from '@linked/value';
 import { useEffect, useRef, useState } from 'react';
-import { ValueLink, helpers } from '@linked/value';
 var UseStateLink = /** @class */ (function (_super) {
     tslib_1.__extends(UseStateLink, _super);
     function UseStateLink(value, set) {
@@ -86,9 +86,10 @@ export function useLocalStorage(key, state) {
 }
 /**
  * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning `null` while the operation is pending.
- * When operation is completed, returns "ok" or "fail" depending on the result and
- * forces the local component update.
+ * Execute operation once when mounted, returning:
+ * - `false` while the I/O operation is pending;
+ * - `true` if I/O is complete without exception;
+ * - `exception` object if I/O promise failed.
  *
  * const isReady = useIO( async () => {
  *      const data = await fetchData();
@@ -103,12 +104,24 @@ export function useIO(fun, condition) {
     var $isReady = useSafeLink(null);
     useEffect(function () {
         // function in set instead of value to avoid race conditions with counter increment.
-        $isReady.set(function (x) { return (x || 0) + 1; });
-        fun().finally(function () { return $isReady.set(function (x) { return x - 1; }); });
+        $isReady.set(function (state) {
+            var _a = state || [0, null], x = _a[0], res = _a[1];
+            return [x + 1, res];
+        });
+        fun()
+            .catch(function (e) { return $isReady.set(function (_a) {
+            var x = _a[0], res = _a[1];
+            return [x - 1, e];
+        }); })
+            .then(function () { return $isReady.set(function (_a) {
+            var x = _a[0], res = _a[1];
+            return [x - 1, null];
+        }); });
     }, condition);
-    // null is used to detect the first render when no requests issued yet
+    // `null` is used to detect the first render when no requests issued yet,
     // but the I/O is not completed.
-    return $isReady.value === null ? false : !$isReady.value;
+    var value = $isReady.value;
+    return value === null || value[0] ? false : (value[1] || true);
 }
 export function whenChanged(a, b, c, d) {
     var length = arguments.length;

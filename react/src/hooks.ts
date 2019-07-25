@@ -1,5 +1,5 @@
+import { helpers, ValueLink, ValueLinkHash } from '@linked/value';
 import { useEffect, useRef, useState } from 'react';
-import { ValueLink, ValueLinkHash, helpers } from '@linked/value';
 
 
 export class UseStateLink<T> extends ValueLink<T> {
@@ -34,7 +34,7 @@ export function useLink<S>( initialState : S | (() => S) ){
     return new UseStateLink( value, set );
 }
 
-export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef }
+export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
 
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
@@ -112,31 +112,38 @@ export function useLocalStorage( key : string, state : ValueLinkHash ){
 
 /**
  * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning `null` while the operation is pending.
- * When operation is completed, returns "ok" or "fail" depending on the result and 
- * forces the local component update.
+ * Execute operation once when mounted, returning:
+ * - `false` while the I/O operation is pending;
+ * - `true` if I/O is complete without exception;
+ * - `exception` object if I/O promise failed.
  * 
  * const isReady = useIO( async () => {
  *      const data = await fetchData();
  *      link.set( data );
  * });
  */
-export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : boolean {
+export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : boolean | any {
     // Counter of open I/O requests. If it's 0, I/O is completed.
     // Counter is needed to handle the situation when the next request
     // is issued before the previous one was completed.
-    const $isReady = useSafeLink<number>( null );
+    const $isReady = useSafeLink<[ number, any ]>( null );
 
     useEffect(()=>{
         // function in set instead of value to avoid race conditions with counter increment.
-        $isReady.set( x => ( x || 0 ) + 1 );
+        $isReady.set( state => {
+            const [ x, res ] = state || [ 0, null ];
+            return [ x + 1, res ]
+        });
 
-        fun().finally(() => $isReady.set( x => x - 1 ));
-    }, condition);
+        fun()
+            .catch( e => $isReady.set( ([ x, res ]) => [ x - 1, e ] ) )
+            .then( () => $isReady.set( ([ x, res ]) => [ x - 1, null ] ) )
+    }, condition );
 
-    // null is used to detect the first render when no requests issued yet
+    // `null` is used to detect the first render when no requests issued yet,
     // but the I/O is not completed.
-    return $isReady.value === null ? false : !$isReady.value;
+    const { value } = $isReady;
+    return value === null || value[ 0 ] ? false : ( value[ 1 ] || true );
 }
 
 // Return an array of values to be used in useEffect hook.

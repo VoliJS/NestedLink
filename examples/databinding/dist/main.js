@@ -26248,9 +26248,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIO", function() { return useIO; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "whenChanged", function() { return whenChanged; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _linked_value__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @linked/value */ "../../value/lib/index.js");
+/* harmony import */ var _linked_value__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @linked/value */ "../../value/lib/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -26267,18 +26267,18 @@ var UseStateLink = /** @class */ (function (_super) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
         this.set(function (x) {
-            var value = Object(_linked_value__WEBPACK_IMPORTED_MODULE_2__["helpers"])(x).clone(x), result = fun(value, event);
+            var value = Object(_linked_value__WEBPACK_IMPORTED_MODULE_1__["helpers"])(x).clone(x), result = fun(value, event);
             return result === void 0 ? x : result;
         });
     };
     return UseStateLink;
-}(_linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"]));
+}(_linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"]));
 
 /**
  * Create the ref to the local state.
  */
 function useLink(initialState) {
-    var _a = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initialState), value = _a[0], set = _a[1];
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(initialState), value = _a[0], set = _a[1];
     return new UseStateLink(value, set);
 }
 
@@ -26287,15 +26287,15 @@ function useLink(initialState) {
  * Use this for the state which is set when async I/O is completed.
  */
 function useSafeLink(initialState) {
-    var _a = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
+    var _a = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
     return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Returns the ref which is true when component it mounted.
  */
 function useIsMountedRef() {
-    var isMounted = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
-    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () { return (function () { return isMounted.current = false; }); }, []);
+    var isMounted = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(true);
+    Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () { return (function () { return isMounted.current = false; }); }, []);
     return isMounted;
 }
 /**
@@ -26303,8 +26303,8 @@ function useIsMountedRef() {
  * value or link in a single direction. When the source changes, the link changes too.
  */
 function useBoundLink(source) {
-    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"] ? source.value : source, link = useLink(value);
-    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () { return link.set(value); }, [value]);
+    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"] ? source.value : source, link = useLink(value);
+    Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () { return link.set(value); }, [value]);
     link.action;
     return link;
 }
@@ -26314,8 +26314,8 @@ function useBoundLink(source) {
  * When the source change, the linked state changes too.
  */
 function useSafeBoundLink(source) {
-    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"] ? source.value : source, link = useSafeLink(value);
-    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () { return link.set(value); }, [value]);
+    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"] ? source.value : source, link = useSafeLink(value);
+    Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () { return link.set(value); }, [value]);
     return link;
 }
 /**
@@ -26326,22 +26326,23 @@ function useSafeBoundLink(source) {
  */
 function useLocalStorage(key, state) {
     // save state to use on unmount...
-    var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])();
+    var stateRef = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])();
     stateRef.current = state;
-    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
         var savedData = JSON.parse(localStorage.getItem(key) || '{}');
-        _linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"].setValues(stateRef.current, savedData);
+        _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"].setValues(stateRef.current, savedData);
         return function () {
-            var dataToSave = _linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"].getValues(stateRef.current);
+            var dataToSave = _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"].getValues(stateRef.current);
             localStorage.setItem(key, JSON.stringify(dataToSave));
         };
     }, []);
 }
 /**
  * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning `null` while the operation is pending.
- * When operation is completed, returns "ok" or "fail" depending on the result and
- * forces the local component update.
+ * Execute operation once when mounted, returning:
+ * - `false` while the I/O operation is pending;
+ * - `true` if I/O is complete without exception;
+ * - `exception` object if I/O promise failed.
  *
  * const isReady = useIO( async () => {
  *      const data = await fetchData();
@@ -26354,14 +26355,26 @@ function useIO(fun, condition) {
     // Counter is needed to handle the situation when the next request
     // is issued before the previous one was completed.
     var $isReady = useSafeLink(null);
-    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
         // function in set instead of value to avoid race conditions with counter increment.
-        $isReady.set(function (x) { return (x || 0) + 1; });
-        fun().finally(function () { return $isReady.set(function (x) { return x - 1; }); });
+        $isReady.set(function (state) {
+            var _a = state || [0, null], x = _a[0], res = _a[1];
+            return [x + 1, res];
+        });
+        fun()
+            .catch(function (e) { return $isReady.set(function (_a) {
+            var x = _a[0], res = _a[1];
+            return [x - 1, e];
+        }); })
+            .then(function () { return $isReady.set(function (_a) {
+            var x = _a[0], res = _a[1];
+            return [x - 1, null];
+        }); });
     }, condition);
-    // null is used to detect the first render when no requests issued yet
+    // `null` is used to detect the first render when no requests issued yet,
     // but the I/O is not completed.
-    return $isReady.value === null ? false : !$isReady.value;
+    var value = $isReady.value;
+    return value === null || value[0] ? false : (value[1] || true);
 }
 function whenChanged(a, b, c, d) {
     var length = arguments.length;
