@@ -1,10 +1,10 @@
 import { DelayedInput } from '@linked/controls';
 import React from 'react';
-import { useIO, useLink, useSafeLink } from '@linked/react';
+import { useIO, useLinked, useSafeLinked } from '@linked/react';
 import { doSomething as fetchUsers } from './io-mock';
 
 export const PickUser = ({ $selected }) => {
-    const $editing = useLink( false );
+    const $editing = useLinked( false );
 
     return (
         <div>
@@ -20,7 +20,7 @@ export const PickUser = ({ $selected }) => {
 }
 
 export const EditUser = ({ $selected, close }) => {
-    const $filter = useLink('');
+    const $filter = useLinked('');
 
     return (
         <div>
@@ -37,7 +37,7 @@ export const EditUser = ({ $selected, close }) => {
 }
 
 const UsersList = ({ filter, $selected }) => {
-    const $users = useSafeLink([]);
+    const $users = useSafeLinked([]);
 
     const ioComplete = useIO( async () => {
         $users.set( await fetchUsers( filter ) );

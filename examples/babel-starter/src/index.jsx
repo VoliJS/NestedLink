@@ -1,14 +1,14 @@
 import './main.css';
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { useLink } from '@linked/react'
+import { useLinked } from '@linked/react'
 
 // Optional form control wrappers taking links as $value and $checked
 import { Input, isRequired } from '@linked/controls'
 
 const App = () => {
-    const $firstName = useLink('John'),
-        $secondName = useLink('').check( isRequired );
+    const $firstName = useLinked('John'),
+        $secondName = useLinked('').check( isRequired );
 
     return (
         <div>

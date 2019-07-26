@@ -2,12 +2,12 @@ import 'babel-polyfill';
 import './main.css';
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { useLink } from '@linked/react'
+import { useLinked } from '@linked/react'
 
 import { PickUser } from './autocomplete.jsx'
 
 const App = () => {
-    const $selected = useLink( null );
+    const $selected = useLinked( null );
 
     return (
         <div>

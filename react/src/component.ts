@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { ValueLink } from '@linked/value'
+import { Linked } from '@linked/value'
 
 export type LinksCache< S, X extends keyof S> = {
-    [ K in X ] : ValueLink< S[ K ] >
+    [ K in X ] : Linked< S[ K ] >
 }
 
 export interface DataBindingSource< S >{
-    linkAt< K extends keyof S>( key : K ) : ValueLink< S[ K ] >
+    linkAt< K extends keyof S>( key : K ) : Linked< S[ K ] >
     linkAll<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >
-    $at< K extends keyof S>( key : K ) : ValueLink< S[ K ] >
+    $at< K extends keyof S>( key : K ) : Linked< S[ K ] >
     state$<K extends keyof S>( ...keys : K[] ) : LinksCache< S, K >
 }
 
@@ -16,12 +16,12 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
     links : LinksCache< S, keyof S > = null;
 
     // @deprecated use `this.$at( key )`
-    linkAt<K extends keyof S>( key : K ) : ValueLink<S[K]>{
+    linkAt<K extends keyof S>( key : K ) : Linked<S[K]>{
         return this.$at( key );
     }
 
     // Get the link to the state member with the given key.
-    $at<K extends keyof S>( key : K ) : ValueLink<S[K]>{
+    $at<K extends keyof S>( key : K ) : Linked<S[K]>{
         const value = this.state[ key ],
         cache = this.links || ( this.links = {} as any ),
         cached = cache[ key ];
@@ -63,7 +63,7 @@ export abstract class LinkedComponent< P, S > extends React.Component< P, S > im
     }
 }
 
-export class StateLink< P, S, K extends keyof S > extends ValueLink< S[ K ] > {
+export class StateLink< P, S, K extends keyof S > extends Linked< S[ K ] > {
     constructor( public component : LinkedComponent< P, S >, public key : K, value : S[ K ] ){
         super( value );
     }

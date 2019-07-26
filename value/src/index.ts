@@ -7,30 +7,20 @@ import { arrayHelpers, helpers } from './helpers';
 
 export * from './helpers'
 
-export type Transform< T > = ( value : T, event? : {} ) => T
-export type EventHandler = ( event : {} ) => void
+/** 
+ * `Linked` class is an abstract linked value - the value, the function to update this value, and its validation error.
+ * The enclosed value is considered as immutable.
+ */ 
+export abstract class Linked<T>{
+    /** Validation error. Usually is a string with error text, but can hold any type. */ 
+    error : any = void 0
+    
+    /** Set linked value */ 
+    abstract set( x : T ) : void
 
-export interface Validator< T >{
-    ( value : T ) : boolean
-    error? : any
-}
+    constructor( public value : T ){}
 
-// Main Link class. All links must extend it.
-export abstract class ValueLink< T >{
-    // Create custom link to arbitrary value
-    static value< T >( value : T, set : ( x : T ) => void ) : ValueLink< T >{
-        return new CustomValueLink( value, set );
-    }
-
-    /**
-    * Unwrap object with links, returning an object of a similar shape filled with link values.
-    */
-    static getValues<K extends keyof L, L extends ValueLinkHash>( links : L )
-       : { [ name in K ] : any } {
-       return unwrap( links, 'value' ) as any;
-    }
-
-    // EXPERIMENTAL: Support useRef interface.
+    /** EXPERIMENTAL: Support useRef interface. */ 
     get current(){ return this.value; }
     set current( x : T ){ this.set( x ); }
 
@@ -39,59 +29,27 @@ export abstract class ValueLink< T >{
         return this.value;
     }
 
-    /**
-     * Unwrap object with links, returning an object of a similar shape filled with link errors.
-     */
-    static getErrors<K extends keyof L, L extends ValueLinkHash>( links : L )
-        : { [ name in K ] : L[name]["value"] } {
-        return unwrap( links, 'error' ) as any;
-    }
-
-    /**
-     * Return true if an object with links contains any errors.
-     */
-    static hasErrors<L extends ValueLinkHash>( links : L )
-        : boolean {
-        for( let key in links ){
-            if( links.hasOwnProperty( key ) && links[ key ].error ){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-    * Assing links with values from the source object.
-    */
-    static setValues( links : ValueLinkHash, source : object ) : void {
-        if( source ){
-            for( let key in links ){
-                const sourceKey = trim( key );
-                if( source.hasOwnProperty( sourceKey ) ){
-                    const sourceVal = source[ sourceKey ];
-                    sourceVal === void 0 || links[ key ].set( sourceVal );
-                }
-            }    
-        }
-    }
-
-    constructor( public value : T ){}
-
-    // Validation error. Usually is a string with error text, but can hold any type.
-    error : any
-
-    // Link set functions
-    abstract set( x : T ) : void
-
-    onChange( handler : ( x : T ) => void ) : ValueLink< T > {
-        return new ClonedValueLink( this, (x : T ) => {
+    /** Produce the new link executing the given function before the link value will be updated. */
+    onChange( handler : ( x : T ) => void ) : Linked<T> {
+        return new ClonedValueLink( this, ( x : T ) => {
             handler( x );
             this.set( x );
         });
     }
 
-    // <input { ...link.props } />
+    /** Produce the new link which transform the value before `set` with a given function. */
+    pipe( handler : Linked.Transform<T> ) : Linked< T > {
+        return new ClonedValueLink( this, x =>{
+            const next = handler( x, this.value );
+            next === void 0 || this.set( next );
+        } );
+    }
+
+    /** 
+     * Create React component props for the <input> component.
+     * 
+     * <input { ...link.props } />
+     */ 
     get props(){
         return typeof this.value === 'boolean' ? {
             checked : this.value,
@@ -102,53 +60,46 @@ export abstract class ValueLink< T >{
         };
     }
 
-    // Immediately update the link value using given transform function.
-    update( transform : Transform< T >, e? : Object ) : void {
+    /** Update the linked value using given transform function. */ 
+    update( transform : Linked.Transform<T>, e? : Object ) : void {
         const next = transform( this.clone(), e );
         next === void 0 || this.set( next );
     }
 
-    // Create new link which applies transform function on set.
-    pipe( handler : Transform< T > ) : ValueLink< T > {
-        return new ClonedValueLink( this, x =>{
-            const next = handler( x, this.value );
-            next === void 0 || this.set( next );
-        } );
-    }
-
     // Create UI event handler function which will update the link with a given transform function.
-    action( transform : Transform< T > ) : EventHandler {
+    action( transform : Linked.Transform< T > ) : Linked.EventHandler {
         return e => this.update( transform, e );
     }
 
-    equals( truthyValue : T ) : ValueLink<boolean> {
+    equals( truthyValue : T ) : Linked<boolean> {
         return new EqualsValueLink( this, truthyValue );
     }
 
-    enabled( defaultValue? : T ) : ValueLink<boolean> {
+    enabled( defaultValue? : T ) : Linked<boolean> {
         return new EnabledValueLink( this, defaultValue || "" );
     }
 
     // Array-only links methods
-    contains<E>( this : ValueLink<E[]>, element : E ) : ValueLink<boolean>{
+    contains<E>( this : Linked<E[]>, element : E ) : Linked<boolean>{
         return new ContainsRef( this, element );
     }
 
-    push<E>( this : ValueLink<E[]>, ...args : E[] ) : void;
+    push<E>( this : Linked<E[]>, ...args : E[] ) : void;
     push(){
         const array = arrayHelpers.clone( this.value );
         Array.prototype.push.apply( array, arguments );
         this.set( array );
     }
 
-    unshift<E>( this : ValueLink<E[]>, ...args : E[] ) : void;
+    unshift<E>( this : Linked<E[]>, ...args : E[] ) : void;
     unshift() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.unshift.apply( array, arguments );
         this.set( array );
     }
 
-    splice( start : number, deleteCount? : number );
+    
+    splice( this : Linked<any[]>, start : number, deleteCount? : number ) : void;
     splice() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.splice.apply( array, arguments );
@@ -156,14 +107,14 @@ export abstract class ValueLink< T >{
     }
 
     // Array and objects universal collection methods
-    map<E, Z>( this : ValueLink<E[]>, iterator : ( link : PropValueLink<E, number>, idx : number ) => Z ) : Z[];
-    map<E, Z>( this : ValueLink<{[ key : string ] : E }>, iterator : ( link : PropValueLink<E, string>, idx : string ) => Z ) : Z[];
+    map<E, Z>( this : Linked<E[]>, iterator : ( link : PropValueLink<E, number>, idx : number ) => Z ) : Z[];
+    map<E, Z>( this : Linked<{[ key : string ] : E }>, iterator : ( link : PropValueLink<E, string>, idx : string ) => Z ) : Z[];
     map( iterator ) {
         return helpers( this.value ).map( this, iterator );
     }
 
-    removeAt<E>( this : ValueLink<E[]>, key : number ) : void;
-    removeAt<E>( this : ValueLink<{ [ key : string ] : E }>, key : string ) : void;
+    removeAt<E>( this : Linked<E[]>, key : number ) : void;
+    removeAt<E>( this : Linked<{ [ key : string ] : E }>, key : string ) : void;
     removeAt( key ){
         const { value } = this,
             _ = helpers( value );
@@ -171,8 +122,8 @@ export abstract class ValueLink< T >{
         this.set( _.remove( _.clone( value ), key ) );
     }
 
-    at< E >( this : ValueLink< E[] >, key : number ) : PropValueLink<E, number>;
-    at< K extends keyof T, E extends T[K]>( key : K ) : PropValueLink<E, K>;
+    at<E>( this : Linked<E[]>, key : number ) : PropValueLink<E, number>;
+    at<K extends keyof T, E extends T[K]>( key : K ) : PropValueLink<E, K>;
     at( key ){
         return new PropValueLink( this, key );
     }
@@ -185,7 +136,7 @@ export abstract class ValueLink< T >{
     /**
      * Convert link to object to the object of links. Optionally filter by 
      */
-    pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: ValueLink<T[P]>}
+    pick< K extends keyof T >( ...keys : K[]) : {[ P in K ]: Linked<T[P]>}
     pick() {
         let links = {}, keys = arguments.length ? arguments : Object.keys( this.value );
 
@@ -198,25 +149,30 @@ export abstract class ValueLink< T >{
     }
 
     /**
-     * Convert link to object to the object of links with $-keys.
+     * Convert link to object to the object of links.
+     * Memorises the result, subsequent calls are cheap.
      */
-    $links() : { [ key : string ] : ValueLink<any> }{
-        let links : ValueLinkHash = {},
-            { value } = this;
+    get $() : T extends object ? Linked.Hash<T> : never {
+        if( !this._value$ ){
+            let links : Linked.Hash<any> = this._value$ = {},
+                { value } = this;
 
-        for( let key in value ){
-            if( value.hasOwnProperty( key ) ){
-                links[ '$' + key ] = new PropValueLink( this, key );
+            for( let key in value ){
+                if( value.hasOwnProperty( key ) ){
+                    links[ key ] = new PropValueLink( this, key );
+                }
             }
         }
 
-        return links as any;
+        return this._value$ as any;
     }
+
+    private _value$ : object
 
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
-    check( whenValid : Validator< T >, error? : any ) : this {
+    check( whenValid : Linked.Validator<T>, error? : any ) : this {
         if( !this.error && !whenValid( this.value ) ){
             this.error = error || whenValid.error || defaultError;
         }
@@ -225,7 +181,69 @@ export abstract class ValueLink< T >{
     }
 }
 
-export class CustomValueLink< T > extends ValueLink< T > {
+export namespace Linked {
+    export interface Validator< T >{
+        ( value : T ) : boolean
+        error? : any
+    }    
+
+    export type Transform< T > = ( value : T, event? : {} ) => T
+    export type EventHandler = ( event : {} ) => void
+
+    export type Hash<T extends object = any> = {
+        [K in keyof T] : Linked<T[K]>
+    }
+
+    /** Create linked value out of its value and the set function */ 
+    export function value<T>( value : T, set : ( x : T ) => void ) : Linked<T>{
+        return new CustomValueLink( value, set );
+    }
+
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    export function getValues<T extends object>( links : Linked.Hash<T> ) : T {
+        return unwrap( links, 'value' ) as any;
+    }
+
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    export function getErrors<T extends object>( links : Linked.Hash<T> ) : { [ name in keyof T ] : any } {
+        return unwrap( links, 'error' ) as any;
+    }
+
+    /**
+     * Return true if an object with links contains any errors.
+     */
+    export function hasErrors<T extends object>( links : Linked.Hash<T> ) : boolean {
+        for( let key in links ){
+            if( links.hasOwnProperty( key ) && links[ key ].error ){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+    * Assing links with values from the source object.
+    */
+   export function setValues<T extends object>( links : Linked.Hash<T>, source : T ) : void {
+        if( source ){
+            for( let key in links ){
+                const sourceKey = trim( key );
+                if( source.hasOwnProperty( sourceKey ) ){
+                    const sourceVal = source[ sourceKey ];
+                    sourceVal === void 0 || links[ key ].set( sourceVal );
+                }
+            }    
+        }
+    }
+
+}
+
+class CustomValueLink< T > extends Linked< T > {
     set( x ){}
 
     constructor( value : T, set : ( x : T ) => void ){
@@ -234,10 +252,10 @@ export class CustomValueLink< T > extends ValueLink< T > {
     }
 }
 
-export class ClonedValueLink< T > extends ValueLink< T > {
+class ClonedValueLink< T > extends Linked< T > {
     set( x ){}
 
-    constructor( parent : ValueLink< T >, set : ( x : T ) => void ){
+    constructor( parent : Linked< T >, set : ( x : T ) => void ){
         super( parent.value );
         this.set = set;
 
@@ -246,8 +264,8 @@ export class ClonedValueLink< T > extends ValueLink< T > {
     }
 }
 
-export class EqualsValueLink extends ValueLink< boolean > {
-    constructor( public parent : ValueLink< any >, public truthyValue ){
+class EqualsValueLink extends Linked< boolean > {
+    constructor( public parent : Linked< any >, public truthyValue ){
         super( parent.value === truthyValue );
     }
 
@@ -256,8 +274,8 @@ export class EqualsValueLink extends ValueLink< boolean > {
     }
 }
 
-export class EnabledValueLink extends ValueLink< boolean > {
-    constructor( public parent : ValueLink< any >, public defaultValue ){
+class EnabledValueLink extends Linked< boolean > {
+    constructor( public parent : Linked< any >, public defaultValue ){
         super( parent.value != null );
     }
 
@@ -266,8 +284,8 @@ export class EnabledValueLink extends ValueLink< boolean > {
     }
 }
 
-export class ContainsRef extends ValueLink< boolean > {
-    constructor( public parent : ValueLink< any >, public element : any ){
+class ContainsRef extends Linked< boolean > {
+    constructor( public parent : Linked< any >, public element : any ){
         super( parent.value.indexOf( element ) >= 0 );
     }
 
@@ -289,8 +307,8 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class PropValueLink< E, K > extends ValueLink< E > {
-    constructor( private parent : ValueLink< any >, public key : K ){
+export class PropValueLink< E, K > extends Linked< E > {
+    constructor( private parent : Linked< any >, public key : K ){
         super( parent.value[ key ] );
     }
 
@@ -309,11 +327,7 @@ export class PropValueLink< E, K > extends ValueLink< E > {
     };
 }
 
-export interface ValueLinkHash {
-    [ name : string ] : ValueLink<any>
-}
-
-function unwrap( links : ValueLinkHash, field : string) : object {
+function unwrap( links : Linked.Hash, field : string) : object {
     const values = {};
 
     for( let key in links ){

@@ -1,9 +1,9 @@
 import React from 'react'
 import cx from 'classnames'
-import Link, { useLink } from '@linked/react'
+import Linked, { useLinked } from '@linked/react'
 
 const allDone = $todos =>
-    Link.value(
+    Linked.value(
         $todos.value.every( todo => todo.done ),
         x => {
             $todos.update( todos => {
@@ -14,7 +14,7 @@ const allDone = $todos =>
     );
 
 export const TodoList = ({ $todos, filterDone }) => {
-    const $editing = useLink( null ),
+    const $editing = useLinked( null ),
         $allDone = allDone( $todos );
 
     return (

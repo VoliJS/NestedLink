@@ -1,16 +1,16 @@
 import * as tslib_1 from "tslib";
-import { helpers, ValueLink } from '@linked/value';
+import { helpers, Linked } from '@linked/value';
 import { useEffect, useRef, useState } from 'react';
-var UseStateLink = /** @class */ (function (_super) {
-    tslib_1.__extends(UseStateLink, _super);
-    function UseStateLink(value, set) {
+var LinkedUseState = /** @class */ (function (_super) {
+    tslib_1.__extends(LinkedUseState, _super);
+    function LinkedUseState(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
         return _this;
     }
     // Set the component's state value.
-    UseStateLink.prototype.set = function (x) { };
-    UseStateLink.prototype.update = function (fun, event) {
+    LinkedUseState.prototype.set = function (x) { };
+    LinkedUseState.prototype.update = function (fun, event) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
         this.set(function (x) {
@@ -18,24 +18,23 @@ var UseStateLink = /** @class */ (function (_super) {
             return result === void 0 ? x : result;
         });
     };
-    return UseStateLink;
-}(ValueLink));
-export { UseStateLink };
+    return LinkedUseState;
+}(Linked));
 /**
  * Create the ref to the local state.
  */
 export function useLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1];
-    return new UseStateLink(value, set);
+    return new LinkedUseState(value, set);
 }
-export { useLink as useState$, useSafeLink as useSafeStateRef, useBoundLink as useBoundStateRef, useSafeBoundLink as useSafeBoundStateRef };
+export { useLink as useLinked, useSafeLink as useSafeLinked, useBoundLink as useSyncLinked, useSafeBoundLink as useSafeSyncLinked };
 /**
  * Create the link to the local state which is safe to set when component is unmounted.
  * Use this for the state which is set when async I/O is completed.
  */
 export function useSafeLink(initialState) {
     var _a = useState(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
-    return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
+    return new LinkedUseState(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Returns the ref which is true when component it mounted.
@@ -50,7 +49,7 @@ export function useIsMountedRef() {
  * value or link in a single direction. When the source changes, the link changes too.
  */
 export function useBoundLink(source) {
-    var value = source instanceof ValueLink ? source.value : source, link = useLink(value);
+    var value = source instanceof Linked ? source.value : source, link = useLink(value);
     useEffect(function () { return link.set(value); }, [value]);
     link.action;
     return link;
@@ -61,7 +60,7 @@ export function useBoundLink(source) {
  * When the source change, the linked state changes too.
  */
 export function useSafeBoundLink(source) {
-    var value = source instanceof ValueLink ? source.value : source, link = useSafeLink(value);
+    var value = source instanceof Linked ? source.value : source, link = useSafeLink(value);
     useEffect(function () { return link.set(value); }, [value]);
     return link;
 }
@@ -77,9 +76,9 @@ export function useLocalStorage(key, state) {
     stateRef.current = state;
     useEffect(function () {
         var savedData = JSON.parse(localStorage.getItem(key) || '{}');
-        ValueLink.setValues(stateRef.current, savedData);
+        Linked.setValues(stateRef.current, savedData);
         return function () {
-            var dataToSave = ValueLink.getValues(stateRef.current);
+            var dataToSave = Linked.getValues(stateRef.current);
             localStorage.setItem(key, JSON.stringify(dataToSave));
         };
     }, []);

@@ -26219,7 +26219,7 @@ var StateLink = /** @class */ (function (_super) {
         this.component.setState(attrs);
     };
     return StateLink;
-}(_linked_value__WEBPACK_IMPORTED_MODULE_2__["ValueLink"]));
+}(_linked_value__WEBPACK_IMPORTED_MODULE_2__["Linked"]));
 
 //# sourceMappingURL=component.js.map
 
@@ -26229,17 +26229,16 @@ var StateLink = /** @class */ (function (_super) {
 /*!*************************************************************!*\
   !*** /Users/vladbalin/GitHub/NestedLink/react/lib/hooks.js ***!
   \*************************************************************/
-/*! exports provided: UseStateLink, useLink, useState$, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged */
+/*! exports provided: useLink, useLinked, useSafeLinked, useSyncLinked, useSafeSyncLinked, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UseStateLink", function() { return UseStateLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return useLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useState$", function() { return useLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeStateRef", function() { return useSafeLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useBoundStateRef", function() { return useBoundLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeBoundStateRef", function() { return useSafeBoundLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useLinked", function() { return useLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeLinked", function() { return useSafeLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSyncLinked", function() { return useBoundLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeSyncLinked", function() { return useSafeBoundLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return useSafeLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useIsMountedRef", function() { return useIsMountedRef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useBoundLink", function() { return useBoundLink; });
@@ -26254,16 +26253,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var UseStateLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](UseStateLink, _super);
-    function UseStateLink(value, set) {
+var LinkedUseState = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](LinkedUseState, _super);
+    function LinkedUseState(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
         return _this;
     }
     // Set the component's state value.
-    UseStateLink.prototype.set = function (x) { };
-    UseStateLink.prototype.update = function (fun, event) {
+    LinkedUseState.prototype.set = function (x) { };
+    LinkedUseState.prototype.update = function (fun, event) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
         this.set(function (x) {
@@ -26271,15 +26270,14 @@ var UseStateLink = /** @class */ (function (_super) {
             return result === void 0 ? x : result;
         });
     };
-    return UseStateLink;
-}(_linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"]));
-
+    return LinkedUseState;
+}(_linked_value__WEBPACK_IMPORTED_MODULE_1__["Linked"]));
 /**
  * Create the ref to the local state.
  */
 function useLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(initialState), value = _a[0], set = _a[1];
-    return new UseStateLink(value, set);
+    return new LinkedUseState(value, set);
 }
 
 /**
@@ -26288,7 +26286,7 @@ function useLink(initialState) {
  */
 function useSafeLink(initialState) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
-    return new UseStateLink(value, function (x) { return isMounted.current && set(x); });
+    return new LinkedUseState(value, function (x) { return isMounted.current && set(x); });
 }
 /**
  * Returns the ref which is true when component it mounted.
@@ -26303,7 +26301,7 @@ function useIsMountedRef() {
  * value or link in a single direction. When the source changes, the link changes too.
  */
 function useBoundLink(source) {
-    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"] ? source.value : source, link = useLink(value);
+    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["Linked"] ? source.value : source, link = useLink(value);
     Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () { return link.set(value); }, [value]);
     link.action;
     return link;
@@ -26314,7 +26312,7 @@ function useBoundLink(source) {
  * When the source change, the linked state changes too.
  */
 function useSafeBoundLink(source) {
-    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"] ? source.value : source, link = useSafeLink(value);
+    var value = source instanceof _linked_value__WEBPACK_IMPORTED_MODULE_1__["Linked"] ? source.value : source, link = useSafeLink(value);
     Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () { return link.set(value); }, [value]);
     return link;
 }
@@ -26330,9 +26328,9 @@ function useLocalStorage(key, state) {
     stateRef.current = state;
     Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
         var savedData = JSON.parse(localStorage.getItem(key) || '{}');
-        _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"].setValues(stateRef.current, savedData);
+        _linked_value__WEBPACK_IMPORTED_MODULE_1__["Linked"].setValues(stateRef.current, savedData);
         return function () {
-            var dataToSave = _linked_value__WEBPACK_IMPORTED_MODULE_1__["ValueLink"].getValues(stateRef.current);
+            var dataToSave = _linked_value__WEBPACK_IMPORTED_MODULE_1__["Linked"].getValues(stateRef.current);
             localStorage.setItem(key, JSON.stringify(dataToSave));
         };
     }, []);
@@ -26401,30 +26399,20 @@ function extractChangeToken(x) {
 /*!*************************************************************!*\
   !*** /Users/vladbalin/GitHub/NestedLink/react/lib/index.js ***!
   \*************************************************************/
-/*! exports provided: default, Link, LinkedComponent, StateLink, ValueLink, CustomValueLink, ClonedValueLink, EqualsValueLink, EnabledValueLink, ContainsRef, PropValueLink, UseStateLink, useLink, useState$, useSafeStateRef, useBoundStateRef, useSafeBoundStateRef, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged, helpers, objectHelpers, arrayHelpers */
+/*! exports provided: default, Link, LinkedComponent, StateLink, Linked, PropValueLink, useLink, useLinked, useSafeLinked, useSyncLinked, useSafeSyncLinked, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged, helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _linked_value__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @linked/value */ "../../value/lib/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["ValueLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["Linked"]; });
 
 /* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "../../react/lib/component.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LinkedComponent", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["LinkedComponent"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateLink", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["StateLink"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["ValueLink"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["CustomValueLink"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ClonedValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["ClonedValueLink"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EqualsValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["EqualsValueLink"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EnabledValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["EnabledValueLink"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContainsRef", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["ContainsRef"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linked", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["Linked"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PropValueLink", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["PropValueLink"]; });
 
@@ -26435,17 +26423,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "arrayHelpers", function() { return _linked_value__WEBPACK_IMPORTED_MODULE_0__["arrayHelpers"]; });
 
 /* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hooks */ "../../react/lib/hooks.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UseStateLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["UseStateLink"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLink"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useState$", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useState$"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useLinked", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useLinked"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeStateRef"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeLinked", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeLinked"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useBoundStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useBoundStateRef"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSyncLinked", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSyncLinked"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeBoundStateRef", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeBoundStateRef"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeSyncLinked", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeSyncLinked"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSafeLink", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["useSafeLink"]; });
 
@@ -26462,8 +26448,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "whenChanged", function() { return _hooks__WEBPACK_IMPORTED_MODULE_2__["whenChanged"]; });
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_linked_value__WEBPACK_IMPORTED_MODULE_0__["ValueLink"]);
-/** @deprecated, use `ValueLink` instead */
+/* harmony default export */ __webpack_exports__["default"] = (_linked_value__WEBPACK_IMPORTED_MODULE_0__["Linked"]);
+/** @deprecated, use `Linked` instead */
 
 
 
@@ -26553,17 +26539,12 @@ var arrayHelpers = {
 /*!*************************************************************!*\
   !*** /Users/vladbalin/GitHub/NestedLink/value/lib/index.js ***!
   \*************************************************************/
-/*! exports provided: ValueLink, CustomValueLink, ClonedValueLink, EqualsValueLink, EnabledValueLink, ContainsRef, PropValueLink, helpers, objectHelpers, arrayHelpers */
+/*! exports provided: Linked, PropValueLink, helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ValueLink", function() { return ValueLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomValueLink", function() { return CustomValueLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClonedValueLink", function() { return ClonedValueLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EqualsValueLink", function() { return EqualsValueLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnabledValueLink", function() { return EnabledValueLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContainsRef", function() { return ContainsRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Linked", function() { return Linked; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PropValueLink", function() { return PropValueLink; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "../../value/lib/helpers.js");
@@ -26581,29 +26562,24 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-// Main Link class. All links must extend it.
-var ValueLink = /** @class */ (function () {
-    function ValueLink(value) {
+/**
+ * `Linked` class is an abstract linked value - the value, the function to update this value, and its validation error.
+ * The enclosed value is considered as immutable.
+ */
+var Linked = /** @class */ (function () {
+    function Linked(value) {
         this.value = value;
+        /** Validation error. Usually is a string with error text, but can hold any type. */
+        this.error = void 0;
     }
-    // Create custom link to arbitrary value
-    ValueLink.value = function (value, set) {
-        return new CustomValueLink(value, set);
-    };
-    /**
-    * Unwrap object with links, returning an object of a similar shape filled with link values.
-    */
-    ValueLink.getValues = function (links) {
-        return unwrap(links, 'value');
-    };
-    Object.defineProperty(ValueLink.prototype, "current", {
-        // EXPERIMENTAL: Support useRef interface.
+    Object.defineProperty(Linked.prototype, "current", {
+        /** EXPERIMENTAL: Support useRef interface. */
         get: function () { return this.value; },
         set: function (x) { this.set(x); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ValueLink.prototype, "_changeToken", {
+    Object.defineProperty(Linked.prototype, "_changeToken", {
         // Private accessor for whenChanged. Uniform with Type-R models and collections API.
         get: function () {
             return this.value;
@@ -26611,46 +26587,28 @@ var ValueLink = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * Unwrap object with links, returning an object of a similar shape filled with link errors.
-     */
-    ValueLink.getErrors = function (links) {
-        return unwrap(links, 'error');
-    };
-    /**
-     * Return true if an object with links contains any errors.
-     */
-    ValueLink.hasErrors = function (links) {
-        for (var key in links) {
-            if (links.hasOwnProperty(key) && links[key].error) {
-                return true;
-            }
-        }
-        return false;
-    };
-    /**
-    * Assing links with values from the source object.
-    */
-    ValueLink.setValues = function (links, source) {
-        if (source) {
-            for (var key in links) {
-                var sourceKey = trim(key);
-                if (source.hasOwnProperty(sourceKey)) {
-                    var sourceVal = source[sourceKey];
-                    sourceVal === void 0 || links[key].set(sourceVal);
-                }
-            }
-        }
-    };
-    ValueLink.prototype.onChange = function (handler) {
+    /** Produce the new link executing the given function before the link value will be updated. */
+    Linked.prototype.onChange = function (handler) {
         var _this = this;
         return new ClonedValueLink(this, function (x) {
             handler(x);
             _this.set(x);
         });
     };
-    Object.defineProperty(ValueLink.prototype, "props", {
-        // <input { ...link.props } />
+    /** Produce the new link which transform the value before `set` with a given function. */
+    Linked.prototype.pipe = function (handler) {
+        var _this = this;
+        return new ClonedValueLink(this, function (x) {
+            var next = handler(x, _this.value);
+            next === void 0 || _this.set(next);
+        });
+    };
+    Object.defineProperty(Linked.prototype, "props", {
+        /**
+         * Create React component props for the <input> component.
+         *
+         * <input { ...link.props } />
+         */
         get: function () {
             var _this = this;
             return typeof this.value === 'boolean' ? {
@@ -26664,64 +26622,56 @@ var ValueLink = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // Immediately update the link value using given transform function.
-    ValueLink.prototype.update = function (transform, e) {
+    /** Update the linked value using given transform function. */
+    Linked.prototype.update = function (transform, e) {
         var next = transform(this.clone(), e);
         next === void 0 || this.set(next);
     };
-    // Create new link which applies transform function on set.
-    ValueLink.prototype.pipe = function (handler) {
-        var _this = this;
-        return new ClonedValueLink(this, function (x) {
-            var next = handler(x, _this.value);
-            next === void 0 || _this.set(next);
-        });
-    };
     // Create UI event handler function which will update the link with a given transform function.
-    ValueLink.prototype.action = function (transform) {
+    Linked.prototype.action = function (transform) {
         var _this = this;
         return function (e) { return _this.update(transform, e); };
     };
-    ValueLink.prototype.equals = function (truthyValue) {
+    Linked.prototype.equals = function (truthyValue) {
         return new EqualsValueLink(this, truthyValue);
     };
-    ValueLink.prototype.enabled = function (defaultValue) {
+    Linked.prototype.enabled = function (defaultValue) {
         return new EnabledValueLink(this, defaultValue || "");
     };
     // Array-only links methods
-    ValueLink.prototype.contains = function (element) {
+    Linked.prototype.contains = function (element) {
         return new ContainsRef(this, element);
     };
-    ValueLink.prototype.push = function () {
+    Linked.prototype.push = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.push.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.unshift = function () {
+    Linked.prototype.unshift = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.unshift.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.splice = function () {
+    Linked.prototype.splice = function () {
         var array = _helpers__WEBPACK_IMPORTED_MODULE_1__["arrayHelpers"].clone(this.value);
         Array.prototype.splice.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.map = function (iterator) {
+    Linked.prototype.map = function (iterator) {
         return Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(this.value).map(this, iterator);
     };
-    ValueLink.prototype.removeAt = function (key) {
+    Linked.prototype.removeAt = function (key) {
         var value = this.value, _ = Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(value);
         this.set(_.remove(_.clone(value), key));
     };
-    ValueLink.prototype.at = function (key) {
+    Linked.prototype.at = function (key) {
         return new PropValueLink(this, key);
     };
-    ValueLink.prototype.clone = function () {
+    Linked.prototype.clone = function () {
         var value = this.value;
         return Object(_helpers__WEBPACK_IMPORTED_MODULE_1__["helpers"])(value).clone(value);
     };
-    ValueLink.prototype.pick = function () {
+    Linked.prototype.pick = function () {
         var links = {}, keys = arguments.length ? arguments : Object.keys(this.value);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
@@ -26729,30 +26679,85 @@ var ValueLink = /** @class */ (function () {
         }
         return links;
     };
-    /**
-     * Convert link to object to the object of links with $-keys.
-     */
-    ValueLink.prototype.$links = function () {
-        var links = {}, value = this.value;
-        for (var key in value) {
-            if (value.hasOwnProperty(key)) {
-                links['$' + key] = new PropValueLink(this, key);
+    Object.defineProperty(Linked.prototype, "$", {
+        /**
+         * Convert link to object to the object of links.
+         * Memorises the result, subsequent calls are cheap.
+         */
+        get: function () {
+            if (!this._value$) {
+                var links = this._value$ = {}, value = this.value;
+                for (var key in value) {
+                    if (value.hasOwnProperty(key)) {
+                        links[key] = new PropValueLink(this, key);
+                    }
+                }
             }
-        }
-        return links;
-    };
+            return this._value$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
-    ValueLink.prototype.check = function (whenValid, error) {
+    Linked.prototype.check = function (whenValid, error) {
         if (!this.error && !whenValid(this.value)) {
             this.error = error || whenValid.error || defaultError;
         }
         return this;
     };
-    return ValueLink;
+    return Linked;
 }());
 
+(function (Linked) {
+    /** Create linked value out of its value and the set function */
+    function value(value, set) {
+        return new CustomValueLink(value, set);
+    }
+    Linked.value = value;
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    function getValues(links) {
+        return unwrap(links, 'value');
+    }
+    Linked.getValues = getValues;
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    function getErrors(links) {
+        return unwrap(links, 'error');
+    }
+    Linked.getErrors = getErrors;
+    /**
+     * Return true if an object with links contains any errors.
+     */
+    function hasErrors(links) {
+        for (var key in links) {
+            if (links.hasOwnProperty(key) && links[key].error) {
+                return true;
+            }
+        }
+        return false;
+    }
+    Linked.hasErrors = hasErrors;
+    /**
+    * Assing links with values from the source object.
+    */
+    function setValues(links, source) {
+        if (source) {
+            for (var key in links) {
+                var sourceKey = trim(key);
+                if (source.hasOwnProperty(sourceKey)) {
+                    var sourceVal = source[sourceKey];
+                    sourceVal === void 0 || links[key].set(sourceVal);
+                }
+            }
+        }
+    }
+    Linked.setValues = setValues;
+})(Linked || (Linked = {}));
 var CustomValueLink = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](CustomValueLink, _super);
     function CustomValueLink(value, set) {
@@ -26762,8 +26767,7 @@ var CustomValueLink = /** @class */ (function (_super) {
     }
     CustomValueLink.prototype.set = function (x) { };
     return CustomValueLink;
-}(ValueLink));
-
+}(Linked));
 var ClonedValueLink = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ClonedValueLink, _super);
     function ClonedValueLink(parent, set) {
@@ -26776,8 +26780,7 @@ var ClonedValueLink = /** @class */ (function (_super) {
     }
     ClonedValueLink.prototype.set = function (x) { };
     return ClonedValueLink;
-}(ValueLink));
-
+}(Linked));
 var EqualsValueLink = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EqualsValueLink, _super);
     function EqualsValueLink(parent, truthyValue) {
@@ -26790,8 +26793,7 @@ var EqualsValueLink = /** @class */ (function (_super) {
         this.parent.set(x ? this.truthyValue : null);
     };
     return EqualsValueLink;
-}(ValueLink));
-
+}(Linked));
 var EnabledValueLink = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EnabledValueLink, _super);
     function EnabledValueLink(parent, defaultValue) {
@@ -26804,8 +26806,7 @@ var EnabledValueLink = /** @class */ (function (_super) {
         this.parent.set(x ? this.defaultValue : null);
     };
     return EnabledValueLink;
-}(ValueLink));
-
+}(Linked));
 var ContainsRef = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ContainsRef, _super);
     function ContainsRef(parent, element) {
@@ -26823,8 +26824,7 @@ var ContainsRef = /** @class */ (function (_super) {
         }
     };
     return ContainsRef;
-}(ValueLink));
-
+}(Linked));
 var defaultError = 'Invalid value';
 /**
  * Link to array or object element enclosed in parent link.
@@ -26853,7 +26853,7 @@ var PropValueLink = /** @class */ (function (_super) {
     };
     ;
     return PropValueLink;
-}(ValueLink));
+}(Linked));
 
 function unwrap(links, field) {
     var values = {};

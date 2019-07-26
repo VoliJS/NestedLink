@@ -6,29 +6,24 @@ import * as tslib_1 from "tslib";
  */
 import { arrayHelpers, helpers } from './helpers';
 export * from './helpers';
-// Main Link class. All links must extend it.
-var ValueLink = /** @class */ (function () {
-    function ValueLink(value) {
+/**
+ * `Linked` class is an abstract linked value - the value, the function to update this value, and its validation error.
+ * The enclosed value is considered as immutable.
+ */
+var Linked = /** @class */ (function () {
+    function Linked(value) {
         this.value = value;
+        /** Validation error. Usually is a string with error text, but can hold any type. */
+        this.error = void 0;
     }
-    // Create custom link to arbitrary value
-    ValueLink.value = function (value, set) {
-        return new CustomValueLink(value, set);
-    };
-    /**
-    * Unwrap object with links, returning an object of a similar shape filled with link values.
-    */
-    ValueLink.getValues = function (links) {
-        return unwrap(links, 'value');
-    };
-    Object.defineProperty(ValueLink.prototype, "current", {
-        // EXPERIMENTAL: Support useRef interface.
+    Object.defineProperty(Linked.prototype, "current", {
+        /** EXPERIMENTAL: Support useRef interface. */
         get: function () { return this.value; },
         set: function (x) { this.set(x); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ValueLink.prototype, "_changeToken", {
+    Object.defineProperty(Linked.prototype, "_changeToken", {
         // Private accessor for whenChanged. Uniform with Type-R models and collections API.
         get: function () {
             return this.value;
@@ -36,46 +31,28 @@ var ValueLink = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * Unwrap object with links, returning an object of a similar shape filled with link errors.
-     */
-    ValueLink.getErrors = function (links) {
-        return unwrap(links, 'error');
-    };
-    /**
-     * Return true if an object with links contains any errors.
-     */
-    ValueLink.hasErrors = function (links) {
-        for (var key in links) {
-            if (links.hasOwnProperty(key) && links[key].error) {
-                return true;
-            }
-        }
-        return false;
-    };
-    /**
-    * Assing links with values from the source object.
-    */
-    ValueLink.setValues = function (links, source) {
-        if (source) {
-            for (var key in links) {
-                var sourceKey = trim(key);
-                if (source.hasOwnProperty(sourceKey)) {
-                    var sourceVal = source[sourceKey];
-                    sourceVal === void 0 || links[key].set(sourceVal);
-                }
-            }
-        }
-    };
-    ValueLink.prototype.onChange = function (handler) {
+    /** Produce the new link executing the given function before the link value will be updated. */
+    Linked.prototype.onChange = function (handler) {
         var _this = this;
         return new ClonedValueLink(this, function (x) {
             handler(x);
             _this.set(x);
         });
     };
-    Object.defineProperty(ValueLink.prototype, "props", {
-        // <input { ...link.props } />
+    /** Produce the new link which transform the value before `set` with a given function. */
+    Linked.prototype.pipe = function (handler) {
+        var _this = this;
+        return new ClonedValueLink(this, function (x) {
+            var next = handler(x, _this.value);
+            next === void 0 || _this.set(next);
+        });
+    };
+    Object.defineProperty(Linked.prototype, "props", {
+        /**
+         * Create React component props for the <input> component.
+         *
+         * <input { ...link.props } />
+         */
         get: function () {
             var _this = this;
             return typeof this.value === 'boolean' ? {
@@ -89,64 +66,56 @@ var ValueLink = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // Immediately update the link value using given transform function.
-    ValueLink.prototype.update = function (transform, e) {
+    /** Update the linked value using given transform function. */
+    Linked.prototype.update = function (transform, e) {
         var next = transform(this.clone(), e);
         next === void 0 || this.set(next);
     };
-    // Create new link which applies transform function on set.
-    ValueLink.prototype.pipe = function (handler) {
-        var _this = this;
-        return new ClonedValueLink(this, function (x) {
-            var next = handler(x, _this.value);
-            next === void 0 || _this.set(next);
-        });
-    };
     // Create UI event handler function which will update the link with a given transform function.
-    ValueLink.prototype.action = function (transform) {
+    Linked.prototype.action = function (transform) {
         var _this = this;
         return function (e) { return _this.update(transform, e); };
     };
-    ValueLink.prototype.equals = function (truthyValue) {
+    Linked.prototype.equals = function (truthyValue) {
         return new EqualsValueLink(this, truthyValue);
     };
-    ValueLink.prototype.enabled = function (defaultValue) {
+    Linked.prototype.enabled = function (defaultValue) {
         return new EnabledValueLink(this, defaultValue || "");
     };
     // Array-only links methods
-    ValueLink.prototype.contains = function (element) {
+    Linked.prototype.contains = function (element) {
         return new ContainsRef(this, element);
     };
-    ValueLink.prototype.push = function () {
+    Linked.prototype.push = function () {
         var array = arrayHelpers.clone(this.value);
         Array.prototype.push.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.unshift = function () {
+    Linked.prototype.unshift = function () {
         var array = arrayHelpers.clone(this.value);
         Array.prototype.unshift.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.splice = function () {
+    Linked.prototype.splice = function () {
         var array = arrayHelpers.clone(this.value);
         Array.prototype.splice.apply(array, arguments);
         this.set(array);
     };
-    ValueLink.prototype.map = function (iterator) {
+    Linked.prototype.map = function (iterator) {
         return helpers(this.value).map(this, iterator);
     };
-    ValueLink.prototype.removeAt = function (key) {
+    Linked.prototype.removeAt = function (key) {
         var value = this.value, _ = helpers(value);
         this.set(_.remove(_.clone(value), key));
     };
-    ValueLink.prototype.at = function (key) {
+    Linked.prototype.at = function (key) {
         return new PropValueLink(this, key);
     };
-    ValueLink.prototype.clone = function () {
+    Linked.prototype.clone = function () {
         var value = this.value;
         return helpers(value).clone(value);
     };
-    ValueLink.prototype.pick = function () {
+    Linked.prototype.pick = function () {
         var links = {}, keys = arguments.length ? arguments : Object.keys(this.value);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
@@ -154,30 +123,85 @@ var ValueLink = /** @class */ (function () {
         }
         return links;
     };
-    /**
-     * Convert link to object to the object of links with $-keys.
-     */
-    ValueLink.prototype.$links = function () {
-        var links = {}, value = this.value;
-        for (var key in value) {
-            if (value.hasOwnProperty(key)) {
-                links['$' + key] = new PropValueLink(this, key);
+    Object.defineProperty(Linked.prototype, "$", {
+        /**
+         * Convert link to object to the object of links.
+         * Memorises the result, subsequent calls are cheap.
+         */
+        get: function () {
+            if (!this._value$) {
+                var links = this._value$ = {}, value = this.value;
+                for (var key in value) {
+                    if (value.hasOwnProperty(key)) {
+                        links[key] = new PropValueLink(this, key);
+                    }
+                }
             }
-        }
-        return links;
-    };
+            return this._value$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Validate link with validness predicate and optional custom error object. Can be chained.
      */
-    ValueLink.prototype.check = function (whenValid, error) {
+    Linked.prototype.check = function (whenValid, error) {
         if (!this.error && !whenValid(this.value)) {
             this.error = error || whenValid.error || defaultError;
         }
         return this;
     };
-    return ValueLink;
+    return Linked;
 }());
-export { ValueLink };
+export { Linked };
+(function (Linked) {
+    /** Create linked value out of its value and the set function */
+    function value(value, set) {
+        return new CustomValueLink(value, set);
+    }
+    Linked.value = value;
+    /**
+    * Unwrap object with links, returning an object of a similar shape filled with link values.
+    */
+    function getValues(links) {
+        return unwrap(links, 'value');
+    }
+    Linked.getValues = getValues;
+    /**
+     * Unwrap object with links, returning an object of a similar shape filled with link errors.
+     */
+    function getErrors(links) {
+        return unwrap(links, 'error');
+    }
+    Linked.getErrors = getErrors;
+    /**
+     * Return true if an object with links contains any errors.
+     */
+    function hasErrors(links) {
+        for (var key in links) {
+            if (links.hasOwnProperty(key) && links[key].error) {
+                return true;
+            }
+        }
+        return false;
+    }
+    Linked.hasErrors = hasErrors;
+    /**
+    * Assing links with values from the source object.
+    */
+    function setValues(links, source) {
+        if (source) {
+            for (var key in links) {
+                var sourceKey = trim(key);
+                if (source.hasOwnProperty(sourceKey)) {
+                    var sourceVal = source[sourceKey];
+                    sourceVal === void 0 || links[key].set(sourceVal);
+                }
+            }
+        }
+    }
+    Linked.setValues = setValues;
+})(Linked || (Linked = {}));
 var CustomValueLink = /** @class */ (function (_super) {
     tslib_1.__extends(CustomValueLink, _super);
     function CustomValueLink(value, set) {
@@ -187,8 +211,7 @@ var CustomValueLink = /** @class */ (function (_super) {
     }
     CustomValueLink.prototype.set = function (x) { };
     return CustomValueLink;
-}(ValueLink));
-export { CustomValueLink };
+}(Linked));
 var ClonedValueLink = /** @class */ (function (_super) {
     tslib_1.__extends(ClonedValueLink, _super);
     function ClonedValueLink(parent, set) {
@@ -201,8 +224,7 @@ var ClonedValueLink = /** @class */ (function (_super) {
     }
     ClonedValueLink.prototype.set = function (x) { };
     return ClonedValueLink;
-}(ValueLink));
-export { ClonedValueLink };
+}(Linked));
 var EqualsValueLink = /** @class */ (function (_super) {
     tslib_1.__extends(EqualsValueLink, _super);
     function EqualsValueLink(parent, truthyValue) {
@@ -215,8 +237,7 @@ var EqualsValueLink = /** @class */ (function (_super) {
         this.parent.set(x ? this.truthyValue : null);
     };
     return EqualsValueLink;
-}(ValueLink));
-export { EqualsValueLink };
+}(Linked));
 var EnabledValueLink = /** @class */ (function (_super) {
     tslib_1.__extends(EnabledValueLink, _super);
     function EnabledValueLink(parent, defaultValue) {
@@ -229,8 +250,7 @@ var EnabledValueLink = /** @class */ (function (_super) {
         this.parent.set(x ? this.defaultValue : null);
     };
     return EnabledValueLink;
-}(ValueLink));
-export { EnabledValueLink };
+}(Linked));
 var ContainsRef = /** @class */ (function (_super) {
     tslib_1.__extends(ContainsRef, _super);
     function ContainsRef(parent, element) {
@@ -248,8 +268,7 @@ var ContainsRef = /** @class */ (function (_super) {
         }
     };
     return ContainsRef;
-}(ValueLink));
-export { ContainsRef };
+}(Linked));
 var defaultError = 'Invalid value';
 /**
  * Link to array or object element enclosed in parent link.
@@ -278,7 +297,7 @@ var PropValueLink = /** @class */ (function (_super) {
     };
     ;
     return PropValueLink;
-}(ValueLink));
+}(Linked));
 export { PropValueLink };
 function unwrap(links, field) {
     var values = {};

@@ -1,4 +1,4 @@
-import Link, { useLink, useLocalStorage } from '@linked/react';
+import Linked, { useLink, useLocalStorage } from '@linked/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
@@ -47,7 +47,7 @@ export const UsersList = () => {
             <Modal isOpen={ $dialog.value === 'addUser' }>
                 <EditUser $user={
                         /* The custom link to add created user to the state */
-                        Link.value( newUser, x => $users.push( x ) )
+                        Linked.value( newUser, x => $users.push( x ) )
                     }
                     onClose={ closeDialog } />
             </Modal>
