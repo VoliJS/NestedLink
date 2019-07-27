@@ -1,6 +1,6 @@
 {
   "name": "@linked/react",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Purely functional two-way data binding and form validation for React",
   "main": "./min",
   "module": "./lib",
