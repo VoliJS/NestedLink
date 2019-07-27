@@ -26360,13 +26360,13 @@ function useIO(fun, condition) {
             return [x + 1, res];
         });
         fun()
-            .catch(function (e) { $isReady.set(function (_a) {
-            var x = _a[0], res = _a[1];
-            return [x - 1, e];
-        }); })
-            .then(function () { $isReady.set(function (_a) {
+            .then(function () { return $isReady.set(function (_a) {
             var x = _a[0], res = _a[1];
             return [x - 1, null];
+        }); })
+            .catch(function (e) { return $isReady.set(function (_a) {
+            var x = _a[0], res = _a[1];
+            return [x - 1, e];
         }); });
     }, condition);
     // `null` is used to detect the first render when no requests issued yet,

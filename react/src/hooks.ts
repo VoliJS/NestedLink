@@ -136,8 +136,8 @@ export function useIO( fun : () => Promise<any>, condition : any[] = [] ) : bool
         });
 
         fun()
-            .catch( e => { $isReady.set( ([ x, res ]) => [ x - 1, e ] ) })
-            .then( () => { $isReady.set( ([ x, res ]) => [ x - 1, null ] ) })
+            .then( () => $isReady.set( ([ x, res ]) => [ x - 1, null ] ))
+            .catch( e => $isReady.set( ([ x, res ]) => [ x - 1, e ] ))
     }, condition );
 
     // `null` is used to detect the first render when no requests issued yet,
