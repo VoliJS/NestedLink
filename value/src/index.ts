@@ -16,16 +16,7 @@ export abstract class Linked<T>{
     error : any = void 0
     
     /** Set linked value */ 
-    set( x ){
-        // Linked value should be updated in place 
-        if( this.value !== x ){
-            this.value = x;
-            this._set( x );
-        }
-    }
-
-    // Set
-    abstract _set( x : T ) : void
+    abstract set( x : T ) : void
 
     constructor( public value : T ){}
 
@@ -262,18 +253,11 @@ class CustomValueLink< T > extends Linked< T > {
 }
 
 class ClonedValueLink< T > extends Linked< T > {
-    set( x ){
-        if( this.value !== x ){
-            this.value = x;
-            this._set( x );
-        }
-    }
-
-    _set( x ){};
+    set( x ){}
 
     constructor( parent : Linked< T >, set : ( x : T ) => void ){
         super( parent.value );
-        this._set = set;
+        this.set = set;
 
         const { error } = parent;
         if( error ) this.error = error;
@@ -286,11 +270,7 @@ class EqualsValueLink extends Linked< boolean > {
     }
 
     set( x : boolean ) : void {
-        const next = Boolean( x );
-        if( this.value !== next ){
-            this.value = next;
-            this.parent.set( x ? this.truthyValue : null );
-        }
+        this.parent.set( x ? this.truthyValue : null );
     }
 }
 
@@ -300,11 +280,7 @@ class EnabledValueLink extends Linked< boolean > {
     }
 
     set( x : boolean ){
-        const next = Boolean( x );
-        if( this.value !== next ){
-            this.value = next;
-            this.parent.set( x ? this.defaultValue : null );    
-        }
+        this.parent.set( x ? this.defaultValue : null );
     }
 }
 
@@ -317,7 +293,6 @@ class ContainsRef extends Linked< boolean > {
         var next = Boolean( x );
 
         if( this.value !== next ){
-            this.value = next;
             var arr : any[] = this.parent.value,
                 nextValue = x ? arr.concat( this.element ) : arr.filter( el => el !== this.element );
 
@@ -344,7 +319,6 @@ export class PropValueLink< E, K > extends Linked< E > {
     // Set new element value to parent array or object, performing purely functional update.
     set( x : E ) : void {
         if( this.value !== x ){
-            this.value = x;
             this.parent.update( value => {
                 value[ this.key ] = x;
                 return value;
