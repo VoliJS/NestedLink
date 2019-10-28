@@ -31,11 +31,15 @@
     "tslib": "^1.9.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "yarn && tsc"
   },
   "directories": {
     "lib": "lib"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/jest": "^24.0.20",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
+  }
 }

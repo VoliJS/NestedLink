@@ -316,6 +316,18 @@ export class PropValueLink< E, K > extends Linked< E > {
         this.parent.removeAt( <any>this.key );
     }
 
+    update( transform : Linked.Transform<E>, e? : Object ) : void {
+        this.parent.update( value => {
+            const prev = value[ this.key ],
+                next = transform( helpers( prev ).clone( prev ) );
+
+            if( next !== void 0 ){
+                value[ this.key ] = next;
+                return value;
+            }
+        } );
+    }
+
     // Set new element value to parent array or object, performing purely functional update.
     set( x : E ) : void {
         if( this.value !== x ){
