@@ -199,7 +199,7 @@ export namespace Linked {
         return new CustomValueLink( value, set );
     }
 
-    export function object<T extends object>( state : T ) : Linked<T>{
+    export function mutable<T extends object>( state : T ) : Linked<T>{
         return new CustomValueLink( state, x => {
             for( let key in x ){
                 if( x.hasOwnProperty( key ) ){

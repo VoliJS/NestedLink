@@ -19,6 +19,20 @@ Then, following custom link will allow you to add new user with the same form el
 
 Read more about links to objects updates in the next section.
 
+##### ![static] Link.mutable( object ) : Link
+
+Create the link to a mutable object. Useful for testing and linking observable state.
+
+```javascript
+const state = { a : 1 },
+    $state = Link.mutable( state );
+
+$state.at( 'a' ).set( 2 );
+expect( state.a ).toBe( 2 );
+```
+
+Read more about links to objects updates in the next section.
+
 ##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
 
 Extracts an object with link values. Leading $ is removed from property names in a result.
