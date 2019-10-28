@@ -199,6 +199,16 @@ export namespace Linked {
         return new CustomValueLink( value, set );
     }
 
+    export function object<T extends object>( state : T ) : Linked<T>{
+        return new CustomValueLink( state, x => {
+            for( let key in x ){
+                if( x.hasOwnProperty( key ) ){
+                    state[ key ] = x[ key ];
+                }
+            }
+        } );
+    }
+
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
     */
@@ -317,25 +327,37 @@ export class PropValueLink< E, K > extends Linked< E > {
     }
 
     update( transform : Linked.Transform<E>, e? : Object ) : void {
-        this.parent.update( value => {
-            const prev = value[ this.key ],
-                next = transform( helpers( prev ).clone( prev ) );
+        const { key } = this;
+
+        this.parent.update( obj => {
+            const prev = obj[ key ],
+                next = transform( helpers( prev ).clone( prev ), e );
 
             if( next !== void 0 ){
-                value[ this.key ] = next;
-                return value;
+                obj[ key ] = next;
+                return obj;
             }
         } );
     }
 
     // Set new element value to parent array or object, performing purely functional update.
-    set( x : E ) : void {
-        if( this.value !== x ){
-            this.parent.update( value => {
-                value[ this.key ] = x;
-                return value;
-            } );
-        }
+    set( next : E ) : void {
+        /*
+        this.update( prev => {
+            if( prev !== next ) return next
+        })*/
+
+        // A bit more efficient implementation.
+        const { key } = this;
+
+        this.parent.update( obj => {
+            if( obj[ key ] !== next ){
+                obj[ key ] = next;
+                return obj;
+            }
+        });
+
+        
     };
 }
 
