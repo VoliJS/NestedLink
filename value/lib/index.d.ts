@@ -80,6 +80,7 @@ export declare namespace Linked {
     };
     /** Create linked value out of its value and the set function */
     function value<T>(value: T, set: (x: T) => void): Linked<T>;
+    function mutable<T extends object>(state: T): Linked<T>;
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
     */
@@ -108,5 +109,6 @@ export declare class PropValueLink<E, K> extends Linked<E> {
     key: K;
     constructor(parent: Linked<any>, key: K);
     remove(): void;
-    set(x: E): void;
+    update(transform: Linked.Transform<E>, e?: Object): void;
+    set(next: E): void;
 }

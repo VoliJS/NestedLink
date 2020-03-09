@@ -160,6 +160,16 @@ export { Linked };
         return new CustomValueLink(value, set);
     }
     Linked.value = value;
+    function mutable(state) {
+        return new CustomValueLink(state, function (x) {
+            for (var key in x) {
+                if (x.hasOwnProperty(key)) {
+                    state[key] = x[key];
+                }
+            }
+        });
+    }
+    Linked.mutable = mutable;
     /**
     * Unwrap object with links, returning an object of a similar shape filled with link values.
     */
@@ -285,15 +295,30 @@ var PropValueLink = /** @class */ (function (_super) {
     PropValueLink.prototype.remove = function () {
         this.parent.removeAt(this.key);
     };
+    PropValueLink.prototype.update = function (transform, e) {
+        var key = this.key;
+        this.parent.update(function (obj) {
+            var prev = obj[key], next = transform(helpers(prev).clone(prev), e);
+            if (next !== void 0) {
+                obj[key] = next;
+                return obj;
+            }
+        });
+    };
     // Set new element value to parent array or object, performing purely functional update.
-    PropValueLink.prototype.set = function (x) {
-        var _this = this;
-        if (this.value !== x) {
-            this.parent.update(function (value) {
-                value[_this.key] = x;
-                return value;
-            });
-        }
+    PropValueLink.prototype.set = function (next) {
+        /*
+        this.update( prev => {
+            if( prev !== next ) return next
+        })*/
+        // A bit more efficient implementation.
+        var key = this.key;
+        this.parent.update(function (obj) {
+            if (obj[key] !== next) {
+                obj[key] = next;
+                return obj;
+            }
+        });
     };
     ;
     return PropValueLink;
