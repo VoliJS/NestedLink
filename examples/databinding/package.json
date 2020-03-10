@@ -15,7 +15,7 @@
       "react-dom": "^16.8.6",
       "style-loader": "^0.20.3",
       "@linked/react": "^3.0.0",
-      "@linked/controls": "^1.0.0",
+      "@linked/controls": "*",
       "webpack": "^4.30.0",
       "webpack-cli": "^3.3.1"
     },

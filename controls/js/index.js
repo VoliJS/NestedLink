@@ -10,6 +10,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./standard"));
 __export(require("./custom"));
+__export(require("./hooks"));
 __export(require("./number"));
 __export(require("./validators"));
 //# sourceMappingURL=index.js.map

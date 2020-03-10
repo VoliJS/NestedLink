@@ -5,6 +5,7 @@
  */
 export * from './standard';
 export * from './custom';
+export * from './hooks';
 export * from './number';
 export * from './validators';
 //# sourceMappingURL=index.jsx.map
