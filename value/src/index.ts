@@ -75,6 +75,22 @@ export abstract class Linked<T>{
         return new EqualsValueLink( this, truthyValue );
     }
 
+    get true( this : Linked<boolean> ){
+        return () => this.set( true );
+    }
+
+    get false( this : Linked<boolean> ){
+        return () => this.set( false );
+    }
+
+    get null(){
+        return () => this.set( null );
+    }
+
+    get isTruthy(){
+        return this.value ? true : undefined;
+    }
+
     enabled( defaultValue? : T ) : Linked<boolean> {
         return new EnabledValueLink( this, defaultValue || "" );
     }

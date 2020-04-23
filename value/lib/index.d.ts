@@ -35,6 +35,10 @@ export declare abstract class Linked<T> {
     update(transform: Linked.Transform<T>, e?: Object): void;
     action(transform: Linked.Transform<T>): Linked.EventHandler;
     equals(truthyValue: T): Linked<boolean>;
+    readonly true: () => void;
+    readonly false: () => void;
+    readonly null: () => void;
+    readonly isTruthy: boolean;
     enabled(defaultValue?: T): Linked<boolean>;
     contains<E>(this: Linked<E[]>, element: E): Linked<boolean>;
     push<E>(this: Linked<E[]>, ...args: E[]): void;

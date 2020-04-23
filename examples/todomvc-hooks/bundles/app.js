@@ -26163,6 +26163,37 @@ var Linked = /** @class */ (function () {
     Linked.prototype.equals = function (truthyValue) {
         return new EqualsValueLink(this, truthyValue);
     };
+    Object.defineProperty(Linked.prototype, "true", {
+        get: function () {
+            var _this = this;
+            return function () { return _this.set(true); };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Linked.prototype, "false", {
+        get: function () {
+            var _this = this;
+            return function () { return _this.set(false); };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Linked.prototype, "null", {
+        get: function () {
+            var _this = this;
+            return function () { return _this.set(null); };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Linked.prototype, "isTruthy", {
+        get: function () {
+            return this.value ? true : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Linked.prototype.enabled = function (defaultValue) {
         return new EnabledValueLink(this, defaultValue || "");
     };
