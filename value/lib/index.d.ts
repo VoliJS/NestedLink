@@ -22,14 +22,12 @@ export declare abstract class Linked<T> {
      *
      * <input { ...link.props } />
      */
-    readonly props: {
-        checked: (T & false) | (T & true);
+    readonly props: T extends boolean ? {
+        checked: boolean;
         onChange: (e: any) => void;
-        value?: undefined;
-    } | {
+    } : {
         value: T;
         onChange: (e: any) => void;
-        checked?: undefined;
     };
     /** Update the linked value using given transform function. */
     update(transform: Linked.Transform<T>, e?: Object): void;

@@ -50,14 +50,17 @@ export abstract class Linked<T>{
      * 
      * <input { ...link.props } />
      */ 
-    get props(){
+    get props() :
+        T extends boolean ? { checked : boolean, onChange : ( e : any ) => void } :
+            { value : T, onChange : ( e : any ) => void }
+    {
         return typeof this.value === 'boolean' ? {
             checked : this.value,
             onChange : e => this.set( Boolean( e.target.checked ) as any )
         }:{
             value : this.value,
             onChange : e => this.set( e.target.value )
-        };
+        } as any;
     }
 
     /** Update the linked value using given transform function. */ 
