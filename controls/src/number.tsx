@@ -2,94 +2,76 @@ import * as React from 'react'
 import { Link } from '@linked/react'
 import { validationClasses } from './standard'
 import { isNumber } from './validators'
+import { useState, useEffect } from 'react'
 
 // This number component rejects invalid input and modify link only with valid number values.
 // Implementing numeric input rejection might be tricky.
 export interface NumberInputProps extends React.HTMLProps<HTMLInputElement>{
     positive?  : boolean,
     integer?   : boolean,
-    $value : Link< number >
+    $value? : Link<number>
 }
 
-export class NumberInput extends React.Component< NumberInputProps, {} >{
-componentWillMount(){
-    // Initialize component state
-    this.setAndConvert( this.props.$value.value );
-}
+export const NumberInput = ( props : NumberInputProps ) => {
+    const { positive, integer, $value, value, onChange, ...rest } = props,
+        [ asText, setAsText ] = useState( '' ),
+        error = asText === '' || !isNumber( asText );
 
-value : string;
-error : any;
+    useEffect( () => {
+        if( Number( asText ) !== Number( $value.value ) ){
+            setAsText( String( toNumber( $value.value, props ) ) );
+        }
+    }, [ $value.value ]);
 
-setValue( x ){
-    // We're not using native state in order to avoid race condition.
-    this.value = String( x );
-    this.error = this.value === '' || !isNumber( x );
-    this.forceUpdate();
-}
+    const onKeyPress = e =>{
+        const { charCode } = e,
+              allowed = ( positive ? [] : [ 45 ]).concat( integer ? [] : [ 46 ] );
+    
+        if( e.ctrlKey ) return;
+    
+        if( charCode && // allow control characters
+            ( charCode < 48 || charCode > 57 ) && // char is number
+            allowed.indexOf( charCode ) < 0 ){ // allowed char codes
+            e.preventDefault();
+        }
+    };
 
-setAndConvert( x ){
-    let value = Number( x );
-
-    if( this.props.positive ){
-        value = Math.abs( x );
+    const onChangeHandler = e => {
+        // Update local state...
+        const { value } = e.target;
+        setAsText( value );
+    
+        const asNumber = toNumber( value, props );
+    
+        if( value && !isNaN( asNumber ) ){
+            $value && $value.update( x => {
+                // Update link if value is changed
+                if( asNumber !== Number( x ) ){
+                    return asNumber;
+                }
+            } );
+        }
     }
 
-    if( this.props.integer ){
-        value = Math.round( value );
-    }
-
-    this.setValue( value );
-}
-
-componentWillReceiveProps( nextProps ){
-    const { $value : $next } = nextProps;
-
-    if( Number( $next.value ) !== Number( this.value ) ){
-        this.setAndConvert( $next.value ); // keep state being synced
-    }
-}
-
-render(){
-    const { $value, positive, integer, ...props } = this.props,
-          error = $value.error || this.error;
-
-    return <input { ...props }
+    return <input { ...rest }
                   type="text"
                   className={ validationClasses( props, this.value, error ) }
                   value={ this.value }
-                  onKeyPress={ this.onKeyPress }
-                  onChange={ this.onChange }
+                  onKeyPress={ onKeyPress }
+                  onChange={ onChangeHandler }
     />;
 }
 
-onKeyPress = e =>{
-    const { charCode } = e,
-          { integer, positive } = this.props,
-          allowed = ( positive ? [] : [ 45 ]).concat( integer ? [] : [ 46 ] );
+function toNumber( x : any, props ){
+    let value = Number( x );
 
-    if( e.ctrlKey ) return;
-
-    if( charCode && // allow control characters
-        ( charCode < 48 || charCode > 57 ) && // char is number
-        allowed.indexOf( charCode ) < 0 ){ // allowed char codes
-        e.preventDefault();
+    if( props.positive ){
+        value = Math.abs( x );
     }
-};
 
-onChange = e => {
-    // Update local state...
-    const { value } = e.target;
-    this.setValue( value );
-
-    const asNumber = Number( value );
-
-    if( value && !isNaN( asNumber ) ){
-        this.props.$value.update( x =>{
-            // Update link if value is changed
-            if( asNumber !== Number( x ) ){
-                return asNumber;
-            }
-        } );
+    if( props.integer ){
+        value = Math.round( value );
     }
-}
+
+    return value;
 }
