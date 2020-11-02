@@ -32,7 +32,6 @@ node_modules
 *.iws
 
 .vscode
-.npmrc
 
 ## Plugin-specific files:
 
