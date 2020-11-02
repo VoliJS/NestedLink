@@ -115,7 +115,9 @@ var __rest = this && this.__rest || function (s, e) {
 
   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
 
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
   return t;
 };
 
@@ -328,7 +330,9 @@ var __rest = this && this.__rest || function (s, e) {
 
   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
 
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
   return t;
 };
 
@@ -374,7 +378,7 @@ function (_super) {
 
       var asNumber = Number(value);
 
-      if (value && !isNaN(asNumber)) {
+      if (!isNaN(asNumber)) {
         _this.props.$value.update(function (x) {
           // Update link if value is changed
           if (asNumber !== Number(x)) {
@@ -474,7 +478,9 @@ var __rest = this && this.__rest || function (s, e) {
 
   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
 
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
   return t;
 };
 
@@ -26169,7 +26175,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LinkedComponent = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](LinkedComponent, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(LinkedComponent, _super);
     function LinkedComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.links = null;
@@ -26208,7 +26214,7 @@ var LinkedComponent = /** @class */ (function (_super) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]));
 
 var StateLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](StateLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(StateLink, _super);
     function StateLink(component, key, value) {
         var _this = _super.call(this, value) || this;
         _this.component = component;
@@ -26256,7 +26262,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LinkedUseState = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](LinkedUseState, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(LinkedUseState, _super);
     function LinkedUseState(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
@@ -26509,7 +26515,7 @@ var objectHelpers = {
     },
     // Shallow clone plain JS object
     clone: function (object) {
-        return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, object);
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, object);
     }
 };
 // `map` and `clone` helpers for arrays.
@@ -26802,7 +26808,7 @@ var Linked = /** @class */ (function () {
     Linked.setValues = setValues;
 })(Linked || (Linked = {}));
 var CustomValueLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](CustomValueLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(CustomValueLink, _super);
     function CustomValueLink(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
@@ -26812,7 +26818,7 @@ var CustomValueLink = /** @class */ (function (_super) {
     return CustomValueLink;
 }(Linked));
 var ClonedValueLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ClonedValueLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(ClonedValueLink, _super);
     function ClonedValueLink(parent, set) {
         var _this = _super.call(this, parent.value) || this;
         _this.set = set;
@@ -26825,7 +26831,7 @@ var ClonedValueLink = /** @class */ (function (_super) {
     return ClonedValueLink;
 }(Linked));
 var EqualsValueLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EqualsValueLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(EqualsValueLink, _super);
     function EqualsValueLink(parent, truthyValue) {
         var _this = _super.call(this, parent.value === truthyValue) || this;
         _this.parent = parent;
@@ -26838,7 +26844,7 @@ var EqualsValueLink = /** @class */ (function (_super) {
     return EqualsValueLink;
 }(Linked));
 var EnabledValueLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](EnabledValueLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(EnabledValueLink, _super);
     function EnabledValueLink(parent, defaultValue) {
         var _this = _super.call(this, parent.value != null) || this;
         _this.parent = parent;
@@ -26851,7 +26857,7 @@ var EnabledValueLink = /** @class */ (function (_super) {
     return EnabledValueLink;
 }(Linked));
 var ContainsRef = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ContainsRef, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(ContainsRef, _super);
     function ContainsRef(parent, element) {
         var _this = _super.call(this, parent.value.indexOf(element) >= 0) || this;
         _this.parent = parent;
@@ -26874,7 +26880,7 @@ var defaultError = 'Invalid value';
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
 var PropValueLink = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](PropValueLink, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(PropValueLink, _super);
     function PropValueLink(parent, key) {
         var _this = _super.call(this, parent.value[key]) || this;
         _this.parent = parent;

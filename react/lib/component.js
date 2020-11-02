@@ -1,8 +1,8 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 import * as React from 'react';
 import { Linked } from '@linked/value';
 var LinkedComponent = /** @class */ (function (_super) {
-    tslib_1.__extends(LinkedComponent, _super);
+    __extends(LinkedComponent, _super);
     function LinkedComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.links = null;
@@ -41,7 +41,7 @@ var LinkedComponent = /** @class */ (function (_super) {
 }(React.Component));
 export { LinkedComponent };
 var StateLink = /** @class */ (function (_super) {
-    tslib_1.__extends(StateLink, _super);
+    __extends(StateLink, _super);
     function StateLink(component, key, value) {
         var _this = _super.call(this, value) || this;
         _this.component = component;

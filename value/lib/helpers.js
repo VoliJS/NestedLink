@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __assign } from "tslib";
 var ArrayProto = Array.prototype, ObjectProto = Object.prototype;
 export function helpers(value) {
     if (value && typeof value === 'object') {
@@ -34,7 +34,7 @@ export var objectHelpers = {
     },
     // Shallow clone plain JS object
     clone: function (object) {
-        return tslib_1.__assign({}, object);
+        return __assign({}, object);
     }
 };
 // `map` and `clone` helpers for arrays.

@@ -43,7 +43,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
     "tslib": "^1.9.3",
-    "typescript": "*"
+    "typescript": "~3.6.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

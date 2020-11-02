@@ -19,7 +19,7 @@ export class NumberInput extends React.Component {
             const { value } = e.target;
             this.setValue(value);
             const asNumber = Number(value);
-            if (value && !isNaN(asNumber)) {
+            if (!isNaN(asNumber)) {
                 this.props.$value.update(x => {
                     // Update link if value is changed
                     if (asNumber !== Number(x)) {

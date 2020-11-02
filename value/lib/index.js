@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __extends } from "tslib";
 /**
  * Advanced React links for purely functional two-way data binding
  *
@@ -244,7 +244,7 @@ export { Linked };
     Linked.setValues = setValues;
 })(Linked || (Linked = {}));
 var CustomValueLink = /** @class */ (function (_super) {
-    tslib_1.__extends(CustomValueLink, _super);
+    __extends(CustomValueLink, _super);
     function CustomValueLink(value, set) {
         var _this = _super.call(this, value) || this;
         _this.set = set;
@@ -254,7 +254,7 @@ var CustomValueLink = /** @class */ (function (_super) {
     return CustomValueLink;
 }(Linked));
 var ClonedValueLink = /** @class */ (function (_super) {
-    tslib_1.__extends(ClonedValueLink, _super);
+    __extends(ClonedValueLink, _super);
     function ClonedValueLink(parent, set) {
         var _this = _super.call(this, parent.value) || this;
         _this.set = set;
@@ -267,7 +267,7 @@ var ClonedValueLink = /** @class */ (function (_super) {
     return ClonedValueLink;
 }(Linked));
 var EqualsValueLink = /** @class */ (function (_super) {
-    tslib_1.__extends(EqualsValueLink, _super);
+    __extends(EqualsValueLink, _super);
     function EqualsValueLink(parent, truthyValue) {
         var _this = _super.call(this, parent.value === truthyValue) || this;
         _this.parent = parent;
@@ -280,7 +280,7 @@ var EqualsValueLink = /** @class */ (function (_super) {
     return EqualsValueLink;
 }(Linked));
 var EnabledValueLink = /** @class */ (function (_super) {
-    tslib_1.__extends(EnabledValueLink, _super);
+    __extends(EnabledValueLink, _super);
     function EnabledValueLink(parent, defaultValue) {
         var _this = _super.call(this, parent.value != null) || this;
         _this.parent = parent;
@@ -293,7 +293,7 @@ var EnabledValueLink = /** @class */ (function (_super) {
     return EnabledValueLink;
 }(Linked));
 var ContainsRef = /** @class */ (function (_super) {
-    tslib_1.__extends(ContainsRef, _super);
+    __extends(ContainsRef, _super);
     function ContainsRef(parent, element) {
         var _this = _super.call(this, parent.value.indexOf(element) >= 0) || this;
         _this.parent = parent;
@@ -316,7 +316,7 @@ var defaultError = 'Invalid value';
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
 var PropValueLink = /** @class */ (function (_super) {
-    tslib_1.__extends(PropValueLink, _super);
+    __extends(PropValueLink, _super);
     function PropValueLink(parent, key) {
         var _this = _super.call(this, parent.value[key]) || this;
         _this.parent = parent;
