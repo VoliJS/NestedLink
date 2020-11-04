@@ -18,8 +18,15 @@ export class NumberInput extends React.Component {
             // Update local state...
             const { value } = e.target;
             this.setValue(value);
-            const asNumber = Number(value);
+            let asNumber = Number(value);
             if (!isNaN(asNumber)) {
+                if (this.props.currency) {
+                    const rounded = Number(asNumber.toFixed(2));
+                    if (rounded !== asNumber) {
+                        this.setValue(rounded);
+                        asNumber = rounded;
+                    }
+                }
                 this.props.$value.update(x => {
                     // Update link if value is changed
                     if (asNumber !== Number(x)) {

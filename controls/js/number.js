@@ -58,6 +58,13 @@ var NumberInput = /** @class */ (function (_super) {
             _this.setValue(value);
             var asNumber = Number(value);
             if (!isNaN(asNumber)) {
+                if (_this.props.currency) {
+                    var rounded = Number(asNumber.toFixed(2));
+                    if (rounded !== asNumber) {
+                        _this.setValue(rounded);
+                        asNumber = rounded;
+                    }
+                }
                 _this.props.$value.update(function (x) {
                     // Update link if value is changed
                     if (asNumber !== Number(x)) {
