@@ -13,6 +13,8 @@ export declare class NumberInput extends React.Component<NumberInputProps, {}> {
     setAndConvert(x: any): void;
     componentWillReceiveProps(nextProps: any): void;
     render(): JSX.Element;
+    onFocus: () => void;
+    onBlur: () => void;
     onKeyPress: (e: any) => void;
     onChange: (e: any) => void;
 }

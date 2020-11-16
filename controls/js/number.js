@@ -42,6 +42,18 @@ var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.onFocus = function () {
+            if (!_this.props.$value.value) {
+                _this.value = '';
+                _this.forceUpdate();
+            }
+        };
+        _this.onBlur = function () {
+            if (!_this.value) {
+                _this.value = '0';
+                _this.forceUpdate();
+            }
+        };
         _this.onKeyPress = function (e) {
             var charCode = e.charCode, _a = _this.props, integer = _a.integer, positive = _a.positive, allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
             if (e.ctrlKey)
@@ -96,7 +108,7 @@ var NumberInput = /** @class */ (function (_super) {
     };
     NumberInput.prototype.render = function () {
         var _a = this.props, $value = _a.$value, positive = _a.positive, integer = _a.integer, props = __rest(_a, ["$value", "positive", "integer"]), error = $value.error || this.error;
-        return React.createElement("input", __assign({}, props, { type: "text", className: standard_1.validationClasses(props, this.value, error), value: this.value, onKeyPress: this.onKeyPress, onChange: this.onChange }));
+        return React.createElement("input", __assign({}, props, { type: "text", className: standard_1.validationClasses(props, this.value, error), value: this.value, onFocus: this.onFocus, onBlur: this.onBlur, onKeyPress: this.onKeyPress, onChange: this.onChange }));
     };
     return NumberInput;
 }(React.Component));

@@ -4,6 +4,18 @@ import { isNumber } from './validators';
 export class NumberInput extends React.Component {
     constructor() {
         super(...arguments);
+        this.onFocus = () => {
+            if (!this.props.$value.value) {
+                this.value = '';
+                this.forceUpdate();
+            }
+        };
+        this.onBlur = () => {
+            if (!this.value) {
+                this.value = '0';
+                this.forceUpdate();
+            }
+        };
         this.onKeyPress = e => {
             const { charCode } = e, { integer, positive } = this.props, allowed = (positive ? [] : [45]).concat(integer ? [] : [46]);
             if (e.ctrlKey)
@@ -57,7 +69,7 @@ export class NumberInput extends React.Component {
     }
     render() {
         const { $value, positive, integer, ...props } = this.props, error = $value.error || this.error;
-        return <input {...props} type="text" className={validationClasses(props, this.value, error)} value={this.value} onKeyPress={this.onKeyPress} onChange={this.onChange}/>;
+        return <input {...props} type="text" className={validationClasses(props, this.value, error)} value={this.value} onFocus={this.onFocus} onBlur={this.onBlur} onKeyPress={this.onKeyPress} onChange={this.onChange}/>;
     }
 }
 //# sourceMappingURL=number.jsx.map

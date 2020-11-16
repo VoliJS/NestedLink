@@ -57,9 +57,25 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
             type="text"
             className={validationClasses(props, this.value, error)}
             value={this.value}
+            onFocus={ this.onFocus }
+            onBlur={ this.onBlur }
             onKeyPress={this.onKeyPress}
             onChange={this.onChange}
         />;
+    }
+
+    onFocus = () => {
+        if( !this.props.$value.value ){
+            this.value = '';
+            this.forceUpdate();
+        }
+    }
+
+    onBlur = () => {
+        if( !this.value ){
+            this.value = '0';
+            this.forceUpdate();
+        }
     }
 
     onKeyPress = e => {

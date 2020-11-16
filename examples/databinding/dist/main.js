@@ -354,6 +354,22 @@ function (_super) {
   function NumberInput() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
+    _this.onFocus = function () {
+      if (!_this.props.$value.value) {
+        _this.value = '';
+
+        _this.forceUpdate();
+      }
+    };
+
+    _this.onBlur = function () {
+      if (!_this.value) {
+        _this.value = '0';
+
+        _this.forceUpdate();
+      }
+    };
+
     _this.onKeyPress = function (e) {
       var charCode = e.charCode,
           _a = _this.props,
@@ -437,6 +453,8 @@ function (_super) {
       type: "text",
       className: standard_1.validationClasses(props, this.value, error),
       value: this.value,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
       onKeyPress: this.onKeyPress,
       onChange: this.onChange
     }));
