@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../controls/js/custom.js":
-/*!*************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/custom.js ***!
-  \*************************************************************/
+/*!**********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/custom.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -186,9 +186,9 @@ exports.DelayedInput = function (_a) {
 /***/ }),
 
 /***/ "../../controls/js/hooks.js":
-/*!************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/hooks.js ***!
-  \************************************************************/
+/*!*********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/hooks.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -243,9 +243,9 @@ exports.useThrottle = useThrottle;
 /***/ }),
 
 /***/ "../../controls/js/index.js":
-/*!************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/index.js ***!
-  \************************************************************/
+/*!*********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/index.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -278,9 +278,9 @@ __export(__webpack_require__(/*! ./validators */ "../../controls/js/validators.j
 /***/ }),
 
 /***/ "../../controls/js/number.js":
-/*!*************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/number.js ***!
-  \*************************************************************/
+/*!**********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/number.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -354,19 +354,31 @@ function (_super) {
   function NumberInput() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.onFocus = function () {
+    _this.onFocus = function (e) {
+      var onFocus = _this.props.onFocus;
+
       if (!_this.props.$value.value) {
         _this.value = '';
 
         _this.forceUpdate();
       }
+
+      if (onFocus) {
+        onFocus(e);
+      }
     };
 
-    _this.onBlur = function () {
+    _this.onBlur = function (e) {
+      var onBlur = _this.props.onBlur;
+
       if (!_this.value) {
         _this.value = '0';
 
         _this.forceUpdate();
+      }
+
+      if (onBlur) {
+        onBlur(e);
       }
     };
 
@@ -468,9 +480,9 @@ exports.NumberInput = NumberInput;
 /***/ }),
 
 /***/ "../../controls/js/standard.js":
-/*!***************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/standard.js ***!
-  \***************************************************************/
+/*!************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/standard.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -612,9 +624,9 @@ exports.Select = function (_a) {
 /***/ }),
 
 /***/ "../../controls/js/validators.js":
-/*!*****************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/controls/js/validators.js ***!
-  \*****************************************************************/
+/*!**************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/controls/js/validators.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -647,9 +659,9 @@ exports.isNumber.error = 'Should be a number';
 /***/ }),
 
 /***/ "../../node_modules/css-loader/index.js!./src/main.css":
-/*!******************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/css-loader!./src/main.css ***!
-  \******************************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/css-loader!./src/main.css ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -658,7 +670,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".invalid {\n    border-color: red;\n}\n\n.invalid.required {\n    border-color: yellow;\n}\n\n.checkbox,.radio {\n    margin: 3px;\n    display: inline-block;\n    width: 10px;\n    height : 10px;\n    border: solid;\n    border-width: 1px;\n}\n\n.selected {\n    background-color: black;\n}\n\nlabel {\n    display: block;\n    margin: 5px;\n}\n\ninput {\n    margin: 3px;\n}\n\n\n.users-row>div {\n    display: inline-block;\n    width : 15em;\n}\n\n.validation-error {\n    display: inline-block;\n    color: red;\n}\n\nlabel>div {\n    display: inline-block;\n}", ""]);
+exports.push([module.i, ".invalid {\r\n    border-color: red;\r\n}\r\n\r\n.invalid.required {\r\n    border-color: yellow;\r\n}\r\n\r\n.checkbox,.radio {\r\n    margin: 3px;\r\n    display: inline-block;\r\n    width: 10px;\r\n    height : 10px;\r\n    border: solid;\r\n    border-width: 1px;\r\n}\r\n\r\n.selected {\r\n    background-color: black;\r\n}\r\n\r\nlabel {\r\n    display: block;\r\n    margin: 5px;\r\n}\r\n\r\ninput {\r\n    margin: 3px;\r\n}\r\n\r\n\r\n.users-row>div {\r\n    display: inline-block;\r\n    width : 15em;\r\n}\r\n\r\n.validation-error {\r\n    display: inline-block;\r\n    color: red;\r\n}\r\n\r\nlabel>div {\r\n    display: inline-block;\r\n}", ""]);
 
 // exports
 
@@ -666,9 +678,9 @@ exports.push([module.i, ".invalid {\n    border-color: red;\n}\n\n.invalid.requi
 /***/ }),
 
 /***/ "../../node_modules/css-loader/lib/css-base.js":
-/*!*******************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/css-loader/lib/css-base.js ***!
-  \*******************************************************************************/
+/*!****************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/css-loader/lib/css-base.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -753,9 +765,9 @@ function toComment(sourceMap) {
 /***/ }),
 
 /***/ "../../node_modules/object-assign/index.js":
-/*!***************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/object-assign/index.js ***!
-  \***************************************************************************/
+/*!************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/object-assign/index.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -855,9 +867,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /***/ }),
 
 /***/ "../../node_modules/prop-types/checkPropTypes.js":
-/*!*********************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
-  \*********************************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/prop-types/checkPropTypes.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -969,9 +981,9 @@ module.exports = checkPropTypes;
 /***/ }),
 
 /***/ "../../node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \*******************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -993,9 +1005,9 @@ module.exports = ReactPropTypesSecret;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/cjs/react-dom.development.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
-  \*******************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/react-dom/cjs/react-dom.development.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22283,9 +22295,9 @@ module.exports = reactDom;
 /***/ }),
 
 /***/ "../../node_modules/react-dom/index.js":
-/*!***********************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/react-dom/index.js ***!
-  \***********************************************************************/
+/*!********************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/react-dom/index.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22328,9 +22340,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/react/cjs/react.development.js":
-/*!***********************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/react/cjs/react.development.js ***!
-  \***********************************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/react/cjs/react.development.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24241,9 +24253,9 @@ module.exports = react;
 /***/ }),
 
 /***/ "../../node_modules/react/index.js":
-/*!*******************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/react/index.js ***!
-  \*******************************************************************/
+/*!****************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/react/index.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24258,9 +24270,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler-tracing.development.js":
-/*!***************************************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \***************************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24693,9 +24705,9 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/cjs/scheduler.development.js":
-/*!*******************************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
-  \*******************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/scheduler/cjs/scheduler.development.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25405,9 +25417,9 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 /***/ }),
 
 /***/ "../../node_modules/scheduler/index.js":
-/*!***********************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/scheduler/index.js ***!
-  \***********************************************************************/
+/*!********************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/scheduler/index.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25422,9 +25434,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/scheduler/tracing.js":
-/*!*************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/scheduler/tracing.js ***!
-  \*************************************************************************/
+/*!**********************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/scheduler/tracing.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25439,9 +25451,9 @@ if (false) {} else {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/addStyles.js":
-/*!**********************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
-  \**********************************************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/style-loader/lib/addStyles.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25826,9 +25838,9 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/urls.js":
-/*!*****************************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/style-loader/lib/urls.js ***!
-  \*****************************************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/style-loader/lib/urls.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -25926,9 +25938,9 @@ module.exports = function (css) {
 /***/ }),
 
 /***/ "../../node_modules/tslib/tslib.es6.js":
-/*!***********************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/node_modules/tslib/tslib.es6.js ***!
-  \***********************************************************************/
+/*!********************************************************************!*\
+  !*** C:/Projects/disti/NestedLink/node_modules/tslib/tslib.es6.js ***!
+  \********************************************************************/
 /*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26175,9 +26187,9 @@ module.exports = g;
 /***/ }),
 
 /***/ "../../react/lib/component.js":
-/*!**************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/react/lib/component.js ***!
-  \**************************************************************/
+/*!***********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/react/lib/component.js ***!
+  \***********************************************************/
 /*! exports provided: LinkedComponent, StateLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26252,9 +26264,9 @@ var StateLink = /** @class */ (function (_super) {
 /***/ }),
 
 /***/ "../../react/lib/hooks.js":
-/*!**********************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/react/lib/hooks.js ***!
-  \**********************************************************/
+/*!*******************************************************!*\
+  !*** C:/Projects/disti/NestedLink/react/lib/hooks.js ***!
+  \*******************************************************/
 /*! exports provided: useLink, useLinked, useSafeLinked, useSyncLinked, useSafeSyncLinked, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26422,9 +26434,9 @@ function extractChangeToken(x) {
 /***/ }),
 
 /***/ "../../react/lib/index.js":
-/*!**********************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/react/lib/index.js ***!
-  \**********************************************************/
+/*!*******************************************************!*\
+  !*** C:/Projects/disti/NestedLink/react/lib/index.js ***!
+  \*******************************************************/
 /*! exports provided: default, Link, LinkedComponent, StateLink, Linked, PropValueLink, useLink, useLinked, useSafeLinked, useSyncLinked, useSafeSyncLinked, useSafeLink, useIsMountedRef, useBoundLink, useSafeBoundLink, useLocalStorage, useIO, whenChanged, helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26485,9 +26497,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "../../value/lib/helpers.js":
-/*!************************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/value/lib/helpers.js ***!
-  \************************************************************/
+/*!*********************************************************!*\
+  !*** C:/Projects/disti/NestedLink/value/lib/helpers.js ***!
+  \*********************************************************/
 /*! exports provided: helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26562,9 +26574,9 @@ var arrayHelpers = {
 /***/ }),
 
 /***/ "../../value/lib/index.js":
-/*!**********************************************************!*\
-  !*** /Users/vbalin/GitHub/NestedLink/value/lib/index.js ***!
-  \**********************************************************/
+/*!*******************************************************!*\
+  !*** C:/Projects/disti/NestedLink/value/lib/index.js ***!
+  \*******************************************************/
 /*! exports provided: Linked, PropValueLink, helpers, objectHelpers, arrayHelpers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

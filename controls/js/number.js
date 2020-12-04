@@ -42,16 +42,24 @@ var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.onFocus = function () {
+        _this.onFocus = function (e) {
+            var onFocus = _this.props.onFocus;
             if (!_this.props.$value.value) {
                 _this.value = '';
                 _this.forceUpdate();
             }
+            if (onFocus) {
+                onFocus(e);
+            }
         };
-        _this.onBlur = function () {
+        _this.onBlur = function (e) {
+            var onBlur = _this.props.onBlur;
             if (!_this.value) {
                 _this.value = '0';
                 _this.forceUpdate();
+            }
+            if (onBlur) {
+                onBlur(e);
             }
         };
         _this.onKeyPress = function (e) {

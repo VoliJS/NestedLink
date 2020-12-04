@@ -4,16 +4,24 @@ import { isNumber } from './validators';
 export class NumberInput extends React.Component {
     constructor() {
         super(...arguments);
-        this.onFocus = () => {
+        this.onFocus = (e) => {
+            const { onFocus } = this.props;
             if (!this.props.$value.value) {
                 this.value = '';
                 this.forceUpdate();
             }
+            if (onFocus) {
+                onFocus(e);
+            }
         };
-        this.onBlur = () => {
+        this.onBlur = (e) => {
+            const { onBlur } = this.props;
             if (!this.value) {
                 this.value = '0';
                 this.forceUpdate();
+            }
+            if (onBlur) {
+                onBlur(e);
             }
         };
         this.onKeyPress = e => {
