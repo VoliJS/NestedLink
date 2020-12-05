@@ -64,17 +64,29 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
         />;
     }
 
-    onFocus = () => {
+    onFocus = (e) => {
+        const { onFocus } = this.props;
+
         if( !this.props.$value.value ){
             this.value = '';
             this.forceUpdate();
         }
+
+        if (onFocus) {
+            onFocus(e);
+        }
     }
 
-    onBlur = () => {
+    onBlur = (e) => {
+        const { onBlur } = this.props;
+
         if( !this.value ){
             this.value = '0';
             this.forceUpdate();
+        }
+
+        if (onBlur) {
+            onBlur(e);
         }
     }
 
