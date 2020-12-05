@@ -1,8 +1,8 @@
 import React from 'react'
-import { useLink } from 'valuelink';
+import { useLinked } from '@linked/react';
 
 export const AddTodo = ({ onEnter }) => {
-    const $desc = useLink('');
+    const $desc = useLinked('');
 
     function onKeyDown( { keyCode } ){
         if( keyCode === 13 ){

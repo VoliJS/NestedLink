@@ -1,5 +1,5 @@
 import React from 'react';
-import Link, { useBoundLink } from 'valuelink';
+import Linked, { useBoundLink } from '@linked/react';
 import { Input, ValidatedInput, isRequired, isEmail } from './controls.jsx';
 
 export const EditUser = ({ $user, onClose }) => {
@@ -11,7 +11,7 @@ export const EditUser = ({ $user, onClose }) => {
         e.preventDefault();
         
         // Assign local state back to the props
-        $user.set( Link.getValues( user ) );
+        $user.set( Linked.getValues( user ) );
 
         // Close the dialog
         onClose();
@@ -40,7 +40,7 @@ export const EditUser = ({ $user, onClose }) => {
                 Is active: <Input type="checkbox" $value={ user.$isActive }/>
             </label>
 
-            <button type="submit" disabled={ Link.hasErrors( user ) }>
+            <button type="submit" disabled={ Linked.hasErrors( user ) }>
                 Save
             </button>
             <button type="button" onClick={ onClose }>

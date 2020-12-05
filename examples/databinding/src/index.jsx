@@ -2,7 +2,7 @@ import './main.css';
 
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { LinkedComponent } from 'valuelink';
+import { LinkedComponent } from '@linked/react';
 import { CheckboxListGroup, CheckboxObjGroup, CustomCheckboxObjGroup } from './checkbox.jsx';
 import { DeepLinkedInputs, JointLinks } from './complex.jsx';
 import { HooksExample } from './hooks.jsx';

@@ -1,0 +1,45 @@
+{
+  "name": "@linked/value",
+  "private": false,
+  "version": "3.1.4",
+  "description": "ValueLink class representing an abstract reference to the object's property",
+  "main": "./min",
+  "module": "./lib",
+  "types": "./lib",
+  "files": [
+    "min",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoliJS/NestedLink.git"
+  },
+  "keywords": [
+    "type-r",
+    "react",
+    "@linked/react",
+    "databinding"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VoliJS/NestedLink/issues"
+  },
+  "homepage": "https://github.com/VoliJS/NestedLink/valuelink-class",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "yarn && tsc"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.20",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
+  }
+}

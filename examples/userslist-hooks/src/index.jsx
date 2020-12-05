@@ -1,10 +1,10 @@
+import Linked, { useLink, useLocalStorage } from '@linked/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import Link, { useLink, useLocalStorage } from 'valuelink';
+import { EditUser } from './edit.jsx';
+import { Header, UserRow } from './grid.jsx';
 import './main.css';
-import { UserRow, Header } from './grid.jsx'
-import { EditUser } from './edit.jsx'
 
 const newUser = {
     name : '',
@@ -47,7 +47,7 @@ export const UsersList = () => {
             <Modal isOpen={ $dialog.value === 'addUser' }>
                 <EditUser $user={
                         /* The custom link to add created user to the state */
-                        Link.value( newUser, x => $users.push( x ) )
+                        Linked.value( newUser, x => $users.push( x ) )
                     }
                     onClose={ closeDialog } />
             </Modal>

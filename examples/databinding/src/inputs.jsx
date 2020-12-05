@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNumber, Input, NumberInput, Select, TextArea } from 'linked-controls';
+import { isNumber, Input, NumberInput, Select, TextArea } from '@linked/controls';
 
 export const Numeric = ({ $num }) => (
     <fieldset>
