@@ -1,13 +1,12 @@
-import 'babel-polyfill';
-import './main.css';
-import React from 'react'
-import ReactDOM from 'react-dom';
-import { useStatePtr } from '@pure-ptr/react'
+import React from 'react';
+import './App.css';
 
-import { PickUser } from './autocomplete.jsx'
+import { PickUser } from './autocomplete.js'
+import { useStatePtr } from '@pure-ptr/react';
+import { User } from './io-mock';
 
 const App = () => {
-    const selectedPtr = useStatePtr( null );
+    const selectedPtr = useStatePtr<User|null>( null );
 
     return (
         <div>
@@ -23,11 +22,10 @@ const App = () => {
             <PickUser selectedPtr={selectedPtr} />
 
             <p>
-                Here is the <a href="https://github.com/VoliJS/NestedLink/blob/master/examples/autocomplete/src/autocomplete.jsx">source code</a>.
+                Here is the <a href="https://github.com/VoliJS/NestedLink/blob/master/examples/autocomplete/src/App.tsx">source code</a>.
             </p>
         </div>
     )
 }
 
-// Start the application...
-ReactDOM.render( <App />, document.getElementById( 'app-mount-root' ) );
+export default App;

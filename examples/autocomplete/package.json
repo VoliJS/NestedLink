@@ -1,27 +1,44 @@
 {
+  "name": "autocomplete",
+  "version": "0.1.0",
   "private": true,
-  "name":"autocomplete",
-  "version": "1.0.0",
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "*",
-    "source-map-loader": "*",
-    "css-loader": "^0.28.11",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "style-loader": "^0.20.3",
-    "@linked/react": "*",
-    "@linked/controls": "*",
-    "babel-polyfill":"*",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1"
+  "dependencies": {
+    "@pure-ptr/react": "workspace:*",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.113",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack --mode=production",
-    "watch": "node_modules/.bin/webpack --mode=development --progress --colors --watch"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

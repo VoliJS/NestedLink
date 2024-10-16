@@ -1,4 +1,10 @@
-export function doSomething( filter ){
+export interface User{
+    id: number,
+    name: string,
+    email: string
+}
+
+export function fetchUsers( filter : string, abort : AbortController ): Promise<User[]>{
     return new Promise( resolve => {
         setTimeout( () => {
             resolve([{

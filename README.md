@@ -1,65 +1,65 @@
-![logo](/images/value-link-logo.png)
-
 # Painless React forms, validation, and state management
+PurePtr enhances the `useState` React Hook, offering a sophisticated, callback-free solution for managing complex forms with input validation. It transforms the React state into an efficient state container. Lightweight at just 6.5K minified, PurePtr is compatible with both JavaScript and TypeScript.
 
-NestedLink is `useState` React Hook on steroids providing an elegant callback-free solution for complex forms with input validation and making the React state a perfect state container. It's lightweight (6.5K minified) and designed to be used with both JS and TypeScript.
+The core of PurePtr is the `PurePtr` object, which represents a pointer to an element of the component's state. It encapsulates the value, a function to update the value, and validation errors. The `PurePtr` class includes methods for useful transformations, such as `ptr.props`, which generates the standard React `{ value, onChange }` props.
 
-The `Link` is the object representing the writable reference to the member of the component's state encapsulating the value, function to update the value, and the validation error. `Link` class has a set of methods to perform useful transformations, such as `$link.props` generating the pair of standard `{ value, onChange }` props.
-
-`NestedLink` dramatically improves your React project's modularity and code readability.
+PurePtr significantly enhances the modularity and readability of your React project.
 
 ```javascript
-import { useLink } from '@linked/react'
+import { useStatePtr } from '@pure-ptr/react'
 import { MyInput } from './controls.jsx'
 
-const coolState = { some : { name : '' } };
 const MyCoolComponent = () => {
-    // Digging through the object to get a link to the `coolState.some.name`
-    const $name = useLink( coolState ).at( 'some' ).at( 'name' )
+    // Define the component state
+    const statePtr = useStatePtr( () => ({
+        some : {
+            name : '' 
+        } 
+    }));
     
-    // applying the validation rules
-    $name.check( x => x.length > 0, 'Name is required' ),
+    // Get the pointer to state.some.name
+    const namePtr = statePtr.at( 'some' ).at( 'name' );
+    
+    // apply validation rules
+    namePtr.check( x => x.length > 0, 'Name is required' ),
          .check( x => x.length > 2, 'Name is too short' );
          .check( x => x.length < 20, 'Name is too long' );
 
     return (
-        <MyInput $value={$name} />
+        <MyInput valuePtr={namePtr} />
     )
 }
 
 // controls.jsx
 import * as React from 'react'
 
-// Custom form field with validation taking the link to the `value`
-const MyInput = ({ $value }) => (
+// Custom form field with validation taking the pointer to the `value`
+const MyInput = ({ valuePtr }) => (
     <div>
-        <input {...$value.props} className={ $value.error ? 'error' : '' } />
-        <span>{ $value.error || '' }</span>
+        <input {...valuePtr.props} className={ valuePtr.error ? 'error' : '' } />
+        <span>{ valuePtr.error || '' }</span>
     </div>
 )
 ```
 
 ## Features
 
-***IMPORTANT! Version 2.x is not entirely backwards compatible with 1.x, see the release notes at the bottom.***
+- Two-way data binding to the component state without callbacks.
+- Separate validation logic from the markup.
+- Easily manage nested objects and arrays in the component state.
+- Precise TypeScript typings.
 
-- Callback-free form controls binding to the component state.
-- Complete separation of the validation logic from the markup.
-- Easy handling of nested objects and arrays in the component state.
-- Complete support for the React Hooks API and functional components.
-- Pricise TypeScript typings.
+Reference implementation of 'linked' UI controls:
 
-Reference implementation of 'linked' UI controls (optional `linked-controls` npm package):
-
-- Standard tags: `<Input />`, `<TextArea />`, `<Select />`,
+- Standard tags: `<Input />`, `<TextArea />`, `<Select />`
 - Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
-- Validator functions: `isNumber`, `isEmail`, `isRequred`.
+- Validator functions: `isNumber`, `isEmail`, `isRequired`
 
 ## Tutorials
 
 The rationale behind the design and a high-level overview of how amazing NestedLink is: [React Hooks, form validation, and complex state](https://itnext.io/react-hooks-and-two-way-data-binding-dd4210f0ed94)
 
-The series of 5-minute tutorials (with `React.Component`):
+A series of 5-minute tutorials (with `React.Component`):
 
 - [The basics of ValueLink design pattern](https://medium.com/@gaperton/managing-state-and-forms-with-react-part-1-12eacb647112#.j7sqgkj88)
 - [Form validation with ValueLinks](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
@@ -78,29 +78,6 @@ The series of 5-minute tutorials (with `React.Component`):
 There are no side dependencies except `react` as peer dependency. Installation:
 
 `npm install valuelink --save-dev`
-
-Usage with React Hooks (check out the [React Hooks starting boilerplate](/examples/babel-starter)).
-
-```javascript
-import React from 'react'
-import { useLink } from '@linked/react'
-...
-// Instead of const [ name, setName ] = useState('')
-const $name = useLink('');
-```
-
-Usage with React Component.
-
-```javascript
-import React from 'react'
-// Instead of React.Component...
-import { LinkedComponent } from '@linked/react'
-...
-// In a render, do
-const $name = this.$at('name');
-// Or, to link all the state members at once...
-const state$ = this.state$();
-```
 
 Refer to the [databinding examples](/examples/databinding) and the [manual](/linked-controls/README.md) for the typical data binding scenarios.
 
