@@ -2,12 +2,12 @@ import 'babel-polyfill';
 import './main.css';
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { useLinked } from '@linked/react'
+import { useStatePtr } from '@pure-ptr/react'
 
 import { PickUser } from './autocomplete.jsx'
 
 const App = () => {
-    const $selected = useLinked( null );
+    const selectedPtr = useStatePtr( null );
 
     return (
         <div>
@@ -20,7 +20,7 @@ const App = () => {
                 Thus, no server-side filtering, sorry. Just a fixed list of cool guys, no matter what you type.
                 But use your imagination. Imagination is more important than knowledge.
             </p>
-            <PickUser $selected={$selected} />
+            <PickUser selectedPtr={selectedPtr} />
 
             <p>
                 Here is the <a href="https://github.com/VoliJS/NestedLink/blob/master/examples/autocomplete/src/autocomplete.jsx">source code</a>.

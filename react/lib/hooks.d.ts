@@ -1,6 +1,5 @@
-/// <reference types="react" />
-import { Linked } from '@linked/value';
-declare class LinkedUseState<T> extends Linked<T> {
+import { PurePtr } from '@pure-ptr/core';
+declare class UseStatePtr<T> extends PurePtr<T> {
     set(x: T | ((x: T) => T)): void;
     update(fun: (x: T, event?: Object) => T, event?: Object): void;
     constructor(value: T, set: (x: T | ((x: T) => T)) => void);
@@ -8,46 +7,57 @@ declare class LinkedUseState<T> extends Linked<T> {
 /**
  * Create the ref to the local state.
  */
-export declare function useLink<S>(initialState: S | (() => S)): LinkedUseState<S>;
-export { useLink as useLinked, useSafeLink as useSafeLinked, useBoundLink as useSyncLinked, useSafeBoundLink as useSafeSyncLinked };
-/**
- * Create the link to the local state which is safe to set when component is unmounted.
- * Use this for the state which is set when async I/O is completed.
- */
-export declare function useSafeLink<S>(initialState: S | (() => S)): LinkedUseState<S>;
+export declare function useStatePtr<S>(initialState: S | (() => S)): UseStatePtr<S>;
 /**
  * Returns the ref which is true when component it mounted.
  */
 export declare function useIsMountedRef(): import("react").MutableRefObject<boolean>;
 /**
- * Create the link to the local state which is bound to another
- * value or link in a single direction. When the source changes, the link changes too.
+ * Create a pointer to the local state that is synchronized with another
+ * value or pointer in a single direction. When the source changes, the linked state changes too.
  */
-export declare function useBoundLink<T>(source: T | Linked<T>): Linked<T>;
+export declare function useLinkedStatePtr<T>(source: T | PurePtr<T>): PurePtr<T>;
+export declare function useLocalStoragePtr<S>(key: string, initialState: S | (() => S)): UseStatePtr<S>;
+export declare function useSessionStoragePtr<S>(key: string, initialState: S | (() => S)): UseStatePtr<S>;
 /**
- * Create the safe link to the local state which is synchronized with another
- * value or link in a single direction.
- * When the source change, the linked state changes too.
- */
-export declare function useSafeBoundLink<T>(source: T | Linked<T>): Linked<T>;
-/**
- * Persists links in local storage under the given key.
- * Links will be loaded on component's mount, and saved on unmount.
- * @param key - string key for the localStorage entry.
- * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
- */
-export declare function useLocalStorage(key: string, state: Linked.Hash): void;
-/**
- * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning:
- * - `false` while the I/O operation is pending;
- * - `true` if I/O is complete without exception;
- * - `exception` object if I/O promise failed.
+ * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
  *
- * const isReady = useIO( async () => {
- *      const data = await fetchData();
- *      link.set( data );
- * });
+ * @template T - The type of the result returned by the asynchronous function.
+ * @param {function(AbortController): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
+ * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
+ * @returns {object} - An object containing:
+ *   - `isReady` (boolean): Indicates if the operation is complete.
+ *   - `result` (T | null): The result of the asynchronous operation.
+ *   - `error` (any): The error encountered during the operation, if any.
+ *   - `refresh` (function): A function to re-trigger the asynchronous operation.
  */
-export declare function useIO(fun: () => Promise<any>, condition?: any[]): boolean | any;
-export declare function whenChanged(...objs: any[]): any[];
+export declare function useIO<T>(fun: (abortController: AbortController) => Promise<T>, condition?: any[]): {
+    isReady: boolean;
+    result: T | null;
+    error: any;
+    refresh: () => void;
+};
+/**
+ * A custom hook that throttles the execution of a function.
+ *
+ * @template F - The type of the function to be throttled.
+ * @param {F} fun - The function to be throttled.
+ * @param {number} timeout - The delay in milliseconds for the throttle.
+ * @param {Array<any>} [changes=[]] - The list of dependencies that will trigger the effect.
+ * @returns {F} - The throttled function.
+ *
+ * @example
+ * ```typescript
+ * const throttledFunction = useThrottle(myFunction, 1000, [dependency]);
+ * ```
+ */
+export declare function useThrottle<F extends (...args: any) => void>(fun: F, timeout: number, changes?: any[]): F;
+/**
+ * React Hook to execute a function on a timer interval.
+ *
+ * @param {function} fun - The function to execute on each interval.
+ * @param {number} interval - The interval duration in milliseconds.
+ * @param {any[]} [deps=[]] - An array of dependencies that will trigger the effect when changed.
+ */
+export declare function useInterval(fun: () => void, interval: number, deps?: any[]): void;
+export {};

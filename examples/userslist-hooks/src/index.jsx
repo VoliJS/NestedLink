@@ -1,4 +1,4 @@
-import Linked, { useLink, useLocalStorage } from '@linked/react';
+import Linked, { useLink, useLocalStorage } from '@pure-ptr/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';

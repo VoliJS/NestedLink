@@ -1,142 +1,177 @@
-import { __extends } from "tslib";
-import { helpers, Linked } from '@linked/value';
+import { helpers, PurePtr } from '@pure-ptr/core';
 import { useEffect, useRef, useState } from 'react';
-var LinkedUseState = /** @class */ (function (_super) {
-    __extends(LinkedUseState, _super);
-    function LinkedUseState(value, set) {
-        var _this = _super.call(this, value) || this;
-        _this.set = set;
-        return _this;
-    }
+class UseStatePtr extends PurePtr {
     // Set the component's state value.
-    LinkedUseState.prototype.set = function (x) { };
-    LinkedUseState.prototype.update = function (fun, event) {
+    set(x) { }
+    update(fun, event) {
         // update function must be overriden to use state set
         // ability to delay an update, and to preserve link.update semantic.
-        this.set(function (x) {
-            var value = helpers(x).clone(x), result = fun(value, event);
+        this.set(x => {
+            const value = helpers(x).clone(x), result = fun(value, event);
             return result === void 0 ? x : result;
         });
-    };
-    return LinkedUseState;
-}(Linked));
+    }
+    constructor(value, set) {
+        super(value);
+        this.set = set;
+    }
+}
 /**
  * Create the ref to the local state.
  */
-export function useLink(initialState) {
-    var _a = useState(initialState), value = _a[0], set = _a[1];
-    return new LinkedUseState(value, set);
-}
-export { useLink as useLinked, useSafeLink as useSafeLinked, useBoundLink as useSyncLinked, useSafeBoundLink as useSafeSyncLinked };
-/**
- * Create the link to the local state which is safe to set when component is unmounted.
- * Use this for the state which is set when async I/O is completed.
- */
-export function useSafeLink(initialState) {
-    var _a = useState(initialState), value = _a[0], set = _a[1], isMounted = useIsMountedRef();
-    return new LinkedUseState(value, function (x) { return isMounted.current && set(x); });
+export function useStatePtr(initialState) {
+    const [value, set] = useState(initialState);
+    return new UseStatePtr(value, set);
 }
 /**
  * Returns the ref which is true when component it mounted.
  */
 export function useIsMountedRef() {
-    var isMounted = useRef(true);
-    useEffect(function () { return (function () { return isMounted.current = false; }); }, []);
+    const isMounted = useRef(true);
+    useEffect(() => () => {
+        isMounted.current = false;
+    }, []);
     return isMounted;
 }
 /**
- * Create the link to the local state which is bound to another
- * value or link in a single direction. When the source changes, the link changes too.
+ * Create a pointer to the local state that is synchronized with another
+ * value or pointer in a single direction. When the source changes, the linked state changes too.
  */
-export function useBoundLink(source) {
-    var value = source instanceof Linked ? source.value : source, link = useLink(value);
-    useEffect(function () { return link.set(value); }, [value]);
-    link.action;
+export function useLinkedStatePtr(source) {
+    const value = source instanceof PurePtr ? source.value : source, link = useStatePtr(value);
+    useEffect(() => link.set(value), [value]);
     return link;
 }
-/**
- * Create the safe link to the local state which is synchronized with another
- * value or link in a single direction.
- * When the source change, the linked state changes too.
- */
-export function useSafeBoundLink(source) {
-    var value = source instanceof Linked ? source.value : source, link = useSafeLink(value);
-    useEffect(function () { return link.set(value); }, [value]);
-    return link;
+function getInitialState(initialState) {
+    return typeof initialState === 'function' ? initialState() : initialState;
+}
+export function useLocalStoragePtr(key, initialState) {
+    const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || 'null') || getInitialState(initialState));
+    return new UseStatePtr(value, x => {
+        localStorage.setItem(key, JSON.stringify(x));
+        setValue(x);
+    });
+}
+export function useSessionStoragePtr(key, initialState) {
+    const [value, setValue] = useState(() => JSON.parse(sessionStorage.getItem(key) || 'null') || getInitialState(initialState));
+    return new UseStatePtr(value, x => {
+        sessionStorage.setItem(key, JSON.stringify(x));
+        setValue(x);
+    });
 }
 /**
- * Persists links in local storage under the given key.
- * Links will be loaded on component's mount, and saved on unmount.
- * @param key - string key for the localStorage entry.
- * @param state - links to persist wrapped in an object `{ lnk1, lnk2, ... }`
- */
-export function useLocalStorage(key, state) {
-    // save state to use on unmount...
-    var stateRef = useRef();
-    stateRef.current = state;
-    useEffect(function () {
-        var savedData = JSON.parse(localStorage.getItem(key) || '{}');
-        Linked.setValues(stateRef.current, savedData);
-        return function () {
-            var dataToSave = Linked.getValues(stateRef.current);
-            localStorage.setItem(key, JSON.stringify(dataToSave));
-        };
-    }, []);
-}
-/**
- * Wait for the promise (or async function) completion.
- * Execute operation once when mounted, returning:
- * - `false` while the I/O operation is pending;
- * - `true` if I/O is complete without exception;
- * - `exception` object if I/O promise failed.
+ * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
  *
- * const isReady = useIO( async () => {
- *      const data = await fetchData();
- *      link.set( data );
- * });
+ * @template T - The type of the result returned by the asynchronous function.
+ * @param {function(AbortController): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
+ * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
+ * @returns {object} - An object containing:
+ *   - `isReady` (boolean): Indicates if the operation is complete.
+ *   - `result` (T | null): The result of the asynchronous operation.
+ *   - `error` (any): The error encountered during the operation, if any.
+ *   - `refresh` (function): A function to re-trigger the asynchronous operation.
  */
-export function useIO(fun, condition) {
-    if (condition === void 0) { condition = []; }
-    // Counter of open I/O requests. If it's 0, I/O is completed.
-    // Counter is needed to handle the situation when the next request
-    // is issued before the previous one was completed.
-    var $isReady = useSafeLink(null);
-    useEffect(function () {
+export function useIO(fun, condition = []) {
+    const [state, setState] = useState(() => ({
+        isPending: 0,
+        result: null,
+        error: null,
+        timestamp: 0
+    }));
+    // Ref to track if the component is mounted
+    const isMountedRef = useIsMountedRef();
+    // Ref to hold the latest AbortController
+    const abortControllerRef = useRef(null);
+    useEffect(() => {
         // function in set instead of value to avoid race conditions with counter increment.
-        $isReady.set(function (state) {
-            var _a = state || [0, null], x = _a[0], res = _a[1];
-            return [x + 1, res];
-        });
-        fun()
-            .then(function () { return $isReady.set(function (_a) {
-            var x = _a[0], res = _a[1];
-            return [x - 1, null];
-        }); })
-            .catch(function (e) { return $isReady.set(function (_a) {
-            var x = _a[0], res = _a[1];
-            return [x - 1, e];
-        }); });
-    }, condition);
-    // `null` is used to detect the first render when no requests issued yet,
-    // but the I/O is not completed.
-    var value = $isReady.value;
-    return value === null || value[0] ? false : (value[1] || true);
-}
-export function whenChanged(a, b, c, d) {
-    var length = arguments.length;
-    switch (length) {
-        case 1: return [extractChangeToken(a)];
-        case 2: return [extractChangeToken(a), extractChangeToken(b)];
-        case 3: return [extractChangeToken(a), extractChangeToken(b), extractChangeToken(c)];
-        default:
-            var array = [extractChangeToken(a), extractChangeToken(b), extractChangeToken(c), extractChangeToken(d)];
-            for (var i = 4; i < length; i++) {
-                array.push(extractChangeToken(arguments[i]));
+        setState(state => ({
+            isPending: state.isPending + 1,
+            result: null,
+            error: null,
+            timestamp: state.timestamp
+        }));
+        fun(abortControllerRef.current = new AbortController())
+            .then(result => {
+            if (isMountedRef.current) {
+                setState(state => ({
+                    isPending: state.isPending - 1,
+                    result,
+                    error: null,
+                    timestamp: state.timestamp
+                }));
             }
-            return array;
+        })
+            .catch(error => {
+            if (isMountedRef.current) {
+                setState(state => ({
+                    isPending: state.isPending - 1,
+                    result: null,
+                    error: error.name !== 'AbortError' ? error : null,
+                    timestamp: state.timestamp
+                }));
+            }
+        })
+            .finally(() => {
+            if (isMountedRef.current) {
+                abortControllerRef.current = null;
+            }
+        });
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+                abortControllerRef.current = null;
+            }
+        };
+    }, [...condition, state.timestamp]);
+    return {
+        isReady: !state.isPending,
+        result: state.result,
+        error: state.error,
+        refresh: () => setState(state => ({ ...state, timestamp: Date.now() }))
+    };
+}
+/**
+ * A custom hook that throttles the execution of a function.
+ *
+ * @template F - The type of the function to be throttled.
+ * @param {F} fun - The function to be throttled.
+ * @param {number} timeout - The delay in milliseconds for the throttle.
+ * @param {Array<any>} [changes=[]] - The list of dependencies that will trigger the effect.
+ * @returns {F} - The throttled function.
+ *
+ * @example
+ * ```typescript
+ * const throttledFunction = useThrottle(myFunction, 1000, [dependency]);
+ * ```
+ */
+export function useThrottle(fun, timeout, changes = []) {
+    // Create the ref to store timer.
+    const timer = useRef(null);
+    function cancel() {
+        if (timer.current) {
+            clearTimeout(timer.current);
+            timer.current = null;
+        }
     }
+    useEffect(() => cancel, changes);
+    return function (...args) {
+        cancel();
+        timer.current = setTimeout(() => {
+            timer.current = null;
+            fun.apply(null, args);
+        }, timeout);
+    };
 }
-function extractChangeToken(x) {
-    return x && x._changeToken !== void 0 ? x._changeToken : x;
+/**
+ * React Hook to execute a function on a timer interval.
+ *
+ * @param {function} fun - The function to execute on each interval.
+ * @param {number} interval - The interval duration in milliseconds.
+ * @param {any[]} [deps=[]] - An array of dependencies that will trigger the effect when changed.
+ */
+export function useInterval(fun, interval, deps = []) {
+    useEffect(() => {
+        const id = setInterval(fun, interval);
+        return () => clearInterval(id);
+    }, [interval, ...deps]);
 }
-//# sourceMappingURL=hooks.js.map
