@@ -31,7 +31,9 @@ export const TodoList = ({ todosPtr, filterDone }:{
 
             <ul className="todo-list">
                 { todosPtr
-                    .filter( todo => filterDone === null || filterDone === todo.done )
+                    .filter( todo =>
+                        filterDone === null || filterDone === todo.done 
+                    )
                     .map( ( todoPtr, i ) => 
                         <TodoItem key={ i } todoPtr={ todoPtr }
                             editingPtr={ editingPtr }/>
@@ -64,18 +66,27 @@ const TodoItem = ( { todoPtr, editingPtr }: {
                 <input className="toggle" type="checkbox"
                        { ...todoPtr.at( 'done' ).props }/>
 
-                <label onDoubleClick={ () => editingPtr.set( todoPtr.value ) }>
+                <label onDoubleClick={ () =>
+                    editingPtr.set( todoPtr.value ) 
+                }>
                     { todo.desc }
                 </label>
 
-                <button className="destroy" onClick={ () => todoPtr.removeSelf() }/>
+                <button className="destroy" 
+                    onClick={ () => 
+                        todoPtr.removeSelf() 
+                    }/>
             </div>
 
             { editing && 
                 <input className="edit"
                     { ...todoPtr.at( 'desc' ).props }
-                    autoFocus={ true }
-                    onBlur={ () => editingPtr.set( null ) }
+                    autoFocus
+
+                    onBlur={ () => 
+                        editingPtr.set( null ) 
+                    }
+
                     onKeyDown={ e => {
                         if( e.keyCode === 13 ) {
                             editingPtr.set( null )

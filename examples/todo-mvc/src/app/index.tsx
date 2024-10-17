@@ -1,4 +1,3 @@
-import './app.css';
 import React from 'react';
 import { AddTodo } from './addtodo';
 import { Filter } from './filter';
@@ -15,16 +14,20 @@ export const App = () => {
             <section className="todoapp">
                 <AddTodo onEnter={ desc => todosPtr.push({ done : false, desc : desc }) }/>
 
-                { hasTodos && <TodoList todosPtr={ todosPtr }
-                                        filterDone={ filterDonePtr.value }
-                /> }
+                { hasTodos && 
+                    <TodoList todosPtr={ todosPtr }
+                        filterDone={ filterDonePtr.value }
+                    /> 
+                }
 
-                { hasTodos && <Filter count={ getActiveCount( todosPtr.value ) }
-                                        filterPtr={ filterDonePtr }
-                                        onClear={ () => {
-                                            todosPtr.remove( todo => todo.done ) 
-                                        }}
-                />}
+                { hasTodos && 
+                    <Filter count={ getActiveCount( todosPtr.value ) }
+                        filterPtr={ filterDonePtr }
+                        onClear={ () => {
+                            todosPtr.remove( todo => todo.done ) 
+                        }}
+                    />
+                }
             </section>
 
             <footer className="info">
