@@ -67,24 +67,22 @@ function getInitialState<S>( initialState : S | (() => S)) : S {
 }
 
 export function useLocalStoragePtr<S>( key : string, initialState : S | (() => S) ){
-    const [ value, setValue ] = useState<S>( () =>
+    const valuePtr = useStatePtr<S>( () =>
         JSON.parse( localStorage.getItem( key ) || 'null' ) || getInitialState( initialState )
     );
 
-    return new UseStatePtr( value, x => {
+    return valuePtr.onChange( x => {
         localStorage.setItem( key, JSON.stringify( x ) );
-        setValue( x );
     })
 }
 
 export function useSessionStoragePtr<S>( key : string, initialState : S | (() => S) ){
-    const [ value, setValue ] = useState<S>( () =>
+    const valuePtr = useStatePtr<S>( () =>
         JSON.parse( sessionStorage.getItem( key ) || 'null' ) || getInitialState( initialState )
     );
 
-    return new UseStatePtr( value, x => {
+    return valuePtr.onChange( x => {
         sessionStorage.setItem( key, JSON.stringify( x ) );
-        setValue( x );
     })
 }
 

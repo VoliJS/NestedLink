@@ -49,7 +49,7 @@ export class PurePtr {
     }
     /** Updates the value using the given transform function. */
     update(transform) {
-        const next = transform(this.clone());
+        const next = transform(this.value);
         next === void 0 || this.set(next);
     }
     equals(truthyValue) {
@@ -61,7 +61,7 @@ export class PurePtr {
     enabled(defaultValue) {
         return new EnabledValuePtr(this, defaultValue || "");
     }
-    // Array-only links methods
+    // Array-only methods
     contains(element) {
         return new ArrayContainsPtr(this, element);
     }
@@ -89,6 +89,25 @@ export class PurePtr {
     }
     at(key) {
         return new ObjPropPtr(this, key);
+    }
+    find(predicate) {
+        const idx = this.value.findIndex(predicate);
+        return idx >= 0 ? this.at(idx) : undefined;
+    }
+    remove(predicate) {
+        this.update(array => array.filter((el, idx) => !predicate(el, idx)));
+    }
+    removeSelf() {
+        this.set(undefined);
+    }
+    filter(predicate) {
+        const result = [];
+        for (let i = 0; i < this.value.length; i++) {
+            if (predicate(this.value[i], i)) {
+                result.push(this.at(i));
+            }
+        }
+        return result;
     }
     clone() {
         let { value } = this;
@@ -190,7 +209,7 @@ export class ObjPropPtr extends PurePtr {
         this.parent = parent;
         this.key = key;
     }
-    remove() {
+    removeSelf() {
         this.parent.removeAt(this.key);
     }
     update(transform) {
@@ -198,23 +217,20 @@ export class ObjPropPtr extends PurePtr {
         this.parent.update(obj => {
             const prev = obj[key], next = transform(helpers(prev).clone(prev));
             if (next !== void 0) {
-                obj[key] = next;
-                return obj;
+                const res = helpers(obj).clone(obj);
+                res[key] = next;
+                return res;
             }
         });
     }
     // Set new element value to parent array or object, performing purely functional update.
     set(next) {
-        /*
-        this.update( prev => {
-            if( prev !== next ) return next
-        })*/
-        // A bit more efficient implementation.
         const { key } = this;
         this.parent.update(obj => {
             if (obj[key] !== next) {
-                obj[key] = next;
-                return obj;
+                const res = helpers(obj).clone(obj);
+                res[key] = next;
+                return res;
             }
         });
     }

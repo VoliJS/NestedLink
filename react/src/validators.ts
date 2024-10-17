@@ -8,5 +8,5 @@ const emailPattern   = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*
 export const isEmail : PurePtr.Validator<string> = x => Boolean( x.match( emailPattern ) );
 isEmail.error = 'Should be an email';
 
-export const isNumber = (x: any) => !isNaN( Number( x ) );
+export const isNumber : PurePtr.Validator<any> = x => !isNaN( Number( x ) );
 isNumber.error = 'Should be a number';

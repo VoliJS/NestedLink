@@ -7,6 +7,11 @@ import { arrayHelpers, helpers } from './helpers';
 
 export * from './helpers'
 
+type ArrayType<T> = ArrayElement<T>[]
+type ArrayElement<T> = T extends (infer E)[] ? E : never
+type RecordElement<T> = T extends { [ key : string ] : infer E } ? E : never
+type RecordType<T> = { [ key : string ] : RecordElement<T> }
+
 /** 
  * The `PurePtr` class is an abstract, purely functional pointer that encapsulates a value, a function to update the value, and its validation error.
  * The enclosed value is considered immutable.
@@ -61,7 +66,7 @@ export abstract class PurePtr<T>{
 
     /** Updates the value using the given transform function. */
     update( transform : PurePtr.Transform<T> ) : void {
-        const next = transform( this.clone() );
+        const next = transform( this.value );
         next === void 0 || this.set( next );
     }
 
@@ -77,19 +82,19 @@ export abstract class PurePtr<T>{
         return new EnabledValuePtr( this, defaultValue || "" );
     }
 
-    // Array-only links methods
-    contains<E>( this : PurePtr<E[]>, element : E ) : PurePtr<boolean>{
+    // Array-only methods
+    contains( this : PurePtr<ArrayType<T>>, element : ArrayElement<T> ) : PurePtr<boolean>{
         return new ArrayContainsPtr( this, element );
     }
 
-    push<E>( this : PurePtr<E[]>, ...args : E[] ) : void;
+    push( this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void;
     push(){
         const array = arrayHelpers.clone( this.value );
         Array.prototype.push.apply( array, arguments as any);
         this.set( array );
     }
 
-    unshift<E>( this : PurePtr<E[]>, ...args : E[] ) : void;
+    unshift( this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void;
     unshift() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.unshift.apply( array, arguments as any );
@@ -97,7 +102,7 @@ export abstract class PurePtr<T>{
     }
 
     
-    splice( this : PurePtr<any[]>, start : number, deleteCount? : number ) : void;
+    splice( this : PurePtr<ArrayType<T>>, start : number, deleteCount? : number ) : void;
     splice() : void {
         const array = arrayHelpers.clone( this.value );
         Array.prototype.splice.apply( array, arguments as any);
@@ -105,25 +110,50 @@ export abstract class PurePtr<T>{
     }
 
     // Array and objects universal collection methods
-    map<E, Z>( this : PurePtr<E[]>, iterator : ( link : ObjPropPtr<E, number>, idx : number ) => Z ) : Z[];
-    map<E, Z>( this : PurePtr<{[ key : string ] : E }>, iterator : ( link : ObjPropPtr<E, string>, idx : string ) => Z ) : Z[];
+    map<Z>( this : PurePtr<ArrayType<T>>, iterator : ( link : ObjPropPtr<ArrayElement<T>, number>, idx : number ) => Z ) : Z[];
+    map<Z>( this : PurePtr<RecordType<T>>, iterator : ( link : ObjPropPtr<RecordElement<T>, string>, idx : string ) => Z ) : Z[];
     map( iterator : any ) : any[] {
         return helpers( this.value ).map( this, iterator );
     }
 
-    removeAt<E>( this : PurePtr<E[]>, key : number ) : void;
-    removeAt<E>( this : PurePtr<{ [ key : string ] : E }>, key : string ) : void;
-    removeAt( key : number | string ){
+    removeAt( this : PurePtr<ArrayType<T>>, key : number ) : void;
+    removeAt( key : keyof T ) : void;
+    removeAt( key : number | keyof T ){
         const { value } = this,
             _ = helpers( value );
 
-        this.set( _.remove( _.clone( value ), key ) );
+        this.set( _.remove( _.clone( value ), key as any ) );
     }
 
-    at<E>( this : PurePtr<E[]>, key : number ) : ObjPropPtr<E, number>;
+    at( this : PurePtr<ArrayType<T>>, key : number ) : ObjPropPtr<ArrayElement<T>, number>;
     at<K extends keyof T, E extends T[K]>( key : K ) : ObjPropPtr<E, K>;
     at( key : number | string ){
         return new ObjPropPtr( this, key );
+    }
+
+    find( this : PurePtr<ArrayType<T>>, predicate : ( element : ArrayElement<T>, idx : number ) => boolean ) : PurePtr<ArrayElement<T>> | undefined {
+        const idx = this.value.findIndex( predicate );
+        return idx >= 0 ? this.at( idx ) : undefined;
+    }
+
+    remove( this : PurePtr<ArrayType<T>>, predicate : ( element : ArrayElement<T>, idx : number ) => boolean ) : void {
+        this.update( array => array.filter( ( el, idx ) => !predicate( el, idx ) ) );
+    }
+
+    removeSelf(){
+        this.set( undefined as any );
+    }
+
+    filter( this : PurePtr<ArrayType<T>>, predicate : ( element : ArrayElement<T>, idx : number ) => boolean ) : PurePtr<ArrayElement<T>>[] {
+        const result: PurePtr<ArrayElement<T>>[] = [];
+
+        for (let i = 0; i < this.value.length; i++) {
+            if (predicate(this.value[i], i)) {
+                result.push(this.at(i));
+            }
+        }
+
+        return result;
     }
 
     clone() : T {
@@ -256,7 +286,7 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
         super( parent.value[ key ] );
     }
 
-    remove(){
+    removeSelf(){
         this.parent.removeAt( <any>this.key );
     }
 
@@ -268,29 +298,23 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
                 next = transform( helpers( prev ).clone( prev ) );
 
             if( next !== void 0 ){
-                obj[ key ] = next;
-                return obj;
+                const res = helpers( obj ).clone( obj )
+                res[ key ] = next;
+                return res;
             }
         } );
     }
 
     // Set new element value to parent array or object, performing purely functional update.
     set( next : E ) : void {
-        /*
-        this.update( prev => {
-            if( prev !== next ) return next
-        })*/
-
-        // A bit more efficient implementation.
         const { key } = this;
 
         this.parent.update( obj => {
             if( obj[ key ] !== next ){
-                obj[ key ] = next;
-                return obj;
+                const res = helpers( obj ).clone( obj )
+                res[ key ] = next;
+                return res;
             }
         });
-
-        
     };
 }

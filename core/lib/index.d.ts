@@ -1,4 +1,12 @@
 export * from './helpers';
+type ArrayType<T> = ArrayElement<T>[];
+type ArrayElement<T> = T extends (infer E)[] ? E : never;
+type RecordElement<T> = T extends {
+    [key: string]: infer E;
+} ? E : never;
+type RecordType<T> = {
+    [key: string]: RecordElement<T>;
+};
 /**
  * The `PurePtr` class is an abstract, purely functional pointer that encapsulates a value, a function to update the value, and its validation error.
  * The enclosed value is considered immutable.
@@ -32,20 +40,20 @@ export declare abstract class PurePtr<T> {
     equals(truthyValue: T): PurePtr<boolean>;
     get isTruthy(): true | undefined;
     enabled(defaultValue?: T): PurePtr<boolean>;
-    contains<E>(this: PurePtr<E[]>, element: E): PurePtr<boolean>;
-    push<E>(this: PurePtr<E[]>, ...args: E[]): void;
-    unshift<E>(this: PurePtr<E[]>, ...args: E[]): void;
-    splice(this: PurePtr<any[]>, start: number, deleteCount?: number): void;
-    map<E, Z>(this: PurePtr<E[]>, iterator: (link: ObjPropPtr<E, number>, idx: number) => Z): Z[];
-    map<E, Z>(this: PurePtr<{
-        [key: string]: E;
-    }>, iterator: (link: ObjPropPtr<E, string>, idx: string) => Z): Z[];
-    removeAt<E>(this: PurePtr<E[]>, key: number): void;
-    removeAt<E>(this: PurePtr<{
-        [key: string]: E;
-    }>, key: string): void;
-    at<E>(this: PurePtr<E[]>, key: number): ObjPropPtr<E, number>;
+    contains(this: PurePtr<ArrayType<T>>, element: ArrayElement<T>): PurePtr<boolean>;
+    push(this: PurePtr<ArrayType<T>>, ...args: ArrayType<T>): void;
+    unshift(this: PurePtr<ArrayType<T>>, ...args: ArrayType<T>): void;
+    splice(this: PurePtr<ArrayType<T>>, start: number, deleteCount?: number): void;
+    map<Z>(this: PurePtr<ArrayType<T>>, iterator: (link: ObjPropPtr<ArrayElement<T>, number>, idx: number) => Z): Z[];
+    map<Z>(this: PurePtr<RecordType<T>>, iterator: (link: ObjPropPtr<RecordElement<T>, string>, idx: string) => Z): Z[];
+    removeAt(this: PurePtr<ArrayType<T>>, key: number): void;
+    removeAt(key: keyof T): void;
+    at(this: PurePtr<ArrayType<T>>, key: number): ObjPropPtr<ArrayElement<T>, number>;
     at<K extends keyof T, E extends T[K]>(key: K): ObjPropPtr<E, K>;
+    find(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>> | undefined;
+    remove(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): void;
+    removeSelf(): void;
+    filter(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>>[];
     clone(): T;
     /**
      * Create pointers to the given object properties.
@@ -81,7 +89,7 @@ export declare class ObjPropPtr<E, K> extends PurePtr<E> {
     private parent;
     key: K;
     constructor(parent: PurePtr<any>, key: K);
-    remove(): void;
+    removeSelf(): void;
     update(transform: PurePtr.Transform<E>): void;
     set(next: E): void;
 }

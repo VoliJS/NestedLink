@@ -49,17 +49,15 @@ function getInitialState(initialState) {
     return typeof initialState === 'function' ? initialState() : initialState;
 }
 export function useLocalStoragePtr(key, initialState) {
-    const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || 'null') || getInitialState(initialState));
-    return new UseStatePtr(value, x => {
+    const valuePtr = useStatePtr(() => JSON.parse(localStorage.getItem(key) || 'null') || getInitialState(initialState));
+    return valuePtr.onChange(x => {
         localStorage.setItem(key, JSON.stringify(x));
-        setValue(x);
     });
 }
 export function useSessionStoragePtr(key, initialState) {
-    const [value, setValue] = useState(() => JSON.parse(sessionStorage.getItem(key) || 'null') || getInitialState(initialState));
-    return new UseStatePtr(value, x => {
+    const valuePtr = useStatePtr(() => JSON.parse(sessionStorage.getItem(key) || 'null') || getInitialState(initialState));
+    return valuePtr.onChange(x => {
         sessionStorage.setItem(key, JSON.stringify(x));
-        setValue(x);
     });
 }
 /**

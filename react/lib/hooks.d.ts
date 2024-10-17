@@ -17,8 +17,8 @@ export declare function useIsMountedRef(): import("react").MutableRefObject<bool
  * value or pointer in a single direction. When the source changes, the linked state changes too.
  */
 export declare function useLinkedStatePtr<T>(source: T | PurePtr<T>): PurePtr<T>;
-export declare function useLocalStoragePtr<S>(key: string, initialState: S | (() => S)): UseStatePtr<S>;
-export declare function useSessionStoragePtr<S>(key: string, initialState: S | (() => S)): UseStatePtr<S>;
+export declare function useLocalStoragePtr<S>(key: string, initialState: S | (() => S)): PurePtr<S>;
+export declare function useSessionStoragePtr<S>(key: string, initialState: S | (() => S)): PurePtr<S>;
 /**
  * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
  *

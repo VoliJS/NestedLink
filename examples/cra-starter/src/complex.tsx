@@ -36,7 +36,7 @@ export const DeepLinkedInputs = ({ objPtr }:{
                 <label key={ i }>
                     { i + ':' }
                     <Input valuePtr={ itemPtr.check( isNumber ) } />
-                    <button onClick={ () => itemPtr.remove() } >x</button>
+                    <button onClick={ () => itemPtr.removeSelf() } >x</button>
                 </label>
             ))}
 
