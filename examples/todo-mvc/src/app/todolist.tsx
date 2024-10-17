@@ -44,6 +44,7 @@ export const TodoList = ({ todosPtr, filterDone }:{
 }
 
 export interface Todo {
+    id : number;
     done: boolean;
     desc: string;
 }
@@ -52,7 +53,7 @@ const TodoItem = ( { todoPtr, editingPtr }: {
     todoPtr : PurePtr<Todo>,
     editingPtr : PurePtr<Todo|null>
 } ) =>{
-    const editing   = editingPtr.value === todoPtr.value,
+    const editing   = editingPtr.value?.id === todoPtr.value.id,
           todo = todoPtr.value,
           className = cx( {
               'completed' : todo.done,

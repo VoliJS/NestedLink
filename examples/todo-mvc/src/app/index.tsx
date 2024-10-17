@@ -12,14 +12,14 @@ export const App = () => {
     return (
         <div>
             <section className="todoapp">
-                <AddTodo onEnter={ desc => todosPtr.push({ done : false, desc : desc }) }/>
+                <AddTodo onEnter={ desc => todosPtr.push({ id : Date.now(), done : false, desc : desc }) }/>
 
                 { hasTodos && 
                     <TodoList todosPtr={ todosPtr }
                         filterDone={ filterDonePtr.value }
                     /> 
                 }
-
+  
                 { hasTodos && 
                     <Filter count={ getActiveCount( todosPtr.value ) }
                         filterPtr={ filterDonePtr }
