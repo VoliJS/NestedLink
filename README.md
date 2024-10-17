@@ -9,7 +9,7 @@ PurePtr significantly enhances the modularity and readability of your React proj
 import { useStatePtr } from '@pure-ptr/react'
 import { MyInput } from './controls.jsx'
 
-const MyCoolComponent = () => {
+const MyComponent = () => {
     // Define the component state
     const statePtr = useStatePtr( () => ({
         some : {
@@ -21,9 +21,10 @@ const MyCoolComponent = () => {
     const namePtr = statePtr.at( 'some' ).at( 'name' );
     
     // apply validation rules
-    namePtr.check( x => x.length > 0, 'Name is required' ),
-         .check( x => x.length > 2, 'Name is too short' );
-         .check( x => x.length < 20, 'Name is too long' );
+    namePtr
+        .check( x => x.length > 0, 'Name is required' ),
+        .check( x => x.length > 2, 'Name is too short' );
+        .check( x => x.length < 20, 'Name is too long' );
 
     return (
         <MyInput valuePtr={namePtr} />

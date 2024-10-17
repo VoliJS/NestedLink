@@ -4,7 +4,7 @@ export interface User{
     email: string
 }
 
-export function fetchUsers( filter : string, abort : AbortController ): Promise<User[]>{
+export function fetchUsers( filter : string, abort : AbortSignal ): Promise<User[]>{
     return new Promise( resolve => {
         setTimeout( () => {
             resolve([{
@@ -21,6 +21,6 @@ export function fetchUsers( filter : string, abort : AbortController ): Promise<
                 name : 'Pavel Smirnov',
                 email : 'ps@mail.co'
             }])
-        }, 1000 )
+        }, 2000 )
     })
 }

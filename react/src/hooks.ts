@@ -39,11 +39,12 @@ export function useStatePtr<S>( initialState : S | (() => S) ){
 export function useIsMountedRef(){
     const isMounted = useRef( true );
     
-    useEffect( () => 
-        () => {
+    useEffect( () => {
+        isMounted.current = true;
+        return () => {
             isMounted.current = false;
-        }, 
-    []);
+        }
+    }, []);
 
     return isMounted;
 }
@@ -91,18 +92,20 @@ export function useSessionStoragePtr<S>( key : string, initialState : S | (() =>
  * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
  *
  * @template T - The type of the result returned by the asynchronous function.
- * @param {function(AbortController): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
+ * @param {function(AbortSignal): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
  * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
  * @returns {object} - An object containing:
  *   - `isReady` (boolean): Indicates if the operation is complete.
  *   - `result` (T | null): The result of the asynchronous operation.
  *   - `error` (any): The error encountered during the operation, if any.
+ *   - `hasBeenRefreshed` (boolean): Indicates if the operation has been refreshed at least once.
  *   - `refresh` (function): A function to re-trigger the asynchronous operation.
  */
-export function useIO<T>( fun : ( abortController : AbortController ) => Promise<T>, condition : any[] = [] ): { 
+export function useIO<T>( fun : ( signal : AbortSignal ) => Promise<T>, condition : any[] = [] ): { 
     isReady: boolean; 
     result: T | null; 
-    error: any; 
+    error: any;
+    hasBeenRefreshed: boolean;
     refresh: () => void; 
 } {
     const [state, setState] = useState( () =>({
@@ -119,17 +122,9 @@ export function useIO<T>( fun : ( abortController : AbortController ) => Promise
     const abortControllerRef = useRef<AbortController|null>(null);
 
     useEffect(()=>{
-        // function in set instead of value to avoid race conditions with counter increment.
-        setState( 
-            state => ({
-                isPending: state.isPending + 1,
-                result: null,
-                error: null,
-                timestamp: state.timestamp
-            })
-        );
+        abortControllerRef.current = new AbortController();
 
-        fun( abortControllerRef.current = new AbortController() )
+        fun( abortControllerRef.current.signal )
             .then( result => {
                 if( isMountedRef.current ){
                     setState( state => ({
@@ -156,6 +151,16 @@ export function useIO<T>( fun : ( abortController : AbortController ) => Promise
                 }
             })
 
+        // function in set instead of value to avoid race conditions with counter increment.
+        setState( 
+            state => ({
+                isPending: state.isPending + 1,
+                result: null,
+                error: null,
+                timestamp: state.timestamp
+            })
+        );
+
         return () => {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
@@ -166,9 +171,10 @@ export function useIO<T>( fun : ( abortController : AbortController ) => Promise
 
     return {
         isReady : !state.isPending,
+        hasBeenRefreshed : state.timestamp > 0,
         result : state.result,
         error : state.error,
-        refresh : () => setState( state => ({ ...state, timestamp: Date.now() }) )
+        refresh : () => state.isPending || setState( state => ({ ...state, timestamp: Date.now() }) )
     }
 }
 

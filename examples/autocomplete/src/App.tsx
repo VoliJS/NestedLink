@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import { PickUser } from './autocomplete.js'
+import { PickUser } from './autocomplete'
 import { useStatePtr } from '@pure-ptr/react';
 import { User } from './io-mock';
 

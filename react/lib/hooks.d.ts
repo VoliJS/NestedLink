@@ -23,18 +23,20 @@ export declare function useSessionStoragePtr<S>(key: string, initialState: S | (
  * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
  *
  * @template T - The type of the result returned by the asynchronous function.
- * @param {function(AbortController): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
+ * @param {function(AbortSignal): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
  * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
  * @returns {object} - An object containing:
  *   - `isReady` (boolean): Indicates if the operation is complete.
  *   - `result` (T | null): The result of the asynchronous operation.
  *   - `error` (any): The error encountered during the operation, if any.
+ *   - `hasBeenRefreshed` (boolean): Indicates if the operation has been refreshed at least once.
  *   - `refresh` (function): A function to re-trigger the asynchronous operation.
  */
-export declare function useIO<T>(fun: (abortController: AbortController) => Promise<T>, condition?: any[]): {
+export declare function useIO<T>(fun: (signal: AbortSignal) => Promise<T>, condition?: any[]): {
     isReady: boolean;
     result: T | null;
     error: any;
+    hasBeenRefreshed: boolean;
     refresh: () => void;
 };
 /**
