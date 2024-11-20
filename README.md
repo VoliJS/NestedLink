@@ -1,9 +1,6 @@
-# Painless React forms, validation, and state management
-PurePtr enhances the `useState` React Hook, offering a sophisticated, callback-free solution for managing complex forms with input validation. It transforms the React state into an efficient state container. Lightweight at just 6.5K minified, PurePtr is compatible with both JavaScript and TypeScript.
+# Introduction
 
-The core of PurePtr is the `PurePtr` object, which represents a pointer to an element of the component's state. It encapsulates the value, a function to update the value, and validation errors. The `PurePtr` class includes methods for useful transformations, such as `ptr.props`, which generates the standard React `{ value, onChange }` props.
-
-PurePtr significantly enhances the modularity and readability of your React project.
+PurePtr is a lightweight library designed to enhance state management and form validation in React applications. It combines a sophisticated state container for managing complex state, seamless two-way data binding for forms, robust validation mechanisms, and an I/O hook for handling asynchronous operations. Compatible with both JavaScript and TypeScript, PurePtr significantly improves the modularity and readability of your React projects, making state management and form validation more intuitive and less error-prone.
 
 ```javascript
 import { useStatePtr } from '@pure-ptr/react'
@@ -45,16 +42,26 @@ const MyInput = ({ valuePtr }) => (
 
 ## Features
 
-- Two-way data binding to the component state without callbacks.
-- Separate validation logic from the markup.
-- Easily manage nested objects and arrays in the component state.
-- Precise TypeScript typings.
+- State Management
+    - `useStatePtr()`: Creates a pointer to a local component state.
+    - `useLocalStoragePtr()`: Creates a pointer to a state persisted in local storage.
+    - `useSessionStoragePtr()`: Creates a pointer to a state persisted in session storage.
+    - `useLinkedStatePtr()`: Creates a pointer to a local component state linked to another state.
+    - `ptr.at()`, `ptr.map()`, and other methonds to supports complex state updates, including array and object manipulations.
 
-Reference implementation of 'linked' UI controls:
+- React Forms
+    - `ptr.check()`: Adds a validation rule to a pointer.
+    - `ptr.error`: Returns the encapsulated validation error.
+    - `ptr.props`: Generates standard React { value, onChange } props for easy two-way databinding.
+    - `ptr.contains()`, `ptr.equals()` and other methods to support complex data binding scenarios like presence if the value in the array.
 
-- Standard tags: `<Input />`, `<TextArea />`, `<Select />`
-- Custom tags: `<Radio />`, `<Checkbox />`, `<NumberInput />`
-- Validator functions: `isNumber`, `isEmail`, `isRequired`
+- `useAsyncEffect()`: handle asynchronous operations within a React component using async/await, promises, and cancellations.
+
+- Helpers
+    - `useThrottle()`: Throttles a function, ensuring it is only called once within the specified timeout period.
+    - `useInterval()`: Executes a function on a timer interval.
+    - `DelayedInput`: A input component for handling delayed input updates.
+    - `NumericInput`: A input component for handling numeric input with wrong input rejection.
 
 ## Tutorials
 
@@ -93,42 +100,3 @@ in the library is for the standard React state. It's fairly easy to create your 
 
 You need to subclass React.Component and make your own `$at` and `state$` methods.
 You can either use `Link.value` inside to create links dynamically, or extend the `Link` as it's done in [/valuelink/src/component.ts](/valuelink/src/component.ts).
-
-### Start hacking
-
-![design](/images/valuelinks.jpg)
-
-It's a very simple library written with TypeScript, there's no any magic inside (except some scary type annotations). If you want to play with the examples, fix the bug, or whatever:
-
-`yarn` - installs the dependencies.
-
-`yarn build` - compiles everything including examples.
-
-## Release Notes
-### 2.0
-
-- IMPORTANT: Repository is converted to the monorepository based on yarn worspaces.
-- IMPORTANT: `valuelink/tags.jsx` is moved to the dedicated package `linked-controls`.
-- Complete support of new React Hooks API.
-    - `useLink()` to create the state link.
-    - `useIO()` to perform promised IO on mount.
-    - `useLocalStorage()` to persist links to the local storage (loaded on mount, saved on unmount).
-- $-notation for the link variables.
-- New React.Component API (`this.linkAt -> this.$at`, `this.linkAll` -> `this.state$`)
-- Group operations `Link.getValues()`, `Link.setValues()`, `Link.getErrors()`
-
-### v1.6
-
-React Hooks support.
-
-- `useLink( initValue )` - create linked state.
-- `setLinks({ lnk1, lnk2, ... }, json )` - bulk set link values from an object.
-- `linksValues({ lnk1, lnk2, ... })` - extract values object from links.
-- `linksErrors({ lnk1, lnk2, ... })` - extract errors object from links.
-
-### v1.5
-
-- `<input {...link.props} />` can be used to bind the link to any of the standard controls expecting `value` and `onChange` props.
-
----
-![usedby](/images/usedby.png)
