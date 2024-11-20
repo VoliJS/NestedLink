@@ -121,54 +121,6 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4
 
-  examples/databinding:
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.3
-        version: 7.25.8
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.4.0
-        version: 7.18.6(@babel/core@7.25.8)
-      '@babel/preset-env':
-        specifier: ^7.4.3
-        version: 7.25.8(@babel/core@7.25.8)
-      '@babel/preset-react':
-        specifier: ^7.0.0
-        version: 7.25.7(@babel/core@7.25.8)
-      '@linked/controls':
-        specifier: '*'
-        version: 3.1.5
-      '@linked/react':
-        specifier: ^3.0.0
-        version: 3.1.2
-      babel-loader:
-        specifier: '*'
-        version: 9.2.1(@babel/core@7.25.8)(webpack@4.47.0)
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
-      css-loader:
-        specifier: ^0.28.11
-        version: 0.28.11
-      react:
-        specifier: ^16.8.6
-        version: 16.14.0
-      react-dom:
-        specifier: ^16.8.6
-        version: 16.14.0(react@16.14.0)
-      source-map-loader:
-        specifier: '*'
-        version: 5.0.0(webpack@4.47.0)
-      style-loader:
-        specifier: ^0.20.3
-        version: 0.20.3
-      webpack:
-        specifier: ^4.30.0
-        version: 4.47.0(webpack-cli@3.3.12)
-      webpack-cli:
-        specifier: ^3.3.1
-        version: 3.3.12(webpack@4.47.0)
-
   examples/todo-mvc:
     dependencies:
       '@pure-ptr/react':
@@ -214,95 +166,50 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4
 
-  examples/todomvc-hooks:
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.3
-        version: 7.25.8
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.4.0
-        version: 7.18.6(@babel/core@7.25.8)
-      '@babel/preset-env':
-        specifier: ^7.4.3
-        version: 7.25.8(@babel/core@7.25.8)
-      '@babel/preset-react':
-        specifier: ^7.0.0
-        version: 7.25.7(@babel/core@7.25.8)
-      '@linked/react':
-        specifier: ^3.0.0
-        version: 3.1.2
-      babel-loader:
-        specifier: '*'
-        version: 9.2.1(@babel/core@7.25.8)(webpack@4.47.0)
+  examples/userslist:
+    dependencies:
+      '@pure-ptr/react':
+        specifier: workspace:*
+        version: link:../../react
+      '@testing-library/jest-dom':
+        specifier: ^4.2.4
+        version: 4.2.4
+      '@testing-library/react':
+        specifier: ^13.4.0
+        version: 13.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: ^13.5.0
+        version: 13.5.0(@testing-library/dom@8.20.1)
+      '@types/jest':
+        specifier: ^27.5.2
+        version: 27.5.2
+      '@types/node':
+        specifier: ^16.18.113
+        version: 16.18.113
+      '@types/react':
+        specifier: ^18.3.11
+        version: 18.3.11
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.1
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
-      css-loader:
-        specifier: ^0.28.11
-        version: 0.28.11
       react:
-        specifier: ^16.8.6
-        version: 16.14.0
+        specifier: ^18.3.1
+        version: 18.3.1
       react-dom:
-        specifier: ^16.8.6
-        version: 16.14.0(react@16.14.0)
-      source-map-loader:
-        specifier: '*'
-        version: 5.0.0(webpack@4.47.0)
-      style-loader:
-        specifier: ^0.20.3
-        version: 0.20.3
-      webpack:
-        specifier: ^4.30.0
-        version: 4.47.0(webpack-cli@3.3.12)
-      webpack-cli:
-        specifier: ^3.3.1
-        version: 3.3.12(webpack@4.47.0)
-
-  examples/todomvc-hooks.old:
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.3
-        version: 7.25.8
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.4.0
-        version: 7.18.6(@babel/core@7.25.8)
-      '@babel/preset-env':
-        specifier: ^7.4.3
-        version: 7.25.8(@babel/core@7.25.8)
-      '@babel/preset-react':
-        specifier: ^7.0.0
-        version: 7.25.7(@babel/core@7.25.8)
-      '@linked/react':
-        specifier: ^3.0.0
-        version: 3.1.2
-      babel-loader:
-        specifier: '*'
-        version: 9.2.1(@babel/core@7.25.8)(webpack@4.47.0)
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
-      css-loader:
-        specifier: ^0.28.11
-        version: 0.28.11
-      react:
-        specifier: ^16.8.6
-        version: 16.14.0
-      react-dom:
-        specifier: ^16.8.6
-        version: 16.14.0(react@16.14.0)
-      source-map-loader:
-        specifier: '*'
-        version: 5.0.0(webpack@4.47.0)
-      style-loader:
-        specifier: ^0.20.3
-        version: 0.20.3
-      webpack:
-        specifier: ^4.30.0
-        version: 4.47.0(webpack-cli@3.3.12)
-      webpack-cli:
-        specifier: ^3.3.1
-        version: 3.3.12(webpack@4.47.0)
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-scripts:
+        specifier: 5.0.1
+        version: 5.0.1(@babel/plugin-syntax-flow@7.25.7(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.7(@babel/core@7.25.8))(@types/babel__core@7.20.5)(eslint@8.57.1)(react@18.3.1)(type-fest@0.21.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+      web-vitals:
+        specifier: ^2.1.4
+        version: 2.1.4
 
   examples/userslist-hooks:
     devDependencies:
@@ -8960,7 +8867,9 @@ snapshots:
       source-map: 0.6.1
       string-length: 2.0.0
     transitivePeerDependencies:
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@jest/reporters@27.5.1':
     dependencies:

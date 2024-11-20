@@ -215,6 +215,10 @@ export namespace PurePtr {
             }
         } );
     }
+
+    export function haveErrors( ...ptrs : PurePtr<any>[] ) : boolean {
+        return ptrs.some( ptr => ptr.error !== void 0 );
+    }
 }
 
 class CustomPtr< T > extends PurePtr< T > {

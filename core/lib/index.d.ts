@@ -80,6 +80,7 @@ export declare namespace PurePtr {
     /** Create pointer out of its value and the set function */
     function value<T>(value: T, set: (x: T) => void): PurePtr<T>;
     function mutable<T extends object>(state: T): PurePtr<T>;
+    function haveErrors(...ptrs: PurePtr<any>[]): boolean;
 }
 /**
  * Link to array or object element enclosed in parent link.

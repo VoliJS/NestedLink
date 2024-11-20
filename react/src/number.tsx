@@ -11,6 +11,21 @@ export interface NumberInputProps extends React.HTMLProps<HTMLInputElement> {
     valuePtr: PurePtr<number>
 }
 
+/**
+ * A React component for handling numeric input with optional constraints for positive and integer values.
+ * 
+ * @extends {React.Component<NumberInputProps, {}>}
+ * 
+ * @property {PurePtr<number>} props.valuePtr - A pointer object that holds the value of the input element.
+ * @property {boolean} props.positive - A flag to indicate that the input should only accept positive numbers.
+ * @property {boolean} props.integer - A flag to indicate that the input should only accept integer numbers.
+ * 
+ * @example
+ *   <NumberInput valuePtr={ numberValuePtr }/>
+ *   <NumberInput valuePtr={ numberValuePtr } positive/>
+ *   <NumberInput valuePtr={ numberValuePtr } integer/>
+ *   <NumberInput valuePtr={ numberValuePtr } positive integer/>
+ */
 export class NumberInput extends React.Component<NumberInputProps, {}>{
     componentWillMount() {
         // Initialize component state

@@ -146,6 +146,10 @@ export class PurePtr {
         });
     }
     PurePtr.mutable = mutable;
+    function haveErrors(...ptrs) {
+        return ptrs.some(ptr => ptr.error !== void 0);
+    }
+    PurePtr.haveErrors = haveErrors;
 })(PurePtr || (PurePtr = {}));
 class CustomPtr extends PurePtr {
     set(x) { }

@@ -1,15 +1,6 @@
 import * as React from 'react'
 import { PurePtr } from '@pure-ptr/core'
 
-/**
- * Wrapper for standard <input/> to be compliant with React 0.14 $value semantic.
- * Simple supports for link validation - adds 'invalid' class if link has an error.
- *
- *      <input type="checkbox" $checked={ linkToBool } />
- *      <input type="radio"    $value={ linkToSelectedValue } value="option1value" />
- *      <input type="text"     $value={ linkToString } />
- */
-
 function appendClass( classes: string, name: string ){
     return classes ? classes + ' ' + name : name;
 }
@@ -38,6 +29,17 @@ export type InputProps = React.HTMLProps<HTMLInputElement> & ValidationProps & (
     { checkedPtr : PurePtr<boolean>}
 )
 
+/**
+ * A custom input component that binds its value to a `PurePtr` object.
+ * 
+ * @param {PurePtr<any>} props.valuePtr - A pointer object that holds the value of the input element.
+ * @param {PurePtr<boolean>} props.checkedPtr - A pointer object that holds the checked state of the input element.
+ * @returns {JSX.Element} The rendered input element.
+ * 
+ * @example
+ *    <Input valuePtr={ textValuePtr }/>
+ *    <Input type="checkbox" checkedPtr={ checkedValuePtr }/>
+ */
 export function Input( props : InputProps ) : JSX.Element {
         const { valuePtr, checkedPtr, ...rest } = props as any,
           type = props.type,
@@ -63,10 +65,13 @@ export function Input( props : InputProps ) : JSX.Element {
 };
 
 /**
- * Wrapper for standard <textarea/> to be compliant with React 0.14 $value semantic.
- * Simple supports for link validation - adds 'invalid' class if link has an error.
- *
- *     <TextArea $value={ linkToText } />
+ * A custom textarea component that binds its value to a `PurePtr` object.
+ * 
+ * @param {PurePtr<string>} props.valuePtr - A pointer object that holds the value of the textarea element.
+ * @returns {JSX.Element} The rendered textarea element.
+ * 
+ * @example
+ *    <TextArea valuePtr={ textValuePtr }/>
  */
 export const TextArea = ( { valuePtr, ...props } : { valuePtr : PurePtr<string> } & ValidationProps & React.HTMLProps<HTMLTextAreaElement>) => (
     <textarea {...props}
@@ -76,15 +81,18 @@ export const TextArea = ( { valuePtr, ...props } : { valuePtr : PurePtr<string> 
 );
 
 /**
- * Wrapper for standard <select/> to be compliant with React 0.14 $value semantic.
- * Regular <option/> tags must be used:
- *
- *     <Select $value={ linkToSelectedValue }>
- *         <option value="a">A</option>
- *         <option value="b">B</option>
- *     </Select>
+ * A custom select component that binds its value to a `PurePtr` object.
+ * 
+ * @param {PurePtr<any>} props.valuePtr - A pointer object that holds the value of the select element.
+ * @returns {JSX.Element} The rendered select element.
+ * 
+ * @example
+ *    <Select valuePtr={ selectedValuePtr }>
+ *         <option value="option1value">Option 1</option>
+*          <option value="option2value">Option 2</option>
+ *   </Select>
  */
-export const Select = ( { valuePtr, children, ...props } : { valuePtr : PurePtr<any> } & React.HTMLProps<HTMLSelectElement> ) => (
+export const Select = ( { valuePtr, children, ...props } : { valuePtr : PurePtr<any> } & React.HTMLProps<HTMLSelectElement> ): JSX.Element => (
     <select {...props}
         value={ valuePtr.value }
         onChange={ e => valuePtr.set( e.target.value ) }>

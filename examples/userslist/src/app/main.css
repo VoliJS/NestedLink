@@ -1,0 +1,44 @@
+.invalid {
+    border-color: red;
+}
+
+.invalid.required {
+    border-color: yellow;
+}
+
+.checkbox,.radio {
+    margin: 3px;
+    display: inline-block;
+    width: 10px;
+    height : 10px;
+    border: solid;
+    border-width: 1px;
+}
+
+.selected {
+    background-color: black;
+}
+
+label {
+    display: block;
+    margin: 5px;
+}
+
+input {
+    margin: 3px;
+}
+
+
+.users-row>div {
+    display: inline-block;
+    width : 15em;
+}
+
+.validation-error {
+    display: inline-block;
+    color: red;
+}
+
+label>div {
+    display: inline-block;
+}
