@@ -12,10 +12,12 @@ type ArrayElement<T> = T extends (infer E)[] ? E : never
 type RecordElement<T> = T extends { [ key : string ] : infer E } ? E : never
 type RecordType<T> = { [ key : string ] : RecordElement<T> }
 
-/** 
- * The `PurePtr` class is an abstract, purely functional pointer that encapsulates a value, a function to update the value, and its validation error.
- * The enclosed value is considered immutable.
- */ 
+/**
+ * An abstract class representing a pointer to a value of type `T`.
+ * Provides various methods for manipulating and interacting with the value.
+ *
+ * @template T - The type of the value.
+ */
 export abstract class PurePtr<T>{
     /** Validation error. Usually a string containing the error message, but can hold any type. */ 
     error : any = void 0
