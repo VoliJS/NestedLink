@@ -39,7 +39,8 @@ node_modules
 # IntelliJ
 /out/
 
-/lib
+core/lib
+react/lib
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
