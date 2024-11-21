@@ -1,13 +1,30 @@
 import * as React from 'react';
 import { validationClasses } from './standard';
 import { isNumber } from './validators';
+/**
+ * A React component for handling numeric input with optional constraints for positive and integer values.
+ *
+ * @extends {React.Component<NumberInputProps, {}>}
+ *
+ * @property {PurePtr<number>} props.valuePtr - A pointer object that holds the value of the input element.
+ * @property {boolean} props.positive - A flag to indicate that the input should only accept positive numbers.
+ * @property {boolean} props.integer - A flag to indicate that the input should only accept integer numbers.
+ * @property {boolean} props.nullable - A flag to indicate that the input can be null.
+ *
+ * @example
+ *   <NumberInput valuePtr={ numberValuePtr }/>
+ *   <NumberInput valuePtr={ numberValuePtr } nullable />
+ *   <NumberInput valuePtr={ numberValuePtr } positive/>
+ *   <NumberInput valuePtr={ numberValuePtr } integer/>
+ *   <NumberInput valuePtr={ numberValuePtr } positive integer/>
+ */
 export class NumberInput extends React.Component {
     constructor() {
         super(...arguments);
         this.value = '';
         this.onFocus = (e) => {
-            const { onFocus } = this.props;
-            if (!this.props.valuePtr.value) {
+            const { nullable, onFocus } = this.props;
+            if (!nullable && !this.props.valuePtr.value) {
                 this.value = '';
                 this.forceUpdate();
             }
@@ -16,8 +33,8 @@ export class NumberInput extends React.Component {
             }
         };
         this.onBlur = (e) => {
-            const { onBlur } = this.props;
-            if (!this.value) {
+            const { onBlur, nullable } = this.props;
+            if (!nullable && !this.value) {
                 this.value = '0';
                 this.forceUpdate();
             }
@@ -39,11 +56,11 @@ export class NumberInput extends React.Component {
             // Update local state...
             const { value } = e.target;
             this.setValue(value);
-            const asNumber = Number(value);
+            const asNumber = this.valueAsNumber;
             if (!isNaN(asNumber)) {
                 this.props.valuePtr.update(x => {
                     // Update link if value is changed
-                    if (asNumber !== Number(x)) {
+                    if (asNumber !== x) {
                         return asNumber;
                     }
                 });
@@ -56,28 +73,35 @@ export class NumberInput extends React.Component {
     }
     setValue(x) {
         // We're not using native state in order to avoid race condition.
-        this.value = String(x);
-        this.error = this.value === '' || !isNumber(x);
+        this.value = x == null ? '' : String(x);
+        this.error = this.value !== '' && !isNumber(x);
         this.forceUpdate();
     }
     setAndConvert(x) {
-        let value = Number(x);
-        if (this.props.positive) {
-            value = Math.abs(x);
+        if (x == null) {
+            this.setValue(null);
         }
-        if (this.props.integer) {
-            value = Math.round(value);
+        else {
+            let value = x;
+            if (this.props.positive) {
+                value = Math.abs(x);
+            }
+            if (this.props.integer) {
+                value = Math.round(value);
+            }
+            this.setValue(value);
         }
-        this.setValue(value);
     }
-    componentWillReceiveProps(nextProps) {
-        const { valuePtr: $next } = nextProps;
-        if (Number($next.value) !== Number(this.value)) {
-            this.setAndConvert($next.value); // keep state being synced
+    componentWillReceiveProps({ valuePtr }) {
+        if (valuePtr.value !== this.valueAsNumber) {
+            this.setAndConvert(valuePtr.value); // keep state being synced
         }
+    }
+    get valueAsNumber() {
+        return this.props.nullable && this.value === '' ? null : Number(this.value);
     }
     render() {
-        const { valuePtr, positive, integer, ...props } = this.props, error = valuePtr.error || this.error;
-        return React.createElement("input", { ...props, type: "text", className: validationClasses(props, this.value, error), value: this.value, onFocus: this.onFocus, onBlur: this.onBlur, onKeyPress: this.onKeyPress, onChange: this.onChange });
+        const { valuePtr, positive, integer, nullable, placeholder, ...props } = this.props, error = valuePtr.error || this.error;
+        return React.createElement("input", { ...props, placeholder: placeholder == null ? '' : String(placeholder), type: "text", className: validationClasses(props, this.value, error), value: this.value, onFocus: this.onFocus, onBlur: this.onBlur, onKeyPress: this.onKeyPress, onChange: this.onChange });
     }
 }

@@ -11,26 +11,43 @@ export type InputProps = React.HTMLProps<HTMLInputElement> & ValidationProps & (
 } | {
     checkedPtr: PurePtr<boolean>;
 });
+/**
+ * A custom input component that binds its value to a `PurePtr` object.
+ *
+ * @param {PurePtr<any>} props.valuePtr - A pointer object that holds the value of the input element.
+ * @param {PurePtr<boolean>} props.checkedPtr - A pointer object that holds the checked state of the input element.
+ * @returns {JSX.Element} The rendered input element.
+ *
+ * @example
+ *    <Input valuePtr={ textValuePtr }/>
+ *    <Input type="checkbox" checkedPtr={ checkedValuePtr }/>
+ */
 export declare function Input(props: InputProps): JSX.Element;
 /**
- * Wrapper for standard <textarea/> to be compliant with React 0.14 $value semantic.
- * Simple supports for link validation - adds 'invalid' class if link has an error.
+ * A custom textarea component that binds its value to a `PurePtr` object.
  *
- *     <TextArea $value={ linkToText } />
+ * @param {PurePtr<string>} props.valuePtr - A pointer object that holds the value of the textarea element.
+ * @returns {JSX.Element} The rendered textarea element.
+ *
+ * @example
+ *    <TextArea valuePtr={ textValuePtr }/>
  */
 export declare const TextArea: ({ valuePtr, ...props }: {
     valuePtr: PurePtr<string>;
 } & ValidationProps & React.HTMLProps<HTMLTextAreaElement>) => React.JSX.Element;
 /**
- * Wrapper for standard <select/> to be compliant with React 0.14 $value semantic.
- * Regular <option/> tags must be used:
+ * A custom select component that binds its value to a `PurePtr` object.
  *
- *     <Select $value={ linkToSelectedValue }>
- *         <option value="a">A</option>
- *         <option value="b">B</option>
- *     </Select>
+ * @param {PurePtr<any>} props.valuePtr - A pointer object that holds the value of the select element.
+ * @returns {JSX.Element} The rendered select element.
+ *
+ * @example
+ *    <Select valuePtr={ selectedValuePtr }>
+ *         <option value="option1value">Option 1</option>
+*          <option value="option2value">Option 2</option>
+ *   </Select>
  */
 export declare const Select: ({ valuePtr, children, ...props }: {
     valuePtr: PurePtr<any>;
-} & React.HTMLProps<HTMLSelectElement>) => React.JSX.Element;
+} & React.HTMLProps<HTMLSelectElement>) => JSX.Element;
 export {};

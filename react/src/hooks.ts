@@ -83,7 +83,7 @@ function getInitialState<S>( initialState : S | (() => S)) : S {
  * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
  * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
  */
-export function useLocalStoragePtr<S>( key : string, initialState : S | (() => S) ){
+export function useLocalStoragePtr<S>( key : string, initialState : S | (() => S) ) : PurePtr<S> {
     const valuePtr = useStatePtr<S>( () =>
         JSON.parse( localStorage.getItem( key ) || 'null' ) || getInitialState( initialState )
     );
@@ -100,7 +100,7 @@ export function useLocalStoragePtr<S>( key : string, initialState : S | (() => S
  * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
  * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
  */
-export function useSessionStoragePtr<S>( key : string, initialState : S | (() => S) ) {
+export function useSessionStoragePtr<S>( key : string, initialState : S | (() => S) )  : PurePtr<S> {
     const valuePtr = useStatePtr<S>( () =>
         JSON.parse( sessionStorage.getItem( key ) || 'null' ) || getInitialState( initialState )
     );

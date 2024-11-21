@@ -8,8 +8,10 @@ type RecordType<T> = {
     [key: string]: RecordElement<T>;
 };
 /**
- * The `PurePtr` class is an abstract, purely functional pointer that encapsulates a value, a function to update the value, and its validation error.
- * The enclosed value is considered immutable.
+ * An abstract class representing a pointer to a value of type `T`.
+ * Provides various methods for manipulating and interacting with the value.
+ *
+ * @template T - The type of the value.
  */
 export declare abstract class PurePtr<T> {
     value: T;
@@ -19,14 +21,36 @@ export declare abstract class PurePtr<T> {
     abstract set(x: T): void;
     constructor(value: T);
     protected get _changeToken(): T;
-    /** Creates a new pointer that executes the given function before updating the link's value. */
+    /**
+     * Registers a handler function to be called when the value changes.
+     * The handler function will be invoked with the new value, and the value will be updated.
+     *
+     * @param handler - A function that takes the new value of type `T` as an argument.
+     * @returns A new instance of `ClonedPtr` that wraps the current instance and the handler function.
+     */
     onChange(handler: (x: T) => void): PurePtr<T>;
-    /** Produces a new pointer that transforms the value before calling `set`. */
+    /**
+     * Applies a handler function to the new value and the previous value
+     * to transform the value before updating it.
+     *
+     * @param handler - A function that takes the next value and the previous value,
+     * and returns a new value.
+     * @returns A new `PurePtr` instance with the result of the handler function.
+     */
     pipe(handler: (next: T, prev: T) => T): PurePtr<T>;
     /**
-     * Creates React component props for the <input> component.
+     * Gets the properties for the React <input/> component based on the Ptr type.
      *
-     * <input { ...link.props } />
+     * @returns An object containing either `checked` and `onChange` properties if the value is boolean,
+     *          or `value` and `onChange` properties otherwise.
+     *
+     * - If `T` is boolean:
+     *   - `checked`: A boolean indicating the checked state.
+     *   - `onChange`: A function that handles the change event and updates the state.
+     *
+     * - If `T` is not boolean:
+     *   - `value`: The current value of type `T`.
+     *   - `onChange`: A function that handles the change event and updates the state.
      */
     get props(): T extends boolean ? {
         checked: boolean;
@@ -35,11 +59,35 @@ export declare abstract class PurePtr<T> {
         value: T;
         onChange: (e: any) => void;
     };
-    /** Updates the value using the given transform function. */
+    /**
+     * Updates the ptr value using the provided transformation function.
+     *
+     * @param transform - A function that takes the current value and returns a new value.
+     *                    If the function returns `undefined`, the value is not updated.
+     */
     update(transform: PurePtr.Transform<T>): void;
+    /**
+     * Compares the current value with the provided `truthyValue` and returns a boolean `PurePtr` instance
+     * that indicates whether the values are equal.
+     *
+     * @param truthyValue - The value to compare with the current value.
+     * @returns A `PurePtr<boolean>` instance that represents the result of the comparison.
+     */
     equals(truthyValue: T): PurePtr<boolean>;
-    get isTruthy(): true | undefined;
+    /**
+     * Property to determine if the value is truthy.
+     *
+     * @returns {boolean | undefined} - Returns `true` if the value is truthy, otherwise `undefined`.
+     */
+    get isTruthy(): boolean | undefined;
     enabled(defaultValue?: T): PurePtr<boolean>;
+    /**
+     * Returns a boolean `PurePtr` instance that indicates whether the element is contained within the array.
+     *
+     * @param this - A pointer to the array to be checked.
+     * @param element - The element to search for within the array.
+     * @returns A pointer to a boolean indicating whether the element is contained within the array.
+     */
     contains(this: PurePtr<ArrayType<T>>, element: ArrayElement<T>): PurePtr<boolean>;
     push(this: PurePtr<ArrayType<T>>, ...args: ArrayType<T>): void;
     unshift(this: PurePtr<ArrayType<T>>, ...args: ArrayType<T>): void;
@@ -50,21 +98,55 @@ export declare abstract class PurePtr<T> {
     removeAt(key: keyof T): void;
     at(this: PurePtr<ArrayType<T>>, key: number): ObjPropPtr<ArrayElement<T>, number>;
     at<K extends keyof T, E extends T[K]>(key: K): ObjPropPtr<E, K>;
-    find(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>> | undefined;
-    remove(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): void;
-    removeSelf(): void;
-    filter(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>>[];
-    clone(): T;
     /**
-     * Create pointers to the given object properties.
+     * Finds a pointer to an element in the array that satisfies the provided predicate function.
      *
-     * @returns {ObjPropPtr<any, any>[]} An array of pointers.
+     * @param predicate - A function that tests each element of the array.
+     * It should return `true` to keep the element, `false` otherwise.
+     * It receives two arguments:
+     *   - `element`: The current element being processed in the array.
+     *   - `idx`: The index of the current element being processed in the array.
+     * @returns A pointer to the found element, or `undefined` if no element satisfies the predicate.
      */
+    find(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>> | undefined;
+    /**
+     * Removes elements from the array that match the given predicate.
+     *
+     * @param this - The array from which elements will be removed.
+     * @param predicate - A function that tests each element of the array.
+     * If the predicate returns `true`, the element is removed.
+     * @returns void
+     */
+    remove(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): void;
+    /**
+     * Removes the element from the array or object.
+     */
+    removeSelf(): void;
+    /**
+     * Filters the elements of the array based on the provided predicate function, and returns an array of pointers to the filtered elements.
+     *
+     * @param predicate - A function that tests each element of the array.
+     * It should return `true` to keep the element, or `false` otherwise.
+     * It receives the current element and its index as arguments.
+     * @returns An array of `PurePtr` elements that satisfy the predicate function.
+     */
+    filter(this: PurePtr<ArrayType<T>>, predicate: (element: ArrayElement<T>, idx: number) => boolean): PurePtr<ArrayElement<T>>[];
+    /**
+     * Creates and returns a clone of the current object.
+     *
+     * @returns {T} A new instance of the object with the same value.
+     */
+    clone(): T;
     pick<K extends (keyof T)[]>(...keys: K): {
         [I in keyof K]: ObjPropPtr<T[K[I]], K[I]>;
     };
     /**
-     * Validate pointer with predicate. Can be chained.
+     * Validates the current value using the provided validator function.
+     * If the value is invalid and no previous error exists, sets the error.
+     *
+     * @param whenValid - A function that takes the current value and returns a boolean indicating if the value is valid.
+     * @param error - An optional error to set if the value is invalid. If not provided, the error from the validator or a default error will be used.
+     * @returns The current instance for chaining.
      */
     check(whenValid: PurePtr.Validator<T>, error?: any): this;
 }
@@ -77,9 +159,22 @@ export declare namespace PurePtr {
     type Hash<T extends object = any> = {
         [K in keyof T]: PurePtr<T[K]>;
     };
-    /** Create pointer out of its value and the set function */
+    /**
+     * Creates a new `PurePtr` instance with the given value and setter function.
+     *
+     * @template T - The type of the value.
+     * @param {T} value - The initial value to be stored in the `PurePtr`.
+     * @param {(x: T) => void} set - A function to set the value.
+     * @returns {PurePtr<T>} A new `PurePtr` instance containing the value and setter function.
+     */
     function value<T>(value: T, set: (x: T) => void): PurePtr<T>;
     function mutable<T extends object>(state: T): PurePtr<T>;
+    /**
+     * Checks if any of the provided pointers have errors.
+     *
+     * @param ptrs - An array of pointers to check for errors.
+     * @returns `true` if any pointer has an error, otherwise `false`.
+     */
     function haveErrors(...ptrs: PurePtr<any>[]): boolean;
 }
 /**

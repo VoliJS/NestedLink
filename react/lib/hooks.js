@@ -17,7 +17,10 @@ class UseStatePtr extends PurePtr {
     }
 }
 /**
- * Create the ref to the local state.
+ * Create a pointer to a local component state.
+ *
+ * @param {S | (() => S)} initialState - The initial state value or a function that returns the initial state.
+ * @returns {PurePtr<S>} PurePtr containing the state value and the state setter function.
  */
 export function useStatePtr(initialState) {
     const [value, set] = useState(initialState);
@@ -39,6 +42,13 @@ export function useIsMountedRef() {
 /**
  * Create a pointer to the local state that is synchronized with another
  * value or pointer in a single direction. When the source changes, the linked state changes too.
+ *
+ * If the source is an instance of `PurePtr`, it uses the value of the pointer.
+ * Otherwise, it uses the source value directly.
+ *
+ * @template T - The type of the value.
+ * @param {T | PurePtr<T>} source - The source value or pointer.
+ * @returns {PurePtr<T>} - A linked state pointer.
  */
 export function useLinkedStatePtr(source) {
     const value = source instanceof PurePtr ? source.value : source, link = useStatePtr(value);
@@ -48,12 +58,26 @@ export function useLinkedStatePtr(source) {
 function getInitialState(initialState) {
     return typeof initialState === 'function' ? initialState() : initialState;
 }
+/**
+ * Create a pointer to a local storage.
+ *
+ * @param {string} key - The key under which the state is stored in session storage.
+ * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
+ * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
+ */
 export function useLocalStoragePtr(key, initialState) {
     const valuePtr = useStatePtr(() => JSON.parse(localStorage.getItem(key) || 'null') || getInitialState(initialState));
     return valuePtr.onChange(x => {
         localStorage.setItem(key, JSON.stringify(x));
     });
 }
+/**
+ * Create a pointer to a session storage.
+ *
+ * @param {string} key - The key under which the state is stored in session storage.
+ * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
+ * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
+ */
 export function useSessionStoragePtr(key, initialState) {
     const valuePtr = useStatePtr(() => JSON.parse(sessionStorage.getItem(key) || 'null') || getInitialState(initialState));
     return valuePtr.onChange(x => {
@@ -67,18 +91,27 @@ export function useSessionStoragePtr(key, initialState) {
  * @param {function(AbortSignal): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
  * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
  * @returns {object} - An object containing:
- *   - `isReady` (boolean): Indicates if the operation is complete.
+ *   - `isPending` ('mount' | 'refresh' | 'update' | null): Indicates the state of the operation.
  *   - `result` (T | null): The result of the asynchronous operation.
  *   - `error` (any): The error encountered during the operation, if any.
- *   - `hasBeenRefreshed` (boolean): Indicates if the operation has been refreshed at least once.
- *   - `refresh` (function): A function to re-trigger the asynchronous operation.
+ *   - `reload` (function): A function to re-trigger the asynchronous operation.
+ *
+ * @example
+ * ```typescript
+ * const { isPending, result, error, reload } = useAsyncEffect(myFunction, [dependency]);
+ *
+ * if( isPending ){
+ *    return <div>Loading...</div>;
+ * }
+ * ```
  */
-export function useIO(fun, condition = []) {
+export function useAsyncEffect(fun, condition = []) {
     const [state, setState] = useState(() => ({
         isPending: 0,
         result: null,
         error: null,
-        timestamp: 0
+        timestamp: 0,
+        reason: 'mount'
     }));
     // Ref to track if the component is mounted
     const isMountedRef = useIsMountedRef();
@@ -93,7 +126,8 @@ export function useIO(fun, condition = []) {
                     isPending: state.isPending - 1,
                     result,
                     error: null,
-                    timestamp: state.timestamp
+                    timestamp: state.timestamp,
+                    reason: state.isPending === 1 ? null : state.reason
                 }));
             }
         })
@@ -103,7 +137,8 @@ export function useIO(fun, condition = []) {
                     isPending: state.isPending - 1,
                     result: null,
                     error: error.name !== 'AbortError' ? error : null,
-                    timestamp: state.timestamp
+                    timestamp: state.timestamp,
+                    reason: state.isPending === 1 ? null : state.reason
                 }));
             }
         })
@@ -117,7 +152,8 @@ export function useIO(fun, condition = []) {
             isPending: state.isPending + 1,
             result: null,
             error: null,
-            timestamp: state.timestamp
+            timestamp: state.timestamp,
+            reason: state.reason || 'update'
         }));
         return () => {
             if (abortControllerRef.current) {
@@ -127,17 +163,15 @@ export function useIO(fun, condition = []) {
         };
     }, [...condition, state.timestamp]);
     return {
-        isReady: !state.isPending,
-        hasBeenRefreshed: state.timestamp > 0,
         result: state.result,
         error: state.error,
-        refresh: () => state.isPending || setState(state => ({ ...state, timestamp: Date.now() }))
+        isPending: state.reason,
+        reload: () => state.isPending || setState(state => ({ ...state, reason: 'refresh', timestamp: Date.now() }))
     };
 }
 /**
  * A custom hook that throttles the execution of a function.
  *
- * @template F - The type of the function to be throttled.
  * @param {F} fun - The function to be throttled.
  * @param {number} timeout - The delay in milliseconds for the throttle.
  * @param {Array<any>} [changes=[]] - The list of dependencies that will trigger the effect.

@@ -1,13 +1,11 @@
 import { PurePtr } from '@pure-ptr/core';
-declare class UseStatePtr<T> extends PurePtr<T> {
-    set(x: T | ((x: T) => T)): void;
-    update(fun: (x: T, event?: Object) => T, event?: Object): void;
-    constructor(value: T, set: (x: T | ((x: T) => T)) => void);
-}
 /**
- * Create the ref to the local state.
+ * Create a pointer to a local component state.
+ *
+ * @param {S | (() => S)} initialState - The initial state value or a function that returns the initial state.
+ * @returns {PurePtr<S>} PurePtr containing the state value and the state setter function.
  */
-export declare function useStatePtr<S>(initialState: S | (() => S)): UseStatePtr<S>;
+export declare function useStatePtr<S>(initialState: S | (() => S)): PurePtr<S>;
 /**
  * Returns the ref which is true when component it mounted.
  */
@@ -15,9 +13,30 @@ export declare function useIsMountedRef(): import("react").MutableRefObject<bool
 /**
  * Create a pointer to the local state that is synchronized with another
  * value or pointer in a single direction. When the source changes, the linked state changes too.
+ *
+ * If the source is an instance of `PurePtr`, it uses the value of the pointer.
+ * Otherwise, it uses the source value directly.
+ *
+ * @template T - The type of the value.
+ * @param {T | PurePtr<T>} source - The source value or pointer.
+ * @returns {PurePtr<T>} - A linked state pointer.
  */
 export declare function useLinkedStatePtr<T>(source: T | PurePtr<T>): PurePtr<T>;
+/**
+ * Create a pointer to a local storage.
+ *
+ * @param {string} key - The key under which the state is stored in session storage.
+ * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
+ * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
+ */
 export declare function useLocalStoragePtr<S>(key: string, initialState: S | (() => S)): PurePtr<S>;
+/**
+ * Create a pointer to a session storage.
+ *
+ * @param {string} key - The key under which the state is stored in session storage.
+ * @param {S | (() => S)} initialState - The initial state or a function that returns the initial state.
+ * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
+ */
 export declare function useSessionStoragePtr<S>(key: string, initialState: S | (() => S)): PurePtr<S>;
 /**
  * Custom hook to handle asynchronous operations with support for cancellation and component unmounting.
@@ -26,23 +45,29 @@ export declare function useSessionStoragePtr<S>(key: string, initialState: S | (
  * @param {function(AbortSignal): Promise<T>} fun - The asynchronous function to execute. It receives an AbortController to handle cancellation.
  * @param {any[]} [condition=[]] - An array of dependencies that will trigger the effect when changed.
  * @returns {object} - An object containing:
- *   - `isReady` (boolean): Indicates if the operation is complete.
+ *   - `isPending` ('mount' | 'refresh' | 'update' | null): Indicates the state of the operation.
  *   - `result` (T | null): The result of the asynchronous operation.
  *   - `error` (any): The error encountered during the operation, if any.
- *   - `hasBeenRefreshed` (boolean): Indicates if the operation has been refreshed at least once.
- *   - `refresh` (function): A function to re-trigger the asynchronous operation.
+ *   - `reload` (function): A function to re-trigger the asynchronous operation.
+ *
+ * @example
+ * ```typescript
+ * const { isPending, result, error, reload } = useAsyncEffect(myFunction, [dependency]);
+ *
+ * if( isPending ){
+ *    return <div>Loading...</div>;
+ * }
+ * ```
  */
-export declare function useIO<T>(fun: (signal: AbortSignal) => Promise<T>, condition?: any[]): {
-    isReady: boolean;
+export declare function useAsyncEffect<T>(fun: (signal: AbortSignal) => Promise<T>, condition?: any[]): {
     result: T | null;
     error: any;
-    hasBeenRefreshed: boolean;
-    refresh: () => void;
+    isPending: 'mount' | 'refresh' | 'update' | null;
+    reload: () => void;
 };
 /**
  * A custom hook that throttles the execution of a function.
  *
- * @template F - The type of the function to be throttled.
  * @param {F} fun - The function to be throttled.
  * @param {number} timeout - The delay in milliseconds for the throttle.
  * @param {Array<any>} [changes=[]] - The list of dependencies that will trigger the effect.
@@ -62,4 +87,3 @@ export declare function useThrottle<F extends (...args: any) => void>(fun: F, ti
  * @param {any[]} [deps=[]] - An array of dependencies that will trigger the effect when changed.
  */
 export declare function useInterval(fun: () => void, interval: number, deps?: any[]): void;
-export {};
