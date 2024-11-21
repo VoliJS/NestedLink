@@ -63,4 +63,3 @@ export const UsersList = () => {
 
 const root = document.getElementById( 'app-mount-root' );
 ReactDOM.render( <UsersList />, root );
-window.onunload = () => ReactDOM.unmountComponentAtNode( root );

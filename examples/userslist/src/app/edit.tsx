@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, ValidatedInput, isRequired, isEmail } from './controls.js';
+import { Input, ValidatedInput, isRequired, isEmail } from './controls';
 import { PurePtr, useLinkedStatePtr } from '@pure-ptr/react';
 
 export interface User {

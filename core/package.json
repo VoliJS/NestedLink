@@ -33,7 +33,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "rimraf lib && tsc"
   },
   "directories": {
     "lib": "lib"

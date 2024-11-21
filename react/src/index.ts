@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 export * from '@pure-ptr/core'
-export * from './hooks'
+export * from './state-hooks'
 export * from './validators'
 export * from './custom'
 export * from './standard'

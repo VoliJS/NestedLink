@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useLinkedStatePtr } from './hooks';
-import { useThrottle } from './hooks';
+import { useLinkedStatePtr } from './state-hooks';
+import { useThrottle } from './imperative-hooks';
 /**
  * A custom Radio component that renders a div with a specified class name and
  * an optional 'selected' class based on the `checkedPtr` value. When the div

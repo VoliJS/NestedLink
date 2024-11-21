@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from './app';
+import { UsersList } from './app';
 import reportWebVitals from './reportWebVitals';
-import './todomvc-common/base.css';
-import './todomvc-common/index.css';
 
 const rootElement = document.getElementById('root') as HTMLElement;
 
@@ -11,7 +9,7 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <UsersList />
   </React.StrictMode>
 );
 

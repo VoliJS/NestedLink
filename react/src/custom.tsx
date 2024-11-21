@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { PurePtr } from '@pure-ptr/core'
-import { useLinkedStatePtr } from './hooks';
-import { useThrottle } from './hooks'
+import { useLinkedStatePtr } from './state-hooks';
+import { useThrottle } from './imperative-hooks';
 
 
 /**
