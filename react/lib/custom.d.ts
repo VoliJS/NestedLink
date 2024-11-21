@@ -40,3 +40,4 @@ export declare const DelayedInput: ({ valuePtr, timeout, ...props }: React.HTMLP
     valuePtr: PurePtr<string>;
     timeout?: number;
 }) => React.JSX.Element;
+//# sourceMappingURL=custom.d.ts.map

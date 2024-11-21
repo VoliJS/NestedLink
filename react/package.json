@@ -8,10 +8,15 @@
   "main": "./lib",
   "module": "./lib",
   "types": "./lib",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
   "files": [
-    "min",
-    "lib",
-    "src"
+    "lib","src"
   ],
   "repository": {
     "type": "git",

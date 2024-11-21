@@ -84,3 +84,4 @@ export const NumberInput = (props) => {
     return (React.createElement("input", { ...rest, placeholder: placeholder == null ? '' : String(placeholder), type: "text", className: validationClasses(props, state.value, valuePtr.error || state.error), value: state.value, onFocus: handleFocus, onBlur: handleBlur, onKeyPress: handleKeyPress, onChange: handleChange }));
 };
 export default NumberInput;
+//# sourceMappingURL=number.js.map

@@ -38,3 +38,4 @@ export declare function useThrottle<F extends (...args: any) => void>(fun: F, ti
  * @param {any[]} [deps=[]] - An array of dependencies that will trigger the effect when changed.
  */
 export declare function useInterval(fun: () => void, interval: number, deps?: any[]): void;
+//# sourceMappingURL=imperative-hooks.d.ts.map

@@ -56,3 +56,4 @@ export const TextArea = ({ valuePtr, ...props }) => (React.createElement("textar
  *   </Select>
  */
 export const Select = ({ valuePtr, children, ...props }) => (React.createElement("select", { ...props, value: valuePtr.value, onChange: e => valuePtr.set(e.target.value) }, children));
+//# sourceMappingURL=standard.js.map

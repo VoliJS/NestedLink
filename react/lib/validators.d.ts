@@ -22,3 +22,4 @@ export declare const isEmail: PurePtr.Validator<string>;
  * @returns `true` if the value is a number, otherwise `false`.
  */
 export declare const isNumber: PurePtr.Validator<any>;
+//# sourceMappingURL=validators.d.ts.map

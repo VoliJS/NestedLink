@@ -189,3 +189,4 @@ export declare class ObjPropPtr<E, K> extends PurePtr<E> {
     update(transform: PurePtr.Transform<E>): void;
     set(next: E): void;
 }
+//# sourceMappingURL=index.d.ts.map

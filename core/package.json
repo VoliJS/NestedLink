@@ -8,6 +8,13 @@
   "main": "./lib",
   "module": "./lib",
   "types": "./lib",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
   "files": [
     "lib",
     "src"

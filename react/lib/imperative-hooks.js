@@ -90,3 +90,4 @@ export function useInterval(fun, interval, deps = []) {
         return () => clearInterval(id);
     }, [interval, ...deps]);
 }
+//# sourceMappingURL=imperative-hooks.js.map

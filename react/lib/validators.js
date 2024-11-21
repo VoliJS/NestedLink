@@ -25,3 +25,4 @@ isEmail.error = 'Should be an email';
  */
 export const isNumber = x => !isNaN(Number(x));
 isNumber.error = 'Should be a number';
+//# sourceMappingURL=validators.js.map

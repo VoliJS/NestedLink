@@ -384,3 +384,4 @@ export class ObjPropPtr extends PurePtr {
     }
     ;
 }
+//# sourceMappingURL=index.js.map

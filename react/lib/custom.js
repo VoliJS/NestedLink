@@ -39,3 +39,4 @@ export const DelayedInput = ({ valuePtr, timeout = 1000, ...props }) => {
         .onChange(delayedUpdate);
     return React.createElement("input", { ...statePtr.props, ...props });
 };
+//# sourceMappingURL=custom.js.map

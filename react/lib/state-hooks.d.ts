@@ -34,3 +34,4 @@ export declare function useLocalStoragePtr<S>(key: string, initialState: S | (()
  * @returns {ReturnType<typeof useStatePtr<S>>} A state pointer that is synchronized with session storage.
  */
 export declare function useSessionStoragePtr<S>(key: string, initialState: S | (() => S)): PurePtr<S>;
+//# sourceMappingURL=state-hooks.d.ts.map

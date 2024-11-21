@@ -51,3 +51,4 @@ export declare const Select: ({ valuePtr, children, ...props }: {
     valuePtr: PurePtr<any>;
 } & React.HTMLProps<HTMLSelectElement>) => JSX.Element;
 export {};
+//# sourceMappingURL=standard.d.ts.map

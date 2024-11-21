@@ -46,3 +46,4 @@ type CleanupFn = () => void;
  */
 export declare function useImmediateEffect<T>(fn: () => CleanupFn | void, deps: DependencyList): void;
 export {};
+//# sourceMappingURL=effect-hooks.d.ts.map

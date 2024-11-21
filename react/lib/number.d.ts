@@ -9,3 +9,4 @@ interface NumberInputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'plac
 }
 export declare const NumberInput: (props: NumberInputProps) => React.JSX.Element;
 export default NumberInput;
+//# sourceMappingURL=number.d.ts.map
