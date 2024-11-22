@@ -24,10 +24,8 @@ export function validationClasses(props: ValidationProps, value: any, error: any
     );
 }
 
-export type InputProps = React.HTMLProps<HTMLInputElement> & ValidationProps & (
-    { valuePtr : PurePtr<any> } | 
-    { checkedPtr : PurePtr<boolean>}
-)
+export type InputProps = React.HTMLProps<HTMLInputElement> & ValidationProps &
+    { valuePtr? : PurePtr<any>, checkedPtr? : PurePtr<boolean> }
 
 /**
  * A custom input component that binds its value to a `PurePtr` object.

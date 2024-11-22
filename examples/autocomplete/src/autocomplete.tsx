@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIO, useStatePtr, DelayedInput, PurePtr } from '@pure-ptr/react';
+import { useAsyncEffect, useStatePtr, DelayedInput, PurePtr } from '@pure-ptr/react';
 import { fetchUsers, User } from './io-mock';
 
 export const PickUser = ({ selectedPtr } : {
@@ -46,13 +46,15 @@ const UsersList = ({ filter, selectedPtr } : {
 }) => {
     const usersPtr = useStatePtr<User[]>( [] );
 
-    const { isReady } = useIO( async abort => {
-        usersPtr.set( await fetchUsers( filter, abort ) );
+    const { isPending } = useAsyncEffect( async abort => {
+        usersPtr.set(
+            await fetchUsers( filter, abort ) 
+        );
     }, [ filter ]);
 
     return (
         <ul className="users-suggestions">
-            { isReady ? 
+            { !isPending ? 
                 usersPtr.value.map( user => (
                     <li key={user.id}
                         className={ selectedPtr.value && selectedPtr.value.id === user.id ? 'selected' : '' }

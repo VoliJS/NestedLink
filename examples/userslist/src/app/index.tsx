@@ -1,6 +1,4 @@
-import Linked, { useStatePtr, useLocalStoragePtr, PurePtr } from '@pure-ptr/react';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { PurePtr, useLocalStoragePtr, useStatePtr } from '@pure-ptr/react';
 import Modal from 'react-modal';
 import { EditUser, User } from './edit';
 import { Header, UserRow } from './grid';
@@ -60,6 +58,3 @@ export const UsersList = () => {
         </div>
     );
 }
-
-const root = document.getElementById( 'app-mount-root' );
-ReactDOM.render( <UsersList />, root );
