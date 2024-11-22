@@ -33,7 +33,7 @@ function App() {
 
     // that will be bound to radio and select list
     radioFlag : 'a'
-}));
+  }));
 
   return (
     <div className="App">
