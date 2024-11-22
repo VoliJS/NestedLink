@@ -22,6 +22,10 @@ export function helpers( value : any ) : Helper {
         switch( Object.getPrototypeOf( value ) ){
             case ArrayProto  : return arrayHelpers;
             case ObjectProto : return objectHelpers;
+            default:
+                if( value instanceof ImmutableClass ){
+                    return classHelpers;
+                }
         }
     }
 
@@ -88,5 +92,34 @@ export const arrayHelpers : Helper = {
         mapped.length === j || ( mapped.length = j );
 
         return mapped;
+    }
+};
+
+export class ImmutableClass<T> {
+    constructor(props: object, update? : object){
+        if ( update ){
+            Object.assign(this, props, update);
+        }
+        else {
+            Object.assign(this, props);
+        }
+    }
+}
+
+export function Immutable<T>() : new (props: T, update?: Partial<T>) => Readonly<T> {
+    return ImmutableClass as any;
+}
+
+export const classHelpers : Helper = {
+    clone( object : any ) : any {
+        return new object.constructor( object );
+    },
+
+    map( link : IterableLink, iterator : Iterator ) : any[] {
+        return objectHelpers.map( link, iterator );
+    },
+
+    remove( object : any, key : string ) : any {
+        return object[ key ] = undefined;
     }
 };

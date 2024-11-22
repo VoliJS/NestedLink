@@ -96,7 +96,7 @@ export abstract class PurePtr<T>{
      */
     update( transform : PurePtr.Transform<T> ) : void {
         const next = transform( this.value );
-        next === void 0 || this.set( next );
+        next === void 0 || next === this.value || this.set( next );
     }
 
     /**
@@ -435,12 +435,12 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
     update( transform : PurePtr.Transform<E> ) : void {
         const { key } = this;
 
-        this.parent.update( obj => {
-            const prev = obj[ key ],
-                next = transform( helpers( prev ).clone( prev ) );
+        this.parent.update( parent => {
+            const prev = parent[ key ],
+                next = transform( prev );
 
-            if( next !== void 0 ){
-                const res = helpers( obj ).clone( obj )
+            if( next !== void 0 && next !== prev ){
+                const res = helpers( parent ).clone( parent )
                 res[ key ] = next;
                 return res;
             }
@@ -451,9 +451,9 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
     set( next : E ) : void {
         const { key } = this;
 
-        this.parent.update( obj => {
-            if( obj[ key ] !== next ){
-                const res = helpers( obj ).clone( obj )
+        this.parent.update( parent => {
+            if( parent[ key ] !== next ){
+                const res = helpers( parent ).clone( parent )
                 res[ key ] = next;
                 return res;
             }

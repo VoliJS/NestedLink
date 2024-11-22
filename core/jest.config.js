@@ -1,25 +1,31 @@
 module.exports = {
-    testEnvironment: 'node',
-    transform: {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    moduleFileExtensions: [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node",
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: './tsconfig.json',
+      },
     ],
-    testRegex: '/tests/.+\\.(test|spec)\\.(ts|js)x?$',
-    coverageDirectory: 'coverage',
-    collectCoverageFrom: [
-      'src/**/*.{ts,tsx,js,jsx}',
-      '!src/**/*.d.ts',
+    '^.+.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: './tsconfig.json',
+      },
     ],
-    globals: {
-      'ts-jest': {
-        tsConfig: './tsconfig.json'
-      }
-    }
-  };
+  },
+  moduleFileExtensions: [
+    'js',
+    'json',
+    'jsx',
+    'node',
+    'ts',
+    'tsx',
+  ],
+  testRegex: '/tests/.+\\.(test|spec)\\.(ts|js)x?$',
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx,js,jsx}',
+    '!src/**/*.d.ts',
+  ],
+}
