@@ -23,8 +23,8 @@ export function helpers( value : any ) : Helper {
             case ArrayProto  : return arrayHelpers;
             case ObjectProto : return objectHelpers;
             default:
-                if( value instanceof ImmutableClass ){
-                    return classHelpers;
+                if( value instanceof Immutable ){
+                    return immutableClassHelpers;
                 }
         }
     }
@@ -95,24 +95,15 @@ export const arrayHelpers : Helper = {
     }
 };
 
-export class ImmutableClass<T> {
-    constructor(props: object, update? : object){
-        if ( update ){
-            Object.assign(this, props, update);
-        }
-        else {
-            Object.assign(this, props);
-        }
+export class Immutable {
+    static from<T extends typeof Immutable>( this : T, prev : Partial<InstanceType<T>> ) : Readonly<InstanceType<T>> {
+        return Object.freeze( Object.assign( new this(), prev ) )as any
     }
 }
 
-export function Immutable<T>() : new (props: T, update?: Partial<T>) => Readonly<T> {
-    return ImmutableClass as any;
-}
-
-export const classHelpers : Helper = {
-    clone( object : any ) : any {
-        return new object.constructor( object );
+export const immutableClassHelpers : Helper = {
+    clone( prev : Immutable ) : Immutable {
+        return Object.assign( new (prev.constructor as any)(), prev );
     },
 
     map( link : IterableLink, iterator : Iterator ) : any[] {

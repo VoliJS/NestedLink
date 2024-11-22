@@ -339,13 +339,13 @@ export namespace PurePtr {
     }
 
     export function mutable<T extends object>( state : T ) : PurePtr<T>{
-        return new CustomPtr( state, x => {
-            for( let key in x ){
-                if( x.hasOwnProperty( key ) ){
-                    state[ key ] = x[ key ];
-                }
-            }
-        } );
+        const placeholder = PurePtr
+            .value( state, x => {
+                console.log( x );
+                placeholder.value = x;
+            } )
+
+        return placeholder;
     }
 
     /**
