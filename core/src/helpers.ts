@@ -95,8 +95,17 @@ export const arrayHelpers : Helper = {
     }
 };
 
+/**
+ * A base class for immutable classes.
+ */
 export class Immutable {
-    static from<T extends typeof Immutable>( this : T, prev : Partial<InstanceType<T>> ) : Readonly<InstanceType<T>> {
+    /**
+     * Creates a new immutable instance of the class, merging the provided partial instance with a new instance.
+     * 
+     * @param prev - A partial instance of the class to merge with the new instance.
+     * @returns A new immutable instance of the class.
+     */
+    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
         return Object.freeze( Object.assign( new this(), prev ) )as any
     }
 }
