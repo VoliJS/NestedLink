@@ -7,11 +7,9 @@ class UseStatePtr<T> extends PurePtr<T> {
 
     update( fun : ( x : T, event? : Object ) => T, event? : Object ) : void {
         // update function must be overriden to use state set
-        // ability to delay an update, and to preserve link.update semantic.
+        // ability to delay an update, and to preserve ptr.update semantic.
         this.set( x => {
-            const value = helpers( x ).clone( x ),
-                result = fun( value, event );
-
+            const result = fun( x, event );
             return result === void 0 ? x : result;
         });
     }

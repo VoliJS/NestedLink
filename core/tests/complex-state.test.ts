@@ -40,10 +40,15 @@ describe( 'Complex linked state', () =>{
         class Items extends Immutable {
             a = 0
             b = 0
+            c = 0
             
             get s(){
                 return this.a + this.b;
             }          
+
+            initialize(): void {
+                this.c = this.a + this.b;
+            }
         }
 
         class TestRoot extends Immutable {
@@ -55,13 +60,23 @@ describe( 'Complex linked state', () =>{
         }
 
         it( 'updates properly', () =>{
-            const rootPtr = PurePtr.mutable(TestRoot.from({ items : Items.from({ a : 1, b : 2 })}));
+            const rootPtr = PurePtr.mutable(
+                TestRoot.from({ 
+                    items : Items.from({
+                        a : 1, 
+                        b : 2 
+                    })
+                })
+            );
 
             rootPtr.at( 'items' ).at( 'a' ).update( () => 2 );
             rootPtr.at( 'items' ).at( 'b' ).update( () => 3 );
 
+            console.log( rootPtr.value );
+
             expect( rootPtr.value.items.a ).toBe( 2 );
             expect( rootPtr.value.items.b ).toBe( 3 );
+            expect( rootPtr.value.items.c ).toBe( 5 );
             expect( rootPtr.value.s ).toBe( rootPtr.value.items.s );
             expect( rootPtr.value.s ).toBe( 5 );
         } )
