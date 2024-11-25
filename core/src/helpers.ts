@@ -105,9 +105,27 @@ export class Immutable {
      * @param prev - A partial instance of the class to merge with the new instance.
      * @returns A new immutable instance of the class.
      */
-    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
-        return Object.freeze( Object.assign( new this(), prev ) )as any
+    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>, upd?: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
+        const next = new this();
+
+        if( upd ){
+            Object.assign( next, prev, upd );
+        }
+        else{
+            Object.assign( next, prev );
+        }
+
+        next.initialize();
+
+        return Object.freeze( next ) as any
     }
+
+    /**
+     * Initializes computed properties.
+     * This method will be called right after the instance is created and all properties are set, 
+     * but before the object is sealed.
+     */
+    initialize(){}
 }
 
 export const immutableClassHelpers : Helper = {
@@ -120,6 +138,6 @@ export const immutableClassHelpers : Helper = {
     },
 
     remove( object : any, key : string ) : any {
-        return object[ key ] = undefined;
+        return object[ key ] = undefined;,
     }
 };
