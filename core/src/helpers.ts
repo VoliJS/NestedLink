@@ -90,7 +90,6 @@ export class Immutable {
         return Object.freeze( next ) as any
     }
 
-<<<<<<< HEAD
     static map<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : InstanceType<T>[]; 
     static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> ) : InstanceType<T>[];
     static map( collection : Iterable<any>, callbackfn: (value: any) => any = x => x ) : any[]{
@@ -103,14 +102,13 @@ export class Immutable {
 
         return mapped;
     }
-=======
+    
     /**
      * Initializes computed properties.
      * This method will be called right after the instance is created and all properties are set, 
      * but before the object is sealed.
      */
     initialize(){}
->>>>>>> develop
 }
 
 export const immutableClassHelpers : Helper = {
