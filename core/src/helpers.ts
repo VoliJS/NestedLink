@@ -75,23 +75,23 @@ export class Immutable {
      * @param prev - A partial instance of the class to merge with the new instance.
      * @returns A new immutable instance of the class.
      */
-    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>, upd?: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
+    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>> ): Readonly<InstanceType<T>> {
         const next = new this();
-
-        if( upd ){
-            Object.assign( next, prev, upd );
-        }
-        else{
-            Object.assign( next, prev );
-        }
-
+        Object.assign( next, prev );
         next.initialize();
-
         return Object.freeze( next ) as any
     }
 
     static map<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : InstanceType<T>[]; 
-    static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> ) : InstanceType<T>[];
+    static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> | undefined ) : InstanceType<T>[];
+    /**
+     * Creates a new array of immutable instances by mapping the provided collection.
+     * If the result of the callback function is not `undefined`, it is added to the resulting array.
+     *
+     * @param collection - The iterable collection to be mapped.
+     * @param callbackfn - The function to call on each element of the collection. Defaults to an identity function.
+     * @returns An array containing the results of applying the callback function to each element of the collection.
+     */
     static map( collection : Iterable<any>, callbackfn: (value: any) => any = x => x ) : any[]{
         const mapped : any[] = [];
 
@@ -102,22 +102,36 @@ export class Immutable {
 
         return mapped;
     }
-    
+
     /**
      * Initializes computed properties.
      * This method will be called right after the instance is created and all properties are set, 
      * but before the object is sealed.
      */
     initialize(){}
+
+    /**
+     * Creates a new instance of the current object with the specified properties merged into it.
+     * 
+     * @param props - An object containing properties to be merged into the new instance.
+     * @param options - Optional parameter that can be used to initialize the new instance.
+     * @returns A new instance of the current object with the specified properties merged in, frozen to prevent further modifications.
+     */
+    set( props : Partial<this> ) : this {
+        const next = new ( this.constructor as any )() as this;
+        Object.assign( next, this, props );
+        next.initialize();
+        return Object.freeze( next );
+    }
 }
 
 export const immutableClassHelpers : Helper = {
     remove( prev : any, key : string ) : any {    
-        return prev.constructor.from( prev, { [ key ] : undefined } );
+        return prev.set({ [ key ] : undefined });
 
     },
 
     set( prev : any, key : string, value : any ) : any {
-        return prev.constructor.from( prev, { [ key ] : value } );
+        return prev.set({ [ key ] : value });
     }
 };

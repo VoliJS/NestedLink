@@ -72,8 +72,6 @@ describe( 'Complex linked state', () =>{
             rootPtr.at( 'items' ).at( 'a' ).update( () => 2 );
             rootPtr.at( 'items' ).at( 'b' ).update( () => 3 );
 
-            console.log( rootPtr.value );
-
             expect( rootPtr.value.items.a ).toBe( 2 );
             expect( rootPtr.value.items.b ).toBe( 3 );
             expect( rootPtr.value.items.c ).toBe( 5 );

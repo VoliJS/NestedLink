@@ -22,7 +22,7 @@ module.exports = {
     'ts',
     'tsx',
   ],
-  testRegex: '/tests/.+\\.(test|spec)\\.(ts|js)x?$',
+  testRegex: '/.+\\.(test|spec)\\.(ts|js)x?$',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.{ts,tsx,js,jsx}',
