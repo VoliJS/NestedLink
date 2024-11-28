@@ -134,7 +134,6 @@ export abstract class PurePtr<T>{
         return new ArrayContainsPtr( this, element );
     }
 
-    push( this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void;
     /**
      * Pushes one or more elements to the end of the array and updates the value.
      * 
@@ -143,13 +142,12 @@ export abstract class PurePtr<T>{
      * 
      * @param {...any[]} arguments - The elements to add to the end of the array.
      */
-    push(){
-        const array = arrayHelpers.clone( this.value );
-        Array.prototype.push.apply( array, arguments as any);
+    push(this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void{
+        const array = this.value.slice();
+        Array.prototype.push.apply( array, args);
         this.set( array );
     }
 
-    unshift( this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void;
     /**
      * Adds one or more elements to the beginning of the array and updates the value.
      * 
@@ -159,36 +157,42 @@ export abstract class PurePtr<T>{
      * @param {...any[]} arguments - The elements to add to the beginning of the array.
      * @returns {void}
      */
-    unshift() : void {
-        const array = arrayHelpers.clone( this.value );
-        Array.prototype.unshift.apply( array, arguments as any );
+    unshift( this : PurePtr<ArrayType<T>>, ...args : ArrayType<T> ) : void {
+        const array = this.value.slice();
+        Array.prototype.unshift.apply( array, args );
         this.set( array );
     }
-
     
-    splice( this : PurePtr<ArrayType<T>>, start : number, deleteCount? : number ) : void;
     /**
      * Splices the array stored in `this.value`.
      * 
      * This method clones the current array, applies the splice operation, and then updates the stored array with the result.
      * @returns {void} This method does not return a value.
      */
-    splice() : void {
-        const array = arrayHelpers.clone( this.value );
+    splice( this : PurePtr<ArrayType<T>>, start : number, deleteCount? : number ) : void{
+        const array = this.value.slice();
         Array.prototype.splice.apply( array, arguments as any);
         this.set( array );
     }
 
-    map<Z>( this : PurePtr<ArrayType<T>>, iterator : ( link : ObjPropPtr<ArrayElement<T>, number>, idx : number ) => Z ) : Z[];
-    map<Z>( this : PurePtr<RecordType<T>>, iterator : ( link : ObjPropPtr<RecordElement<T>, string>, idx : string ) => Z ) : Z[];
     /**
      * Creates a new array (or object) with the results of calling a provided function on every element.
      *
      * @param iterator - A function that is called for every element of the array. It takes a pointer to the element and its index.
      * @returns A new array with each element being the result of the iterator function.
      */
-    map( iterator : any ) : any[] {
-        return helpers( this.value ).map( this, iterator );
+    map<Z>( this : PurePtr<ArrayType<T>>, iterator : ( link : ObjPropPtr<ArrayElement<T>, number>, idx : number ) => Z ) : Z[]{
+        const length = this.value.length,
+              mapped = Array( length );
+
+        for( var i = 0, j = 0; i < length; i++ ){
+            const y = iterator( this.at( i ), i );
+            y === void 0 || ( mapped[ j++ ] = y );
+        }
+
+        mapped.length === j || ( mapped.length = j );
+
+        return mapped;
     }
 
     removeAt( this : PurePtr<ArrayType<T>>, key : number ) : void;
@@ -202,7 +206,7 @@ export abstract class PurePtr<T>{
         const { value } = this,
             _ = helpers( value );
 
-        this.set( _.remove( _.clone( value ), key as any ) );
+        this.set( _.remove( value, key as any ) );
     }
 
     at( this : PurePtr<ArrayType<T>>, key : number ) : ObjPropPtr<ArrayElement<T>, number>;
@@ -271,16 +275,6 @@ export abstract class PurePtr<T>{
         return result;
     }
 
-    /**
-     * Creates and returns a clone of the current object.
-     *
-     * @returns {T} A new instance of the object with the same value.
-     */
-    clone() : T {
-        let { value } = this;
-        return helpers( value ).clone( value );
-    }
-
     pick<K extends (keyof T)[]>(...keys: K): { [I in keyof K]: ObjPropPtr<T[K[I]], K[I]> }
     /**
      * Creates an array of pointers to the specified object properties.
@@ -341,7 +335,6 @@ export namespace PurePtr {
     export function mutable<T extends object>( state : T ) : PurePtr<T>{
         const placeholder = PurePtr
             .value( state, x => {
-                console.log( x );
                 placeholder.value = x;
             } )
 
@@ -423,13 +416,13 @@ const  defaultError = 'Invalid value';
  * Link to array or object element enclosed in parent link.
  * Performs purely functional update of the parent, shallow copying its value on `set`.
  */
-export class ObjPropPtr< E, K > extends PurePtr< E > {
+export class ObjPropPtr< E, K extends string|number|symbol> extends PurePtr< E > {
     constructor( private parent : PurePtr< any >, public key : K ){
         super( parent.value[ key ] );
     }
 
     removeSelf(){
-        this.parent.removeAt( <any>this.key );
+        this.parent.removeAt( this.key );
     }
 
     update( transform : PurePtr.Transform<E> ) : void {
@@ -440,9 +433,7 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
                 next = transform( prev );
 
             if( next !== void 0 && next !== prev ){
-                const res = helpers( parent ).clone( parent )
-                res[ key ] = next;
-                return res;
+                return helpers( parent ).set( parent, key, next );
             }
         } );
     }
@@ -453,9 +444,7 @@ export class ObjPropPtr< E, K > extends PurePtr< E > {
 
         this.parent.update( parent => {
             if( parent[ key ] !== next ){
-                const res = helpers( parent ).clone( parent )
-                res[ key ] = next;
-                return res;
+                return helpers( parent ).set( parent, key, next );
             }
         });
     };

@@ -6,12 +6,11 @@ export interface IterableLink {
     at( key : number | string ) : any
 }
 
-export type Iterator = ( link : any, key : string | number ) => any;
+export type Iterator = ( link : any, key : number ) => any;
 
 export interface Helper {
-    map( link : IterableLink, iterator : Iterator ) : any[]
-    clone( obj : any ) : any,
-    remove( obj : any, key : string | number ) : any
+    remove( obj : any, key : string | number | symbol ) : any,
+    set( prev : any, key : string | number | symbol, value : any ) : any
 }
 
 const ArrayProto = Array.prototype,
@@ -34,64 +33,35 @@ export function helpers( value : any ) : Helper {
 
 // Do nothing for types other than Array and plain Object.
 const dummyHelpers : Helper = {
-    clone( value ){ return value; },
-    map( link : IterableLink, fun ){ return []; },
-    remove( value ){ return value; }
+    remove( value ){ return value; },
+    set( prev : any, key : string, value : any ) : any {
+        prev;
+    }
+
 };
 
 // `map` and `clone` for plain JS objects
 export const objectHelpers : Helper = {
-    // Map through the link to object
-    map( link : IterableLink, iterator : Iterator ) : any[] {
-        let mapped = [],
-            { value } = link
-
-        for( let key in value ){
-            if( value.hasOwnProperty( key ) ){
-                const element = iterator( link.at( key ), key );
-                element === void 0 || ( mapped.push( element ) );    
-            }
-        }
-
-        return mapped;
-    },
-
     remove( object : Record<string,any>, key : string ) : {} {
-        delete object[ key ];
-        return object;
+        const { [ key ] : _, ...rest } = object;
+        return rest;
     },
 
-     // Shallow clone plain JS object
-    clone( object : {} ) : {} {
-        return { ...object };
-    }
+    set( prev : Record<string,any>, key : string, value : any ) : {} {
+        return { ...prev, [ key ] : value };
+    },
 };
 
 // `map` and `clone` helpers for arrays.
-export const arrayHelpers : Helper = {
-    // Shallow clone array
-    clone( array : any[] ) : any[] {
-        return array.slice();
-    },
-
+export const arrayHelpers = {
     remove( array : any[], i : number ) : any[] {
-        array.splice( i, 1 );
-        return array;
+        return array.slice().splice( i, 1 );
     },
 
-    // Map through the link to array
-    map( link : IterableLink, iterator : Iterator ) : any[] {
-        const length = link.value.length,
-              mapped = Array( length );
-
-        for( var i = 0, j = 0; i < length; i++ ){
-            const y = iterator( link.at( i ), i );
-            y === void 0 || ( mapped[ j++ ] = y );
-        }
-
-        mapped.length === j || ( mapped.length = j );
-
-        return mapped;
+    set( array : any[], i : number, value : any ) : any[] {
+        const clone = array.slice();
+        clone[ i ] = value;
+        return clone;
     }
 };
 
@@ -105,10 +75,22 @@ export class Immutable {
      * @param prev - A partial instance of the class to merge with the new instance.
      * @returns A new immutable instance of the class.
      */
-    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
-        return Object.freeze( Object.assign( new this(), prev ) )as any
+    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>, upd?: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
+        const next = new this();
+
+        if( upd ){
+            Object.assign( next, prev, upd );
+        }
+        else{
+            Object.assign( next, prev );
+        }
+
+        next.initialize();
+
+        return Object.freeze( next ) as any
     }
 
+<<<<<<< HEAD
     static map<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : InstanceType<T>[]; 
     static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> ) : InstanceType<T>[];
     static map( collection : Iterable<any>, callbackfn: (value: any) => any = x => x ) : any[]{
@@ -121,18 +103,23 @@ export class Immutable {
 
         return mapped;
     }
+=======
+    /**
+     * Initializes computed properties.
+     * This method will be called right after the instance is created and all properties are set, 
+     * but before the object is sealed.
+     */
+    initialize(){}
+>>>>>>> develop
 }
 
 export const immutableClassHelpers : Helper = {
-    clone( prev : Immutable ) : Immutable {
-        return Object.assign( new (prev.constructor as any)(), prev );
+    remove( prev : any, key : string ) : any {    
+        return prev.constructor.from( prev, { [ key ] : undefined } );
+
     },
 
-    map( link : IterableLink, iterator : Iterator ) : any[] {
-        return objectHelpers.map( link, iterator );
-    },
-
-    remove( object : any, key : string ) : any {
-        return object[ key ] = undefined;
+    set( prev : any, key : string, value : any ) : any {
+        return prev.constructor.from( prev, { [ key ] : value } );
     }
 };

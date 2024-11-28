@@ -1,4 +1,4 @@
-import { helpers, PurePtr } from '@pure-ptr/core';
+import { helpers, Immutable, PurePtr } from '@pure-ptr/core';
 import { useEffect, useState } from 'react';
 
 class UseStatePtr<T> extends PurePtr<T> {
@@ -7,11 +7,9 @@ class UseStatePtr<T> extends PurePtr<T> {
 
     update( fun : ( x : T, event? : Object ) => T, event? : Object ) : void {
         // update function must be overriden to use state set
-        // ability to delay an update, and to preserve link.update semantic.
+        // ability to delay an update, and to preserve ptr.update semantic.
         this.set( x => {
-            const value = helpers( x ).clone( x ),
-                result = fun( value, event );
-
+            const result = fun( x, event );
             return result === void 0 ? x : result;
         });
     }
@@ -33,6 +31,23 @@ class UseStatePtr<T> extends PurePtr<T> {
  */
 export function useStatePtr<S>( initialState : S | (() => S) ) : PurePtr<S> {
     const [ value, set ] = useState( initialState );
+    return new UseStatePtr( value, set );
+}
+
+/**
+ * Use immutable class instance as local component state.
+ *
+ * @template C - The type of the immutable class.
+ * @param ImmutableClass - The constructor of the immutable class.
+ * @returns A `PurePtr` instance that contains the state and a setter function.
+ */
+export function useClassPtr<C extends Immutable>( ImmutableClass : new () => C ) : PurePtr<C> {
+    const [ value, set ] = useState( () => {
+        const state = new ImmutableClass();
+        state.initialize();
+        return state;
+    } );
+
     return new UseStatePtr( value, set );
 }
 
