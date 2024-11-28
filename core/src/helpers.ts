@@ -108,6 +108,19 @@ export class Immutable {
     static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>>): Readonly<InstanceType<T>> {
         return Object.freeze( Object.assign( new this(), prev ) )as any
     }
+
+    static map<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : InstanceType<T>[]; 
+    static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> ) : InstanceType<T>[];
+    static map( collection : Iterable<any>, callbackfn: (value: any) => any = x => x ) : any[]{
+        const mapped : any[] = [];
+
+        for( let el of collection ){
+            const res = callbackfn( el );
+            res === void 0 || ( mapped.push( this.from( res ) ));
+        }
+
+        return mapped;
+    }
 }
 
 export const immutableClassHelpers : Helper = {
