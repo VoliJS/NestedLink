@@ -2,3 +2,4 @@ packages:
   - "core"
   - "react"
   - "examples/*"
+  - "docs"

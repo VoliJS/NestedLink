@@ -1,0 +1,116 @@
+---
+sidebar_position: 1
+---
+
+# Welcome to PurePtr
+
+Simplify **state management** and **form validation** in React with PurePtr — a lightweight, intuitive, and powerful library.
+
+PurePtr helps you manage complex application states efficiently, with less boilerplate and more focus on your application logic.
+
+## Why PurePtr?
+
+- 🚀 **Lightweight**: Minimal bundle size to keep your application fast.
+- 💡 **Intuitive**: Easy-to-understand API with no steep learning curve.
+- 🔗 **Composable**: Works seamlessly with React’s state management primitives.
+- ✅ **Form Validation**: Built-in utilities to handle forms effortlessly.
+
+## Features at a Glance
+
+- Declarative state management using pointers.
+- Simplified form validation and error handling.
+- Integration with React hooks.
+- Works well with TypeScript for strong typing and better tooling.
+
+## Getting Started
+
+### What you'll need
+
+- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
+  - Ensure to check all checkboxes related to dependencies when installing.
+
+### Installation
+
+Install PurePtr using npm:
+
+```bash
+npm install @pure-ptr/react
+```
+
+Or with Yarn:
+
+```bash
+yarn add @pure-ptr/react
+```
+
+### Basic Example
+
+Here’s a quick example of how to use PurePtr in a React project:
+
+```jsx
+import React from 'react';
+import { useStatePtr } from '@pure-ptr/react';
+
+export const ExampleForm = () => {
+  const statePtr = useStatePtr(() => ({
+    name: '', 
+    email: '' 
+  }));
+
+  const handleSubmit = () => {
+    console.log('Submitted:', statePtr.current);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        {...statePtr.at('name').props}
+        placeholder="Name"
+      />
+      <input
+        {...statePtr.at('email').props}
+        placeholder="Email"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+```
+
+import React, { useState } from 'react';
+
+export const ExampleForm = () => {
+  const [state, setState] = useState(() => ({
+    name: '', 
+    email: '' 
+  }));
+
+  const handleSubmit = () => {
+    console.log('Submitted:', state);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={state.name}
+        placeholder="Name"
+      />
+      <input
+        value={state.email}
+        placeholder="Email"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+<ExampleForm/>
+
+### Learn More
+
+Explore the rest of the documentation to learn about advanced features and use cases:
+	•	Getting Started
+	•	API Reference
+	•	Examples
+
+Start building with PurePtr today!
