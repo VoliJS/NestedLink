@@ -75,15 +75,15 @@ export class Immutable {
      * @param prev - A partial instance of the class to merge with the new instance.
      * @returns A new immutable instance of the class.
      */
-    static from<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>> ): Readonly<InstanceType<T>> {
+    static object<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>> ): Readonly<InstanceType<T>> {
         const next = new this();
         Object.assign( next, prev );
         next.initialize();
         return Object.freeze( next ) as any
     }
 
-    static map<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : InstanceType<T>[]; 
-    static map<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> | undefined ) : InstanceType<T>[];
+    static array<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
+    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
     /**
      * Creates a new array of immutable instances by mapping the provided collection.
      * If the result of the callback function is not `undefined`, it is added to the resulting array.
@@ -92,15 +92,16 @@ export class Immutable {
      * @param callbackfn - The function to call on each element of the collection. Defaults to an identity function.
      * @returns An array containing the results of applying the callback function to each element of the collection.
      */
-    static map( collection : Iterable<any>, callbackfn: (value: any) => any = x => x ) : any[]{
+    static array( collection : Iterable<any>, callbackfn: (value: any, idx : number) => any = x => x ) : readonly any[]{
         const mapped : any[] = [];
+        let i = 0;
 
         for( let el of collection ){
-            const res = callbackfn( el );
-            res === void 0 || ( mapped.push( this.from( res ) ));
+            const res = callbackfn( el, i++ );
+            res === void 0 || ( mapped.push( this.object( res ) ));
         }
 
-        return mapped;
+        return Object.freeze( mapped );
     }
 
     /**

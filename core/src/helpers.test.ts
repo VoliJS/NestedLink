@@ -16,7 +16,7 @@ describe('Immutable', () => {
     describe('Immutable.map', () => {
         it('should map a collection of partial instances to immutable instances', () => {
             const collection = [{ value: 1 }, { value: 2 }, { value: 3 }];
-            const result = TestImmutable.map(collection);
+            const result = TestImmutable.array(collection);
 
             expect(result).toHaveLength(3);
             expect(result[0]).toBeInstanceOf(TestImmutable);
@@ -28,7 +28,7 @@ describe('Immutable', () => {
         it('should map a collection using a callback function', () => {
             const collection = [1, 2, 3];
             const callback = (value: number) => ({ value: value * 2 });
-            const result = TestImmutable.map(collection, callback);
+            const result = TestImmutable.array(collection, callback);
 
             expect(result).toHaveLength(3);
             expect(result[0].value).toBe(2);
@@ -39,7 +39,7 @@ describe('Immutable', () => {
         it('should skip undefined results from the callback function', () => {
             const collection = [1, 2, 3];
             const callback = (value: number) => (value % 2 === 0 ? { value } : undefined);
-            const result = TestImmutable.map(collection, callback);
+            const result = TestImmutable.array(collection, callback);
 
             expect(result).toHaveLength(1);
             expect(result[0].value).toBe(2);
@@ -48,7 +48,7 @@ describe('Immutable', () => {
 
     describe('Immutable.set', () => {
         it('should create a new instance with merged properties', () => {
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
             const newInstance = instance.set({ value: 2 });
 
             expect(newInstance).not.toBe(instance);
@@ -61,7 +61,7 @@ describe('Immutable', () => {
                 anotherValue = 10;
             }
 
-            const instance = ExtendedImmutable.from({ value: 1, anotherValue: 10 });
+            const instance = ExtendedImmutable.object({ value: 1, anotherValue: 10 });
             const newInstance = instance.set({ value: 2 });
 
             expect(newInstance).not.toBe(instance);
@@ -71,7 +71,7 @@ describe('Immutable', () => {
         });
 
         it('should return a frozen instance', () => {
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
             const newInstance = instance.set({ value: 2 });
 
             expect(Object.isFrozen(newInstance)).toBe(true);
@@ -79,7 +79,7 @@ describe('Immutable', () => {
 
         it('should call initialize method when creating a new instance', () => {
             const initializeSpy = jest.spyOn(TestImmutable.prototype, 'initialize');
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
 
             expect(initializeSpy).toHaveBeenCalled();
             initializeSpy.mockRestore();
@@ -88,7 +88,7 @@ describe('Immutable', () => {
 
     describe('Immutable.from', () => {
         it('should create a new immutable instance with the provided properties', () => {
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
 
             expect(instance).toBeInstanceOf(TestImmutable);
             expect(instance.value).toBe(1);
@@ -96,14 +96,14 @@ describe('Immutable', () => {
 
         it('should call initialize method on the new instance', () => {
             const initializeSpy = jest.spyOn(TestImmutable.prototype, 'initialize');
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
 
             expect(initializeSpy).toHaveBeenCalled();
             initializeSpy.mockRestore();
         });
 
         it('should return a frozen instance', () => {
-            const instance = TestImmutable.from({ value: 1 });
+            const instance = TestImmutable.object({ value: 1 });
 
             expect(Object.isFrozen(instance)).toBe(true);
         });
@@ -113,7 +113,7 @@ describe('Immutable', () => {
                 anotherValue = 10;
             }
 
-            const instance = ExtendedImmutable.from({ value: 1, anotherValue: 20 });
+            const instance = ExtendedImmutable.object({ value: 1, anotherValue: 20 });
 
             expect(instance).toBeInstanceOf(ExtendedImmutable);
             expect(instance.value).toBe(1);
@@ -121,8 +121,8 @@ describe('Immutable', () => {
         });
 
         it('should create a new instance each time it is called', () => {
-            const instance1 = TestImmutable.from({ value: 1 });
-            const instance2 = TestImmutable.from({ value: 2 });
+            const instance1 = TestImmutable.object({ value: 1 });
+            const instance2 = TestImmutable.object({ value: 2 });
 
             expect(instance1).not.toBe(instance2);
             expect(instance1.value).toBe(1);
