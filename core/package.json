@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "Purely functional pointer to a state",
   "main": "./lib",
   "module": "./lib",
