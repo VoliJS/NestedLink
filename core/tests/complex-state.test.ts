@@ -61,8 +61,8 @@ describe( 'Complex linked state', () =>{
 
         it( 'updates properly', () =>{
             const rootPtr = PurePtr.mutable(
-                TestRoot.from({ 
-                    items : Items.from({
+                TestRoot.object({ 
+                    items : Items.object({
                         a : 1, 
                         b : 2 
                     })

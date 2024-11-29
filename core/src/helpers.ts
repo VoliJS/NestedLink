@@ -83,7 +83,7 @@ export class Immutable {
     }
 
     static array<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
-    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
+    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
     /**
      * Creates a new array of immutable instances by mapping the provided collection.
      * If the result of the callback function is not `undefined`, it is added to the resulting array.
