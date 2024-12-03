@@ -69,21 +69,24 @@ export const arrayHelpers = {
  * A base class for immutable classes.
  */
 export class Immutable {
+    static object<T extends typeof Immutable>(this: T, props: Partial<InstanceType<T>> ): Readonly<InstanceType<T>>;
+    static object<T extends typeof Immutable, U>(this: T, props: Partial<InstanceType<T>>, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
     /**
-     * Creates a new immutable instance of the class, merging the provided partial instance with a new instance.
-     * 
-     * @param prev - A partial instance of the class to merge with the new instance.
-     * @returns A new immutable instance of the class.
+     * Creates a new instance of the class, assigns properties to it, and freezes the object.
+     *
+     * @param props - The properties to assign to the new instance.
+     * @param parse - An optional function to parse the properties before assigning them.
+     * @returns A frozen instance of the class with the assigned properties.
      */
-    static object<T extends typeof Immutable>(this: T, prev: Partial<InstanceType<T>> ): Readonly<InstanceType<T>> {
+    static object(props: any, parse? : Function ): any{
         const next = new this();
-        Object.assign( next, prev );
+        Object.assign( next, parse ? parse( props ) : props );
         next.initialize();
         return Object.freeze( next ) as any
     }
 
     static array<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
-    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, callbackfn: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
+    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, parse: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
     /**
      * Creates a new array of immutable instances by mapping the provided collection.
      * If the result of the callback function is not `undefined`, it is added to the resulting array.

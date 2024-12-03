@@ -55,7 +55,7 @@ const MyInput = ({ valuePtr }) => (
     - `ptr.props`: Generates standard React { value, onChange } props for easy two-way databinding.
     - `ptr.contains()`, `ptr.equals()` and other methods to support complex data binding scenarios like presence if the value in the array.
 
-- `useAsyncEffect()`: handle asynchronous operations within a React component using async/await, promises, and cancellations.
+- `useAsync()`: handle asynchronous operations within a React component using async/await, promises, and cancellations.
 
 - Helpers
     - `useThrottle()`: Throttles a function, ensuring it is only called once within the specified timeout period.

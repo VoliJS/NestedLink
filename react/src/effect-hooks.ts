@@ -15,15 +15,15 @@ import { useIsMountedRef } from "./imperative-hooks";
  * 
  * @example
  * ```typescript
- * const { isPending, result, error, reload } = useAsyncEffect(myFunction, [dependency]);
+ * const { isPending, result, error, reload } = useAsync(myFunction, [dependency]);
  * 
  * if( isPending ){
  *    return <div>Loading...</div>;
  * }
  * ```
  */
-export function useAsyncEffect<T>( fun : ( signal : AbortSignal ) => Promise<T>, condition : any[] = [] ): { 
-    result: T | null; 
+export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condition : any[] = [] ): { 
+    data: T | null; 
     error: any;
     isPending: 'mount' | 'refresh' | 'update' | null;
     reload: () => void; 
@@ -94,7 +94,7 @@ export function useAsyncEffect<T>( fun : ( signal : AbortSignal ) => Promise<T>,
     }, [ ...condition, state.timestamp ]);
 
     return {
-        result : state.result,
+        data : state.result,
         error : state.error,
         isPending : state.reason,
         reload : () => state.isPending || setState( state => ({ ...state, reason: 'refresh', timestamp: Date.now() }) )

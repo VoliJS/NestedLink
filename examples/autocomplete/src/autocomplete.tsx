@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAsyncEffect, useStatePtr, DelayedInput, PurePtr } from '@pure-ptr/react';
+import { useData, useStatePtr, DelayedInput, PurePtr } from '@pure-ptr/react';
 import { fetchUsers, User } from './io-mock';
 
 export const PickUser = ({ selectedPtr } : {
@@ -46,7 +46,7 @@ const UsersList = ({ filter, selectedPtr } : {
 }) => {
     const usersPtr = useStatePtr<User[]>( [] );
 
-    const { isPending } = useAsyncEffect( async abort => {
+    const { isPending } = useData( async abort => {
         usersPtr.set(
             await fetchUsers( filter, abort ) 
         );
