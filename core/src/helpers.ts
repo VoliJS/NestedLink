@@ -1,3 +1,6 @@
+import { Helper } from "./common";
+import { Immutable, immutableClassHelpers } from "./immutable-class";
+
 /**
  * Select appropriate helpers function for particular value type.
  */
@@ -7,11 +10,6 @@ export interface IterableLink {
 }
 
 export type Iterator = ( link : any, key : number ) => any;
-
-export interface Helper {
-    remove( obj : any, key : string | number | symbol ) : any,
-    set( prev : any, key : string | number | symbol, value : any ) : any
-}
 
 const ArrayProto = Array.prototype,
       ObjectProto = Object.prototype;
@@ -37,7 +35,6 @@ const dummyHelpers : Helper = {
     set( prev : any, key : string, value : any ) : any {
         prev;
     }
-
 };
 
 // `map` and `clone` for plain JS objects
@@ -62,80 +59,5 @@ export const arrayHelpers = {
         const clone = array.slice();
         clone[ i ] = value;
         return clone;
-    }
-};
-
-/**
- * A base class for immutable classes.
- */
-export class Immutable {
-    static object<T extends typeof Immutable>(this: T, props: Partial<InstanceType<T>> ): Readonly<InstanceType<T>>;
-    static object<T extends typeof Immutable, U>(this: T, props: Partial<InstanceType<T>>, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
-    /**
-     * Creates a new instance of the class, assigns properties to it, and freezes the object.
-     *
-     * @param props - The properties to assign to the new instance.
-     * @param parse - An optional function to parse the properties before assigning them.
-     * @returns A frozen instance of the class with the assigned properties.
-     */
-    static object(props: any, parse? : Function ): any{
-        const next = new this();
-        Object.assign( next, parse ? parse( props ) : props );
-        next.initialize();
-        return Object.freeze( next ) as any
-    }
-
-    static array<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
-    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, parse: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
-    /**
-     * Creates a new array of immutable instances by mapping the provided collection.
-     * If the result of the callback function is not `undefined`, it is added to the resulting array.
-     *
-     * @param collection - The iterable collection to be mapped.
-     * @param callbackfn - The function to call on each element of the collection. Defaults to an identity function.
-     * @returns An array containing the results of applying the callback function to each element of the collection.
-     */
-    static array( collection : Iterable<any>, callbackfn: (value: any, idx : number) => any = x => x ) : readonly any[]{
-        const mapped : any[] = [];
-        let i = 0;
-
-        for( let el of collection ){
-            const res = callbackfn( el, i++ );
-            res === void 0 || ( mapped.push( this.object( res ) ));
-        }
-
-        return Object.freeze( mapped );
-    }
-
-    /**
-     * Initializes computed properties.
-     * This method will be called right after the instance is created and all properties are set, 
-     * but before the object is sealed.
-     */
-    initialize(){}
-
-    /**
-     * Creates a new instance of the current object with the specified properties merged into it.
-     * 
-     * @param props - An object containing properties to be merged into the new instance.
-     * @param options - Optional parameter that can be used to initialize the new instance.
-     * @returns A new instance of the current object with the specified properties merged in, frozen to prevent further modifications.
-     */
-    set( props : Partial<this> ) : this {
-        const next = new ( this.constructor as any )() as this;
-        Object.assign( next, this, props );
-        next.initialize();
-        return Object.freeze( next );
-    }
-}
-
-export const immutableClassHelpers : Helper = {
-    remove( prev : any, key : string ) : any {    
-        return prev.set({ [ key ] : undefined });
-
-    },
-
-    set( prev : any, key : string, value : any ) : any {
-        return prev.set({ [ key ] : value });
     }
 };

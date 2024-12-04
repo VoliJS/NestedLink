@@ -59,6 +59,8 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
             })
             .catch( error => {
                 if( isMountedRef.current ){
+                    console.error( error );
+                    
                     setState( state => ({
                         isPending: state.isPending - 1,
                         result: null,

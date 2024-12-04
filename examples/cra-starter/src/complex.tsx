@@ -26,7 +26,7 @@ export const JointLinks = ({ strPtr, str2Ptr } :{
 };
 
 export const DeepLinkedInputs = ({ objPtr }:{
-   objPtr : PurePtr<{ text : string[] }>
+   objPtr : PurePtr<{ text : (string|number)[] }>
 }) => {
     const arrayPtr = objPtr.at( 'text' );
     return (
