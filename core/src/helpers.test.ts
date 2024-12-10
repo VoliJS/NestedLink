@@ -1,4 +1,4 @@
-import { Immutable } from './helpers';
+import { Immutable } from './immutable-class';
 
 /**
  * TestImmutable is a subclass of Immutable used for testing purposes.

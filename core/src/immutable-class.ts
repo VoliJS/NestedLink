@@ -76,12 +76,14 @@ export const immutableClassHelpers : Helper = {
 };
 
 // Todo: support in pure-ptr
+// Todo: support for custom indexes
 
-export function Collection<T, K>( getId : ( x : T ) => K ){
+export function Collection<T, K>( getId : ( x : T ) => K = x => (x as any).id ) {
     return class Collection extends Immutable {
         items : T[] = []
         
-        #byId? : Map<K, T> = undefined;
+        // Wrap index in object to workarounf private member polyfill fail with Object.freeze.
+        #indexes : { id? : Map<K, T> } = { id : undefined };
 
         // iterable interface
         [Symbol.iterator](){
@@ -105,11 +107,13 @@ export function Collection<T, K>( getId : ( x : T ) => K ){
         }
         
         get( id : K ) : T | undefined{
-            if( !this.#byId ){
-                this.#byId = new Map( this.items.map( x => [getId(x), x] ) );
+            const indexes = this.#indexes;
+
+            if( !indexes.id ){
+                indexes.id = new Map( this.items.map( x => [getId(x), x] ) );
             }
 
-            return this.#byId.get( id );
+            return indexes.id.get( id );
         }
 
         add( item : T ) : this {
