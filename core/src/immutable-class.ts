@@ -136,8 +136,8 @@ export class Collection<T> extends Immutable {
         return this.set( { items : this.items.filter( x => this.getId(x) !== id ) } as Partial<this> );
     }
 
-    static from<T, C extends typeof Collection<T>>( this: C, other : Iterable<T> ) : Readonly<typeof Collection<T> extends C ? InstanceType<C> : Collection<T> >;
-    static from<T, X, C extends typeof Collection<T>>( this: C, other : Iterable<X>, parse : ( x : X ) => T ) : Readonly<typeof Collection<T> extends C ? InstanceType<C> : Collection<T> >;
+    static from<T, C extends typeof Collection<T>>( this: C, other : Iterable<T> ) : Readonly<Collection<T> extends InstanceType<C> ? Collection<T> : InstanceType<C>>;
+    static from<T, X, C extends typeof Collection<T>>( this: C, other : Iterable<X>, parse : ( x : X ) => T ) : Readonly<Collection<T> extends InstanceType<C> ? Collection<T> : InstanceType<C>>;
     static from( other : Iterable<any>, parse? : ( x : any ) => any ) : Collection<any> {
         const arr = Array.isArray(other) ? other : [...other];
         return this.object({ items : parse ? arr.map( parse ) : arr }) as any;
