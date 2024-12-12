@@ -78,63 +78,68 @@ export const immutableClassHelpers : Helper = {
 // Todo: support in pure-ptr
 // Todo: support for custom indexes
 
-export function Collection<T, K>( getId : ( x : T ) => K = x => (x as any).id ) {
-    return class Collection extends Immutable {
-        items : T[] = []
-        
-        // Wrap index in object to workarounf private member polyfill fail with Object.freeze.
-        #indexes : { id? : Map<K, T> } = { id : undefined };
+export class Collection<T> extends Immutable {
+    items : T[] = []
 
-        // iterable interface
-        [Symbol.iterator](){
-            return this.items[Symbol.iterator]();
+    getId( x : T ) : string | number {
+        return (x as any).id;
+    }
+    
+    // Wrap index in object to workarounf private member polyfill fail with Object.freeze.
+    #indexes : { id? : Map<string | number, T> } = { id : undefined };
+
+    // iterable interface
+    [Symbol.iterator](){
+        return this.items[Symbol.iterator]();
+    }
+
+    filter( predicate : ( x : T ) => boolean ) : T[] {
+        return this.items.filter( predicate );
+    }
+
+    map<R>( selector : ( x : T ) => R ) : R[] {
+        return this.items.map( selector );
+    }
+
+    groupBy<K>( keySelector : ( x : T ) => K ) : Map<K, T[]> {
+        return (Map as any).groupBy( this.items, keySelector );
+    }
+
+    sort( compare : ( a : T, b : T ) => number ) : this {
+        return this.set( { items : [...this.items].sort( compare ) } as Partial<this> );
+    }
+    
+    get( id : string | number ) : T | undefined{
+        const indexes = this.#indexes;
+
+        if( !indexes.id ){
+            indexes.id = new Map( this.items.map( x => [this.getId(x), x] ) );
         }
 
-        filter( predicate : ( x : T ) => boolean ) : T[] {
-            return this.items.filter( predicate );
-        }
+        return indexes.id.get( id );
+    }
 
-        map<R>( selector : ( x : T ) => R ) : R[] {
-            return this.items.map( selector );
-        }
+    add( item : T ) : this {
+        return this.set( { items : [...this.items, item] } as Partial<this> );
+    }
 
-        groupBy<K>( keySelector : ( x : T ) => K ) : Map<K, T[]> {
-            return (Map as any).groupBy( this.items, keySelector );
-        }
+    unshift( item : T ) : this {
+        return this.set( { items : [item, ...this.items] } as Partial<this> );
+    }
 
-        sort( compare : ( a : T, b : T ) => number ) : this {
-            return this.set( { items : [...this.items].sort( compare ) } as Partial<this> );
-        }
-        
-        get( id : K ) : T | undefined{
-            const indexes = this.#indexes;
+    push( item : T ) : this {
+        return this.set( { items : [...this.items, item] } as Partial<this> );
+    }
 
-            if( !indexes.id ){
-                indexes.id = new Map( this.items.map( x => [getId(x), x] ) );
-            }
+    // remove by id, array if ids, Partial T, or array of partial T, or predicate
+    remove( id : string | number ) : this {
+        return this.set( { items : this.items.filter( x => this.getId(x) !== id ) } as Partial<this> );
+    }
 
-            return indexes.id.get( id );
-        }
-
-        add( item : T ) : this {
-            return this.set( { items : [...this.items, item] } as Partial<this> );
-        }
-
-        unshift( item : T ) : this {
-            return this.set( { items : [item, ...this.items] } as Partial<this> );
-        }
-
-        push( item : T ) : this {
-            return this.set( { items : [...this.items, item] } as Partial<this> );
-        }
-
-        // remove by id, array if ids, Partial T, or array of partial T, or predicate
-        remove( id : K ) : this {
-            return this.set( { items : this.items.filter( x => getId(x) !== id ) } as Partial<this> );
-        }
-
-        static from<X = T>( other : Iterable<T>, parse? : ( x : X ) => Partial<T> ) : Collection {
-            return this.object({ items : [...other] }) as any;
-        }
+    static from<T, C extends typeof Collection<T>>( this: C, other : Iterable<T> ) : Readonly<typeof Collection<T> extends C ? InstanceType<C> : Collection<T> >;
+    static from<T, X, C extends typeof Collection<T>>( this: C, other : Iterable<X>, parse : ( x : X ) => T ) : Readonly<typeof Collection<T> extends C ? InstanceType<C> : Collection<T> >;
+    static from( other : Iterable<any>, parse? : ( x : any ) => any ) : Collection<any> {
+        const arr = Array.isArray(other) ? other : [...other];
+        return this.object({ items : parse ? arr.map( parse ) : arr }) as any;
     }
 }
