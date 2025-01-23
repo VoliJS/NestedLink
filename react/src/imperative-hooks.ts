@@ -107,3 +107,40 @@ export function useInterval(fun: () => void, interval: number, deps: any[] = [])
         return () => clearInterval(id);
     }, [interval, ...deps]);
 }
+
+/**
+ * A custom hook that adds an event listener to the window object with an optional debounce delay.
+ *
+ * @param event - The name of the event to listen for (e.g., 'resize', 'scroll').
+ * @param callback - The function to call when the event is triggered.
+ * @param delay - Optional debounce delay in milliseconds. If provided, the callback will be debounced by this amount of time.
+ *
+ * @example
+ * ```typescript
+ * useWindowEvent('resize', () => {
+ *   console.log('Window resized');
+ * }, 300);
+ * ```
+*/
+export function useWindowEvent( event : string, callback : EventListener, delay = 0 ){
+    useEffect(() => {
+        let timeoutId: number | undefined;
+
+        const debouncedCallback = delay ?
+            (e: Event) => {
+                timeoutId && clearTimeout(timeoutId);
+
+                timeoutId = setTimeout(() => {
+                    callback(e);
+                }, delay);
+            }
+        : callback;
+
+        window.addEventListener(event, debouncedCallback);
+
+        return () => {
+            delay && clearTimeout(timeoutId); // Clean up the timeout
+            window.removeEventListener(event, debouncedCallback);
+        };
+    }, [ event, callback, delay ]);
+}

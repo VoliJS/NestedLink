@@ -27,6 +27,7 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
     error: any;
     isPending: 'mount' | 'refresh' | 'update' | null;
     reload: () => void; 
+    abort: ( e? : Error ) => void;
 } {
     const [state, setState] = useState( () =>({
         isPending: 0,
@@ -89,7 +90,7 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
 
         return () => {
             if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
+                abortControllerRef.current.abort( new Error('Cancelled due to concurrent operation or unmount') );
                 abortControllerRef.current = null;
             }
         }
@@ -99,7 +100,13 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
         data : state.result,
         error : state.error,
         isPending : state.reason,
-        reload : () => state.isPending || setState( state => ({ ...state, reason: 'refresh', timestamp: Date.now() }) )
+        reload : () => state.isPending || setState( state => ({ ...state, reason: 'refresh', timestamp: Date.now() }) ),
+        abort : ( e? : Error ) => {
+            if( abortControllerRef.current ){
+                abortControllerRef.current.abort( e ?? new Error('Aborted explicitly') );
+                abortControllerRef.current = null;
+            }
+        }
     }
 }
 

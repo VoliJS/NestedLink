@@ -1,11 +1,12 @@
-import { Collection } from './immutable-class';
+import { PureCollection } from './immutable-class';
+import { PureObject } from './immutable-class';
 
 interface Item {
     id: number;
     name: string;
 }
 
-class CollectionClass extends Collection<Item> {}
+class CollectionClass extends PureCollection<Item> {}
 
 describe('Collection', () => {
     let  collection:  Readonly<CollectionClass>;
@@ -70,5 +71,57 @@ describe('Collection', () => {
         const parse = (item: { id : number, ne : string}) => ({ id: item.id, name: item.ne.toUpperCase() });
         const newCollection = CollectionClass.from(items, parse);
         expect(newCollection.items).toEqual([{ id: 1, name: 'ITEM 1' }, { id: 2, name: 'ITEM 2' }]);
+    });
+
+    class TestImmutable extends PureObject {
+        prop1?: string;
+        prop2?: number;
+
+        initialize() {
+            if (this.prop1) {
+                this.prop1 = this.prop1.toUpperCase();
+            }
+        }
+
+        upd(){
+            return this.set({ prop1: 'newTest' });
+        }
+    }
+
+    describe('Immutable', () => {
+        test('should create an immutable object', () => {
+            const obj = TestImmutable.object({ prop1: 'test', prop2: 123 });
+            expect(obj).toEqual({ prop1: 'TEST', prop2: 123 });
+            expect(Object.isFrozen(obj)).toBe(true);
+        });
+
+        test('should create an immutable object with parse function', () => {
+            const parse = (value: { p1: string, p2: number }) => ({ prop1: value.p1, prop2: value.p2 });
+            const obj = TestImmutable.object({ p1: 'test', p2: 123 }, parse);
+            expect(obj).toEqual({ prop1: 'TEST', prop2: 123 });
+            expect(Object.isFrozen(obj)).toBe(true);
+        });
+
+        test('should create an array of immutable objects', () => {
+            const collection = [{ prop1: 'test1', prop2: 123 }, { prop1: 'test2', prop2: 456 }];
+            const arr = TestImmutable.array(collection);
+            expect(arr).toEqual([{ prop1: 'TEST1', prop2: 123 }, { prop1: 'TEST2', prop2: 456 }]);
+            expect(arr.every(Object.isFrozen)).toBe(true);
+        });
+
+        test('should create an array of immutable objects with parse function', () => {
+            const collection = [{ p1: 'test1', p2: 123 }, { p1: 'test2', p2: 456 }];
+            const parse = (value: { p1: string, p2: number }) => ({ prop1: value.p1, prop2: value.p2 });
+            const arr = TestImmutable.array(collection, parse);
+            expect(arr).toEqual([{ prop1: 'TEST1', prop2: 123 }, { prop1: 'TEST2', prop2: 456 }]);
+            expect(arr.every(Object.isFrozen)).toBe(true);
+        });
+
+        test('should create a new immutable object with merged properties', () => {
+            const obj = TestImmutable.object({ prop1: 'test', prop2: 123 });
+            const newObj = obj.set({ prop1: 'newTest' });
+            expect(newObj).toEqual({ prop1: 'NEWTEST', prop2: 123 });
+            expect(Object.isFrozen(newObj)).toBe(true);
+        });
     });
 });

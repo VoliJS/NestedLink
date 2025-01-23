@@ -1,10 +1,10 @@
-import { Immutable } from './immutable-class';
+import { PureObject } from './immutable-class';
 
 /**
  * TestImmutable is a subclass of Immutable used for testing purposes.
  * It includes a value property and an initialize method for custom initialization logic.
  */
-class TestImmutable extends Immutable {
+class TestImmutable extends PureObject {
     value = 0;
 
     initialize() {

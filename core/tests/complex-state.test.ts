@@ -1,4 +1,4 @@
-import { Immutable, PurePtr } from '../src'
+import { PureObject, PurePtr } from '../src'
 
 describe( 'Complex linked state', () =>{
     describe( 'with nested objects', () => {
@@ -37,7 +37,7 @@ describe( 'Complex linked state', () =>{
     })
 
     describe( 'with immutable classes', () => {
-        class Items extends Immutable {
+        class Items extends PureObject {
             a = 0
             b = 0
             c = 0
@@ -51,7 +51,7 @@ describe( 'Complex linked state', () =>{
             }
         }
 
-        class TestRoot extends Immutable {
+        class TestRoot extends PureObject {
             items = new Items()
 
             get s(){

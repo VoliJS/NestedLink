@@ -1,4 +1,4 @@
-import { helpers, Immutable, PurePtr } from '@pure-ptr/core';
+import { helpers, PureObject, PurePtr } from '@pure-ptr/core';
 import { useEffect, useState } from 'react';
 
 class UseStatePtr<T> extends PurePtr<T> {
@@ -41,7 +41,7 @@ export function useStatePtr<S>( initialState : S | (() => S) ) : PurePtr<S> {
  * @param ImmutableClass - The constructor of the immutable class.
  * @returns A `PurePtr` instance that contains the state and a setter function.
  */
-export function useClassPtr<C extends Immutable>( ImmutableClass : new () => C ) : PurePtr<C> {
+export function useClassPtr<C extends PureObject>( ImmutableClass : new () => C ) : PurePtr<C> {
     const [ value, set ] = useState( () => {
         const state = new ImmutableClass();
         state.initialize();

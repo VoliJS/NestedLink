@@ -1,5 +1,5 @@
 import { Helper } from "./common";
-import { Immutable, immutableClassHelpers } from "./immutable-class";
+import { PureObject, immutableClassHelpers } from "./immutable-class";
 
 /**
  * Select appropriate helpers function for particular value type.
@@ -20,7 +20,7 @@ export function helpers( value : any ) : Helper {
             case ArrayProto  : return arrayHelpers;
             case ObjectProto : return objectHelpers;
             default:
-                if( value instanceof Immutable ){
+                if( value instanceof PureObject ){
                     return immutableClassHelpers;
                 }
         }

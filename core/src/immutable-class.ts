@@ -3,9 +3,9 @@ import { Helper } from "./common";
 /**
  * A base class for immutable classes.
  */
-export class Immutable {
-    static object<T extends typeof Immutable>(this: T, props: Partial<InstanceType<T>> ): Readonly<InstanceType<T>>;
-    static object<T extends typeof Immutable, U>(this: T, props: Partial<InstanceType<T>>, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
+export class PureObject {
+    static object<T extends typeof PureObject>(this: T, props: Partial<InstanceType<T>> ): Readonly<InstanceType<T>>;
+    static object<T extends typeof PureObject, U>(this: T, props: Partial<InstanceType<T>>, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
     /**
      * Creates a new instance of the class, assigns properties to it, and freezes the object.
      *
@@ -20,8 +20,8 @@ export class Immutable {
         return Object.freeze( next ) as any
     }
 
-    static array<T extends typeof Immutable>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
-    static array<T extends typeof Immutable, U>(this: T, collection : Iterable<U>, parse: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
+    static array<T extends typeof PureObject>(this: T, collection : Iterable<Partial<InstanceType<T>>> ) : Readonly<InstanceType<T>>[]; 
+    static array<T extends typeof PureObject, U>(this: T, collection : Iterable<U>, parse: (value: U, idx : number ) => Partial<InstanceType<T>> | undefined ) : Readonly<InstanceType<T>>[];
     /**
      * Creates a new array of immutable instances by mapping the provided collection.
      * If the result of the callback function is not `undefined`, it is added to the resulting array.
@@ -53,15 +53,29 @@ export class Immutable {
      * Creates a new instance of the current object with the specified properties merged into it.
      * 
      * @param props - An object containing properties to be merged into the new instance.
-     * @param options - Optional parameter that can be used to initialize the new instance.
      * @returns A new instance of the current object with the specified properties merged in, frozen to prevent further modifications.
      */
-    set( props : Partial<this> ) : this {
+    set<K extends keyof this>( props : { [ key in K ]: this[K] }) : this {
         const next = new ( this.constructor as any )() as this;
         Object.assign( next, this, props );
         next.initialize();
         return Object.freeze( next );
     }
+
+    /**
+     * Creates a shallow copy of the current instance, applies the provided function to the copy,
+     * initializes the copy, and then returns the copy as an immutable object.
+     *
+     * @param fun - A function that takes a copy of the current instance and modifies it.
+     * @returns A new instance of the current class that has been modified and frozen.
+     */
+    update( fun : ( x : this ) => void ) {
+        const cloned = new (this as any ).constructor();
+        Object.assign( cloned, this )
+        fun( cloned )
+        cloned.initialize()
+        return Object.freeze(cloned);
+    }    
 }
 
 export const immutableClassHelpers : Helper = {
@@ -78,7 +92,7 @@ export const immutableClassHelpers : Helper = {
 // Todo: support in pure-ptr
 // Todo: support for custom indexes
 
-export class Collection<T> extends Immutable {
+export class PureCollection<T> extends PureObject {
     items : T[] = []
 
     getId( x : T ) : string | number {
@@ -106,7 +120,7 @@ export class Collection<T> extends Immutable {
     }
 
     sort( compare : ( a : T, b : T ) => number ) : this {
-        return this.set( { items : [...this.items].sort( compare ) } as Partial<this> );
+        return this.set( { items : [...this.items].sort( compare ) } );
     }
     
     get( id : string | number ) : T | undefined{
@@ -120,25 +134,25 @@ export class Collection<T> extends Immutable {
     }
 
     add( item : T ) : this {
-        return this.set( { items : [...this.items, item] } as Partial<this> );
+        return this.set( { items : [...this.items, item] } );
     }
 
     unshift( item : T ) : this {
-        return this.set( { items : [item, ...this.items] } as Partial<this> );
+        return this.set( { items : [item, ...this.items] });
     }
 
     push( item : T ) : this {
-        return this.set( { items : [...this.items, item] } as Partial<this> );
+        return this.set( { items : [...this.items, item] } );
     }
 
     // remove by id, array if ids, Partial T, or array of partial T, or predicate
     remove( id : string | number ) : this {
-        return this.set( { items : this.items.filter( x => this.getId(x) !== id ) } as Partial<this> );
+        return this.set( { items : this.items.filter( x => this.getId(x) !== id ) } );
     }
 
-    static from<T, C extends typeof Collection<T>>( this: C, other : Iterable<T> ) : Readonly<Collection<T> extends InstanceType<C> ? Collection<T> : InstanceType<C>>;
-    static from<T, X, C extends typeof Collection<T>>( this: C, other : Iterable<X>, parse : ( x : X ) => T ) : Readonly<Collection<T> extends InstanceType<C> ? Collection<T> : InstanceType<C>>;
-    static from( other : Iterable<any>, parse? : ( x : any ) => any ) : Collection<any> {
+    static from<T, C extends typeof PureCollection<T>>( this: C, other : Iterable<T> ) : Readonly<PureCollection<T> extends InstanceType<C> ? PureCollection<T> : InstanceType<C>>;
+    static from<T, X, C extends typeof PureCollection<T>>( this: C, other : Iterable<X>, parse : ( x : X ) => T ) : Readonly<PureCollection<T> extends InstanceType<C> ? PureCollection<T> : InstanceType<C>>;
+    static from( other : Iterable<any>, parse? : ( x : any ) => any ) : PureCollection<any> {
         const arr = Array.isArray(other) ? other : [...other];
         return this.object({ items : parse ? arr.map( parse ) : arr }) as any;
     }
