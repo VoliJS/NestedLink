@@ -5,7 +5,7 @@ import { Helper } from "./common";
  */
 export class PureObject {
     static object<T extends typeof PureObject>(this: T, props: Partial<InstanceType<T>> ): Readonly<InstanceType<T>>;
-    static object<T extends typeof PureObject, U>(this: T, props: Partial<InstanceType<T>>, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
+    static object<T extends typeof PureObject, U>(this: T, props: U, parse: (value: U ) => Partial<InstanceType<T>>): Readonly<InstanceType<T>>;
     /**
      * Creates a new instance of the class, assigns properties to it, and freezes the object.
      *
