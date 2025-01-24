@@ -44,7 +44,7 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
     const abortControllerRef = useRef<AbortController|null>(null);
 
     useEffect(()=>{
-        abortControllerRef.current = new AbortController();
+        const abortController = abortControllerRef.current = new AbortController();
 
         fun( abortControllerRef.current.signal )
             .then( result => {
@@ -72,7 +72,10 @@ export function useData<T>( fun : ( signal : AbortSignal ) => Promise<T>, condit
                 }
             })
             .finally( () => {
-                if( isMountedRef.current ){
+                // If we set state within the fun, we will be rendered immediately,
+                // and we will start a new request before the previous one is finished.
+                // Do not reset the abortController if it has been replaced by a new one.
+                if( isMountedRef.current && abortControllerRef.current === abortController ){
                     abortControllerRef.current = null;
                 }
             })
