@@ -21,6 +21,16 @@ export abstract class PurePtr<T>{
     /** Set value */ 
     abstract set( x : T ) : void
 
+    /**
+     * Schedules the setting of a value after a specified delay.
+     *
+     * @param x - The value to be set.
+     * @param delay - The delay in milliseconds before setting the value. Defaults to 0.
+     */
+    deferSet( x : T, delay = 0 ) : void {
+        setTimeout( () => this.set( x ), delay );
+    }
+
     constructor( public value : T ){}
 
     // Private accessor for whenChanged. Uniform with Type-R models and collections API.
@@ -93,6 +103,17 @@ export abstract class PurePtr<T>{
     update( transform : PurePtr.Transform<T> ) : void {
         const next = transform( this.value );
         next === void 0 || next === this.value || this.set( next );
+    }
+
+    /**
+     * Schedules an update to be performed after a specified delay.
+     *
+     * @param transform - The transformation function to be applied during the update.
+     * @param delay - The delay in milliseconds before the update is performed. Defaults to 0.
+     * @returns void
+     */
+    deferUpdate( transform : PurePtr.Transform<T>, delay = 0 ) : void {
+        setTimeout( () => this.update( transform ), delay );
     }
 
     /**

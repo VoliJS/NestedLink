@@ -50,29 +50,24 @@ export class PureObject {
     initialize(){}
 
     /**
-     * Creates a new instance of the current object with the specified properties merged into it.
-     * 
-     * @param props - An object containing properties to be merged into the new instance.
-     * @returns A new instance of the current object with the specified properties merged in, frozen to prevent further modifications.
-     */
-    set<K extends keyof this>( props : { [ key in K ]: this[K] }) : this {
-        const next = new ( this.constructor as any )() as this;
-        Object.assign( next, this, props );
-        next.initialize();
-        return Object.freeze( next );
-    }
-
-    /**
      * Creates a shallow copy of the current instance, applies the provided function to the copy,
      * initializes the copy, and then returns the copy as an immutable object.
      *
      * @param fun - A function that takes a copy of the current instance and modifies it.
      * @returns A new instance of the current class that has been modified and frozen.
      */
-    update( fun : ( x : this ) => void ) {
+    applyChanges<K extends keyof this>( key : K, value : this[K]) : this;
+    applyChanges( fun : ( x : this ) => void ) : this;
+    applyChanges( a : Function | string, b? : any ) : this {
         const cloned = new (this as any ).constructor();
         Object.assign( cloned, this )
-        fun( cloned )
+
+        if( typeof a === 'function' ){
+            a( cloned );
+        } else {
+            cloned[ a ] = b;
+        }
+
         cloned.initialize()
         return Object.freeze(cloned);
     }    
@@ -80,12 +75,12 @@ export class PureObject {
 
 export const immutableClassHelpers : Helper = {
     remove( prev : any, key : string ) : any {    
-        return prev.set({ [ key ] : undefined });
+        return prev.applyChanges( key, undefined );
 
     },
 
     set( prev : any, key : string, value : any ) : any {
-        return prev.set({ [ key ] : value });
+        return prev.applyChanges( key, value );
     }
 };
 
@@ -120,7 +115,7 @@ export class PureCollection<T> extends PureObject {
     }
 
     sort( compare : ( a : T, b : T ) => number ) : this {
-        return this.set( { items : [...this.items].sort( compare ) } );
+        return this.applyChanges( 'items', [...this.items].sort( compare ) );
     }
     
     get( id : string | number ) : T | undefined{
@@ -134,20 +129,20 @@ export class PureCollection<T> extends PureObject {
     }
 
     add( item : T ) : this {
-        return this.set( { items : [...this.items, item] } );
+        return this.applyChanges( 'items', [...this.items, item] );
     }
 
     unshift( item : T ) : this {
-        return this.set( { items : [item, ...this.items] });
+        return this.applyChanges( 'items', [item, ...this.items] );
     }
 
     push( item : T ) : this {
-        return this.set( { items : [...this.items, item] } );
+        return this.applyChanges( 'items', [...this.items, item] );
     }
 
     // remove by id, array if ids, Partial T, or array of partial T, or predicate
     remove( id : string | number ) : this {
-        return this.set( { items : this.items.filter( x => this.getId(x) !== id ) } );
+        return this.applyChanges( 'items', this.items.filter( x => this.getId(x) !== id ) );
     }
 
     static from<T, C extends typeof PureCollection<T>>( this: C, other : Iterable<T> ) : Readonly<PureCollection<T> extends InstanceType<C> ? PureCollection<T> : InstanceType<C>>;

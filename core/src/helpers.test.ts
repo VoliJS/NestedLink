@@ -49,7 +49,7 @@ describe('Immutable', () => {
     describe('Immutable.set', () => {
         it('should create a new instance with merged properties', () => {
             const instance = TestImmutable.object({ value: 1 });
-            const newInstance = instance.set({ value: 2 });
+            const newInstance = instance.applyChanges( 'value', 2 );
 
             expect(newInstance).not.toBe(instance);
             expect(newInstance).toBeInstanceOf(TestImmutable);
@@ -62,7 +62,7 @@ describe('Immutable', () => {
             }
 
             const instance = ExtendedImmutable.object({ value: 1, anotherValue: 10 });
-            const newInstance = instance.set({ value: 2 });
+            const newInstance = instance.applyChanges( 'value', 2 );
 
             expect(newInstance).not.toBe(instance);
             expect(newInstance).toBeInstanceOf(ExtendedImmutable);
@@ -72,7 +72,7 @@ describe('Immutable', () => {
 
         it('should return a frozen instance', () => {
             const instance = TestImmutable.object({ value: 1 });
-            const newInstance = instance.set({ value: 2 });
+            const newInstance = instance.applyChanges( 'value', 2 );
 
             expect(Object.isFrozen(newInstance)).toBe(true);
         });
