@@ -49,23 +49,23 @@ export class PureObject {
      */
     initialize(){}
 
+
+    withChanges( fun : ( x : this ) => void ) : this;
+    withChanges<K extends keyof this>( attrs : { [Key in K] : this[Key]}) : this;
     /**
-     * Creates a shallow copy of the current instance, applies the provided function to the copy,
-     * initializes the copy, and then returns the copy as an immutable object.
-     *
-     * @param fun - A function that takes a copy of the current instance and modifies it.
-     * @returns A new instance of the current class that has been modified and frozen.
+     * Creates a new instance of the current class with the specified changes applied.
+     * 
+     * @param a - A function that modifies the cloned instance or an object containing properties to be merged into the cloned instance.
+     * @returns A new instance of the current class with the changes applied, frozen to prevent further modifications.
      */
-    applyChanges<K extends keyof this>( key : K, value : this[K]) : this;
-    applyChanges( fun : ( x : this ) => void ) : this;
-    applyChanges( a : Function | string, b? : any ) : this {
+    withChanges( a : Function | object ) : this {
         const cloned = new (this as any ).constructor();
-        Object.assign( cloned, this )
 
         if( typeof a === 'function' ){
+            Object.assign( cloned, this )
             a( cloned );
         } else {
-            cloned[ a ] = b;
+            Object.assign( cloned, this, a )
         }
 
         cloned.initialize()
@@ -75,12 +75,12 @@ export class PureObject {
 
 export const immutableClassHelpers : Helper = {
     remove( prev : any, key : string ) : any {    
-        return prev.applyChanges( key, undefined );
+        return prev.withChanges({ [key]: undefined });
 
     },
 
     set( prev : any, key : string, value : any ) : any {
-        return prev.applyChanges( key, value );
+        return prev.withChanges({ [key]: value });
     }
 };
 
@@ -115,7 +115,7 @@ export class PureCollection<T> extends PureObject {
     }
 
     sort( compare : ( a : T, b : T ) => number ) : this {
-        return this.applyChanges( 'items', [...this.items].sort( compare ) );
+        return this.withChanges({ items: [...this.items].sort( compare ) });
     }
     
     get( id : string | number ) : T | undefined{
@@ -129,20 +129,20 @@ export class PureCollection<T> extends PureObject {
     }
 
     add( item : T ) : this {
-        return this.applyChanges( 'items', [...this.items, item] );
+        return this.withChanges({ items: [...this.items, item] });
     }
 
     unshift( item : T ) : this {
-        return this.applyChanges( 'items', [item, ...this.items] );
+        return this.withChanges({ items: [item, ...this.items] });
     }
 
     push( item : T ) : this {
-        return this.applyChanges( 'items', [...this.items, item] );
+        return this.withChanges({ items: [...this.items, item] });
     }
 
     // remove by id, array if ids, Partial T, or array of partial T, or predicate
     remove( id : string | number ) : this {
-        return this.applyChanges( 'items', this.items.filter( x => this.getId(x) !== id ) );
+        return this.withChanges({ items: this.items.filter( x => this.getId(x) !== id ) });
     }
 
     static from<T, C extends typeof PureCollection<T>>( this: C, other : Iterable<T> ) : Readonly<PureCollection<T> extends InstanceType<C> ? PureCollection<T> : InstanceType<C>>;

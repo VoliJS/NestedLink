@@ -84,7 +84,7 @@ describe('Collection', () => {
         }
 
         upd(){
-            return this.applyChanges( x => { 
+            return this.withChanges( x => { 
                 x.prop1 = 'newTest'
                 x.prop2 = 456 
             });
@@ -122,13 +122,13 @@ describe('Collection', () => {
 
         test('should create a new immutable object with merged properties', () => {
             const obj = TestImmutable.object({ prop1: 'test', prop2: 123 });
-            const obj1 = obj.applyChanges( self =>{ 
+            const obj1 = obj.withChanges( self =>{ 
                 self.prop1 = 'newTest';
             });
             expect(obj1).toEqual({ prop1: 'NEWTEST', prop2: 123 });
             expect(Object.isFrozen(obj1)).toBe(true);
 
-            const obj2 = obj1.applyChanges( 'prop2', 456 );
+            const obj2 = obj1.withChanges({ prop2: 456 });
             expect(obj2).toEqual({ prop1: 'NEWTEST', prop2: 456 });
 
         });
