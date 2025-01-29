@@ -52,7 +52,9 @@ export const objectHelpers : Helper = {
 // `map` and `clone` helpers for arrays.
 export const arrayHelpers = {
     remove( array : any[], i : number ) : any[] {
-        return array.slice().splice( i, 1 );
+        const next = array.slice()
+        next.splice( i, 1 );
+        return next;
     },
 
     set( array : any[], i : number, value : any ) : any[] {

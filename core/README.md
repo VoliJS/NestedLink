@@ -1,374 +1,241 @@
-# ValueLink Class
+# PurePtr (formerly NestedLink / ValueLink)
 
-## Create link
+PurePtr is a lightweight library for managing two-way data binding and immutable updates in React applications. It provides a consistent, functional-style way to manage state: you create pointers (PurePtr) to values (including deeply nested objects or arrays), and then update or bind them to UI controls without mutating the underlying data.
 
-##### ![static] Link.value( value, nextValue => void ) : Link
+Key Features
 
-Create custom link with the given value and update function.
+- Immutable state updates: Safely update arrays or objects by returning new, shallow-copied versions.
+- Nested “sub-pointers”: Access and update nested keys in a composable, type-safe way.
+- Form-friendly: Easily bind pointers to standard form elements or custom React components.
+- Validation: Integrate with or build simple chainable validation checks.
+- TypeScript: Strong type inference and compile-time checks for nested structures.
 
-It may be used for different scenarios. Good example is to use 'edit element' component for adding new element.
+## 1. Quick Start
 
-Imagine that we have a component `<EditUser valueLink={ userLink } />` expecting the link to an object.
-When editing is finished, `EditUser` will update the given link with a new values.
+Install via npm:
 
-Then, following custom link will allow you to add new user with the same form element.
-
-```javascript
-<EditUser valueLink={ Link.value( {}, x => userArrayLink.push( x ) ) } />
+```bash
+npm install @pure-ptr/core
 ```
 
-Read more about links to objects updates in the next section.
+Import it in your React code:
 
-##### ![static] Link.mutable( object ) : Link
-
-Create the link to a mutable object. Useful for testing and linking observable state.
-
-```javascript
-const state = { a : 1 },
-    $state = Link.mutable( state );
-
-$state.at( 'a' ).set( 2 );
-expect( state.a ).toBe( 2 );
+```typescript
+import PurePtr from 'pureptr';
 ```
 
-Read more about links to objects updates in the next section.
+For convenience with React Hooks, you can wrap PurePtr.value (or mutable) in a custom hook to manage local state. Many developers also create custom pointers that integrate with Redux or other libraries.
 
-##### ![static] Link.getValues({ [ name ] : Link }) : { [ name ] : value }
+## 2. Creating Pointers
 
-Extracts an object with link values. Leading $ is removed from property names in a result.
+### 2.1. PurePtr.value(value, nextValue => void) 
 
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
+Creates a custom pointer to a value along with a function for persisting changes.
 
-    ...
-    const values = Link.getValues({ $name, $email });
-    console.log( values ); // { name : 'a', email : 'b' }
-}
-```
+Example
 
-##### ![static] Link.getErrors({ [ name ] : Link }) : { [ name ] : value }
+const userPtr = PurePtr.value({}, newUser => userArrayPtr.push(newUser));
 
-Extracts link validation errors. Returns an empty object if there are no errors. Leading $ is removed from property names in a result.
+// Use in a child component:
+<EditUser valuePtr={userPtr} />
 
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
+EditUser will call userPtr.set(...) or userPtr.update(...), causing newUser to be passed to the parent’s push(...).
 
-    ...
-    const values = Link.getErrors({ $name, $email });
-    console.log( values ); // { name : 'a', email : 'b' }
-}
-```
+2.2. PurePtr.mutable(object) 
 
-##### ![static] Link.setValues({ [ name ] : Link }) : void
+Builds a pointer that directly mutates the passed object/array—a quick approach for testing or bridging with non-React state, though it forfeits some immutability.
 
-Bulk set links from the object with values. Values object must not contain the leading $ in names.
+const state = { a: 1 };
+const $state = PurePtr.mutable(state);
 
-```javascript
-export const MyCoolComponent = ( props ) => {
-    const $name = useLink( 'a' ),
-          $email = useLink( 'b' ),
+$state.at('a').set(2);
+console.log(state.a); // 2
 
-    ...
-    // Somewhere on I/O completion:
-    Link.setValues({ $name, $email }, json);
-}
-```
+2.3. Bulk Utilities 
+	•	PurePtr.getValues({ [key]: PurePtr })
+Returns an object of pointer values, omitting the $ prefix from property names in the result.
+	•	PurePtr.getErrors({ [key]: PurePtr })
+Collects validation errors from multiple pointers into one object.
+	•	PurePtr.setValues({ [key]: PurePtr }, valuesObject)
+Assigns multiple pointer values at once using the valuesObject data. Useful for bulk form updates.
 
-### Links to object and arrays
+3. Pointers to Objects and Arrays
 
-##### ![method] $object.at( key ) : Link
+Pointers can shallow-copy nested data automatically, so you don’t have to manually clone structures.
 
-Create link to the member of array or object.
+3.1. Accessing Nested Keys 
 
-If linked value is plain object or array, it's possible to generate
-links to their members. Whenever this derivative links will be
-updated, it will lead to proper purely functional update (with shallow copying) of the
-parent element.
+// Suppose $object is a pointer to { array: [ { name: 'Alice' } ] }
+const $name = $object.at('array').at(0).at('name');
+$name.set('Joe'); 
+// This triggers an immutable update to the top-level structure
 
-```javascript
-const $name = this.$at( 'array' ).at( 0 ).at( 'name' );
-$name.set( 'Joe' ); // Will update component state.array
-```
+3.2. Picking Multiple Keys 
 
-##### ![method] $object.pick( key1, key2, ... ) : { [ key ] : Link }
- 
-Create links to the object's members, and wrap them in an object. When no arguments are provided, it link all object's properties.
+const user$ = $user.pick('name', 'email');
+const { name, email } = user$; // sub-pointers for each key
 
-```javascript
-const user$ = $user.pick( 'name', 'email' ),
-      { name, email } = user$;
-```
+3.3. Mapping Arrays or Objects 
 
-##### ![method] $objOrArray.map( ( $item, itemKey ) => any | void ) : any[]
-
-Map and filter through array or object.
-
-```javascript
-var list = $stringArray.map( ( $item, index ) => {
-    if( $item.value ){ // Skip empty elements
-        return (
-            <div key={ index }>
-                <Input $value={ $item } />
-            </div>
-        );
-    }
+const list = $stringArray.map(($item, index) => {
+  if ($item.value) {
+    return (
+      <div key={index}>
+        <input {...$item.props} />
+      </div>
+    );
+  }
 });
-```
 
-## Bind to control
+This is helpful for rendering lists with controlled inputs and filtering out unwanted elements.
 
-#### ![var] $something.props : { value, onChange }
+4. Binding to Controls
 
-Bind link to the standard form control consuming value and onChange props.
+Each pointer has a .props getter returning an object { value, onChange }. This integrates seamlessly with standard form controls:
 
-```javascript
-<input {...$something.props} />
-```
+<input {...$ptr.props} />
 
-#### Custom data-bound controls
+Custom Data-Bound Controls
 
-You're encouraged to create your own semantic form controls to take the full advantage
- of the value links features. An example of the control:
+Build your own:
 
-```javascript
 const Input = ({ $value, ...props }) => (
-    <div className={`form-control ${ $value.error ? 'error' : '' }`}>
-        <input {...props}
-            value={ $value.value }
-            onChange={ e => $value.set( e.target.value ) }
-        />
-        <div className="validation-error">{ $value.error || '' }</div>
-    </div>
+  <div className={`form-control ${$value.error ? 'error' : ''}`}>
+    <input
+      {...props}
+      value={$value.value}
+      onChange={e => $value.set(e.target.value)}
+    />
+    { $value.error && <div className="validation-error">{$value.error}</div> }
+  </div>
 );
-```
 
-## Offhand boolean links
+5. Offhand Boolean Pointers 
 
-##### ![method] $array.contains( element ) : Link
+5.1. $array.contains(element) 
 
-Creates the link to the presence of value in array.
+Returns a pointer whose value is true if element is in the array, and false otherwise. Assign true to add element, or false to remove it.
 
-Resulting link value is `true` whenever element is present in array, and `false` otherwise.
-Whenever resulting link is assigned with new value, it will flip `element` in the array.
+const optionXBoolPtr = arrayPtr.contains('optionX');
 
-Useful for the large checkbox groups.
+5.2. ptrToAny.equals(whenTrue) 
 
-```javascript
-const optionXBoolLink = arrayLink.contains( 'optionX' );
-```
+Returns a pointer whose value is true if the parent pointer equals whenTrue, else false. Setting it to true updates the parent pointer to whenTrue, while false sets it to null.
 
-##### ![method] linkToAny.equals( whenTrue ) : Link
+const optionXPtr = stringPtr.equals('optionX');
 
-Create boolean link to value equality.
+5.3. ptrToAny.enabled(defaultValue = '') 
 
-Resulting link value is `true` whenever parent link value equals to `whenTrue`, and `false` otherwise.
-When resulting link is assigned with `true`, it sets parent link value with `whenTrue`, and with `null` otherwise.
+Returns a pointer whose value is false if the parent pointer is null or undefined, otherwise true. Setting it to true uses defaultValue, and false resets the parent pointer to null.
 
-Useful for radio groups.
+const textPtr = this.ptrAt('text');
+<Checkbox checkedPtr={textPtr.enabled()} />
+<Input valuePtr={textPtr} />
 
-```javascript
-const optionXLink = stringLink.equals( 'optionX' );
-```
+6. Custom Pointers 
 
-##### ![method] linkToAny.enabled( defaultValue = '' ) : Link
+6.1. ptr.onChange(callback: (newValue) => void) 
 
-Create boolean link which value is `false` when parent link is `null` (or `undefined`), and `true` otherwise.
-Whenever the enabled-link is set to `true`, it sets parent link to the `defaultValue`.
+Wraps the pointer so that whenever it’s updated, callback(newValue) is called. The pointer then proceeds to update the underlying data.
 
-This type of links is used to support enabling/disabling of individual form controls with a dedicated checkbox.
-`<Input>` control and the rest of form controls must be modified to disable themselves when its `valueLink.value === null`.
+6.2. ptr.pipe(transform: (nextValue, prevValue) => any) 
 
-```javascript
-const textLink = this.linkAt( 'text' );
+Intercepts nextValue before setting it, letting you transform or validate the value. If transform returns undefined, the update is canceled.
 
-return (
-    <Checkbox checkedLink={ textLink.enabled() } />
-    <Input valueLink={ textLink } /> 
-);
-``` 
+<Input valuePtr={ strPtr.pipe(x => x && x.toUpperCase()) } />
 
-### Custom links
+7. TypeScript Support 
 
-##### ![method] link.onChange( callback : any => void ) : Link
+PurePtr<T> is parameterized by T, the type of the enclosed value. This ensures:
+	•	Accurate autocompletion for nested structures.
+	•	Compile-time errors if you try to access invalid properties or pass incorrect types.
 
-Create the wrapper for existing link which will invoke callback whenever new
-value is set. Similar to:
-
-```javascript
-Link.value( link.value, x => {
-    callback( x );
-    link.set( x );
-});
-```
-
-##### ![method] link.pipe( transform : ( next, prev ) => any ) : Link
-
-Create the wrapper for existing link which will invoke given transform function
-_before_ new value is set. Returned value will be used as new link value,
-and if it's `undefined` update will be rejected. Similar to:
-
-```
-Link.value( link.value, x => {
-    const y = callback( x, link.value );
-    if( y !== undefined ){
-        link.set( y );
-    }
-});
-```  
-
-Usage example:
-
-```jsx
-<Input valueLink={ strLink.pipe( x => x && x.toUpperCase() ) }/>
-```
-
-### Note for TypeScript users
-
-`Link` is the parametric type `Link< T >`, where T is the type of the enclosed value.
-
-TypeScript properly infers type of the link and perform static checks failing on missing state members.
-
-```javascript
 interface MyState {
-    name : string
+  name: string;
 }
-...
-const nameLink = this.linkAt( 'name' ); // Link< string >
-const missingLink = this.linkAt( 'age' ); // Compile-time error - no such a member in state.
-```
-    
-## Link updates
 
-### Simple value updates
+const namePtr = this.ptrAt('name'); // PurePtr<string>
+const invalidPtr = this.ptrAt('age'); // Error: no 'age' in 'MyState'
 
-##### ![method] link.set( x ) : void
+8. Updating Pointers 
 
-##### ![method] link.requestChange( x ) : void
+8.1. ptr.set(x) and ptr.requestChange(x) 
 
-Set link to the given value.
+Replaces the pointer’s value with x:
 
-```javascript
-<button onClick={ () => boolLink.set( !boolLink.value ) } />
-```
+<button onClick={() => boolPtr.set(!boolPtr.value)}>
+  Toggle
+</button>
 
-##### ![method] link.update( prevValue => any ) : void
+8.2. ptr.update(oldValue => newValue) 
 
-Update link value using the given value transform function.
+Calls the provided function with the current value, then sets the result:
 
-```javascript
-<button onClick={ () => boolLink.update( x => !x ) } />
-```
+<button onClick={() => boolPtr.update(x => !x)}>
+  Toggle
+</button>
 
-##### ![method] link.action( ( prevValue, event ) => any ) : ( event => void )
+8.3. ptr.action((oldValue, event) => newValue) : (event) => void 
 
-Create UI event handler which will transform the link.
+Generates an event handler for UI. The returned function gets event, calls your transform, and updates the pointer accordingly.
 
-`link.action` takes transform function, and produce a new function which takes single `event` argument.
-When it's called, `event` and link `value` are passes as transform parameters, and link will be updated 
-with returned value.
+<input 
+  value={ptr.value} 
+  onChange={ptr.action((oldValue, e) => e.target.value)} 
+/>
 
-This is particularly useful in (but not restricted to) UI event handlers.
+8.4. Immutable Updates for Objects/Arrays 
 
-```javascript
-// simple click event handler...
-<button onClick={ boolLink.action( x => !x ) } />
+When you call ptr.update(...) on an object or array pointer, the library shallow-copies the structure, letting you mutate the copy:
 
-// manual binding to input control:
-const setValue = ( x, e ) => e.target.value;
-...
-<input  value={ link.value }
-        onChange={ link.action( setValue ) } />
-```
+$object.update(obj => {
+  obj.a = 1; // safe to do
+  return obj;
+});
 
-### Link to objects and arrays updates
+8.5. Array Helpers 
+	•	$array.splice(...)
+	•	$array.push(...)
+	•	$array.unshift(...)
 
-Plain objects and arrays are shallow copied by `link.update()` and within `link.action()` handlers,
-thus it's safe just to update the value in place.
+Each mimics the corresponding native method but returns void, since they produce new structures internally.
 
-##### ![method] $object.update( clonedObject => Object ) : void
- 
-Update enclosed object or array.
+9. Validation 
 
-##### ![method] $object.action( ( clonedObject, event ) => Object ) : ( event => void )
- 
-Creates action to update enclosed object or array. Object is shallow copied before the update and it's safe to 
+9.1. ptr.check(value => boolean, error = 'Invalid value') : PurePtr
 
-```javascript
-<button onClick={ () => $object.update( obj => {
-                                obj.a = 1;
-                                return obj;
-                            }) } />
-```
+Chains a validation check. If it fails, sets ptr.error to the given message (or object). You can chain multiple check calls; the first failure sets the error.
 
-##### ![method] $object.removeAt( key ) : void
+const $num = this.ptrAt('num')
+  .check(x => x >= 0, 'Cannot be negative')
+  .check(x => x <= 5, 'Too large');
 
-##### ![method] $object.at( key ).remove() : void
+9.2. ptr.error 
 
-Remove element with a given key from the enclosed object ar array.
+Holds the current validation error, if any. Use it in custom controls to display messages.
 
-### Link to arrays updates
+10. What’s New / Refined 
 
-Link to arrays proxies some important Array methods. 
+10.1. Enhanced Immutable Patterns 
+	•	Better TypeScript: The library more robustly infers types for deep updates.
+	•	Refined object/array pointers: Shallow cloning makes functional updates straightforward without boilerplate.
 
-##### ![method] $array.splice( ... ) : void
+10.2. withChanges 
 
-##### ![method] $array.push( ... ) : void
+For certain extended classes (e.g., PureObject or advanced usage), a withChanges(...) method:
+	•	Clones the object.
+	•	Accepts either an object to merge or a mutation callback.
+	•	Freezes the new object to prevent accidental mutations.
 
-##### ![method] $array.unshift( ... ) : void
+const updated = userPtr.withChanges({ age: 26, isActive: true });
+// or:
+const updated2 = userPtr.withChanges(u => {
+  u.age = 26;
+  u.isActive = true;
+});
 
-Works in the same way and accepts the same parameters as corresponding Array method,
-but returns `undefined` and leads to the proper purely functional update of the parent object chain.
+11. Conclusion 
 
-## Links validation
+PurePtr simplifies two-way binding, deep updates, and validation in React by focusing on immutability and functional patterns. Whether you’re handling simple form inputs or complex nested data, PurePtr gives you fine-grained control over your state without sacrificing clarity.
 
-> It's highly recommended to read [tutorial](https://medium.com/@gaperton/react-forms-with-value-links-part-2-validation-9d1ba78f8e49#.nllbm4cr7)
-> on validation with value links.
-
-##### ![method] $link.check( value => boolean, error = 'Invalid value' ) : Link
- 
-Evaluate given condition for the current link value, and assign
-given error object to the `link.error` when it fails. There are no restriction on the error object shape and type.
-
-It's possible to assign default error message to the validator function. `linked-controls` package provides `isRequired` and `isEmail`
-generic validator functions as an examples: 
-
-```jsx
-export const isRequired = x => x != null && x !== '';
-isRequired.error = 'Required';
-```
- 
-Checks can be chained. In this case, the first check which fails will leave its error in the link.
-
-##### ![var] $link.error : any | void
-
-This field is populated by the `link.check` method and must not be assigned manually.
-It should be used by a custom `<Input />` control to display an error (see `linked-controls` and examples).
-
-```javascript
-// Simple check
-const $num = this.$at( 'num' )
-                .check( x => x >= 0 && x <=5 );
-
-console.log( $num.error );
-
-// Check with error message
-const $num = this.$at( 'num' )
-                .check( x => x >= 0 && x <=5, 'Number must be between 0 and 5' );
-
-console.log( $num.error );
-
-// Chained checks
-const $num = this.$at( 'num' )
-                .check( x => x >= 0, 'Negative numbers are not allowed' )
-                .check( x => x <= 5, 'Number should be not greater than 5' );
-
-console.log( $num.error );
-```
-
-[method]: /images/method.png
-[static]: /images/static.png
-[var]: /images/var.png
+Explore advanced usage patterns, demos, or open an issue on our repository if you have feature requests or questions. Happy pointing!
