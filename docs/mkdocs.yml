@@ -1,0 +1,21 @@
+site_name: PurePtr for React
+nav:
+  - Getting Started: index.md
+  - Learn:
+    - State Management Basics: intro/basics.md
+    - Working with Arrays: intro/arrays.md
+    - Fetching Data: intro/fetching.md
+    - Two-Way Data Binding: intro/two-way.md
+    - Forms Validation: intro/validation.md
+    - State & Immutable Classes: intro/immutable.md
+  - API Reference: api.md
+  - Release Notes: release-notes.md
+  - Contributing: contributing.md
+theme:
+  name: material
+  features:
+    - navigation.sections
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
