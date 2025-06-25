@@ -46,10 +46,7 @@ export abstract class PurePtr<T>{
      * @returns A new instance of `ClonedPtr` that wraps the current instance and the handler function.
      */
     onChange( handler : ( x : T ) => void ) : PurePtr<T> {
-        return new ClonedPtr( this, ( x : T ) => {
-            handler( x );
-            this.set( x );
-        });
+        return new OnChangePtr( this, handler );
     }
 
     /**
@@ -61,10 +58,7 @@ export abstract class PurePtr<T>{
      * @returns A new `PurePtr` instance with the result of the handler function.
      */
     pipe( handler : ( next : T, prev : T ) => T ) : PurePtr< T > {
-        return new ClonedPtr( this, x =>{
-            const next = handler( x, this.value );
-            next === void 0 || this.set( next );
-        } );
+        return new PipePtr( this, handler );
     }
 
     /**
@@ -82,13 +76,14 @@ export abstract class PurePtr<T>{
      *   - `onChange`: A function that handles the change event and updates the state.
      */
     get props() :
-        T extends boolean ? { checked : boolean, onChange : ( e : any ) => void } :
+        T extends boolean ? 
+            { checked : boolean, onChange : ( e : any ) => void } :
             { value : T, onChange : ( e : any ) => void }
     {
         return typeof this.value === 'boolean' ? {
             checked : this.value,
-            onChange : e => this.set( Boolean( e.target.checked ) as any )
-        }:{
+            onChange : ( e : any ) => this.set( Boolean( e.target.checked ) as any )
+        } as any : {
             value : this.value,
             onChange : (e: any) => this.set( e.target.value )
         } as any;
@@ -379,15 +374,61 @@ class CustomPtr< T > extends PurePtr< T > {
     }
 }
 
-class ClonedPtr<T> extends PurePtr< T > {
-    set( x : T ){}
-
-    constructor( parent : PurePtr< T >, set : ( x : T ) => void ){
-        super( parent.value );
-        this.set = set;
-
-        const { error } = parent;
+class OnChangePtr<T> extends PurePtr<T> {
+    constructor( 
+        private _parent : PurePtr<T>, 
+        private _onChange : ( x : T ) => void 
+    ){
+        super( _parent.value );
+        const { error } = _parent;
         if( error ) this.error = error;
+    }
+
+    set( next : T ){
+        this._parent.update( prev => {
+            setTimeout( () => this._onChange( next ), 0 );
+
+            return next;
+        } );
+    }
+
+    update(transform: PurePtr.Transform<T>): void {
+        this._parent.update( prev => {
+            let next = transform( prev );
+
+            if( next === undefined ) return;
+
+            setTimeout( () => this._onChange( next ), 0 );
+
+            return next;
+        } );
+    }
+}
+
+class PipePtr<T> extends PurePtr<T> {
+    constructor( 
+        private _parent : PurePtr<T>, 
+        private _transform : ( next : T, prev : T ) => T | undefined 
+    ){
+        super( _parent.value );
+        const { error } = _parent;
+        if( error ) this.error = error;
+    }
+
+    set( x : T ){
+        this._parent.update( 
+            prev => this._transform( x, prev ) 
+        );
+    }
+
+    update(transform: PurePtr.Transform<T>): void {
+        this._parent.update( prev => {
+            let next = transform( prev );
+
+            if( next === undefined ) return;
+
+            return this._transform( next, prev );
+        } );
     }
 }
 

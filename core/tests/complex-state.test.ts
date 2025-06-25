@@ -22,17 +22,42 @@ describe( 'Complex linked state', () =>{
             expect( rootPtr.value.items.b ).toBe( 3 );
         } )
 
+        it( 'works with outdated ptrs', () => {
+            const rootPtr = PurePtr.mutable( { 
+                items : { 
+                    a : { 
+                        c : 1 
+                    }, 
+                    b : 2 
+                }
+            } );
 
-        it( 'handles onChange properly', () =>{
+            const itemsPtr = rootPtr.at('items'),
+                [ aPtr, bPtr ] = itemsPtr.pick( 'a', 'b');
+
+            bPtr.set( 6 )
+            aPtr.at('c').set( 5 )
+
+            expect( rootPtr.value.items.a.c ).toBe( 5 );
+            expect( rootPtr.value.items.b ).toBe( 6 );
+        })
+
+
+        it( 'handles onChange properly', done => {
             const rootPtr = PurePtr.mutable( { items : { a : { c : 1 }, b : 2 }} );
 
             rootPtr.at( 'items' ).at( 'a' )
-                .onChange( x => rootPtr.at( 'items' ).at( 'b' ).set( 3 ) )
+                .onChange( x => {
+                    rootPtr.at( 'items' ).at( 'b' ).set( 3 );
+                    expect( rootPtr.value.items.b ).toBe( 3 );
+                    expect( rootPtr.value.items.a.c ).toBe( 2 );
+                    done()
+                })
                 .at( 'c' )
                 .set( 2 );
 
             expect( rootPtr.value.items.a.c ).toBe( 2 );
-            expect( rootPtr.value.items.b ).toBe( 3 );
+            //expect( rootPtr.value.items.b ).toBe( 3 );
         } )
     })
 
