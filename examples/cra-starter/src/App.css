@@ -1,0 +1,30 @@
+.App {
+}
+
+
+.invalid {
+  border-color: red;
+}
+
+.checkbox {
+  display: inline-block;
+  margin-right: 10px;
+  border: solid 1px black;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #ccc;
+}
+
+.radio {
+  display: inline-block;
+  margin-right: 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,53 @@
+{
+  "name": "@pure-ptr/core",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "4.0.17",
+  "description": "Purely functional pointer to a state",
+  "main": "./lib",
+  "module": "./lib",
+  "types": "./lib",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoliJS/NestedLink.git"
+  },
+  "keywords": [
+    "type-r",
+    "react",
+    "@linked/react",
+    "databinding"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VoliJS/NestedLink/issues"
+  },
+  "homepage": "https://github.com/VoliJS/NestedLink/valuelink-class",
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf lib && tsc"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
+  }
+}

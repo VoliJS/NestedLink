@@ -1,0 +1,56 @@
+{
+  "name": "@pure-ptr/react",
+  "version": "4.0.7",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Purely functional two-way data binding and form validation for React",
+  "main": "./lib",
+  "module": "./lib",
+  "types": "./lib",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib","src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoliJS/NestedLink.git"
+  },
+  "keywords": [
+    "react",
+    "@linked/react",
+    "databinding",
+    "forms",
+    "binding",
+    "data",
+    "link",
+    "state",
+    "react-component"
+  ],
+  "author": "Vlad Balin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VoliJS/NestedLink/issues"
+  },
+  "homepage": "https://github.com/VoliJS/NestedLink/valuelink",
+  "dependencies": {
+    "@pure-ptr/core": "workspace:^",
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "*"
+  },
+  "peerDependencies": {
+    "react": ">=16.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf lib && tsc"
+  }
+}
